@@ -7,7 +7,7 @@ const fs = require('fs');
 const buildPath = path.resolve(__dirname, 'dist');
 const SRC = path.resolve(__dirname, 'src');
 
-const HTMLFiles = fs.readdirSync(SRC + '/base').map(file => {
+const HTMLFiles = fs.readdirSync(SRC + '/base').filter(file => file.includes('.pug')).map(file => {
   const [name, ext] = file.split('.');
   const localJSExists = fs.existsSync(SRC + '/js/pages/' + name + '.js');
   let chunks = ['common'];
@@ -16,7 +16,7 @@ const HTMLFiles = fs.readdirSync(SRC + '/base').map(file => {
   }
   return {
     name,
-    filename: file,
+    filename: `${name}.html`,
     template: SRC + '/base/' + file,
     inject: true,
     chunks,
@@ -44,6 +44,12 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.pug$/,
+        exclude: [/node_modules/],
+        include: path.join(__dirname, 'src', 'base'),
+        use: ['pug-loader']
+      },
       {
         test: /\.js$/,
         use: 'babel-loader',

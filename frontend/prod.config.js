@@ -10,7 +10,7 @@ module.exports = merge(common, {
   devtool: 'source-map',
   output: {
     path: buildPath,
-    filename: '[name].[hash:20].js',
+    filename: '[name].[contenthash].js',
     publicPath: '/'
   },
   optimization: {

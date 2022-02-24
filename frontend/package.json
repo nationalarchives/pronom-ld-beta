@@ -29,6 +29,7 @@
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "postcss": "^8.4.6",
     "postcss-loader": "^6.2.1",
+    "pug": "^3.0.2",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.1",
@@ -36,5 +37,8 @@
     "webpack-cli": "^4.9.2",
     "webpack-dashboard": "^3.2.0",
     "webpack-dev-server": "^3.8.0"
+  },
+  "dependencies": {
+    "pug-loader": "^2.4.0"
   }
 }
