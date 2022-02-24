@@ -1,0 +1,40 @@
+{
+  "name": "pronom-frontend",
+  "version": "0.0.1",
+  "description": "PRONOM frontend development setup with Webpack, babel and SCSS",
+  "main": "index.js",
+  "author": "Antero Duarte - Wallscope",
+  "scripts": {
+    "start": "webpack serve --open --config dev.config.js",
+    "build": "webpack --config prod.config.js",
+    "assemble": "webpack --config assemble.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@webpack-cli/serve": "^1.6.1",
+    "asset-config-webpack-plugin": "^2.0.3",
+    "autoprefixer": "^10.4.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.6.0",
+    "html-webpack-plugin": "^5.5.0",
+    "http-server": "^14.1.0",
+    "mini-css-extract-plugin": "^2.5.3",
+    "node-sass": "^4.12.0",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "postcss": "^8.4.6",
+    "postcss-loader": "^6.2.1",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dashboard": "^3.2.0",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
