@@ -64,6 +64,11 @@ yarn start
 
 This will start a development server on port 8080 and serve the frontend assets.
 
+### Pug Templates support
+
+[Pug](https://pugjs.org/) is the successor of the Jade templating engine. templates can be used as the base template language instead of HTML.
+Pug allows for, among other things, the use of partials, which is why it is used here so a library of partials can be used and reused across the project.
+
 ### Adding a new page
 
 When adding a new website page, for it to be recognised by the bundling system there are a few steps:
@@ -96,27 +101,32 @@ const App = () => {
 App()
 ```
 
-And the example HTML file:
+And the example Pug file:
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>PRONOM</title>
-</head>
-<body>
-  <h1>Hello Contact</h1>
-</body>
-</html>
+```pug
+include partials/head.pug
+
+h1 Hello Contact
+a(href='index.html') Home
 ```
 
 ### Partials
 
-TODO: configure and document template partials
+Partials are handled by the Pug Templating engine. More information can be found [here](https://pugjs.org/language/inheritance.html).
 
-### Markdown usage
+The recommended usage is as follows:
 
-TODO: configure and document markdown fields in templates
+```pug
+//- partials/hello.pug
+
+h1 Hello World!
+```
+
+```pug
+//- index.pug
+
+include partials/head.pug
+
+include partials/hello.pug
+a(href='index.html') Home
+```
