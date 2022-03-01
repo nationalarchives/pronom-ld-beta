@@ -1,0 +1,25 @@
+include ../partials/head.pug
+.page-container
+  // Pronom main menu - START #pronommainmenu
+  include ../partials/navigation.pug
+  // Pronom main menu - END
+  // Main #main - START
+  main.side-padding
+    // H1 tag only for screen readers and SEO
+    h1 Home
+    // INFO page columns is div to handle home page and only here needs class of "two"
+    .page-columns.two
+      div
+        // Breadcrumbs - START #breadcrumbs
+        .breadcrumb-holder
+          a.isDisabled(aria-disabled='true' disabled='')
+            | Home
+          i.fa-solid.fa-angle-right
+          a
+            | Link
+        // Breadcrumbs #breadcrumbs - END
+        // Unique page cotnent START
+        block content
+      div
+        p search
+  // Main - END

@@ -1,0 +1,84 @@
+nav#pronom-nav(role='navigation')
+  .container
+    #pronom-nav-header
+      a#page-title(href='#') Pronom
+      button#pronom-nav-mobile-collapse(type='button')
+        | MENU
+    ul.menu-pronom.side-padding
+      // INFO to display sub-menu add class="selected" to <li>
+      li.selected
+        // INFO for blue color add class="active"
+        a.top-link.activea(href='index.html')
+          | Home
+        ul.sub-menu-pronom
+          li
+            // INFO for blue color add class="active"
+            a.active
+              | What is Pronom?
+          li
+            a
+              | Pronom and Droid
+          li
+            a(href='#newInformation')
+              | New information
+      li
+        a.top-link
+          | Search Pronom
+        ul.sub-menu-pronom
+          li
+            a How to search?
+          li
+            a
+              | Search Pronom
+      li
+        a.top-link(href='about.html')
+          | About
+        ul.sub-menu-pronom
+          li
+            a
+              | Pronom story
+          li
+            a
+              | Documentation
+          li
+            a
+              | Meet the team
+      li
+        a.top-link
+          | FAQ
+        ul.sub-menu-pronom
+          li
+            a
+              | Category 1
+          li
+            a
+              | Category 2
+          li
+            a
+              | Category 2
+      li
+        a.top-link
+          | External Projects
+      li
+        a.top-link
+          | Submit to Pronom
+        ul.sub-menu-pronom
+          li
+            a
+              | Why submitting to Pronom?
+          li
+            a
+              | How to make a submission
+          li
+            a
+              | How do we proceed your submission
+      li
+        a.top-link
+          | Contact
+        ul.sub-menu-pronom
+          li
+            a
+              | Contact details
+          li
+            a
+              | Map
