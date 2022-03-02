@@ -29,13 +29,16 @@ button, a {
   padding-left: 20px !important;
   padding-right: 20px !important;
   padding-top: 40px;
+  @media only screen and (max-width: 700px) {
+    padding-left: 0 !important;
+  }
 }
 .page-container {
   display: grid;
   grid-template-columns: auto 1fr;
   min-height: 100vh;
   padding: 0 90px;
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     display: grid;
     grid-template-columns:1fr;
     padding: 0;
@@ -97,21 +100,40 @@ button {
   }
   &.medium {
     font-size: 17px;
-    padding: 5px 10px;
+    padding: 8px 10px;
     font-weight: 400px;
   }
   &.large {
     font-size: 19px;
   }
 }
-
-
 // Buttons - END
+
+.sr-only {
+  position: absolute;
+}
+fieldset {
+  border:none;
+  padding: 0;
+}
 /* Overall page style - END */
+// Input search START 
+input[type="search"]:focus {
+  outline: 5px solid #8EC0EC;
+}
+input {
+  padding: 0 10px;
+  height: 45px;
+  border: 3px solid black;
+  font-size: 16px;
+}
 
 /* Main START #main =======================================*/
 main {
   margin-left: 30px;
+  @media only screen and (max-width: 700px) {
+    margin-left: 20px;
+  }
 }
 .page-columns {
   display: grid;
@@ -119,6 +141,9 @@ main {
   &.two{
     grid-template-columns: 1fr auto;
     grid-gap: 50px;
+    @media only screen and (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
 /* Main END */
@@ -240,6 +265,19 @@ main {
 
 /* Breadcrumbs - START #breadcrumbs ==============================*/
 .breadcrumb-holder{
+  ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    display: flex;
+    > li:last-child {
+      i {
+        display: none;
+      }
+    }
+  }
   a {
     border-bottom: 1.5px solid $active-blue;
     color: $active-blue;
