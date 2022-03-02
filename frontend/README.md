@@ -52,7 +52,7 @@ An assembly build is a build that takes all the production configuration but pla
 yarn assemble
 ```
 
-This will generate all the code and assets and place them in `../backend/src/main/resources/templates/`
+This will generate all the code and assets and place them in their right places within the `../backend/src/main/resources/` directory
 
 ## Development
 
@@ -130,3 +130,47 @@ include partials/head.pug
 include partials/hello.pug
 a(href='index.html') Home
 ```
+
+### Markdown support
+
+For the production deployment it is required that text can be edited through a system of markdown file editing. In order to tell the server-side templating engine to render the contents of a markdown file instead of the frontend template contents, a util function was created as an extension to Thymeleaf. When developing the frontend, all one has to do is to use a thymeleaf meta attribute in combination with a call to the util function. Like so:
+
+```pug
+block content
+  .unique-page-content
+    article(th:utext="${@templateUtils.md('index_main')}")
+```
+
+`@templateUtils.md()` is the util function and it takes 1 argument, a string pointing to the file name of the markdown file to include in this section.
+
+This will include the rendered markdown inside of the article tag. It is important to use the meta attribute `th:utext` as opposed to `th:text` because utext allows for unescaped HTML to be rendered.
+
+This can be used of course for different parts of the HTML for example, if one wanted to change the `<title></title>` of a page using a markdown file, one could:
+
+```pug
+html
+  head
+    title(th:text="${@templateUtils.md('index_title')}")
+```
+
+And then just include the `index_title` file in the markdown directory.
+
+#### Local development
+
+For local development purposes, and because the server-side engine will replace the contents of the tag where th:utext or th:text are used, one can include default HTML which will be rendered while using the local devServer. Example:
+
+```pug
+block content
+  .unique-page-content
+    article(th:utext="${@templateUtils.md('index_main')}")
+      h2 What is Pronom?
+      p
+        | Lorem ipsum etc
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      h3 How to submit to Pronom?
+      p
+        | Lorem ipsum etc
+        | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+```
+
+In this case, the Lorem Ipsum text will be shown during development and in production it will be replaced with the contents of the markdown files.
