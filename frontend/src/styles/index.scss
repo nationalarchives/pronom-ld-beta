@@ -1,0 +1,44 @@
+.home-page-release-info {
+  min-width: 290px;
+  article {
+    border: none;
+    margin-top: 10px;
+  }
+  h4 {
+    margin-bottom: 8px;
+  }
+}
+.pronom-updates {
+  background: #C4DFF8;
+  padding:  15px;
+  h3 {
+    margin-top: 0;
+  }
+  p {
+    margin-bottom: 0;
+    margin-top: 8px;
+  }
+  b {
+    margin: 0;
+    padding: 0;
+  }
+  div.add-border {
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+  }
+  .buttons {
+    margin-top: 5px;
+    button {
+      margin-right: 6px;
+    }
+  }
+}
+.button-list {
+  display: flex;
+  flex-direction: column;
+  button {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+  }
+}

@@ -71,6 +71,42 @@ article {
   padding-top: 10px;
   margin-top: 35px;
 }
+// Buttons - START
+button {
+  font-family: 'Roboto Mono', monospace;
+  &.black {
+    background: black;
+    color: white;
+    border: 2px solid black;
+  }
+  &.blue {
+    background: $active-blue;
+    color: $active-blue;
+    border: 2px solid $active-blue;
+  }
+  &.bordered-blue {
+    background: white;
+    color: $active-blue;
+    border: 2px solid $active-blue;
+  }
+  &.small {
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: 500;
+  }
+  &.medium {
+    font-size: 17px;
+    padding: 5px 10px;
+    font-weight: 400px;
+  }
+  &.large {
+    font-size: 19px;
+  }
+}
+
+
+// Buttons - END
 /* Overall page style - END */
 
 /* Main START #main =======================================*/
@@ -82,6 +118,7 @@ main {
   grid-template-columns: 1fr;
   &.two{
     grid-template-columns: 1fr auto;
+    grid-gap: 50px;
   }
 }
 /* Main END */
