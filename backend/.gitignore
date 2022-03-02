@@ -3,6 +3,8 @@
 /out
 /build
 /src/main/resources/templates/
+/src/main/resources/static/
+/md/
 *.iml
 *.ipr
 *.iws

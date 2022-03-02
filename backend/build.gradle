@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	// Spring deps
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -20,6 +21,10 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// Markdown Processor
+	// https://search.maven.org/artifact/org.lucee/txtmark/0.16.0/bundle
+	implementation 'org.lucee:txtmark:0.16.0'
 }
 
 tasks.named('test') {
