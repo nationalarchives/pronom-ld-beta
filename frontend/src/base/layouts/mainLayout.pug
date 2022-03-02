@@ -6,9 +6,9 @@ include ../partials/head.pug
   // Main #main - START
   main.side-padding
     // H1 tag only for screen readers and SEO
-    h1 Home
+    block pageTitle
     // INFO page columns is div to handle home page and only here needs class of "two"
-    .page-columns.two
+    .page-columns
       div
         // Breadcrumbs - START #breadcrumbs
         .breadcrumb-holder
