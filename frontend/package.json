@@ -6,6 +6,7 @@
   "author": "Antero Duarte - Wallscope",
   "scripts": {
     "start": "webpack serve --open --config dev.config.js",
+    "serve": "webpack serve --open --config dev.config.js",
     "build": "webpack --config prod.config.js",
     "assemble": "webpack --config assemble.config.js"
   },
