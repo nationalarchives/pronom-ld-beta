@@ -1,7 +1,7 @@
-.home-page-release-info {
+.home-page-additional-info {
   min-width: 290px;
-  article {
-    border: none;
+  margin-top: 35px;
+  >div {
     margin-top: 10px;
   }
   h4 {
@@ -40,5 +40,17 @@
     margin-bottom: 8px;
     display: flex;
     align-items: flex-start;
+  }
+}
+#small-search-container form fieldset > div{
+  display: grid;
+  grid-template-columns: 1fr 45px;
+  button {
+    background: black;
+    color: white;
+    border:black;
+    i {
+      font-size: 18px;
+    }
   }
 }

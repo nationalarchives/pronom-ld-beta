@@ -1,0 +1,45 @@
+.home-page-additional-info(aria-label="Quick search, links and additional information")
+  #small-search-container
+    form(aria-label="Search for file format, software or vendor")
+      fieldset
+        label(for="small_search")
+          h3 Search Pronom
+        legend.sr-only Enter search file format name, PUID or keywords
+        div
+          input(type="search" id="small_search" placeholder="Search for file formats...")
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+  div
+    .pronom-updates 
+      h3 Pronom updates
+      div.add-border
+        p Last update
+        b 17/12/2021
+      div
+        p Next planned update
+        b early April
+      div
+        p Download test notes
+        .buttons
+          button.bordered-blue.small
+            | XML
+          button.bordered-blue.small
+            | CSV
+  div
+    h3 Quick links
+    div
+      h4 Help build Pronom
+      .button-list
+        button.black.medium
+          | How to make a submission
+        button.black.medium
+          | Submission Form
+    div
+      h4 Documentation and recognition
+      .button-list
+        button.black.medium
+          | PRONOM release notes
+        button.black.medium
+          | PRONOM documentation
+        button.black.medium
+          | DROID

@@ -1,64 +1,19 @@
 include ../partials/head.pug
 .page-container
-  // Pronom main menu - START #pronommainmenu
+  //- Pronom main menu - START #pronommainmenu
   include ../partials/navigation.pug
-  // Pronom main menu - END
-  // Main #main - START
+  //- Pronom main menu - END
+  //- Main #main - START
   main.side-padding
-    // H1 tag only for screen readers and SEO
+    //- H1 tag only for screen readers and SEO
     block pageTitle
-    // INFO page columns is div to handle home page and only here needs class of "two"
-    .page-columns.two
+    //- INFO page columns is div to handle home page and only here needs class of "two"
+    section.page-columns.two
       div
-        // Breadcrumbs - START #breadcrumbs
-        .breadcrumb-holder
-          a.isDisabled(aria-disabled='true' disabled='')
-            | Home
-          i.fa-solid.fa-angle-right
-          a
-            | Link
-        // Breadcrumbs #breadcrumbs - END
-        // Unique page cotnent START
+        include ../partials/breadcrumbs.pug
+        //- Unique page cotnent START
         block content
-      .home-page-release-info
-        article
-          h3 Search Pronom
-        article
-          .pronom-updates 
-            h3 Pronom updates
-            div.add-border
-              p Last update
-              b 17/12/2021
-            div
-              p Next planned update
-              b late April
-            div
-              p Download test notes
-              .buttons
-                button.bordered-blue.small
-                  | XML
-                button.bordered-blue.small
-                  | CSV
-        article
-          h3 Quick links
-          div
-            h4 Help build Pronom
-            .button-list
-              button.black.medium
-                | How to make a submission
-              button.black.medium
-                | Submission Form
-          div
-            h4 Documentation and recognition
-            .button-list
-              button.black.medium
-                | PRONOM release notes
-              button.black.medium
-                | PRONOM documentation
-              button.black.medium
-                | DROID
-
-
-
-            
-  // Main - END
+      //- Home page additional info START
+      include ../partials/homeSidebar.pug
+      //- Home page additional info END
+  //- Main - END
