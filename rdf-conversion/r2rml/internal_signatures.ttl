@@ -1,0 +1,80 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix internalSignature: <http://www.nationalarchives.gov.uk/PRONOM/internalSignature.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+<#PRONOM6/internal_signatures>
+	rr:logicalTable [ rr:sqlQuery """
+ 	SELECT
+         -- INTERNAL SIGNATURE BASIC FIELDS
+            [internal_signatures].[signature_id]
+           ,[internal_signatures].[note_text]
+           ,[internal_signatures].[source_id]
+           ,[internal_signatures].[source_date]
+           ,[internal_signatures].[last_updated_date]
+           ,[internal_signatures].[provenance_text]
+           ,[internal_signatures].[signature_name_text]
+           ,[internal_signatures].[generic_flag]
+         -- format_internal_signature_link fields - predicate: internalSignature:FileFormat, type: FileFormat
+           ,[format_internal_signature_link].[file_format_id] as file_format_id
+         -- byte_sequences fields - predicate: internalSignature:ByteSequence, type: ByteSequence
+           ,[byte_sequences].[byte_sequence_id] as byte_sequence_id
+    FROM [PRONOM6].[dbo].[internal_signatures]
+    LEFT JOIN [PRONOM6].[dbo].[format_internal_signature_link] ON [PRONOM6].[dbo].[internal_signatures].signature_id = [PRONOM6].[dbo].[format_internal_signature_link].signature_id
+    LEFT JOIN [PRONOM6].[dbo].[byte_sequences] ON [PRONOM6].[dbo].[internal_signatures].signature_id = [PRONOM6].[dbo].[byte_sequences].signature_id
+"""
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InternalSignature/{signature_id}";
+ 		rr:class pr:InternalSignature;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:Note;
+        rr:objectMap [ rr:column "note_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "signature_name_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate internalSignature:GenericFlag;
+        rr:objectMap [ rr:column "generic_flag" ];
+ 	];
+    rr:predicateObjectMap [
+        rr:predicate internalSignature:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate internalSignature:ByteSequence;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteSequence/{byte_sequence_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/internal_signatures#view> rr:sqlQuery """
+SELECT [signature_id]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+     ,[signature_name_text]
+     ,[generic_flag]
+ FROM [PRONOM6].[dbo].[internal_signatures]
+""" .
+

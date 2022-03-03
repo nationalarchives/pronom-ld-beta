@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix documentPublisher: <http://www.nationalarchives.gov.uk/PRONOM/documentPublisher.>
+
+
+<#PRONOM6/document_publishers>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.document_publishers" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentPublisher/{document_id}";
+ 		rr:class pr:DocumentPublisher;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate documentPublisher:PublisherId;
+        rr:objectMap [ rr:column "publisher_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/document_publishers#view> rr:sqlQuery """
+SELECT [document_id]
+     ,[publisher_id]
+ FROM [PRONOM6].[dbo].[document_publishers]
+""" .
+

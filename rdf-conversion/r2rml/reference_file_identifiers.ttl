@@ -1,0 +1,58 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix referenceFileIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/referenceFileIdentifier.>
+
+
+<#PRONOM6/reference_file_identifiers>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.reference_file_identifiers" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ReferenceFileIdentifier/{identifier_id}";
+ 		rr:class pr:ReferenceFileIdentifier;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:IdentifierTypeId;
+        rr:objectMap [ rr:column "identifier_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:Identifier;
+        rr:objectMap [ rr:column "identifier_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:ReferenceFileId;
+        rr:objectMap [ rr:column "reference_file_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate referenceFileIdentifier:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/reference_file_identifiers#view> rr:sqlQuery """
+SELECT [identifier_id]
+     ,[identifier_type_id]
+     ,[identifier_text]
+     ,[reference_file_id]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+ FROM [PRONOM6].[dbo].[reference_file_identifiers]
+""" .
+

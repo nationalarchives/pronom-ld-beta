@@ -1,0 +1,130 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix encoding: <http://www.nationalarchives.gov.uk/PRONOM/encoding.>
+
+
+<#PRONOM6/encoding>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+     -- ENCODING BASIC FIELDS
+        [encoding].[encoding_id]
+       ,[encoding].[encoding_name_text]
+       ,[encoding].[version_text]
+       ,[encoding].[encoding_text]
+       ,[encoding].[code_page]
+       ,[encoding].[code_unit_width_text]
+       ,[encoding].[encoding_form_width_text]
+       ,[encoding].[release_date]
+       ,[encoding].[withdrawn_date]
+       ,[encoding].[withdrawn_flag]
+       ,[encoding].[note_text]
+       ,[encoding].[source_id]
+       ,[encoding].[source_date]
+       ,[encoding].[last_updated_date]
+       ,[encoding].[provenance_text]
+       ,[encoding].[puid_type_id]
+       ,[encoding].[puid_value]
+    -- file_format_id is replaced since there's only 2 values and this way we can build the URI
+       ,COALESCE(CASE WHEN ([format_encodings].file_format_id = 1029) THEN 1029 ELSE NULL END,
+                 CASE WHEN ([format_encodings].file_format_id = 2173) THEN 2173 ELSE NULL END) as file_format_id
+   FROM [PRONOM6].[dbo].[encoding]
+   LEFT JOIN [PRONOM6].[dbo].[format_encodings] ON [PRONOM6].[dbo].[encoding].encoding_id = [PRONOM6].[dbo].[format_encodings].encoding_id
+
+  """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Encoding/{encoding_id}";
+ 		rr:class pr:Encoding;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:EncodingName;
+        rr:objectMap [ rr:column "encoding_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:Version;
+        rr:objectMap [ rr:column "version_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:Encoding;
+        rr:objectMap [ rr:column "encoding_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:CodePage;
+        rr:objectMap [ rr:column "code_page" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:CodeUnitWidth;
+        rr:objectMap [ rr:column "code_unit_width_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:EncodingFormWidth;
+        rr:objectMap [ rr:column "encoding_form_width_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:ReleaseDate;
+        rr:objectMap [ rr:column "release_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:WithdrawnDate;
+        rr:objectMap [ rr:column "withdrawn_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:WithdrawnFlag;
+        rr:objectMap [ rr:column "withdrawn_flag" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:PuidTypeId;
+        rr:objectMap [ rr:column "puid_type_id" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate encoding:PuidValue;
+        rr:objectMap [ rr:column "puid_value" ];
+ 	];
+    rr:predicateObjectMap [
+        rr:predicate encoding:FileFormat;
+        rr:objectMap [ rr:column "file_format_id" ; rr:datatype pr:FileFormat ];
+    ];
+ 	.
+
+ <#PRONOM6/encoding#view> rr:sqlQuery """
+SELECT [encoding_id]
+     ,[encoding_name_text]
+     ,[version_text]
+     ,[encoding_text]
+     ,[code_page]
+     ,[code_unit_width_text]
+     ,[encoding_form_width_text]
+     ,[release_date]
+     ,[withdrawn_date]
+     ,[withdrawn_flag]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+     ,[puid_type_id]
+     ,[puid_value]
+ FROM [PRONOM6].[dbo].[encoding]
+""" .
+

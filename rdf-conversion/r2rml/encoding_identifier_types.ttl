@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix encodingIdentifierType: <http://www.nationalarchives.gov.uk/PRONOM/encodingIdentifierType.>
+
+
+<#PRONOM6/encoding_identifier_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.encoding_identifier_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/EncodingIdentifierType/{identifier_type_id}";
+ 		rr:class pr:EncodingIdentifierType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate encodingIdentifierType:IdentifierTypeText;
+        rr:objectMap [ rr:column "identifier_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/encoding_identifier_types#view> rr:sqlQuery """
+SELECT [identifier_type_id]
+     ,[identifier_type_text]
+ FROM [PRONOM6].[dbo].[encoding_identifier_types]
+""" .
+

@@ -1,0 +1,48 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix ffsfFragment: <http://www.nationalarchives.gov.uk/PRONOM/ffsfFragment.>
+
+
+<#PRONOM6/ffsf_fragments>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ffsf_fragments" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FfsfFragment/{byte_sequence_id}";
+ 		rr:class pr:FfsfFragment;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:SubsequenceNum;
+        rr:objectMap [ rr:column "subsequence_num" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:FragmentDirection;
+        rr:objectMap [ rr:column "fragment_direction" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:PositionId;
+        rr:objectMap [ rr:column "position_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:SequenceString;
+        rr:objectMap [ rr:column "sequence_string" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:Minoffset;
+        rr:objectMap [ rr:column "minoffset" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfFragment:Maxoffset;
+        rr:objectMap [ rr:column "maxoffset" ];
+ 	];
+ 	.
+
+ <#PRONOM6/ffsf_fragments#view> rr:sqlQuery """
+SELECT [byte_sequence_id]
+     ,[subsequence_num]
+     ,[fragment_direction]
+     ,[position_id]
+     ,[sequence_string]
+     ,[minoffset]
+     ,[maxoffset]
+ FROM [PRONOM6].[dbo].[ffsf_fragments]
+""" .
+

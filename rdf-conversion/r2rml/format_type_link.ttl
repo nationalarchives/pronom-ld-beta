@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatTypeLink: <http://www.nationalarchives.gov.uk/PRONOM/formatTypeLink.>
+
+
+<#PRONOM6/format_type_link>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_type_link" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatTypeLink/{file_format_id}";
+ 		rr:class pr:FormatTypeLink;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatTypeLink:FormatTypeId;
+        rr:objectMap [ rr:column "format_type_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_type_link#view> rr:sqlQuery """
+SELECT [file_format_id]
+     ,[format_type_id]
+ FROM [PRONOM6].[dbo].[format_type_link]
+""" .
+

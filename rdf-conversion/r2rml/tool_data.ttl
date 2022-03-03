@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix toolData: <http://www.nationalarchives.gov.uk/PRONOM/toolData.>
+
+
+<#PRONOM6/tool_data>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.tool_data" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ToolData/{tool_data_id}";
+ 		rr:class pr:ToolData;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate toolData:ToolData;
+        rr:objectMap [ rr:column "tool_data" ];
+    ];
+ 	.
+
+ <#PRONOM6/tool_data#view> rr:sqlQuery """
+SELECT [tool_data_id]
+     ,[tool_data]
+ FROM [PRONOM6].[dbo].[tool_data]
+""" .
+

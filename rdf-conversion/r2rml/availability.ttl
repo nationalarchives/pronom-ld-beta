@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix availability: <http://www.nationalarchives.gov.uk/PRONOM/availability.>
+
+
+<#PRONOM6/actors>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.availability" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Availability/{availability_id}";
+ 		rr:class pr:Availability;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate availability:Availability;
+        rr:objectMap [ rr:column "availability_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/availability#view> rr:sqlQuery """
+SELECT [availability_id]
+     ,[availability_text]
+ FROM [PRONOM6].[dbo].[availability]
+""" .
+

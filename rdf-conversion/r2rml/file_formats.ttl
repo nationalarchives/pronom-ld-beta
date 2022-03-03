@@ -1,0 +1,173 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix fileFormat: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+<#PRONOM6/file_formats>
+ 	rr:logicalTable [ rr:sqlQuery """
+ 	SELECT
+        -- FILE FORMAT BASIC FIELDS
+           [file_formats].[file_format_id]
+          ,[file_formats].[format_name_text]
+          ,[file_formats].[version_text]
+          ,[file_formats].[format_text]
+          ,[file_formats].[release_date]
+          ,[file_formats].[withdrawn_date]
+          ,[file_formats].[withdrawn_flag]
+          ,[file_formats].[binary_flag]
+          ,[file_formats].[disclosure_id]
+          ,[file_formats].[note_text]
+          ,[file_formats].[source_id]
+          ,[file_formats].[source_date]
+          ,[file_formats].[last_updated_date]
+          ,[file_formats].[provenance_text]
+          ,[file_formats].[puid_type_id]
+          ,[file_formats].[puid_value]
+        -- byte_order_id is replaced since there's only 2 values and this way we can build the URI
+          ,COALESCE(CASE WHEN ([format_byte_order_link].byte_order_id = 1) THEN 'littleEndian' ELSE NULL END,
+                    CASE WHEN ([format_byte_order_link].byte_order_id = 2) THEN 'bigEndian' ELSE NULL END) as byte_order_id
+        -- format_type_link fields - predicate: fileFormat.Classification, type: Classification
+          ,[format_type_link].[format_type_id] as format_type_id
+        -- compression_types fields - predicate: fileFormat.CompressionType, type: CompressionType
+          ,[format_compression_types].[compression_id] as compression_id
+        -- format_internal_signature_link fields - predicate: fileFormat.InternalSignature, type: InternalSignature
+          ,[format_internal_signature_link].[signature_id] as signature_id
+        -- format_developers fields - predicate: fileFormat.Development.Actor, type: Actor
+          ,[format_developers].[developer_id] as developer_id
+        -- format_encodings fields - predicate: fileFormat.Encoding, type: Encoding
+          ,[format_encodings].[encoding_id] as encoding_id
+        -- format_family_link fields - predicate: fileFormat.FileFormatFamily, type: FileFormatFamily
+          ,[format_family_link].[family_id] as family_id
+        -- format_identifiers fields - predicate: fileFormat.FormatIdentifier, type: FormatIdentifier
+          ,[format_identifiers].[identifier_id] as identifier_id
+        -- format_documentation fields - predicate: fileFormat.Document, type: Document
+          ,[format_documentation].[document_id] as document_id
+        -- format_support fields - predicate: fileFormat.Support.Actor, type: Actor
+          ,[format_support].[support_id] as support_id
+        -- format_relationships fields - predicate: fileFormat.In.FileFormatRelationship, type: FileFormatRelationship
+          ,[format_relationships].[relationship_id] as relationship_id
+
+      FROM [PRONOM6].[dbo].[file_formats]
+      LEFT JOIN [PRONOM6].[dbo].[format_byte_order_link] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_byte_order_link].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_type_link] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_type_link].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_compression_types] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_compression_types].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_internal_signature_link] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_internal_signature_link].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_developers] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_developers].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_encodings] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_encodings].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_family_link] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_family_link].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_identifiers] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_identifiers].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_documentation] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_documentation].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_support] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_support].file_format_id
+      LEFT JOIN [PRONOM6].[dbo].[format_relationships] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_relationships].source_id
+"""
+ 	];
+
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
+ 		rr:class pr:FileFormat;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "format_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:Version;
+        rr:objectMap [ rr:column "version_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:comment;
+        rr:objectMap [ rr:column "format_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:ReleaseDate;
+        rr:objectMap [ rr:column "release_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:WithdrawnDate;
+        rr:objectMap [ rr:column "withdrawn_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:WithdrawnFlag;
+        rr:objectMap [ rr:column "withdrawn_flag" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:BinaryFlag;
+        rr:objectMap [ rr:column "binary_flag" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:DisclosureId;
+        rr:objectMap [ rr:column "disclosure_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:Note;
+        rr:objectMap [ rr:column "note_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormat:PuidTypeId;
+        rr:objectMap [ rr:column "puid_type_id" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:ByteOrder;
+        rr:objectMap [ rr:column "byte_order_id" ; rr:datatype pr:byteOrder ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Classification;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Classification/{format_type_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:CompressionType;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:InternalSignature;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InternalSignature/{signature_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Development.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Encoding;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Encoding/{encoding_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:FileFormatFamily;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatFamily/{family_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:FormatIdentifier;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatIdentifier/{identifier_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Document;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{document_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:Support.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{support_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormat:In.FileFormatRelationship;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationship/{relationship_id}" ];
+    ];
+ 	.

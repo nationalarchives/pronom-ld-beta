@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix compressionIdentifierType: <http://www.nationalarchives.gov.uk/PRONOM/compressionIdentifierType.>
+
+
+<#PRONOM6/compression_identifier_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_identifier_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionIdentifierType/{identifier_type_id}";
+ 		rr:class pr:CompressionIdentifierType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifierType:IdentifierType;
+        rr:objectMap [ rr:column "identifier_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/compression_identifier_types#view> rr:sqlQuery """
+SELECT [identifier_type_id]
+     ,[identifier_type_text]
+ FROM [PRONOM6].[dbo].[compression_identifier_types]
+""" .
+

@@ -1,0 +1,27 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix tblXSL: <http://www.nationalarchives.gov.uk/PRONOM/tblXSL.>
+
+
+<#PRONOM6/tblXSL>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.tblXSL" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/TblXSL/{name_text}";
+ 		rr:class pr:TblXSL;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate tblXSL:Name;
+        rr:objectMap [ rr:column "name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate tblXSL:Data;
+        rr:objectMap [ rr:column "data_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/tblXSL#view> rr:sqlQuery """
+SELECT [name_text]
+     ,[data_text]
+ FROM [PRONOM6].[dbo].[tblXSL]
+""" .
+

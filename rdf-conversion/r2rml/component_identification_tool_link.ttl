@@ -1,0 +1,28 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix componentIdentificationToolLink: <http://www.nationalarchives.gov.uk/PRONOM/componentIdentificationToolLink.>
+
+
+<#PRONOM6/componentIdentificationToolLinks>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_identification_tool_link" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentIdentificationToolLink/{component_manifestation_type_id}";
+ 		rr:class pr:ComponentIdentificationToolLink;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate componentIdentificationToolLink:ToolId;
+        rr:objectMap [ rr:column "tool_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate componentIdentificationToolLink:Priority;
+        rr:objectMap [ rr:column "priority" ];
+ 	];
+ 	.
+
+ <#PRONOM6/component_identification_tool_link#view> rr:sqlQuery """
+SELECT [component_manifestation_type_id]
+             ,[tool_id]
+             ,[priority]
+         FROM [PRONOM6].[dbo].[component_identification_tool_link]
+""" .
+

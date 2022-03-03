@@ -1,0 +1,28 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix instanceProperty: <http://www.nationalarchives.gov.uk/PRONOM/instanceProperty.>
+
+
+<#PRONOM6/instance_property>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.instance_property" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InstanceProperty/{instance_property_id}";
+ 		rr:class pr:InstanceProperty;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate instanceProperty:PropertyId;
+        rr:objectMap [ rr:column "property_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate instanceProperty:FormatId;
+        rr:objectMap [ rr:column "format_id" ];
+ 	];
+ 	.
+
+ <#PRONOM6/instance_property#view> rr:sqlQuery """
+SELECT [instance_property_id]
+     ,[property_id]
+     ,[format_id]
+ FROM [PRONOM6].[dbo].[instance_property]
+""" .
+

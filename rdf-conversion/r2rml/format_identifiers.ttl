@@ -1,0 +1,72 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/formatIdentifier.>
+
+
+<#PRONOM6/format_identifiers>
+ 	rr:logicalTable [ rr:sqlQuery """
+      SELECT
+     -- FORMAT IDENTIFIERS BASIC FIELDS
+            [format_identifiers].[identifier_id]
+           ,[format_identifiers].[identifier_type_id]
+           ,[format_identifiers].[identifier_text]
+           ,[format_identifiers].[file_format_id]
+           ,[format_identifiers].[note_text]
+           ,[format_identifiers].[source_id]
+           ,[format_identifiers].[source_date]
+           ,[format_identifiers].[last_updated_date]
+           ,[format_identifiers].[provenance_text]
+       FROM [PRONOM6].[dbo].[format_identifiers]
+      """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatIdentifier/{identifier_id}";
+ 		rr:class pr:FormatIdentifier;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:FormatIdentifierType;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatIdentifierType/{identifier_type_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:Identifier;
+        rr:objectMap [ rr:column "identifier_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:Source.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{source_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifier:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/format_identifiers#view> rr:sqlQuery """
+SELECT [identifier_id]
+     ,[identifier_type_id]
+     ,[identifier_text]
+     ,[file_format_id]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+ FROM [PRONOM6].[dbo].[format_identifiers]
+""" .
+

@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix componentManifestationFormatsLink: <http://www.nationalarchives.gov.uk/PRONOM/componentManifestationFormatsLink.>
+
+
+<#PRONOM6/componentManifestationFormatsLinks>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_manifestation_formats_link" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentManifestationFormatsLink/{component_manifestation_type_id}";
+ 		rr:class pr:ComponentManifestationFormatsLink;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate componentManifestationFormatsLink:FileFormatId;
+        rr:objectMap [ rr:column "file_format_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/component_manifestation_formats_link#view> rr:sqlQuery """
+SELECT [component_manifestation_type_id]
+     ,[file_format_id]
+ FROM [PRONOM6].[dbo].[component_manifestation_formats_link]
+""" .
+

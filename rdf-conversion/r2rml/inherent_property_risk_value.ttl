@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix inherentPropertyRiskValue: <http://www.nationalarchives.gov.uk/PRONOM/inherentPropertyRiskValue.>
+
+
+<#PRONOM6/inherent_property_risk_value>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.inherent_property_risk_value" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InherentPropertyRiskValue/{risk_id}";
+ 		rr:class pr:InherentPropertyRiskValue;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate inherentPropertyRiskValue:RiskValue;
+        rr:objectMap [ rr:column "risk_value" ];
+    ];
+ 	.
+
+ <#PRONOM6/inherent_property_risk_value#view> rr:sqlQuery """
+SELECT [risk_id]
+     ,[risk_value]
+ FROM [PRONOM6].[dbo].[inherent_property_risk_value]
+""" .
+
