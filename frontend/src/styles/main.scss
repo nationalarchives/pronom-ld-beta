@@ -4,6 +4,8 @@
 - Pronom main menu / #pronommainmenu
 - Main / #main
 - Breadcrumbs / #breadcrumbs
+- Buttons / #buttons
+- Tooltip / #tooltip
 */
 
 /* Font Awesome Import */
@@ -29,9 +31,6 @@ button, a {
   padding-left: 20px !important;
   padding-right: 20px !important;
   padding-top: 40px;
-  @media only screen and (max-width: 700px) {
-    padding-left: 0 !important;
-  }
 }
 .page-container {
   display: grid;
@@ -74,7 +73,7 @@ article {
   padding-top: 10px;
   margin-top: 35px;
 }
-// Buttons - START
+// Buttons - START #buttons
 button {
   font-family: 'Roboto Mono', monospace;
   &.black {
@@ -108,57 +107,80 @@ button {
   }
 }
 // Buttons - END
-// Tooltip START
-.tooltip-toggle {
-  cursor: pointer;
-  position: relative;
-  i {
-    height: 18px;
-    width: 18px;
-    margin-left: 5px;
+// Tooltip  #tooltip -START
+.tooltip-container{
+  .label-text {
+    margin-right: 5px;
   }
-  &::before {
-    position: absolute;
-    top: -80px;
-    left: -80px;
-    background-color: white;
-    border-radius: 5px;
-    color: black;
-    content: attr(aria-label);
-    padding: 1rem;
-    text-transform: none;
-    transition: all 0.5s ease;
-    width: 160px;
-    box-shadow: 3px 3px 8px 3px #00000045;
+  .label {
+    display: flex;
   }
-  &::after {
-    position: absolute;
-    top: -12px;
-    left: 9px;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #2B222A;
-    content: " ";
-    font-size: 0;
-    line-height: 0;
-    margin-left: -5px;
-    width: 0;
-  }
-  &::before,
-  &::after {
-    color: black;
-    font-family: monospace;
-    font-size: 16px;
-    opacity: 0;
-    pointer-events: none;
-    text-align: center;
-  }
-  &:focus::before,
-  &:focus::after,
-  &:hover::before,
-  &:hover::after {
-    opacity: 1;
-    transition: all 0.25s ease;
+  .tooltip-toggle {
+    cursor: pointer;
+    position: relative;
+    .i-wrapper {
+      background: #0f528d;
+      border-radius: 15px;
+      height: 20px;
+      width: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s;
+      i {
+        color: white;
+        transition: all 0.2s;
+      }
+      &:hover {
+        background: white;
+        i {
+          color: #0f528d;
+        }
+      }
+    }
+    &::before {
+      position: absolute;
+      top: -80px;
+      left: -80px;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+      content: attr(aria-label);
+      padding: 1rem;
+      text-transform: none;
+      transition: all 0.5s ease;
+      width: 160px;
+      box-shadow: 3px 3px 8px 3px #00000045;
+    }
+    &::after {
+      position: absolute;
+      top: -12px;
+      left: 9px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #2B222A;
+      content: " ";
+      font-size: 0;
+      line-height: 0;
+      margin-left: -5px;
+      width: 0;
+    }
+    &::before,
+    &::after {
+      color: black;
+      font-family: monospace;
+      font-size: 16px;
+      opacity: 0;
+      pointer-events: none;
+      text-align: center;
+    }
+    &:focus::before,
+    &:focus::after,
+    &:hover::before,
+    &:hover::after {
+      opacity: 1;
+      transition: all 0.25s ease;
+    }
   }
 }
 // Tooltip END
@@ -184,9 +206,13 @@ input {
 /* Main START #main =======================================*/
 main {
   margin-left: 30px;
+  @media only screen and (max-width: 1200px) {
+    margin-left: 0 !important;
+  }
   @media only screen and (max-width: 700px) {
     margin-left: 20px;
   }
+  
 }
 .page-columns {
   display: grid;
@@ -269,8 +295,23 @@ main {
       color: #0f528d;
     }
   }
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     border-right: none;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+}
+.page-container {
+  &.noJS {
+    #pronom-nav {
+      @media only screen and (max-width: 1200px) {
+        border-right: none;
+        position:inherit;
+        top: 0;
+        z-index: 9;
+      }
+    }
   }
 }
 #pronom-nav-header {
@@ -283,7 +324,7 @@ main {
   button {
     margin-left: auto;
   }
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     box-shadow: 1px -2px 8px black;
     align-items: center;
     padding-top: 0;
@@ -294,12 +335,29 @@ main {
   background: white;
   display: flex;
   flex-direction: column;
-  @media only screen and (max-width: 1050px) {
+  z-index: 9;
+  @media only screen and (max-width: 1200px) {
     margin-top: 0;
     background: white;
     position: absolute;
-    width: 100%;
+    width: calc(100% - 40px);
     border-top: 2px solid black;
+    box-shadow: 0px 6px 17px 0px #0000004a;
+    &.hide {
+      display: none;
+    }
+  }
+}
+.page-container {
+  &.noJS {
+    .menu-pronom {
+      @media only screen and (max-width: 1200px) {
+          display: block;
+          position: inherit;
+          box-shadow: none;
+          border-bottom: 4px solid black;
+      }
+    }
   }
 }
 #pronom-nav-mobile-collapse {
@@ -308,11 +366,19 @@ main {
   border:none;
   background: none;
   display: none;
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     display: block;
   }
 }
-
+.page-container {
+  &.noJS {
+    @media only screen and (max-width: 1200px) {
+      #pronom-nav-mobile-collapse{
+        display: none;
+      }
+    }
+  }
+}
 
 /* Pronom main menu - END */
 
