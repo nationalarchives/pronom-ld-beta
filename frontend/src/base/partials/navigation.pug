@@ -1,7 +1,7 @@
 #pronom-nav(role='navigation')
   .container
     #pronom-nav-header
-      a#page-title(href='#') Pronom
+      a#page-title(href='/') Pronom
       button#pronom-nav-mobile-collapse(type='button')
         | MENU
     nav
@@ -9,7 +9,7 @@
         // INFO to display sub-menu add class="selected" to <li>
         li.selected
           // INFO for blue color add class="active"
-          a.top-link.activea(href='index.html')
+          a.top-link.activea(href='/')
             | Home
           ul.sub-menu-pronom
             li
@@ -32,7 +32,7 @@
               a
                 | Search Pronom
         li
-          a.top-link(href='about.html')
+          a.top-link(href='/about')
             | About
           ul.sub-menu-pronom
             li
