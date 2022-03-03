@@ -19,7 +19,11 @@
         p Next planned update
         b early April
       div
-        p Download test notes
+        .tooltip-container
+          .label
+            span.label-text Download test notes
+            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+              i.fa.fa-solid.fa-circle-info
         .buttons
           button.bordered-blue.small
             | XML
@@ -35,7 +39,7 @@
         button.black.medium
           | Submission Form
     div
-      h4 Documentation and recognition
+      h3 Documentation and recognition
       .button-list
         button.black.medium
           | PRONOM release notes
