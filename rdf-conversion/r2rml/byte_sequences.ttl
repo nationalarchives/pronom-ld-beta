@@ -45,7 +45,8 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate byteSequence:ByteOrder;
-        rr:objectMap [ rr:column "big_endian_flag" ; rr:datatype pr:byteOrder ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteOrder/{byte_order_id}" ];
+
     ];
  	rr:predicateObjectMap [
         rr:predicate byteSequence:MaxOffset;

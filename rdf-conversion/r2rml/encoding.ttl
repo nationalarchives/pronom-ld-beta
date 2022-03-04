@@ -1,7 +1,7 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix encoding: <http://www.nationalarchives.gov.uk/PRONOM/encoding.>
-
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/encoding>
  	rr:logicalTable [ rr:sqlQuery """
@@ -37,7 +37,7 @@
  		rr:class pr:Encoding;
  	];
  	rr:predicateObjectMap [
-        rr:predicate encoding:EncodingName;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "encoding_name_text" ];
     ];
  	rr:predicateObjectMap [
@@ -45,7 +45,7 @@
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate encoding:Encoding;
+        rr:predicate rdfs:comment;
         rr:objectMap [ rr:column "encoding_text" ];
     ];
  	rr:predicateObjectMap [
@@ -95,7 +95,6 @@
  	rr:predicateObjectMap [
         rr:predicate encoding:PuidTypeId;
         rr:objectMap [ rr:column "puid_type_id" ];
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate encoding:PuidValue;
@@ -103,7 +102,7 @@
  	];
     rr:predicateObjectMap [
         rr:predicate encoding:FileFormat;
-        rr:objectMap [ rr:column "file_format_id" ; rr:datatype pr:FileFormat ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
     ];
  	.
 

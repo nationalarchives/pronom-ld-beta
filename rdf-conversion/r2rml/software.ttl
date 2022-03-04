@@ -1,27 +1,27 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix software: <http://www.nationalarchives.gov.uk/PRONOM/software.>
-
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/software>
  	rr:logicalTable [ rr:sqlQuery """
   SELECT
      -- SOFTWARE BASIC FIELDS
-        [software_id]
-       ,[software_name_text]
-       ,[version_text]
-       ,[software_text]
-       ,[service_pack_text]
-       ,[release_date]
-       ,[withdrawn_date]
-       ,[withdrawn_flag]
-       ,[note_text]
-       ,[source_id]
-       ,[source_date]
-       ,[last_updated_date]
-       ,[provenance_text]
-       ,[puid_type_id]
-       ,[puid_value]
+        [software].[software_id]
+       ,[software].[software_name_text]
+       ,[software].[version_text]
+       ,[software].[software_text]
+       ,[software].[service_pack_text]
+       ,[software].[release_date]
+       ,[software].[withdrawn_date]
+       ,[software].[withdrawn_flag]
+       ,[software].[note_text]
+       ,[software].[source_id]
+       ,[software].[source_date]
+       ,[software].[last_updated_date]
+       ,[software].[provenance_text]
+       ,[software].[puid_type_id]
+       ,[software].[puid_value]
      -- software_developers fields - predicate: software.Development.Actor, type: Actor
        ,[software_developers].[developer_id] as developer_id
      -- software_maintainers fields - predicate: actor.Maintains.Software, type: Software
@@ -45,7 +45,7 @@ rr:predicateObjectMap [
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate software:Software;
+        rr:predicate rdfs:comment;
         rr:objectMap [ rr:column "software_text" ];
     ];
  	rr:predicateObjectMap [
@@ -83,10 +83,6 @@ rr:predicateObjectMap [
  	rr:predicateObjectMap [
         rr:predicate software:Provenance;
         rr:objectMap [ rr:column "provenance_text" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate software:;
-        rr:objectMap [ rr:column "" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate software:PuidTypeId;
