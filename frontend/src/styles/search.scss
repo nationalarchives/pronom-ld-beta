@@ -14,7 +14,7 @@
   grid-template-columns: 1fr auto;
   grid-gap: 10px;
   >div:nth-child(1) {
-    background: #F8F8F8;
+    background: #ededed82;
     padding: 15px;
     display: flex;
     align-items: center;
@@ -53,10 +53,15 @@
     display: flex;
     label {
       margin-right: 5px;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 500;
     }
     .manage-results {
       display: flex;
       align-items: center;
+      #results_per_page {
+        width:38px;
+      }
       fieldset {
         display: flex;
         align-items: center;
@@ -84,6 +89,56 @@
     }
   }
   .all-results {
-    background: #F8F8F8;
+    background: #ededed82;
+    padding: 0 20px 20px 20px;
+    margin-top: 5px;
+  }
+  table {
+    border-spacing: 10px;
+    width: 100%;
+    th {
+      text-align: start;
+    }
+    tr {
+      outline: 2px solid #0f528d;
+      &.columns-names {
+        outline: none;
+      }
+    }
+    td {
+      margin: 5px;
+      padding: 5px;
+      border-spacing: 10px;
+      border-left: 2px solid #80808038;
+      text-align: top;
+      &:nth-child(1){
+        border-left: none;
+      }
+      span {
+        display: none;
+      }
+      &.basic-info {
+        div {
+          display: flex;
+          flex-wrap:  wrap;
+          grid-gap: 15px;
+        }
+        span {
+          display: block;
+        }
+      }
+      div {
+        height: 100%;
+        padding: 10px;
+      }
+      p {
+        display: flex;
+        flex-direction: column;
+        margin:0;
+        span {
+          font-weight: 600;
+        }
+      }
+    }
   }
 }

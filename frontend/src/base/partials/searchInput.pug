@@ -21,24 +21,87 @@ section.search-output
             label(for="results_per_page") Show
             legend.sr-only Change number of results per page
             div
-              input(id="results_per_page" class="small" maxlength="2" type="number" min="5" value="5")
+              input(id="results_per_page" class="small" maxlength="2" type="number" min="5" max="99" value="5")
       .sort-by
         form(aria-label="Sort search results by selected measure")
           fieldset
-            label(for="sort_by") Show
+            label(for="sort_by") Sort by
             legend.sr-only Sort search results by selected measure
             div
               select(id="sort_by")
-                option some option
-                option some option
+                option(value='0') option 1
+                option(value='1') option 2
+                option(value='2') option 3
     .save-options
       label Save as
       .button-list
-        button.bordered-blue
+        button.small.bordered-blue
           | XML
-        button.bordered-blue
+        button.small.bordered-blue
           | CSV
-        button.bordered-blue
+        button.small.bordered-blue
           | RDF
   .all-results
-    p table
+    table
+      caption.sr-only Search results
+      tr.columns-names
+        th Type
+        th PUID
+        th Basic Information
+        th Description
+      tr
+        td.type
+          div
+            p
+              span Type
+              | File format
+        td.puid
+          div
+            p
+              span PIUD
+              | fmt/412
+        td.basic-info
+          div
+            p 
+              span Name
+              | Portable Network Graphics 
+            p
+              span Version
+              | 1.0
+            p
+              span Extension
+              | png
+            
+        td.desc
+          div
+            p
+              span Description
+              | lorem ipsum hhhfie hfiefheodihihi hdiwififiwfosjd guguewu
+      tr
+        td.type
+          div
+            p
+              span Type
+              | File format
+        td.puid
+          div
+            p
+              span PIUD
+              | fmt/412
+        td.basic-info
+          div
+            p 
+              span Name
+              | Portable Network Graphics 
+            p
+              span Version
+              | 1.0
+            p
+              span Extension
+              | png
+            
+        td.desc
+          div
+            p
+              span Description
+              | lorem ipsum hhhfie hfiefheodihihi hdiwififiwfosjd guguewu
