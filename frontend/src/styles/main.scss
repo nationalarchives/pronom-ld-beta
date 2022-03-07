@@ -38,8 +38,7 @@ button, a {
   min-height: 100vh;
   padding: 0 90px;
   @media only screen and (max-width: 1200px) {
-    display: grid;
-    grid-template-columns:1fr;
+    display: block;
     padding: 0;
   }
 }
@@ -201,6 +200,9 @@ input {
   height: 45px;
   border: 3px solid black;
   font-size: 16px;
+  &.small {
+    height: 25px;
+  }
 }
 
 /* Main START #main =======================================*/
