@@ -2,6 +2,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
+  @media only screen and (max-width: 1000px) {
+    grid-template-columns: 1fr;
+  }
 }
 .team-photo-group {
   background: #ededed82;
@@ -10,5 +13,27 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 10px;
+     > div {
+       p {
+         margin: 0;
+       }
+     }
   }
+}
+  article {
+    p {
+      column-count: 2;
+      @media only screen and (max-width: 1250px) {
+        column-count: 1;
+      }
+    }
+  }
+
+.team-photo-container {
+  p {
+    column-count: 1;
+  }
+}
+a {
+  color: #0f528d;
 }
