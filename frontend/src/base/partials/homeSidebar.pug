@@ -1,4 +1,4 @@
-.home-page-additional-info(aria-label="Quick search, links and additional information")
+aside.home-page-additional-info(aria-label="Quick search, links and additional information")
   #small-search-container
     form(aria-label="Search for file format, software or vendor")
       fieldset
@@ -19,7 +19,12 @@
         p Next planned update
         b early April
       div
-        p Download test notes
+        .tooltip-container
+          .label
+            span.label-text Download test notes
+            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+              .i-wrapper
+                i.fa.fa-solid.fa-circle-info
         .buttons
           button.bordered-blue.small
             | XML
