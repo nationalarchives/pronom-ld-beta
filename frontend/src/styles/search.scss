@@ -93,50 +93,64 @@
     padding: 0 20px 20px 20px;
     margin-top: 5px;
   }
-  table {
-    border-spacing: 10px;
-    width: 100%;
-    th {
-      text-align: start;
-    }
-    tr {
-      outline: 2px solid #0f528d;
-      &.columns-names {
-        outline: none;
+  ul {
+    padding: 0;
+    li {
+      list-style-type: none;
+      border: 2px solid #0f528d;
+      padding: 10px 5px;
+      margin-bottom: 6px;
+      background: white;
+      &.column-names {
+        display: grid;
+        grid-template-columns: 95px 0.8fr 1fr 1fr;
+        border: none;
+        background: none;
+        margin-bottom: 0;
       }
-    }
-    td {
-      margin: 5px;
-      padding: 5px;
-      border-spacing: 10px;
-      border-left: 2px solid #80808038;
-      text-align: top;
-      &:nth-child(1){
-        border-left: none;
+      h4 {
+        margin: 0;
+        margin-left: 5px;
+        font-size: 15px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 800;
+        margin-top: 10px;
       }
-      span {
-        display: none;
-      }
-      &.basic-info {
-        div {
+      a {
+        display: grid;
+        grid-template-columns: 95px 0.8fr 1fr 1fr;
+        text-decoration: none;
+        grid-gap: 5px;
+        color: black;
+        .data {
           display: flex;
-          flex-wrap:  wrap;
-          grid-gap: 15px;
+          flex-direction: column;
+          font-size: 16px;
+          font-weight: 400;
+          margin:0;
+          font-family: 'Open Sans', sans-serif;
+          span {
+            font-weight: 800;
+            font-size: 14px;
+          }
         }
-        span {
-          display: block;
+        > div {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-gap: 10px;
+        }
+        >p, >div, >h5 {
+          border-left: 2px solid lightgray;
+          padding-left: 8px;
+        }
+        p:first-child {
+          border:none;
         }
       }
-      div {
-        height: 100%;
-        padding: 10px;
-      }
-      p {
-        display: flex;
-        flex-direction: column;
-        margin:0;
+      .type, .name, .desc {
         span {
-          font-weight: 600;
+          position: absolute;
+          color: transparent;
         }
       }
     }
