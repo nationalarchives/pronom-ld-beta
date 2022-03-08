@@ -1,0 +1,14 @@
+.team-photo-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+}
+.team-photo-group {
+  background: #ededed82;
+  padding: 12px;
+  >div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+  }
+}
