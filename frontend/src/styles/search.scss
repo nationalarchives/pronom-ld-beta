@@ -177,6 +177,32 @@
     @media only screen and (max-width: 980px) {
       padding: 20px;
     }
+    .pagination {
+      margin-top: 40px;
+      ul {
+        display: flex;
+        justify-content: flex-end;
+        li {
+          width: 30px;
+          height: 30px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 5px;
+          &.controls {
+            width: auto;
+            padding: 0 10px;
+          }
+          &.active {
+            background: #ccdbea;
+          }
+          a {
+            display: flex;
+          }
+        }
+      }
+    }
   }
   ul {
     padding: 0;
