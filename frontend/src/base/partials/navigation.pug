@@ -1,6 +1,6 @@
 - var currentUrl = '/'
 
-section#pronom-nav(role='navigation')
+section#pronom-nav
   .container
     #pronom-nav-header
       a#page-title(href='/') Pronom
@@ -59,8 +59,8 @@ section#pronom-nav(role='navigation')
             li
               a
                 | Category 2
-        li(class={selected: currentUrl === '/external'} href='/external')
-          a.top-link(class={active: currentUrl === '/faq'} href='/external')
+        li(class={selected: currentUrl === '/external'} href='external')
+          a.top-link(class={active: currentUrl === '/external'} href='external')
             | External Projects
         li(class={selected: currentUrl === '/submit'} href='/submit')
           a.top-link(class={active: currentUrl === '/submit'} href='/submit')

@@ -1,0 +1,10 @@
+#external {
+  article {
+    p {
+      column-count: 2;
+      @media only screen and (max-width: 1250px) {
+        column-count: 1;
+      }
+    }
+  }
+}
