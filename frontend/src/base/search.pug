@@ -1,14 +1,14 @@
 extends /layouts/mainLayout.pug
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") Search Pronom
+  h1(th:text="${@templateUtils.md('search_title')}") Search Pronom
 
 block content
   .unique-page-content.search-content
     article
       //- TODO - remove when #markdown is in use
-      h2 How do I search Pronom?
-      p
+      h2(th:text="${@templateUtils.md('search_header')}") How do I search Pronom?
+      div(th:utext="${@templateUtils.md('search_main')}")
         span.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 

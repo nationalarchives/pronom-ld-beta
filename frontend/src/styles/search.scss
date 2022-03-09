@@ -1,6 +1,6 @@
 .unique-page-content.search-content{
   > article:nth-child(1){
-    p {
+    div {
       column-count: 2;
       column-gap: 40px;
       @media only screen and (max-width: 1250px) {
