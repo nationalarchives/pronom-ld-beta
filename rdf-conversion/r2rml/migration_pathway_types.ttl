@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix migrationPathwayType: <http://www.nationalarchives.gov.uk/PRONOM/migrationPathwayType.>
+
+
+<#PRONOM6/migration_pathway_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.migration_pathway_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/MigrationPathwayType/{migration_pathway_type_id}";
+ 		rr:class pr:MigrationPathwayType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayType:MigrationPathwayType;
+        rr:objectMap [ rr:column "migration_pathway_type" ];
+    ];
+ 	.
+
+ <#PRONOM6/migration_pathway_types#view> rr:sqlQuery """
+SELECT [migration_pathway_type_id]
+     ,[migration_pathway_type]
+ FROM [PRONOM6].[dbo].[migration_pathway_types]
+""" .
+

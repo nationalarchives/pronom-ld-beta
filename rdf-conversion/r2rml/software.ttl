@@ -1,0 +1,127 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix software: <http://www.nationalarchives.gov.uk/PRONOM/software.>
+
+
+<#PRONOM6/software>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+     -- SOFTWARE BASIC FIELDS
+        [software_id]
+       ,[software_name_text]
+       ,[version_text]
+       ,[software_text]
+       ,[service_pack_text]
+       ,[release_date]
+       ,[withdrawn_date]
+       ,[withdrawn_flag]
+       ,[note_text]
+       ,[source_id]
+       ,[source_date]
+       ,[last_updated_date]
+       ,[provenance_text]
+       ,[puid_type_id]
+       ,[puid_value]
+     -- software_developers fields - predicate: software.Development.Actor, type: Actor
+       ,[software_developers].[developer_id] as developer_id
+     -- software_maintainers fields - predicate: actor.Maintains.Software, type: Software
+       ,[software_maintainers].[maintainer_id] as maintainer_id
+   FROM [PRONOM6].[dbo].[software]
+   LEFT JOIN [PRONOM6].[dbo].[software_developers] ON [PRONOM6].[dbo].[software].software_id = [PRONOM6].[dbo].[software_developers].software_id
+   LEFT JOIN [PRONOM6].[dbo].[software_maintainers] ON [PRONOM6].[dbo].[software].software_id = [PRONOM6].[dbo].[software_maintainers].software_id
+
+  """
+   ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Software/{software_id}";
+ 		rr:class pr:Software;
+ 	];
+rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "software_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:Version;
+        rr:objectMap [ rr:column "version_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate software:Software;
+        rr:objectMap [ rr:column "software_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:ServicePack;
+        rr:objectMap [ rr:column "service_pack_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:ReleaseDate;
+        rr:objectMap [ rr:column "release_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:WithdrawnDate;
+        rr:objectMap [ rr:column "withdrawn_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:WithdrawnFlag;
+        rr:objectMap [ rr:column "withdrawn_flag" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:Note;
+        rr:objectMap [ rr:column "note" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate software:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:;
+        rr:objectMap [ rr:column "" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate software:PuidTypeId;
+        rr:objectMap [ rr:column "puid_type_id" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate software:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate software:Development.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate software:Maintenance.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{maintainer_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/software#view> rr:sqlQuery """
+SELECT [software_id]
+     ,[software_name_text]
+     ,[version_text]
+     ,[software_text]
+     ,[service_pack_text]
+     ,[release_date]
+     ,[withdrawn_date]
+     ,[withdrawn_flag]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+     ,[puid_type_id]
+     ,[puid_value]
+ FROM [PRONOM6].[dbo].[software]
+""" .
+

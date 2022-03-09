@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix softwareIpr: <http://www.nationalarchives.gov.uk/PRONOM/softwareIpr.>
+
+
+<#PRONOM6/software_ipr>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_ipr" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareIpr/{software_id}";
+ 		rr:class pr:SoftwareIpr;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareIpr:IprId;
+        rr:objectMap [ rr:column "ipr_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/software_ipr#view> rr:sqlQuery """
+SELECT [software_id]
+     ,[ipr_id]
+ FROM [PRONOM6].[dbo].[software_ipr]
+""" .
+

@@ -1,0 +1,38 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix softwareRelationship: <http://www.nationalarchives.gov.uk/PRONOM/softwareRelationship.>
+
+
+<#PRONOM6/software_relationships>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_relationships" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareRelationship/{relationship_id}";
+ 		rr:class pr:SoftwareRelationship;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareRelationship:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareRelationship:TargetId;
+        rr:objectMap [ rr:column "target_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareRelationship:RelationshipTypeId;
+        rr:objectMap [ rr:column "relationship_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareRelationship:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/software_relationships#view> rr:sqlQuery """
+SELECT [relationship_id]
+     ,[source_id]
+     ,[target_id]
+     ,[relationship_type_id]
+     ,[note_text]
+ FROM [PRONOM6].[dbo].[software_relationships]
+""" .
+

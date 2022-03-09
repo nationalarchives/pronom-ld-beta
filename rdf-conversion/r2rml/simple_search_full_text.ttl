@@ -1,0 +1,53 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix simpleSearchFullText: <http://www.nationalarchives.gov.uk/PRONOM/simpleSearchFullText.>
+
+
+<#PRONOM6/simple_search_full_text>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.simple_search_full_text" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SimpleSearchFullText/{simple_search_id}";
+ 		rr:class pr:SimpleSearchFullText;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:Name;
+        rr:objectMap [ rr:column "name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:Description;
+        rr:objectMap [ rr:column "description_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:Version;
+        rr:objectMap [ rr:column "version_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:Aliases;
+        rr:objectMap [ rr:column "aliases_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:Identifiers;
+        rr:objectMap [ rr:column "identifiers_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:SourceType;
+        rr:objectMap [ rr:column "source_type" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate simpleSearchFullText:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/simple_search_full_text#view> rr:sqlQuery """
+SELECT [simple_search_id]
+     ,[name_text]
+     ,[description_text]
+     ,[version_text]
+     ,[aliases_text]
+     ,[identifiers_text]
+     ,[source_type]
+     ,[source_id]
+ FROM [PRONOM6].[dbo].[simple_search_full_text]
+""" .
+

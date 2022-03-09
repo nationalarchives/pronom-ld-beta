@@ -1,0 +1,56 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix fileFormatFamily: <http://www.nationalarchives.gov.uk/PRONOM/fileFormatFamily.>
+
+
+<#PRONOM6/format_families>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+     -- FORMAT FAMILIES BASIC FIELDS
+        [format_families].[family_id]
+       ,[format_families].[name_text]
+       ,[format_families].[family_text]
+       ,[format_families].[note_text]
+       ,[format_families].[parent_family_id]
+     -- file_formats fields - predicate: actor.Develops.FileFormat, type: FileFormat
+       ,[format_family_link].[file_format_id] as file_format_id
+   FROM [PRONOM6].[dbo].[format_families]
+   LEFT JOIN [PRONOM6].[dbo].[format_family_link] ON [PRONOM6].[dbo].[format_families].family_id = [PRONOM6].[dbo].[format_family_link].family_id
+
+  """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatFamily/{family_id}";
+ 		rr:class pr:FileFormatFamily;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:Name;
+        rr:objectMap [ rr:column "name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:Family;
+        rr:objectMap [ rr:column "family_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:Note;
+        rr:objectMap [ rr:column "note_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:ParentFamily;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatFamily/{parent_family_id}" ];
+ 	];
+    rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_families#view> rr:sqlQuery """
+SELECT [family_id]
+     ,[name_text]
+     ,[family_text]
+     ,[note_text]
+     ,[parent_family_id]
+ FROM [PRONOM6].[dbo].[format_families]
+""" .
+

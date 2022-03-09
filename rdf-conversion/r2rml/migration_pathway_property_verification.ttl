@@ -1,0 +1,43 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix migrationPathwayPropertyVerification: <http://www.nationalarchives.gov.uk/PRONOM/migrationPathwayPropertyVerification.>
+
+
+<#PRONOM6/migration_pathway_property_verification>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.migration_pathway_property_verification" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/MigrationPathwayPropertyVerification/{migration_pathway_property_verification_id}";
+ 		rr:class pr:MigrationPathwayPropertyVerification;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayPropertyVerification:MigrationPathwayId;
+        rr:objectMap [ rr:column "migration_pathway_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayPropertyVerification:OrigInstancePropertyId;
+        rr:objectMap [ rr:column "orig_instance_property_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayPropertyVerification:TargetInstancePropertyId;
+        rr:objectMap [ rr:column "target_instance_property_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayPropertyVerification:Variance;
+        rr:objectMap [ rr:column "variance" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathwayPropertyVerification:Notes;
+        rr:objectMap [ rr:column "notes" ];
+ 	];
+ 	.
+
+ <#PRONOM6/migration_pathway_property_verification#view> rr:sqlQuery """
+SELECT [migration_pathway_property_verification_id]
+     ,[migration_pathway_id]
+     ,[orig_instance_property_id]
+     ,[target_instance_property_id]
+     ,[variance]
+     ,[notes]
+ FROM [PRONOM6].[dbo].[migration_pathway_property_verification]
+""" .
+

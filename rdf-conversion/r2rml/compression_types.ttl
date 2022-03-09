@@ -1,0 +1,126 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix compressionType: <http://www.nationalarchives.gov.uk/PRONOM/compressionType.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+<#PRONOM6/compression_types>
+ 	rr:logicalTable [ rr:sqlQuery """
+ 	SELECT
+ 	   -- COMPRESSION TYPE BASIC FIELDS
+          [compression_types].[compression_id]
+         ,[compression_types].[compression_name_text]
+         ,[compression_types].[version_text]
+         ,[compression_types].[compression_text]
+         ,[compression_types].[lossiness_id]
+         ,[compression_types].[release_date]
+         ,[compression_types].[withdrawn_date]
+         ,[compression_types].[withdrawn_flag]
+         ,[compression_types].[note_text]
+         ,[compression_types].[source_id]
+         ,[compression_types].[source_date]
+         ,[compression_types].[last_updated_date]
+         ,[compression_types].[provenance_text]
+         ,[compression_types].[puid_type_id]
+         ,[compression_types].[puid_value]
+       -- lossiness_id is replaced since there's only 2 values and this way we can build the URI
+           ,COALESCE(CASE WHEN ([compression_types].lossiness_id = 1) THEN 'Lossy' ELSE NULL END,
+                     CASE WHEN ([compression_types].lossiness_id = 2) THEN 'Lossless' ELSE NULL END) as lossiness_id
+       -- format_support fields - predicate: compressionType:FileFormat, type: FileFormat
+         ,[format_compression_types].[file_format_id] as file_format_id
+       -- compression_developers fields - predicate: compressionType.Development.Actor, type: Actor
+         ,[compression_developers].[developer_id] as developer_id
+    FROM [PRONOM6].[dbo].[compression_types]
+    LEFT JOIN [PRONOM6].[dbo].[format_compression_types] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[format_compression_types].compression_id
+    LEFT JOIN [PRONOM6].[dbo].[compression_developers] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[compression_developers].compression_id
+
+ 	"""
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}";
+ 		rr:class pr:CompressionType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "compression_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:Version;
+        rr:objectMap [ rr:column "version_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:comment;
+        rr:objectMap [ rr:column "compression_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:Lossiness;
+        rr:objectMap [ rr:column "lossiness_id" ; rr:datatype pr:Lossiness ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:ReleaseDate;
+        rr:objectMap [ rr:column "release_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:WithdrawnDate;
+        rr:objectMap [ rr:column "withdrawn_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:WithdrawnFlag;
+        rr:objectMap [ rr:column "withdrawn_flag" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:Note;
+        rr:objectMap [ rr:column "note_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:PuidTypeId;
+        rr:objectMap [ rr:column "puid_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionType:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate compressionType:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate compressionType:Development.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/actors#view> rr:sqlQuery """
+SELECT [compression_id]
+     ,[compression_name_text]
+     ,[version_text]
+     ,[compression_text]
+     ,[lossiness_id]
+     ,[release_date]
+     ,[withdrawn_date]
+     ,[withdrawn_flag]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+     ,[puid_type_id]
+     ,[puid_value]
+ FROM [PRONOM6].[dbo].[compression_types]
+""" .
+

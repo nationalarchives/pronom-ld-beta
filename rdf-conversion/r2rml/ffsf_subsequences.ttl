@@ -1,0 +1,63 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix ffsfSubsequence: <http://www.nationalarchives.gov.uk/PRONOM/ffsfSubsequence.>
+
+
+<#PRONOM6/ffsf_subsequences>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ffsf_subsequences" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FfsfSubsequence/{byte_sequence_id}";
+ 		rr:class pr:FfsfSubsequence;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:SubsequenceNum;
+        rr:objectMap [ rr:column "subsequence_num" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:MinSeqOffset;
+        rr:objectMap [ rr:column "min_seq_offset" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:MaxSeqOffset;
+        rr:objectMap [ rr:column "max_seq_offset" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:MinFragLength;
+        rr:objectMap [ rr:column "min_frag_length" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:SequenceString;
+        rr:objectMap [ rr:column "sequence_string" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:DefaultShift;
+        rr:objectMap [ rr:column "default_shift" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:LeftString;
+        rr:objectMap [ rr:column "left_string" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:RightString;
+        rr:objectMap [ rr:column "right_string" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ffsfSubsequence:ROWID;
+        rr:objectMap [ rr:column "ROW_ID" ];
+    ];
+ 	.
+
+ <#PRONOM6/ffsf_subsequences#view> rr:sqlQuery """
+SELECT [byte_sequence_id]
+     ,[subsequence_num]
+     ,[min_seq_offset]
+     ,[max_seq_offset]
+     ,[min_frag_length]
+     ,[sequence_string]
+     ,[default_shift]
+     ,[left_string]
+     ,[right_string]
+     ,[ROW_ID]
+ FROM [PRONOM6].[dbo].[ffsf_subsequences]
+""" .
+

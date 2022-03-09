@@ -1,0 +1,33 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix inherentPropertyOption: <http://www.nationalarchives.gov.uk/PRONOM/inherentPropertyOption.>
+
+
+<#PRONOM6/inherent_property_options>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.inherent_property_options" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InherentPropertyOption/{inherent_property_option_id}";
+ 		rr:class pr:InherentPropertyOption;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate inherentPropertyOption:PropertyId;
+        rr:objectMap [ rr:column "property_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate inherentPropertyOption:Description;
+        rr:objectMap [ rr:column "description" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate inherentPropertyOption:RiskId;
+        rr:objectMap [ rr:column "risk_id" ];
+ 	];
+ 	.
+
+ <#PRONOM6/inherent_property_options#view> rr:sqlQuery """
+SELECT [inherent_property_option_id]
+     ,[property_id]
+     ,[description]
+     ,[risk_id]
+ FROM [PRONOM6].[dbo].[inherent_property_options]
+""" .
+

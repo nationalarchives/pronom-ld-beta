@@ -1,0 +1,28 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix documentRelationshipType: <http://www.nationalarchives.gov.uk/PRONOM/documentRelationshipType.>
+
+
+<#PRONOM6/document_relationship_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.document_relationship_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentRelationshipType/{relationship_type_id}";
+ 		rr:class pr:DocumentRelationshipType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate documentRelationshipType:TypeName;
+        rr:objectMap [ rr:column "type_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate documentRelationshipType:InverseTypeName;
+        rr:objectMap [ rr:column "inverse_type_name_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/document_relationship_types#view> rr:sqlQuery """
+SELECT [relationship_type_id]
+     ,[type_name_text]
+     ,[inverse_type_name_text]
+ FROM [PRONOM6].[dbo].[document_relationship_types]
+""" .
+

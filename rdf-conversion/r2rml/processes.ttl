@@ -1,0 +1,91 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix process: <http://www.nationalarchives.gov.uk/PRONOM/process.>
+
+
+<#PRONOM6/processes>
+ 	rr:logicalTable [ rr:sqlQuery """
+      SELECT
+         -- PROCESSES BASIC FIELDS
+            [processes].[software_id]
+           ,[processes].[file_format_id]
+         --  ,[processes].[process_type_id]
+         -- process_type_id is replaced since there's only 5 values and this way we can build the URI
+            ,COALESCE(CASE WHEN ([processes].[process_type_id] = 1) THEN 'Create' ELSE NULL END,
+                      CASE WHEN ([processes].[process_type_id] = 2) THEN 'Render' ELSE NULL END,
+                      CASE WHEN ([processes].[process_type_id] = 3) THEN 'Identify' ELSE NULL END,
+                      CASE WHEN ([processes].[process_type_id] = 4) THEN 'Validate' ELSE NULL END,
+                      CASE WHEN ([processes].[process_type_id] = 5) THEN 'Extract metadata' ELSE NULL END) as process_type_id
+         --  ,[processes].[invariance_id]
+         -- invariance_id is replaced since there's only 4 values and this way we can build the URI
+           ,COALESCE(CASE WHEN ([processes].[invariance_id] = 0) THEN 'Unknown' ELSE NULL END,
+                     CASE WHEN ([processes].[invariance_id] = 1) THEN 'Changed content' ELSE NULL END,
+                     CASE WHEN ([processes].[invariance_id] = 2) THEN 'Stable content' ELSE NULL END,
+                     CASE WHEN ([processes].[invariance_id] = 3) THEN 'Unchanged content' ELSE NULL END) as invariance_id
+           ,[processes].[default_flag]
+           ,[processes].[note_text]
+           ,[processes].[source_id]
+           ,[processes].[source_date]
+           ,[processes].[last_updated_date]
+           ,[processes].[provenance_text]
+
+       FROM [PRONOM6].[dbo].[processes]
+      """
+
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Process/{software_id}";
+ 		rr:class pr:Process;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate process:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate process:ProcessType;
+        rr:objectMap [ rr:column "process_type_id" ; rr:datatype pr:ProcessType ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate process:Invariance;
+        rr:objectMap [ rr:column "invariance_id" ; rr:datatype pr:Invariance ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate process:DefaultFlag;
+        rr:objectMap [ rr:column "default_flag" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate process:Note;
+        rr:objectMap [ rr:column "note_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate process:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate process:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate process:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate process:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/processes#view> rr:sqlQuery """
+SELECT [software_id]
+     ,[file_format_id]
+     ,[process_type_id]
+     ,[invariance_id]
+     ,[default_flag]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+ FROM [PRONOM6].[dbo].[processes]
+""" .
+

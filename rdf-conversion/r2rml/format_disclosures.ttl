@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatDisclosure: <http://www.nationalarchives.gov.uk/PRONOM/formatDisclosure.>
+
+
+<#PRONOM6/format_disclosures>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_disclosures" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatDisclosure/{disclosure_id}";
+ 		rr:class pr:FormatDisclosure;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatDisclosure:Disclosure;
+        rr:objectMap [ rr:column "disclosure_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_disclosures#view> rr:sqlQuery """
+SELECT [disclosure_id]
+     ,[disclosure_text]
+ FROM [PRONOM6].[dbo].[format_disclosures]
+""" .
+

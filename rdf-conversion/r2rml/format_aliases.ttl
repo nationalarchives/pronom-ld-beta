@@ -1,0 +1,33 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatAlias: <http://www.nationalarchives.gov.uk/PRONOM/formatAlias.>
+
+
+<#PRONOM6/format_aliases>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_aliases" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatAlias/{alias_id}";
+ 		rr:class pr:FormatAlias;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatAlias:Name;
+        rr:objectMap [ rr:column "name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate formatAlias:Version;
+        rr:objectMap [ rr:column "version_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatAlias:FileFormatId;
+        rr:objectMap [ rr:column "file_format_id" ];
+ 	];
+ 	.
+
+ <#PRONOM6/format_aliases#view> rr:sqlQuery """
+SELECT [alias_id]
+     ,[name_text]
+     ,[version_text]
+     ,[file_format_id]
+ FROM [PRONOM6].[dbo].[format_aliases]
+""" .
+

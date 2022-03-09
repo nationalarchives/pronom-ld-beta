@@ -1,0 +1,37 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix fileFormatRelationship: <http://www.nationalarchives.gov.uk/PRONOM/fileFormatRelationship.>
+
+<#PRONOM6/format_relationships>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_relationships" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationship/{relationship_id}";
+ 		rr:class pr:FileFormatRelationship;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatRelationship:SourceId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{source_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatRelationship:TargetId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{target_id}" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatRelationship:FileFormatRelationshipTypeId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipTypeId/{relationship_type_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate fileFormatRelationship:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/format_relationships#view> rr:sqlQuery """
+SELECT [relationship_id]
+     ,[source_id]
+     ,[target_id]
+     ,[relationship_type_id]
+     ,[note_text]
+ FROM [PRONOM6].[dbo].[format_relationships]
+""" .
+

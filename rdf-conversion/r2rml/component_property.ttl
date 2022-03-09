@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix componentProperty: <http://www.nationalarchives.gov.uk/PRONOM/componentProperty.>
+
+
+<#PRONOM6/component_property>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_property" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentProperty/{property_id}";
+ 		rr:class pr:ComponentProperty;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate componentProperty:ComponentTypeId;
+        rr:objectMap [ rr:column "component_type_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/component_property#view> rr:sqlQuery """
+SELECT [property_id]
+     ,[component_type_id]
+ FROM [PRONOM6].[dbo].[component_property]
+""" .
+

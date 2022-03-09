@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix operatingSystem: <http://www.nationalarchives.gov.uk/PRONOM/operatingSystem.>
+
+
+<#PRONOM6/operating_systems>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.operating_systems" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/OperatingSystem/{operating_system_id}";
+ 		rr:class pr:OperatingSystem;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate operatingSystem:OperatingSystem;
+        rr:objectMap [ rr:column "operating_system_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/operating_systems#view> rr:sqlQuery """
+SELECT [operating_system_id]
+     ,[operating_system_text]
+ FROM [PRONOM6].[dbo].[operating_systems]
+""" .
+

@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatCompressionType: <http://www.nationalarchives.gov.uk/PRONOM/formatCompressionType.>
+
+
+<#PRONOM6/format_compression_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_compression_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatCompressionType/{file_format_id}";
+ 		rr:class pr:FormatCompressionType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatCompressionType:CompressionId;
+        rr:objectMap [ rr:column "compression_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_compression_types#view> rr:sqlQuery """
+SELECT [file_format_id]
+     ,[compression_id]
+ FROM [PRONOM6].[dbo].[format_compression_types]
+""" .
+

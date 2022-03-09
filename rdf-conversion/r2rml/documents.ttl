@@ -1,0 +1,108 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix document: <http://www.nationalarchives.gov.uk/PRONOM/document.>
+
+
+<#PRONOM6/documents>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+     -- DOCUMENTS BASIC FIELDS
+        [documents].[document_id]
+    -- document_type_id is replaced since there's only 3 values and this way we can build the URI
+       ,COALESCE(CASE WHEN ([documents].document_type_id = 1) THEN 'Authoritative' ELSE NULL END,
+                 CASE WHEN ([documents].document_type_id = 2) THEN 'Informative' ELSE NULL END,
+                 CASE WHEN ([documents].document_type_id = 3) THEN 'Speculative' ELSE NULL END) as document_type_id
+       ,[documents].[display_text]
+       ,[documents].[source_id]
+       ,[documents].[source_date]
+       ,[documents].[last_updated_date]
+       ,[documents].[provenance_text]
+       ,[documents].[publication_date]
+       ,[documents].[title_text]
+       ,[documents].[availability_id]
+       ,[documents].[availability_text]
+       ,[documents].[document_note_text]
+     -- document_authors fields - predicate: document:Author.Actor, type: Actor
+       ,[document_authors].[author_id] as author_id
+     -- document_publishers fields - predicate: document:Publisher.Actor, type: Actor
+       ,[document_publishers].[publisher_id] as publisher_id
+   FROM [PRONOM6].[dbo].[documents]
+   LEFT JOIN [PRONOM6].[dbo].[document_authors] ON [PRONOM6].[dbo].[documents].document_id = [PRONOM6].[dbo].[document_authors].document_id
+   LEFT JOIN [PRONOM6].[dbo].[document_publishers] ON [PRONOM6].[dbo].[documents].document_id = [PRONOM6].[dbo].[document_publishers].document_id
+
+  """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{document_id}";
+ 		rr:class pr:Document;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:DocumentType;
+        rr:objectMap [ rr:column "document_type_id" ; rr:datatype pr:DocumentType ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate document:Display;
+        rr:objectMap [ rr:column "display_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate document:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate document:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:PublicationDate;
+        rr:objectMap [ rr:column "publication_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate document:Title;
+        rr:objectMap [ rr:column "title_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:Availability;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Availability/{availability_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate document:Availability;
+        rr:objectMap [ rr:column "availability_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate document:DocumentNote;
+        rr:objectMap [ rr:column "document_note_text" ];
+    ];
+rr:predicateObjectMap [
+    rr:predicate document:Author.Actor;
+    rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+];
+rr:predicateObjectMap [
+    rr:predicate document:Publisher.Actor;
+    rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+];
+ 	.
+
+ <#PRONOM6/documents#view> rr:sqlQuery """
+SELECT [document_id]
+     ,[document_type_id]
+     ,[display_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+     ,[publication_date]
+     ,[title_text]
+     ,[availability_id]
+     ,[availability_text]
+     ,[document_note_text]
+ FROM [PRONOM6].[dbo].[documents]
+""" .
+

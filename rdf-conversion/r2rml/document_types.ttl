@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix documentType: <http://www.nationalarchives.gov.uk/PRONOM/documentType.>
+
+
+<#PRONOM6/document_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.document_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentType/{document_type_id}";
+ 		rr:class pr:DocumentType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate documentType:DocumentType;
+        rr:objectMap [ rr:column "document_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/document_types#view> rr:sqlQuery """
+SELECT [document_type_id]
+     ,[document_type_text]
+ FROM [PRONOM6].[dbo].[document_types]
+""" .
+

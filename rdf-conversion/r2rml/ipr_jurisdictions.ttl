@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix iprJurisdiction: <http://www.nationalarchives.gov.uk/PRONOM/iprJurisdiction.>
+
+
+<#PRONOM6/ipr_jurisdictions>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ipr_jurisdictions" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/IprJurisdiction/{jurisdiction_id}";
+ 		rr:class pr:IprJurisdiction;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate iprJurisdiction:Jurisdiction;
+        rr:objectMap [ rr:column "jurisdiction_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/ipr_jurisdictions#view> rr:sqlQuery """
+SELECT [jurisdiction_id]
+     ,[jurisdiction_text]
+ FROM [PRONOM6].[dbo].[ipr_jurisdictions]
+""" .
+

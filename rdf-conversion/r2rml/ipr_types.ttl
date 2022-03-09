@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix iprType: <http://www.nationalarchives.gov.uk/PRONOM/iprType.>
+
+
+<#PRONOM6/ipr_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ipr_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/IprType/{ipr_type_id}";
+ 		rr:class pr:IprType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate iprType:IprType;
+        rr:objectMap [ rr:column "ipr_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/ipr_types#view> rr:sqlQuery """
+SELECT [ipr_type_id]
+     ,[ipr_type_text]
+ FROM [PRONOM6].[dbo].[ipr_types]
+""" .
+

@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix actorType: <http://www.nationalarchives.gov.uk/PRONOM/actorType.>
+
+
+<#PRONOM6/actors>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.actor_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ActorType/{actor_type_id}";
+ 		rr:class pr:ActorType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate actorType:ActorType;
+        rr:objectMap [ rr:column "actor_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/actor_types#view> rr:sqlQuery """
+SELECT [actor_type_id]
+     ,[actor_type_text]
+ FROM [PRONOM6].[dbo].[actor_types]
+""" .
+

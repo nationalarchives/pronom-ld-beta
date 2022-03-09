@@ -1,0 +1,38 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix lossiness: <http://www.nationalarchives.gov.uk/PRONOM/lossiness.>
+
+
+<#PRONOM6/lossiness>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+ 	 -- LOSSINESS BASIC FIELDS
+       [lossiness].[lossiness_id]
+       ,[lossiness].[lossiness_text]
+     -- compression_types fields - predicate: lossiness.CompressionType, type: CompressionType
+       ,[compression_types].[compression_id] as compression_id
+   FROM [PRONOM6].[dbo].[lossiness]
+   LEFT JOIN [PRONOM6].[dbo].[compression_types] ON [PRONOM6].[dbo].[lossiness].lossiness_id = [PRONOM6].[dbo].[compression_types].lossiness_id
+
+  """
+    ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Lossiness/{lossiness_id}";
+ 		rr:class pr:Lossiness;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate lossiness:Lossiness;
+        rr:objectMap [ rr:column "lossiness_text" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate lossiness:CompressionType;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/actors#view> rr:sqlQuery """
+SELECT [lossiness_id]
+     ,[lossiness_text]
+ FROM [PRONOM6].[dbo].[lossiness]
+""" .
+

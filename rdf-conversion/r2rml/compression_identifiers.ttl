@@ -1,0 +1,58 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix compressionIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/compressionIdentifier.>
+
+
+<#PRONOM6/compression_identifiers>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_identifiers" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionIdentifier/{identifier_id}";
+ 		rr:class pr:CompressionIdentifier;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:IdentifierTypeId;
+        rr:objectMap [ rr:column "identifier_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:Identifier;
+        rr:objectMap [ rr:column "Identifier_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:Compression;
+        rr:objectMap [ rr:column "compression_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate compressionIdentifier:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/compression_identifiers#view> rr:sqlQuery """
+SELECT [identifier_id]
+     ,[identifier_type_id]
+     ,[Identifier_text]
+     ,[compression_id]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+ FROM [PRONOM6].[dbo].[compression_identifiers]
+""" .
+

@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatByteOrderLink: <http://www.nationalarchives.gov.uk/PRONOM/formatByteOrderLink.>
+
+
+<#PRONOM6/format_byte_order_link>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_byte_order_link" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatByteOrderLink/{file_format_id}";
+ 		rr:class pr:FormatByteOrderLink;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatByteOrderLink:ByteOrderId;
+        rr:objectMap [ rr:column "byte_order_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_byte_order_link#view> rr:sqlQuery """
+SELECT [file_format_id]
+     ,[byte_order_id]
+ FROM [PRONOM6].[dbo].[format_byte_order_link]
+""" .
+

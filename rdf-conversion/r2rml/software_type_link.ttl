@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix softwareTypeLink: <http://www.nationalarchives.gov.uk/PRONOM/softwareTypeLink.>
+
+
+<#PRONOM6/software_type_link>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_type_link" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareTypeLink/{software_id}";
+ 		rr:class pr:SoftwareTypeLink;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareTypeLink:SoftwareTypeId;
+        rr:objectMap [ rr:column "software_type_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/software_type_link#view> rr:sqlQuery """
+SELECT [software_id]
+     ,[software_type_id]
+ FROM [PRONOM6].[dbo].[software_type_link]
+""" .
+

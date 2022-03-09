@@ -1,0 +1,33 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix signatureFileHistory: <http://www.nationalarchives.gov.uk/PRONOM/signatureFileHistory.>
+
+
+<#PRONOM6/signature_file_history>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.signature_file_history" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SignatureFileHistory/{version_id}";
+ 		rr:class pr:SignatureFileHistory;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate signatureFileHistory:DateCreated;
+        rr:objectMap [ rr:column "date_created" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate signatureFileHistory:FileName;
+        rr:objectMap [ rr:column "file_name_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate signatureFileHistory:SchemaVersion;
+        rr:objectMap [ rr:column "schema_version" ];
+ 	];
+ 	.
+
+ <#PRONOM6/signature_file_history#view> rr:sqlQuery """
+SELECT [version_id]
+     ,[date_created]
+     ,[file_name_text]
+     ,[schema_version]
+ FROM [PRONOM6].[dbo].[signature_file_history]
+""" .
+

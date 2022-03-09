@@ -1,0 +1,76 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix byteSequence: <http://www.nationalarchives.gov.uk/PRONOM/byteSequence.>
+
+
+<#PRONOM6/byte_sequences>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+     -- BYTE SEQUENCES BASIC FIELDS
+        [byte_sequences].[byte_sequence_id]
+       ,[byte_sequences].[position_type_id]
+       ,[byte_sequences].[offset]
+       ,[byte_sequences].[byte_sequence]
+       ,[byte_sequences].[signature_id]
+     -- ,[byte_sequences].[big_endian_flag]
+       ,[byte_sequences].[max_offset]
+       ,[byte_sequences].[indirect_offset_location]
+       ,[byte_sequences].[indirect_offset_length]
+     -- byte_order_id is replaced since there's only 2 values and this way we can build the URI
+         ,COALESCE(CASE WHEN ([byte_sequences].big_endian_flag = 0) THEN 'littleEndian' ELSE NULL END,
+                   CASE WHEN ([byte_sequences].big_endian_flag = 1) THEN 'bigEndian' ELSE NULL END) as big_endian_flag
+
+   FROM [PRONOM6].[dbo].[byte_sequences]
+  """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteSequence/{byte_sequence_id}";
+ 		rr:class pr:ByteSequence;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:ByteSequencePosition;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteSequencePosition/{position_type_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:Offset;
+        rr:objectMap [ rr:column "offset" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:ByteSequence;
+        rr:objectMap [ rr:column "byte_sequence" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:InternalSignature;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/InternalSignature/{signature_id}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:ByteOrder;
+        rr:objectMap [ rr:column "big_endian_flag" ; rr:datatype pr:byteOrder ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:MaxOffset;
+        rr:objectMap [ rr:column "max_offset" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:IndirectOffsetLocation;
+        rr:objectMap [ rr:column "indirect_offset_location" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate byteSequence:IndirectOffsetLength;
+        rr:objectMap [ rr:column "indirect_offset_length" ];
+    ];
+ 	.
+
+ <#PRONOM6/byte_sequences#view> rr:sqlQuery """
+SELECT [byte_sequence_id]
+     ,[position_type_id]
+     ,[offset]
+     ,[byte_sequence]
+     ,[signature_id]
+     ,[big_endian_flag]
+     ,[max_offset]
+     ,[indirect_offset_location]
+     ,[indirect_offset_length]
+ FROM [PRONOM6].[dbo].[byte_sequences]
+""" .
+

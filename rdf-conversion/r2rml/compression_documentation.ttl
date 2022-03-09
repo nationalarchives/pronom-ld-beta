@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix compression: <http://www.nationalarchives.gov.uk/PRONOM/compression.>
+
+
+<#PRONOM6/compression_documentation>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_documentation" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Compression/{compression_id}";
+ 		rr:class pr:Compression;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate compression:DocumentId;
+        rr:objectMap [ rr:column "document_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/compression_documentation#view> rr:sqlQuery """
+SELECT [compression_id]
+     ,[document_id]
+ FROM [PRONOM6].[dbo].[compression_documentation]
+""" .
+

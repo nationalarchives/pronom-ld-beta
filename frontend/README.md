@@ -174,3 +174,30 @@ block content
 ```
 
 In this case, the Lorem Ipsum text will be shown during development and in production it will be replaced with the contents of the markdown files.
+
+## Endpoint/template map
+
+The following table maps the applicaiton endpoint to their respective templates and a description of what the endpoint describes
+
+| Name                              | Endpoint                  | Template              | Description |
+|---|:--|:--|---|
+| 1. Home                           | /                         | index.html            | Homepage |
+| 2. Search                         | /search?q={query:string}  | search.html           | Search results page |
+| 3. About                          | /about                    | about.html            | About PRONOM |
+| 4. FAQ                            | /faq                      | faq.html              | Frequently asked questions |
+| 5. External projects              | /external-projects        | external.html         | Page about external projects |
+| 6. Contact                        | /contact                  | contact.html          | Contact page |
+| | | |
+| 7. Contribute to Pronom           | /contribute               | contribute.html       | Contribution information |
+| 7. Make a submission              | /contribute/form          | form-choice.html      | Page where user chooses to start a new form or clone from existing PUID |
+| 7.1 New format                    | /contribute/form/new      | user-form.html        | External user form page (new format) |
+| 7.2 Edit/clone format             | /contribute/form/{PUID}   | user-form.html        | External user form page (clone existing) |
+| | | |
+| 10. Release notes                 | /release-notes            | rel-notes-list.html   | Displays the latest release notes and links to earlier notes |
+| 11. Single release                | /release-notes/{version}  | rel-notes-single.html | Displays the release notes for a specific version of pronom |
+| | | |
+| 12. Droid                         | /droid                    | droid.html            | Displays information about droid and download links
+| | | |
+| 13. PUID display page             | /{PUID}                   |
+| 13.1 File Format                  | /{PUID}                   | file-format.html      | Displays information on a file format |
+| 13.2 Software/Vendor/Generic PUID | /{PUID}                   | generic-puid.html     | Displays information on a generic PUID entity |

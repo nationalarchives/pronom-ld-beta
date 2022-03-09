@@ -1,0 +1,38 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix migrationPathway: <http://www.nationalarchives.gov.uk/PRONOM/migrationPathway.>
+
+
+<#PRONOM6/migration_pathway>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.migration_pathway" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/MigrationPathway/{migration_pathway_id}";
+ 		rr:class pr:MigrationPathway;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathway:OrigFileFormatId;
+        rr:objectMap [ rr:column "orig_file_format_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathway:TargetFileFormatId;
+        rr:objectMap [ rr:column "target_file_format_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathway:Notes;
+        rr:objectMap [ rr:column "notes" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate migrationPathway:ToolId;
+        rr:objectMap [ rr:column "tool_id" ];
+ 	];
+ 	.
+
+ <#PRONOM6/migration_pathway#view> rr:sqlQuery """
+SELECT [migration_pathway_id]
+     ,[orig_file_format_id]
+     ,[target_file_format_id]
+     ,[notes]
+     ,[tool_id]
+ FROM [PRONOM6].[dbo].[migration_pathway]
+""" .
+

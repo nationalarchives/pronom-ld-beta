@@ -1,0 +1,63 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix ipr: <http://www.nationalarchives.gov.uk/PRONOM/ipr.>
+
+
+<#PRONOM6/ipr>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ipr" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Ipr/{ipr_id}";
+ 		rr:class pr:Ipr;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:IprTypeId;
+        rr:objectMap [ rr:column "ipr_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:IprDate;
+        rr:objectMap [ rr:column "ipr_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:JurisdictionId;
+        rr:objectMap [ rr:column "jurisdiction_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:LicenceDetails;
+        rr:objectMap [ rr:column "licence_details_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:Note;
+        rr:objectMap [ rr:column "note_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate ipr:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+ 	];
+ 	.
+
+ <#PRONOM6/ipr#view> rr:sqlQuery """
+SELECT [ipr_id]
+     ,[ipr_type_id]
+     ,[ipr_date]
+     ,[jurisdiction_id]
+     ,[licence_details_text]
+     ,[note_text]
+     ,[source_id]
+     ,[source_date]
+     ,[last_updated_date]
+     ,[provenance_text]
+ FROM [PRONOM6].[dbo].[ipr]
+""" .
+

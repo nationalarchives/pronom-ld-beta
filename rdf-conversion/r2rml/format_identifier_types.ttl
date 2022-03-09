@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix formatIdentifierType: <http://www.nationalarchives.gov.uk/PRONOM/formatIdentifierType.>
+
+
+<#PRONOM6/format_identifier_types>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_identifier_types" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatIdentifierType/{identifier_type_id}";
+ 		rr:class pr:FormatIdentifierType;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate formatIdentifierType:IdentifierType;
+        rr:objectMap [ rr:column "identifier_type_text" ];
+    ];
+ 	.
+
+ <#PRONOM6/format_identifier_types#view> rr:sqlQuery """
+SELECT [identifier_type_id]
+     ,[identifier_type_text]
+ FROM [PRONOM6].[dbo].[format_identifier_types]
+""" .
+

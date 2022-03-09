@@ -1,0 +1,23 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix softwareDeveloper: <http://www.nationalarchives.gov.uk/PRONOM/softwareDeveloper.>
+
+
+<#PRONOM6/software_developers>
+ 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_developers" ];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareDeveloper/{software_id}";
+ 		rr:class pr:SoftwareDeveloper;
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate softwareDeveloper:DeveloperId;
+        rr:objectMap [ rr:column "developer_id" ];
+    ];
+ 	.
+
+ <#PRONOM6/software_developers#view> rr:sqlQuery """
+SELECT [software_id]
+     ,[developer_id]
+ FROM [PRONOM6].[dbo].[software_developers]
+""" .
+
