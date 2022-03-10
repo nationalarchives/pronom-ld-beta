@@ -28,7 +28,7 @@ const rewrites = [
   { from: new RegExp("^\/release-notes\/\d+$"), to: "/rel-notes-single.html" },
   { from: new RegExp("^\/droid"), to: "/droid.html" },
   { from: new RegExp("^\/(x-)?fmt\/\d+$"), to: "/file-format.html" },
-  { from: new RegExp("^\/(x-)?sfw\/\d+$"), to: "/generic-puid.html" }, // here we're using sfw/\d+ as a catch-all for all puid-based pages that are not file formats. the real system will also handle hardware, compression...etc
+  { from: new RegExp("^\/(?:x-)?(?:chr|fmt|sfw|cmp)\/\d+$"), to: "/generic-puid.html" },
 ]
 
 module.exports = merge(common, {
