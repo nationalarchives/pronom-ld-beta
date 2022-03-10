@@ -1,0 +1,12 @@
+#contact {
+  article {
+    &:nth-child(1){
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 30px;
+      h2 {
+        grid-column: 1/3;
+      }
+    }
+  }
+}

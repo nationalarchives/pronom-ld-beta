@@ -17,7 +17,7 @@
     grid-template-columns: 1fr;
   }
   >div:nth-child(1) {
-    background: #ededed82;
+    background: #dbdbdb63;
     padding: 15px;
     display: flex;
     align-items: center;
@@ -65,9 +65,9 @@
         grid-template-columns: 40px 1fr;
         grid-gap: 10px;
         align-items: center;
-        background: #ededed82;
+        background: #dbdbdb63;
         margin-bottom: 5px;
-        border: 2px solid #ededed82;
+        border: 2px solid #dbdbdb63;
         height: 40px;
         &.selected {
           background: #ccdbea;
@@ -171,7 +171,7 @@
     }
   }
   .all-results {
-    background: #ededed82;
+    background: #dbdbdb63;
     padding: 0 20px 20px 20px;
     margin-top: 5px;
     @media only screen and (max-width: 980px) {
