@@ -16,6 +16,10 @@
         font-size: 18px;
         display: flex;
         width: 100%;
+        transition: all 0.2s;
+        &:hover {
+          background: #ccdbea;
+        }
         i {
           margin-left: auto;
           color: #0f528d;
@@ -89,6 +93,7 @@
       height: 35px;
       display: flex;
       align-items: center;
+      transition: all 0.2s;
     }
     i {
       margin-left: 10px;

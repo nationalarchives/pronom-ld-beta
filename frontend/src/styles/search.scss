@@ -72,6 +72,9 @@
         &.selected {
           background: #ccdbea;
           border: 2px solid #103c61;
+          input:focus {
+            outline: 5px solid #0f528d;
+          }
         }
         label {
           display: flex;
