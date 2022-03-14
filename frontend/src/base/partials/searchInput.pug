@@ -47,9 +47,10 @@ section.search-output
             legend.sr-only Sort search results by selected measure
             div
               select(id="sort_by")
-                option(value='0') option 1
-                option(value='1') option 2
-                option(value='2') option 3
+                option(value='0') revelance
+                option(value='1') type
+                option(value='2') name
+                option(value='2') PUID
     .save-options
       label Save as
       .button-list
@@ -57,8 +58,13 @@ section.search-output
           | XML
         button.small.bordered-blue
           | CSV
-        button.small.bordered-blue
-          | RDF
+        .dropdown-group
+          button.small.bordered-blue
+            | RDF
+          select(id="sort_by")
+            option(value='0') TTL
+            option(value='1') NT
+            option(value='2') RDF/XML
   .all-results
     ul
       li.column-names
@@ -68,67 +74,70 @@ section.search-output
         h4 Description
       li
         a(href="")
-          p.data.type
-            span Type
-            | File format
-          h5.data.name
-            span Name
-            | Portable Network Graphics
-          div.basic
-            p.data
-              span PUID
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | 1.0
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
               | fmt/412
-            p.data
-              span Version
-              | 1.0
-            p.data
-              span Extension
-              | png
-          p.data.desc
-            span Description
-            | fmt/412
       li
         a(href="")
-          p.data.type
-            span Type
-            | File format
-          h5.data.name
-            span Name
-            | Portable Network Graphics
-          div.basic
-            p.data
-              span PUID
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | 1.0
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
               | fmt/412
-            p.data
-              span Version
-              | 1.0
-            p.data
-              span Extension
-              | png
-          p.data.desc
-            span Description
-            | fmt/412
       li
         a(href="")
-          p.data.type
-            span Type
-            | File format
-          h5.data.name
-            span Name
-            | Portable Network Graphics
-          div.basic
-            p.data
-              span PUID
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | Lorem ipsum dolor sit amet
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
               | fmt/412
-            p.data
-              span Version
-              | Lorem ipsum dolor sit amet
-            p.data
-              span Extension
-              | png
-          p.data.desc
-            span Description
-            | fmt/412
     .pagination
       ul
         li.controls

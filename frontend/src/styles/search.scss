@@ -80,6 +80,7 @@
           display: flex;
           align-items: center;
           padding-right: 5px;
+          height: 100%;
         }
         input {
           width: 20px;
@@ -150,6 +151,22 @@
       @media only screen and (max-width: 980px) {
         padding-left: 0;
       }
+      select {
+        display: block;
+        width: 100%;
+        background: white;
+        color: #0f528d;
+        border: 2px solid #0f528d;
+        font-size: 15px;
+        height: 30px;
+        padding: 0 20px 0 0;
+        font-weight: 500;
+        font-family: 'Roboto Mono', monospace;
+        border-radius: 0;
+        &:focus {
+          outline: 5px solid #8EC0EC;
+        }
+      }
     }
     .save-options {
       display: flex;
@@ -167,8 +184,31 @@
         border-left: none;
       }
       .button-list {
+        display: flex;
         button {
           margin-right: 5px;
+        }
+        .dropdown-group {
+          display: flex;
+          button {
+            margin-right: 0;
+          }
+          select {
+            display: block;
+            width: 100%;
+            background: #0f528d;
+            color: white;
+            border: 2px solid #0f528d;
+            font-size: 15px;
+            height: 30px;
+            padding: 0 20px 0 0;
+            font-weight: 500;
+            font-family: 'Roboto Mono', monospace;
+            border-radius: 0;
+            &:focus {
+              outline: 5px solid #8EC0EC;
+            }
+          }
         }
       }
     }
@@ -212,7 +252,6 @@
     li {
       list-style-type: none;
       border: 2px solid #0f528d;
-      padding: 10px 5px;
       margin-bottom: 6px;
       background: white;
       transition: all 0.2s;
@@ -224,6 +263,7 @@
         grid-template-columns: 95px 0.8fr 1fr 1fr;
         border: none;
         background: none;
+        padding: 10px 5px;
         margin-bottom: 0;
         @media only screen and (max-width: 980px) {
           display: none;
@@ -238,41 +278,46 @@
         margin-top: 10px;
       }
       a {
-        display: grid;
-        grid-template-columns: 95px 0.8fr 1fr 1fr;
-        text-decoration: none;
-        grid-gap: 5px;
-        color: black;
-        @media only screen and (max-width: 1000px) {
-          grid-template-columns: 1fr 1fr;
-          grid-gap: 10px;
-        }
-        @media only screen and (max-width: 760px) {
-          grid-template-columns: 1fr;
-        }
-        .data {
-          display: flex;
-          flex-direction: column;
-          font-size: 16px;
-          font-weight: 400;
-          margin:0;
-          font-family: 'Open Sans', sans-serif;
-          span {
-            font-weight: 800;
-            font-size: 14px;
-          }
-        }
-        > div {
+        height: 100%;
+        display: flex;
+        padding: 10px 5px;
+        div {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          grid-gap: 10px;
-        }
-        >p, >div, >h5 {
-          border-left: 2px solid lightgray;
-          padding-left: 8px;
-        }
-        p:first-child {
-          border:none;
+          grid-template-columns: 95px 0.8fr 1fr 1fr;
+          text-decoration: none;
+          grid-gap: 5px;
+          color: black;
+          @media only screen and (max-width: 1000px) {
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+          }
+          @media only screen and (max-width: 760px) {
+            grid-template-columns: 1fr;
+          }
+          .data {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            font-weight: 400;
+            margin:0;
+            font-family: 'Open Sans', sans-serif;
+            span {
+              font-weight: 800;
+              font-size: 14px;
+            }
+          }
+          > div {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 10px;
+          }
+          >p, >div, >h5 {
+            border-left: 2px solid lightgray;
+            padding-left: 8px;
+          }
+          p:first-child {
+            border:none;
+          }
         }
       }
       .type, .name, .desc {
