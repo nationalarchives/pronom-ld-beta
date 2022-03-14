@@ -1,0 +1,9 @@
+extends /layouts/mainLayout.pug
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Droid
+
+block content
+  .unique-page-content#droid
+    article(th:utext="${@templateUtils.md('index_droid')}")
+      p all comes from the Markdown - text not yet specified
