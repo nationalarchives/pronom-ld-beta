@@ -1,1 +1,5 @@
-console.log("hello from common")
+import '@styles/main.scss'
+
+const App = () => {}
+
+App()

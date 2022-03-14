@@ -124,6 +124,14 @@ button, a{
   }
 }
 // Buttons - END
+// List #list - START
+ul {
+  padding-left: 0;
+  li {
+    list-style-type: none;
+  }
+}
+// List END
 // Tooltip  #tooltip -START
 .tooltip-container{
   .label-text {
@@ -264,7 +272,6 @@ main {
     min-width: 230px;
   }
   ul, li {
-    list-style-type: none;
     font-family: 'Open Sans', sans-serif;
     padding:0;
   }
@@ -408,7 +415,6 @@ main {
 /* Breadcrumbs - START #breadcrumbs ==============================*/
 .breadcrumb-holder{
   ul, li {
-    list-style-type: none;
     margin: 0;
     padding: 0;
   }
