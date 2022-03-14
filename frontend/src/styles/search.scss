@@ -281,6 +281,7 @@
         display: flex;
         padding: 10px 5px;
         div {
+          width: 100%;
           display: grid;
           grid-template-columns: 95px 0.8fr 1fr 1fr;
           text-decoration: none;
@@ -313,6 +314,14 @@
           >p, >div, >h5 {
             border-left: 2px solid lightgray;
             padding-left: 8px;
+            @media only screen and (max-width: 760px) {
+              border-left: none;
+            }
+          >p {
+            @media only screen and (max-width: 760px) {
+              padding-left: 0;
+            }
+          }
           }
           p:first-child {
             border:none;

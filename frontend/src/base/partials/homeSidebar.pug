@@ -7,8 +7,8 @@ aside.home-page-additional-info(aria-label="Quick search, links and additional i
         legend.sr-only Enter search file format name, PUID or keywords
         div
           input(type="search" id="small_search" placeholder="Search for file formats...")
-          button(type="submit")
-            i.fa-solid.fa-magnifying-glass
+          button(type="submit" aria-label="Search")
+            i.fa-solid.fa-magnifying-glass(aria-hidden="true")
   div
     .pronom-updates 
       h3 Pronom updates
@@ -24,7 +24,7 @@ aside.home-page-additional-info(aria-label="Quick search, links and additional i
             span.label-text Download test notes
             span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
               .i-wrapper
-                i.fa.fa-solid.fa-circle-info
+                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
         .buttons
           button.bordered-blue.small
             | XML
