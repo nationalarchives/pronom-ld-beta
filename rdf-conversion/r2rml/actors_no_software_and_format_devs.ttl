@@ -1,0 +1,147 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix actor: <http://www.nationalarchives.gov.uk/PRONOM/actor.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<#PRONOM6/actors>
+ 	rr:logicalTable [ rr:sqlQuery """
+  SELECT
+      -- ACTORS BASIC FIELDS
+         [actors].[actor_id]
+        ,[actors].[name_text]
+        ,[actors].[job_title_text]
+        ,[actors].[organisation_name_text]
+        ,[actors].[actor_type_id]
+        ,[actors].[telephone_text]
+        ,[actors].[website_text]
+        ,[actors].[country_code_text]
+        ,[actors].[support_website_text]
+        ,[actors].[contact_email_text]
+        ,[actors].[source_id]
+        ,[actors].[source_date]
+        ,[actors].[last_updated_date]
+        ,[actors].[provenance_text]
+        ,[actors].[address_text]
+      -- document_authors fields - predicate: actor.Authors.Document, type: Document
+        ,[document_authors].[document_id] as document_id
+      -- compression_developers fields - predicate: actor:Develops.CompressionType, type: CompressionType
+        ,[compression_developers].[compression_id] as compression_id
+
+      -- software_maintainers fields - predicate: actor.Maintains.Software, type: Software
+        ,[software_maintainers].[software_id] as maintains_software_id
+      -- document_publishers fields - predicate: actor.Publishes.Document, type: Document
+        ,[document_publishers].[document_id] as publishes_document_id
+      -- format_support fields - predicate: actor:Supports.FileFormat, type: FileFormat
+        ,[format_support].[file_format_id] as supports_file_format_id
+
+    FROM [PRONOM6].[dbo].[actors]
+    LEFT JOIN [PRONOM6].[dbo].[document_authors] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[document_authors].author_id
+    LEFT JOIN [PRONOM6].[dbo].[compression_developers] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[compression_developers].developer_id
+    LEFT JOIN [PRONOM6].[dbo].[software_maintainers] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[software_maintainers].maintainer_id
+    LEFT JOIN [PRONOM6].[dbo].[document_publishers] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[document_publishers].publisher_id
+    LEFT JOIN [PRONOM6].[dbo].[format_support] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[format_support].support_id
+
+  """
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{actor_id}";
+ 		rr:class pr:Actor;
+ 	];
+ 	rr:predicateObjectMap [
+ 		rr:predicate actor:Name;
+ 		rr:objectMap [ rr:column "name_text" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:JobTitle;
+        rr:objectMap [ rr:column "job_title_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:OrganisationName;
+        rr:objectMap [ rr:column "organisation_name_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:TypeId;
+        rr:objectMap [ rr:column "actor_type_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:Telephone;
+        rr:objectMap [ rr:column "telephone_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:Website;
+        rr:objectMap [ rr:column "website_text"; rr:datatype xsd:anyURI ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:Country;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Country/{country_code_text}" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:Support.Website;
+        rr:objectMap [ rr:column "support_website_text"; rr:datatype xsd:anyURI ];
+    ];
+ 	rr:predicateObjectMap [
+ 		rr:predicate actor:Email;
+ 		rr:objectMap [ rr:column "contact_email_text"; rr:datatype xsd:anyURI ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:LastUpdated;
+        rr:objectMap [ rr:column "last_updated_date" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate actor:Provenance;
+        rr:objectMap [ rr:column "provenance_text" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Address;
+        rr:objectMap [ rr:column "address_text" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Authors.Document;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{document_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Develops.CompressionType;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate actor:Maintains.Software;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Software/{maintains_software_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Publishes.Document;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{publishes_document_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Supports.FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{supports_file_format_id}" ];
+    ];
+ 	.
+
+ <#PRONOM6/actors#view> rr:sqlQuery """
+SELECT [actor_id]
+      ,[name_text]
+      ,[job_title_text]
+      ,[organisation_name_text]
+      ,[actor_type_id]
+      ,[telephone_text]
+      ,[website_text]
+      ,[country_code_text]
+      ,[support_website_text]
+      ,[contact_email_text]
+      ,[source_id]
+      ,[source_date]
+      ,[last_updated_date]
+      ,[provenance_text]
+      ,[address_text]
+  FROM [PRONOM6].[dbo].[actors]
+""" .

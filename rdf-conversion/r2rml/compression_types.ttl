@@ -30,7 +30,7 @@
        -- compression_developers fields - predicate: compressionType.Development.Actor, type: Actor
          ,[compression_developers].[developer_id] as developer_id
     FROM [PRONOM6].[dbo].[compression_types]
-    RIGHT JOIN [PRONOM6].[dbo].[format_compression_types] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[format_compression_types].compression_id
+    LEFT JOIN [PRONOM6].[dbo].[format_compression_types] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[format_compression_types].compression_id
     LEFT JOIN [PRONOM6].[dbo].[compression_developers] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[compression_developers].compression_id
 
  	"""
