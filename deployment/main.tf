@@ -11,7 +11,7 @@ terraform {
 
 provider "aws" {
   profile = "default"
-  region  = "us-west-2"
+  region  = "eu-west-1"
 }
 
 resource "aws_instance" "app_server" {
@@ -19,6 +19,6 @@ resource "aws_instance" "app_server" {
   instance_type = "t2.micro"
 
   tags = {
-    Name = "ExampleAppServerInstance"
+    Name = "PRONOMAppServerInstance"
   }
 }
