@@ -1,15 +1,17 @@
-#pronom-nav(role='navigation')
+- var currentUrl = '/'
+
+section#pronom-nav
   .container
     #pronom-nav-header
       a#page-title(href='/') Pronom
       button#pronom-nav-mobile-collapse(type='button')
         | MENU
     nav
-      ul.menu-pronom.side-padding
+      ul.menu-pronom.side-padding.hide
         // INFO to display sub-menu add class="selected" to <li>
-        li.selected
+        li(class={selected: currentUrl === '/'} href='/')
           // INFO for blue color add class="active"
-          a.top-link.activea(href='/')
+          a.top-link(class={active: currentUrl === '/'} href='/')
             | Home
           ul.sub-menu-pronom
             li
@@ -22,8 +24,8 @@
             li
               a(href='#newInformation')
                 | New information
-        li
-          a.top-link
+        li(class={selected: currentUrl === '/search'} href='/search')
+          a.top-link(class={active: currentUrl === '/search'} href='/search')
             | Search Pronom
           ul.sub-menu-pronom
             li
@@ -31,8 +33,8 @@
             li
               a
                 | Search Pronom
-        li
-          a.top-link(href='/about')
+        li(class={selected: currentUrl === '/about'} href='/about')
+          a.top-link(class={active: currentUrl === '/about'} href='/about')
             | About
           ul.sub-menu-pronom
             li
@@ -44,8 +46,8 @@
             li
               a
                 | Meet the team
-        li
-          a.top-link
+        li(class={selected: currentUrl === '/faq'} href='/faq')
+          a.top-link(class={active: currentUrl === '/faq'} href='/faq')
             | FAQ
           ul.sub-menu-pronom
             li
@@ -57,11 +59,11 @@
             li
               a
                 | Category 2
-        li
-          a.top-link
+        li(class={selected: currentUrl === '/external-projects'} href='external-projects')
+          a.top-link(class={active: currentUrl === '/external-projects'} href='external-projects')
             | External Projects
-        li
-          a.top-link
+        li(class={selected: currentUrl === '/contribute'})
+          a.top-link(class={active: currentUrl === '/contribute'} href='/contribute')
             | Submit to Pronom
           ul.sub-menu-pronom
             li
@@ -73,8 +75,8 @@
             li
               a
                 | How do we proceed your submission
-        li
-          a.top-link
+        li(class={selected: currentUrl === '/contact'} href='/contact')
+          a.top-link(class={active: currentUrl === '/contact'} href='/contact')
             | Contact
           ul.sub-menu-pronom
             li

@@ -1,0 +1,158 @@
+seation.search-input-container
+  .search-input
+    form(aria-label="Search for file format, software or vendor")
+      fieldset
+        legend.sr-only Enter search file format name, PUID or keywords
+        div
+          input(type="search" id="pronom_search" placeholder="Search for file format, software or vendor...")
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass(aria-hidden="true")
+            | Search
+  .filters(aria-label="Filters")
+    h4 Filters
+    fieldset
+      legend.sr-only Select filter
+      div.selected
+        input#extension(type='checkbox' name='format' value='' checked="true") 
+        label(for='extension') File format extension
+      div
+        input#name(type='checkbox' name='format' value='')
+        label(for='name') File format name
+      div
+        input#type(type='checkbox' name='format' value='')
+        label(for='type') File format name
+      div
+        input#signature(type='checkbox' name='format' value='')
+        label(for='signature') Signature
+      div
+        input#puid(type='checkbox' name='format' value='')
+        label(for='puid') PUID
+
+section.search-output
+  h4 Results
+    span (32)
+  .additionals
+    .manage-results
+      .result-counts
+        form(aria-label="Set number of result per page")
+          fieldset
+            label(for="results_per_page") Show
+            legend.sr-only Change number of results per page
+            div
+              input(id="results_per_page" class="small" maxlength="2" type="number" min="5" max="99" value="5")
+      .sort-by
+        form(aria-label="Sort search results by selected measure")
+          fieldset
+            label(for="sort_by") Sort by
+            legend.sr-only Sort search results by selected measure
+            div
+              select(id="sort_by")
+                option(value='0') revelance
+                option(value='1') type
+                option(value='2') name
+                option(value='2') PUID
+    .save-options
+      label Save as
+      .button-list
+        button.small.bordered-blue
+          | XML
+        button.small.bordered-blue
+          | CSV
+        .dropdown-group
+          button.small.bordered-blue
+            | RDF
+          select(id="sort_by")
+            option(value='0') TTL
+            option(value='1') NT
+            option(value='2') RDF/XML
+  .all-results
+    ul
+      li.column-names
+        h4 Type
+        h4 Name
+        h4 Basic information
+        h4 Description
+      li
+        a(href="")
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | 1.0
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
+              | fmt/412
+      li
+        a(href="")
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | 1.0
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
+              | fmt/412
+      li
+        a(href="")
+          div
+            p.data.type
+              span Type
+              | File format
+            h5.data.name
+              span Name
+              | Portable Network Graphics
+            div.basic
+              p.data
+                span PUID
+                | fmt/412
+              p.data
+                span Version
+                | Lorem ipsum dolor sit amet
+              p.data
+                span Extension
+                | png
+            p.data.desc
+              span Description
+              | fmt/412
+    .pagination
+      ul
+        li.controls
+          a(href="")
+            | Previous
+        li.active
+          a(href="")
+            | 1
+        li
+          a(href="")
+            | 2
+        li
+          a(href="")
+            | 3
+        li.controls
+          a(href="")
+            | Next
+      

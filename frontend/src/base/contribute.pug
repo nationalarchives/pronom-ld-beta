@@ -1,0 +1,93 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/contribute"
+  - var breadcrumbs = {'Home':"/", "Contribute": "/contribute"}
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Contribute to Pronom
+
+block content
+  .unique-page-content#contribute
+    article.split-with-button
+      div(th:utext="${@templateUtils.md('index_why-submitting')}")
+        h2 Why submitting to Pronom?
+        p.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+          culpa qui officia deserunt mollit anim id est laborum.
+      a.blue.xlarge(href="form-choice.html")
+        | Make a submission
+    article.two-columns(th:utext="${@templateUtils.md('index_how-to-make-submissions')}")
+      h2 How to make a submission
+      p.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+        culpa qui officia deserunt mollit anim id est laborum.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+        culpa qui officia deserunt mollit anim id est laborum.
+    .step-by-step-guide
+      ul
+        li
+          div.step-title
+            p.number 1
+            h3(th:utext="${@templateUtils.md('index_step1title')}") Some title here
+          div(th:utext="${@templateUtils.md('index_step1')}")
+            p.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+              laboris nisi ut aliquip ex ea commodo consequat. 
+            div(th:utext="${@templateUtils.md('index_example1')}")
+              h4 Example
+              p.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                ut labore et dolore magna aliqua.
+        li
+          div.step-title
+            p.number 2
+            h3(th:utext="${@templateUtils.md('index_step2title')}") Some title here
+          div(th:utext="${@templateUtils.md('index_step2')}")
+            p.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+              laboris nisi ut aliquip ex ea commodo consequat. 
+            div(th:utext="${@templateUtils.md('index_example2')}")
+              h4 Example
+              p.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                ut labore et dolore magna aliqua.
+        li
+          div.step-title
+            p.number 3
+            h3(th:utext="${@templateUtils.md('index_step3title')}") Some title here
+          div(th:utext="${@templateUtils.md('index_step3')}")
+            p.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+              laboris nisi ut aliquip ex ea commodo consequat. 
+            div(th:utext="${@templateUtils.md('index_example3')}")
+              h4 Example
+              p.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                ut labore et dolore magna aliqua.
+        
+    article.two-columns(th:utext="${@templateUtils.md('index_how-do-we-process-your-submission')}")
+      h2 How do we process your submission
+      p.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+        culpa qui officia deserunt mollit anim id est laborum.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+        culpa qui officia deserunt mollit anim id est laborum.

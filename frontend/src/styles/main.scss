@@ -4,6 +4,9 @@
 - Pronom main menu / #pronommainmenu
 - Main / #main
 - Breadcrumbs / #breadcrumbs
+- Buttons / #buttons
+- Tooltip / #tooltip
+- Social media links / #spcialmedia
 */
 
 /* Font Awesome Import */
@@ -12,6 +15,8 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
 
 /* Overall page style #pagestyle ========================== */
 $active-blue: #0f528d;
@@ -29,9 +34,6 @@ button, a {
   padding-left: 20px !important;
   padding-right: 20px !important;
   padding-top: 40px;
-  @media only screen and (max-width: 700px) {
-    padding-left: 0 !important;
-  }
 }
 .page-container {
   display: grid;
@@ -39,8 +41,7 @@ button, a {
   min-height: 100vh;
   padding: 0 90px;
   @media only screen and (max-width: 1200px) {
-    display: grid;
-    grid-template-columns:1fr;
+    display: block;
     padding: 0;
   }
 }
@@ -80,8 +81,9 @@ hr {
   border-top: 2px solid black;
   margin-top: 35px;
 }
-// Buttons - START
-button {
+
+// Buttons - START #buttons
+button, a{
   font-family: 'Roboto Mono', monospace;
   &.black {
     background: black;
@@ -90,7 +92,7 @@ button {
   }
   &.blue {
     background: $active-blue;
-    color: $active-blue;
+    color: white;
     border: 2px solid $active-blue;
   }
   &.bordered-blue {
@@ -112,9 +114,101 @@ button {
   &.large {
     font-size: 19px;
   }
+  &.xlarge{
+    font-size: 19px;
+    height: 50px;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 // Buttons - END
-
+// List #list - START
+ul {
+  padding-left: 0;
+  li {
+    list-style-type: none;
+  }
+}
+// List END
+// Tooltip  #tooltip -START
+.tooltip-container{
+  .label-text {
+    margin-right: 5px;
+  }
+  .label {
+    display: flex;
+  }
+  .tooltip-toggle {
+    cursor: pointer;
+    position: relative;
+    .i-wrapper {
+      background: #0f528d;
+      border-radius: 15px;
+      height: 20px;
+      width: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s;
+      i {
+        color: white;
+        transition: all 0.2s;
+      }
+      &:hover {
+        background: white;
+        i {
+          color: #0f528d;
+        }
+      }
+    }
+    &::before {
+      position: absolute;
+      top: -80px;
+      left: -80px;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+      content: attr(aria-label);
+      padding: 1rem;
+      text-transform: none;
+      transition: all 0.5s ease;
+      width: 160px;
+      box-shadow: 3px 3px 8px 3px #00000045;
+    }
+    &::after {
+      position: absolute;
+      top: -12px;
+      left: 9px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #2B222A;
+      content: " ";
+      font-size: 0;
+      line-height: 0;
+      margin-left: -5px;
+      width: 0;
+    }
+    &::before,
+    &::after {
+      color: black;
+      font-family: monospace;
+      font-size: 16px;
+      opacity: 0;
+      pointer-events: none;
+      text-align: center;
+    }
+    &:focus::before,
+    &:focus::after,
+    &:hover::before,
+    &:hover::after {
+      opacity: 1;
+      transition: all 0.25s ease;
+    }
+  }
+}
+// Tooltip END
 .sr-only {
   position: absolute;
 }
@@ -124,7 +218,9 @@ fieldset {
 }
 /* Overall page style - END */
 // Input search START 
-input[type="search"]:focus {
+input:focus,
+a:focus,
+button:focus {
   outline: 5px solid #8EC0EC;
 }
 input {
@@ -132,14 +228,22 @@ input {
   height: 45px;
   border: 3px solid black;
   font-size: 16px;
+  &.small {
+    height: 20px;
+  }
 }
 
 /* Main START #main =======================================*/
 main {
   margin-left: 30px;
+  margin-bottom: 50px;
+  @media only screen and (max-width: 1200px) {
+    margin-left: 0 !important;
+  }
   @media only screen and (max-width: 700px) {
     margin-left: 20px;
   }
+  
 }
 .page-columns {
   display: grid;
@@ -168,7 +272,6 @@ main {
     min-width: 230px;
   }
   ul, li {
-    list-style-type: none;
     font-family: 'Open Sans', sans-serif;
     padding:0;
   }
@@ -181,8 +284,8 @@ main {
         color: $active-blue;
       }
       &.top-link {
-        margin-top: 12px;
-        margin-bottom: 18px;
+        margin-top: 20px;
+        margin-bottom: 8px;
         display: flex;
         text-decoration: none;
         &.active {
@@ -222,8 +325,23 @@ main {
       color: #0f528d;
     }
   }
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     border-right: none;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+}
+.page-container {
+  &.noJS {
+    #pronom-nav {
+      @media only screen and (max-width: 1200px) {
+        border-right: none;
+        position:inherit;
+        top: 0;
+        z-index: 9;
+      }
+    }
   }
 }
 #pronom-nav-header {
@@ -236,7 +354,7 @@ main {
   button {
     margin-left: auto;
   }
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     box-shadow: 1px -2px 8px black;
     align-items: center;
     padding-top: 0;
@@ -247,12 +365,29 @@ main {
   background: white;
   display: flex;
   flex-direction: column;
-  @media only screen and (max-width: 1050px) {
+  z-index: 9;
+  @media only screen and (max-width: 1200px) {
     margin-top: 0;
     background: white;
     position: absolute;
-    width: 100%;
+    width: calc(100% - 40px);
     border-top: 2px solid black;
+    box-shadow: 0px 6px 17px 0px #0000004a;
+    &.hide {
+      display: none;
+    }
+  }
+}
+.page-container {
+  &.noJS {
+    .menu-pronom {
+      @media only screen and (max-width: 1200px) {
+          display: block;
+          position: inherit;
+          box-shadow: none;
+          border-bottom: 4px solid black;
+      }
+    }
   }
 }
 #pronom-nav-mobile-collapse {
@@ -261,18 +396,25 @@ main {
   border:none;
   background: none;
   display: none;
-  @media only screen and (max-width: 1050px) {
+  @media only screen and (max-width: 1200px) {
     display: block;
   }
 }
-
+.page-container {
+  &.noJS {
+    @media only screen and (max-width: 1200px) {
+      #pronom-nav-mobile-collapse{
+        display: none;
+      }
+    }
+  }
+}
 
 /* Pronom main menu - END */
 
 /* Breadcrumbs - START #breadcrumbs ==============================*/
 .breadcrumb-holder{
   ul, li {
-    list-style-type: none;
     margin: 0;
     padding: 0;
   }
@@ -300,6 +442,82 @@ main {
   }
 }
 /* Breadcrumbs - END */
+
+/* Social media - #socialmedia START */
+.social-media {
+  background: #8BACCB;
+  padding: 20px;
+  min-height: 250px;
+  .social-media-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    @media only screen and (max-width: 1200px) {
+      display: block;
+    }
+    >div {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      grid-gap: 10px;
+      row-gap: 5px;
+      @media only screen and (max-width: 1200px) {
+        margin-bottom: 20px;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+        padding-left: 5px;
+        transition: all 0.2s;
+        max-width: 200px;
+        &:hover {
+          background: #134571;
+          color: white;
+        }
+        &:focus {
+          outline: 5px solid #0f528d;
+        }
+        h3 {
+          border-bottom: 2px solid #134571;
+          margin-bottom: 0;
+          padding-bottom: 3px;
+        }
+      }
+      p {
+        margin-top: 5px;
+        padding-left: 5px;
+      }
+      div {
+        grid-row: 1/3;
+        div {
+          background: white;
+          border: 4px solid white;
+          border-radius: 3px;
+          height: 80px;
+          width: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          i {
+            color: #61778B;
+            font-size: 50px;
+          }
+        }
+      }
+    }
+  }
+  h2 {
+    margin-left: 300px;
+    margin-bottom: 40px;
+    font-size: 20px;
+    @media only screen and (max-width: 1200px) {
+      margin-left: 0;
+    }
+  }
+}
+/* Social media - END */
 
 
 

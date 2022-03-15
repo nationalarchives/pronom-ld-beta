@@ -1,0 +1,31 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/contact"
+  - var breadcrumbs = {'Home':"/", "Contact": "/contact"}
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Contact
+
+block content
+  .unique-page-content#contact
+    article
+      h2 Contact details
+      div
+        h3 Email
+        p.
+          Some text comes here
+        a(href="mailto:pronom@nationalarchive.gov.uk") pronom@nationalarchive.gov.uk
+      div
+        h3 Address
+        p.
+          Some text comes here
+    article
+      h2 Keep in touch
+      p Join Pronom mailing list. Exmplanation text comes here.
+      button.sign-up.blue.xlarge
+        i.fa-solid.fa-envelopes-bulk(aria-hidden="true")
+        | Sign up to mailing list
+    article
+      h2 Map
+      iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14057.039519873797!2d-0.2780896483515224!3d51.47730373242236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760e78e6abee61%3A0x49432cb37195a47f!2sThe%20National%20Archives!5e0!3m2!1sen!2suk!4v1646911709339!5m2!1sen!2suk" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy")

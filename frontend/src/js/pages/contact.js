@@ -1,13 +1,11 @@
 import { test } from '@js/lib/test'
 
 import '@styles/main.scss'
-import '@styles/index.scss'
-import '@js/common.js'
+import '@styles/contact.scss'
 
 const App = () => {
-  console.log("index page JS")
+  console.log("contact page JS")
   test()
 }
 
 App()
-
