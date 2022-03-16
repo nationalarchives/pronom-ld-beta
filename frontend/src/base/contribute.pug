@@ -1,5 +1,9 @@
 extends /layouts/mainLayout.pug
 
+block vars
+  - var currentURL = "/contribute"
+  - var breadcrumbs = {'Home':"/", "Contribute": "/contribute"}
+
 block pageTitle
   h1(th:text="${@templateUtils.md('index_title')}") Contribute to Pronom
 

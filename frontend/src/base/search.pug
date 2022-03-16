@@ -1,5 +1,9 @@
 extends /layouts/mainLayout.pug
 
+block vars
+  - var currentURL = "/search"
+  - var breadcrumbs = {'Home':"/", "Search": "/search"}
+
 block pageTitle
   h1(th:text="${@templateUtils.md('search_title')}") Search Pronom
 
