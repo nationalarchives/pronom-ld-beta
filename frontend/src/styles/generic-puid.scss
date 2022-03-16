@@ -72,6 +72,9 @@
   }
   .specs {
     display: flex;
+    @media only screen and (max-width: 750px) {
+      display: block;
+    }
     p {
       padding: 0 10px;
       margin: 0;
@@ -144,9 +147,33 @@
       }
     }
   }
-  .table {
-    @media only screen and (max-width: 1200px) {
+  .archived {
+    background: #FFC8C8;
+    padding: 10px 100px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+    @media only screen and (max-width: 900px) {
+      padding: 10px 20px;
+    }
+    @media only screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+    p {
+      margin:0;
+    }
+    a {
+      border: 2px solid black;
+      padding: 5px 20px;
+      width: 130px;
       margin-left: 10px;
+      text-decoration: none;
+      color: black;
+      @media only screen and (max-width: 900px) {
+        justify-self: flex-end;
+      }
     }
   }
 }
