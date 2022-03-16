@@ -166,6 +166,9 @@
         &:focus {
           outline: 5px solid #8EC0EC;
         }
+        option {
+          color: black;
+        }
       }
     }
     .save-options {
@@ -207,6 +210,10 @@
             border-radius: 0;
             &:focus {
               outline: 5px solid #8EC0EC;
+            }
+            option {
+              background: white;
+              color: black;
             }
           }
         }
