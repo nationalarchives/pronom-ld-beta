@@ -40,7 +40,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
+        font-size: 1.1em;
         i {
           margin-right: 5px;
         }
@@ -111,6 +111,8 @@
     @media only screen and (max-width: 980px) {
       flex-direction: column;
       margin-left: 10px;
+      align-items: flex-start;
+      grid-gap: 0;
     }
     label {
       margin-right: 5px;
@@ -157,7 +159,7 @@
         background: white;
         color: #0f528d;
         border: 2px solid #0f528d;
-        font-size: 15px;
+        font-size: 1em;
         height: 30px;
         padding: 0 20px 0 0;
         font-weight: 500;
@@ -186,6 +188,9 @@
         border-top: 2px solid #7070708c;
         border-left: none;
       }
+      @media only screen and (max-width: 500px) {
+        display: block;
+      }
       .button-list {
         display: flex;
         button {
@@ -202,7 +207,7 @@
             background: #0f528d;
             color: white;
             border: 2px solid #0f528d;
-            font-size: 15px;
+            font-size: 1em;
             height: 30px;
             padding: 0 20px 0 0;
             font-weight: 500;
@@ -243,6 +248,9 @@
           &.controls {
             width: auto;
             padding: 0 10px;
+            @media only screen and (max-width: 980px) {
+              padding: 0;
+            }
           }
           &.active {
             background: #ccdbea;
@@ -278,7 +286,7 @@
       h4 {
         margin: 0;
         margin-left: 5px;
-        font-size: 15px;
+        font-size: 1em;
         font-family: 'Open Sans', sans-serif;
         font-weight: 800;
         margin-top: 10px;
@@ -304,13 +312,13 @@
           .data {
             display: flex;
             flex-direction: column;
-            font-size: 16px;
+            font-size: 1em;
             font-weight: 400;
             margin:0;
             font-family: 'Open Sans', sans-serif;
             span {
               font-weight: 800;
-              font-size: 14px;
+              font-size: 1em;
             }
           }
           > div {

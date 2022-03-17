@@ -11,7 +11,7 @@ block content
   .unique-page-content.search-content
     article
       //- TODO - remove when #markdown is in use
-      h2(th:text="${@templateUtils.md('search_header')}") How do I search Pronom?
+      h2(th:text="${@templateUtils.md('search_header')}")  How do I search PRONOM?
       div(th:utext="${@templateUtils.md('search_main')}")
         span.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -33,6 +33,6 @@ block content
           velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
           culpa qui officia deserunt mollit anim id est laborum.
     article
-      h2 Search Pronom
+      h2 Search PRONOM
     include /partials/searchInput.pug
     
