@@ -4,7 +4,7 @@ WORKDIR /
 
 COPY ./build/libs/pronombackend-0.0.1-SNAPSHOT.jar /pronombackend.jar
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["java", "-server", "-XX:+UnlockExperimentalVMOptions", \
     "-XX:+UseG1GC", \
