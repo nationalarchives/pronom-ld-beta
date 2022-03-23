@@ -34,6 +34,10 @@ variable "container_image" {
   description = "Docker image to be launched"
 }
 
+variable "container_tag" {
+  description = "Docker image tag"
+}
+
 variable "aws_alb_target_group_arn" {
   description = "ARN of the alb target group"
 }

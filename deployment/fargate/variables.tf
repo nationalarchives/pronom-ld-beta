@@ -18,14 +18,6 @@ variable "aws-region" {
   default     = "eu-west-2"
 }
 
-# variable "aws-access-key" {
-#   type = string
-# }
-
-# variable "aws-secret-key" {
-#   type = string
-# }
-
 variable "application-secrets" {
   description = "A map of secrets that is passed into the application. Formatted like ENV_VAR = VALUE"
   type        = map(any)
@@ -75,7 +67,12 @@ variable "container_memory" {
 
 variable "container_image" {
   description = "The docker image to use"
-  default     = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:latest"
+  default     = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend"
+}
+
+variable "container_tag" {
+  description = "The docker image tag to use"
+  default     = "latest"
 }
 
 variable "health_check_path" {

@@ -3,9 +3,9 @@ provider "aws" {
 }
 
 module "logs" {
-  source = "./logs"
-  name   = var.name
-  environment   = var.environment
+  source      = "./logs"
+  name        = var.name
+  environment = var.environment
 }
 
 # terraform {
@@ -75,6 +75,7 @@ module "ecs" {
   container_cpu               = var.container_cpu
   container_memory            = var.container_memory
   container_image             = var.container_image
+  container_tag               = var.container_tag
   service_desired_count       = var.service_desired_count
   container_secrets_arns      = ""
   container_secrets           = []
