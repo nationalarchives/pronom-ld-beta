@@ -128,7 +128,7 @@
     ];
     rr:predicateObjectMap [
         rr:predicate fileFormat:ByteOrder;
-        rr:objectMap [ rr:column "byte_order_id" ; rr:datatype pr:byteOrder ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteOrder/{byte_order_id}" ];
     ];
     rr:predicateObjectMap [
         rr:predicate fileFormat:Classification;

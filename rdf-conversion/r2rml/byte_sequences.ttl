@@ -18,7 +18,7 @@
        ,[byte_sequences].[indirect_offset_length]
      -- byte_order_id is replaced since there's only 2 values and this way we can build the URI
          ,COALESCE(CASE WHEN ([byte_sequences].big_endian_flag = 0) THEN 'littleEndian' ELSE NULL END,
-                   CASE WHEN ([byte_sequences].big_endian_flag = 1) THEN 'bigEndian' ELSE NULL END) as big_endian_flag
+                   CASE WHEN ([byte_sequences].big_endian_flag = 1) THEN 'bigEndian' ELSE NULL END) as byte_order_id
 
    FROM [PRONOM6].[dbo].[byte_sequences]
   """
@@ -45,7 +45,8 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate byteSequence:ByteOrder;
-        rr:objectMap [ rr:column "big_endian_flag" ; rr:datatype pr:byteOrder ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteOrder/{byte_order_id}" ];
+
     ];
  	rr:predicateObjectMap [
         rr:predicate byteSequence:MaxOffset;
