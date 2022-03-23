@@ -1,0 +1,13 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/droid"
+  - var breadcrumbs = {'Home':"/", "Droid": "/droid"}
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Droid
+
+block content
+  .unique-page-content#droid
+    article(th:utext="${@templateUtils.md('index_droid')}")
+      p all comes from the Markdown - text not yet specified

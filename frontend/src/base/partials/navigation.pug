@@ -3,7 +3,7 @@
 section#pronom-nav
   .container
     #pronom-nav-header
-      a#page-title(href='/') Pronom
+      a#page-title(href='/') PRONOM
       button#pronom-nav-mobile-collapse(type='button')
         | MENU
     nav
@@ -20,26 +20,26 @@ section#pronom-nav
                 | What is Pronom?
             li
               a
-                | Pronom and Droid
+                | PRONOM and DROID
             li
               a(href='#newInformation')
                 | New information
         li(class={selected: currentUrl === '/search'} href='/search')
           a.top-link(class={active: currentUrl === '/search'} href='/search')
-            | Search Pronom
+            | Search PRONOM
           ul.sub-menu-pronom
             li
               a How to search?
             li
               a
-                | Search Pronom
+                | Search PRONOM
         li(class={selected: currentUrl === '/about'} href='/about')
           a.top-link(class={active: currentUrl === '/about'} href='/about')
             | About
           ul.sub-menu-pronom
             li
               a
-                | Pronom story
+                | PRONOM story
             li
               a
                 | Documentation
@@ -59,16 +59,16 @@ section#pronom-nav
             li
               a
                 | Category 2
-        li(class={selected: currentUrl === '/external'} href='external')
-          a.top-link(class={active: currentUrl === '/external'} href='external')
+        li(class={selected: currentUrl === '/external-projects'} href='external-projects')
+          a.top-link(class={active: currentUrl === '/external-projects'} href='external-projects')
             | External Projects
-        li(class={selected: currentUrl === '/submit'} href='/submit')
-          a.top-link(class={active: currentUrl === '/submit'} href='/submit')
+        li(class={selected: currentUrl === '/contribute'})
+          a.top-link(class={active: currentUrl === '/contribute'} href='/contribute')
             | Submit to Pronom
           ul.sub-menu-pronom
             li
               a
-                | Why submitting to Pronom?
+                | Why submit to PRONOM?
             li
               a
                 | How to make a submission

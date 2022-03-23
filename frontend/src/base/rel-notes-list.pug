@@ -1,0 +1,69 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/release-notes"
+  - var breadcrumbs = {'Home':"/", "Release Notes": "/release-notes"}
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Release Notes
+
+block content
+  .unique-page-content#droid
+    article
+      h2(th:utext="${@templateUtils.md('index_testEnviromentTitle')}") File Formats in the Test Enviroment
+      .test-enviroment-group
+        p(th:utext="${@templateUtils.md('index_testEnviromentExplanation')}").
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+          laboris nisi ut aliquip ex ea commodo consequat.
+        button.bordered-blue.xlarge
+          i.fa-solid.fa-arrow-down(aria-hidden="true")
+          | Download CSV
+    article(th:utext="${@templateUtils.md('index_releaseNotes')}")
+      h2 Release notes
+      p.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat.
+    .release-notes-list
+      ul
+        li
+          a(href="")
+            h3 27th October 2021
+              span DROID_SignatureFile_V98.xml
+            div
+              p
+                span.nuber 45
+                | New Sigmatures
+              p
+                span.nuber 56
+                | New Records
+              p
+                span.nuber 45
+                | Updated Records
+          a(href="")
+            h3 20th Jun 2021
+              span DROID_SignatureFile_V98.xml
+            div
+              p
+                span.nuber 32
+                | New Sigmatures
+              p
+                span.nuber 23
+                | New Records
+              p
+                span.nuber 67
+                | Updated Records
+          a(href="")
+            h3 15th February 2021
+              span DROID_SignatureFile_V98.xml
+            div
+              p
+                span.nuber 16
+                | New Sigmatures
+              p
+                span.nuber 43
+                | New Records
+              p
+                span.nuber 25
+                | Updated Records

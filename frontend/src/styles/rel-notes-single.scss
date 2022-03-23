@@ -1,0 +1,32 @@
+#singleReleaseNote{
+  h2 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    span {
+      font-size: 1em;
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+  ul {
+    padding-left: 20px;
+    li {
+      list-style-type:disc;
+      margin-bottom: 2px;
+      border-bottom: 1px solid lightgray;
+      a {
+        color: #134571;
+        padding: 5px;
+        text-decoration: none;
+        transition: all 0.1s;
+        line-height: 1.5;
+        &:hover {
+          background: #ccdbea;
+          color: black;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
