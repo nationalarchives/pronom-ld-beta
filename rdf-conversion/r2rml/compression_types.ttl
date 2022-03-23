@@ -53,7 +53,7 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate compressionType:Lossiness;
-        rr:objectMap [ rr:column "lossiness_id" ; rr:datatype pr:Lossiness ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Lossiness/{lossiness_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate compressionType:ReleaseDate;
