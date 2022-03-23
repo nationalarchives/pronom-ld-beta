@@ -1,0 +1,130 @@
+.modal-container {
+  
+  
+  // .propose-edition {
+  //   border-left: 2px solid #7070708c;
+  //   padding-left: 20px;
+  //   @media only screen and (max-width: 980px) {
+  //     grid-row: 1/2;
+  //   }
+  // }
+  // .audit-trail {
+  //   @media only screen and (max-width: 980px) {
+  //     grid-row: 1/2;
+  //   }
+  // }
+  .save-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-left: 20px;
+    @media only screen and (max-width: 980px) {
+      padding-left: 0;
+    }
+  }
+  .specs {
+    display: flex;
+    @media only screen and (max-width: 750px) {
+      display: block;
+    }
+    p {
+      padding: 0 10px;
+      margin: 0;
+      &:nth-child(2){
+        border-left: 2px solid #7070708c;
+      }
+      &:nth-child(1){
+        padding-left: 0;
+      }
+    }
+  }
+  button {
+    max-width: 250px;
+    i {
+      padding: 0 5px;
+      font-size: 20px;
+    }
+  }
+  h2 {
+    border-top: 4px solid white;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+  }
+  h3 {
+    font-size: 1em;
+    margin-left: 40px;
+    @media only screen and (max-width: 750px) {
+      margin-left: 0;
+    }
+  }
+  .file-format-container {
+    display: grid;
+    grid-template-columns:300px 1fr;
+    @media only screen and (max-width: 980px) {
+      grid-template-columns:200px 1fr;
+    }
+    @media only screen and (max-width: 750px) {
+      grid-template-columns: 1fr;
+    }
+    aside {
+      background: white;
+      padding-left: 100px;
+      @media only screen and (max-width: 980px) {
+        padding-left: 20px;
+      }
+      ul {
+        margin-top: 30px;
+        li {
+          line-height: 2.5;
+          a {
+            font-family: 'Open Sans', sans-serif;
+            text-decoration: none;
+            color: black;
+            &.active {
+              color: #0f528d;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+      @media only screen and (max-width: 750px) {
+        display: none;
+      }
+    }
+    .all-tables {
+      background: #F3F3F3;
+      padding: 10px 100px 10px 15px;
+      @media only screen and (max-width: 980px) {
+        padding-right: 20px;
+      }
+    }
+  }
+  .archived {
+    background: #FFC8C8;
+    padding: 10px 100px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+    @media only screen and (max-width: 900px) {
+      padding: 10px 20px;
+    }
+    @media only screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+    p {
+      margin:0;
+    }
+    a {
+      border: 2px solid black;
+      padding: 5px 20px;
+      width: 130px;
+      margin-left: 10px;
+      text-decoration: none;
+      color: black;
+      @media only screen and (max-width: 900px) {
+        justify-self: flex-end;
+      }
+    }
+  }
+}
