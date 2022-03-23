@@ -1,7 +1,7 @@
 # Set up AWS ECR Repo for the backend image
 resource "aws_ecr_repository" "pronom-backend-repo" {
   name                 = "pronom-backend"
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE"
 }
 
 resource "aws_ecr_repository_policy" "pronom-backend-repo-policy" {
