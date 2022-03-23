@@ -65,11 +65,11 @@ h1 {
   margin: 0;
 }
 h2 {
- font-size: 2em;
+ font-size: 1.8em;
  margin: 10px 0;
 }
 h3{
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin: 10px 0;
 }
 h1, h2, h3, h4, h5 {
@@ -92,6 +92,12 @@ hr {
   border-top: 2px solid black;
   margin-top: 35px;
 }
+.push-right {
+  margin-left: auto;
+}
+.button-container {
+  display: flex;
+}
 
 // Buttons - START #buttons
 button, a{
@@ -105,13 +111,50 @@ button, a{
     background: $active-blue;
     color: white;
     border: 2px solid $active-blue;
+    transition: all 0.2s;
+    &:hover {
+      background: white;
+      color: $active-blue !important;
+    }
   }
   &.bordered-blue {
     background: white;
     color: $active-blue;
     border: 2px solid $active-blue;
+    transition: all 0.2s;
+    &:hover {
+      background: $active-blue;
+      color: white !important;
+    }
+  }
+  &.red {
+    background: #E65841;;
+    color: black;
+    border: 2px solid #E65841;
+    transition: all 0.2s;
     &:hover {
       background: white;
+      color: black !important;
+    }
+  }
+  &.bordered-red {
+    background: white;
+    color: black;
+    border: 2px solid #E65841;
+    transition: all 0.2s;
+    &:hover {
+      background: #E65841;
+      color: black !important;
+    }
+  }
+  &.black {
+    background: black;
+    color: white;
+    border: 2px solid black;
+    transition: all 0.2s;
+    &:hover {
+      background: white;
+      color: black !important;
     }
   }
   &.small {
@@ -119,6 +162,16 @@ button, a{
     padding-left: 15px;
     padding-right: 15px;
     font-weight: 500;
+    max-height: 45px;
+    min-height: 40px;
+  }
+  &.xsmall {
+    font-size: 0.9em;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: 500;
+    max-height: 45px;
+    min-height: 30px;
   }
   &.medium {
     font-size: 1.1em;
@@ -129,7 +182,7 @@ button, a{
     font-size: 1.3em;
   }
   &.xlarge{
-    font-size: 1.7em;
+    font-size: 1.5em;
     height: 50px;
     padding: 0 50px;
     display: flex;
@@ -235,17 +288,23 @@ fieldset {
 // Input search START 
 input:focus,
 a:focus,
-button:focus {
+button:focus, 
+textarea:focus {
   outline: 5px solid #8EC0EC;
 }
 input {
   padding: 0 10px;
-  height: 45px;
-  border: 3px solid black;
+  height: 35px;
+  border: 2.5px solid black;
   font-size: 1em;
   &.small {
     height: 20px;
   }
+}
+textarea {
+  padding: 0 10px;
+  border: 2.5px solid black;
+  font-size: 1em;
 }
 
 /* Main START #main =======================================*/
@@ -561,6 +620,9 @@ main {
   }
   i {
     font-size: 40px;
+    @media only screen and (max-width: 980px) {
+      font-size: 30px;
+    }
   }
 }
 .modal-header {
@@ -568,6 +630,9 @@ main {
   grid-template-columns: 1fr auto 30px;
   grid-gap: 30px;
   align-items: center;
+  position: fixed;
+  width: calc(100% - 200px);
+  z-index: 9;
   @media only screen and (max-width: 1600px) {
     grid-template-columns: 1fr 30px;
     align-items:flex-start;
@@ -606,7 +671,7 @@ main {
   @media only screen and (max-width: 980px) {
     padding: 15px 20px;
     h1 {
-      font-size: 1.2em;
+      font-size: 1.4em;
     }
   }
 }
