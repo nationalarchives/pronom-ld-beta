@@ -1,0 +1,137 @@
+extends /layouts/modal.pug
+
+block modalHeader
+  div
+    h1
+      span fmt/11
+      | Microsoft Corporation
+    .specs
+      p Category: Vendor
+      p Last updated: 12/06/2000
+block modalHeaderAdditionals
+  div.audit-trail
+    button.bordered-blue.medium
+      i.fa-regular.fa-clock
+      | Audit trail
+      i.fa-solid.fa-angle-down
+  include ./partials/savingOptions.pug
+block modalBody
+  .archived
+    p.
+      Please note that this entry is archived. 
+      PRONOM is no longer maintaining this information.
+    a(href="")
+      | Find out more
+  //- TABLE =========================================================================
+  ul.table
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#fName Organisation name
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vOrganisationName") Lorem ipsum dolor sit amet
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vName Name
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vName") Some name
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vAddress Address
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vAddress") Some address
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vAddressCountry Address country
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vAddressCountry") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vTelephone Telephone
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vTelephone") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vSupportWebsite Support website
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vSupportWebsite") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vCompanyWebsite Company website
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vCompanyWebsite") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vContact Contact
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vContact") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vSource Source
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vSource") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vSourceDate Source date
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vSourceDate") Lorem ipsum
+    //- ROW
+    li.row
+      .tooltip-container
+        .label
+          p.label-text#vSourceDescription Source description
+          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+      div
+        p(aria-labeledby="#vSourceDescription") Lorem ipsum
+    

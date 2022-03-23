@@ -1,13 +1,24 @@
 // Breadcrumbs - START #breadcrumbs
+block vars
+  - var currentURL = "/"
+  - var breadcrumbs = {'Home':"/", "Search": "/search"}
+
 .breadcrumb-holder
   nav(aria-label="Breadcrumb navigation")
     ul
-      li
-        a.isDisabled(aria-disabled='true' disabled='')
-          | Home
-        i.fa-solid.fa-angle-right
-      li
-        a
-          | Link
-        i.fa-solid.fa-angle-right
+      each link, name in breadcrumbs
+        li
+          if currentURL !== link
+            a.isDisabled(href=link, aria-disabled='true' disabled='') #{name}
+          else
+            a(href=link) #{name}
+          i.fa-solid.fa-angle-right(aria-hidden="true")
+      //- li
+      //-   a.isDisabled(href="/", aria-disabled='true' disabled='')
+      //-     | Home
+      //-   i.fa-solid.fa-angle-right(aria-hidden="true")
+      //- li
+      //-   a
+      //-     | Link
+      //-   i.fa-solid.fa-angle-right(aria-hidden="true")
 // Breadcrumbs #breadcrumbs - END

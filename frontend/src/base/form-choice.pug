@@ -1,0 +1,44 @@
+extends /layouts/mainLayout.pug
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('index_title')}") Form choice
+
+block content
+  .unique-page-content#formChoice
+    article
+      h2 Choose subission type
+      .option
+        a.bordered-blue
+          i.fa-regular.fa-file(aria-hidden="true")
+          | Add new file format
+        div
+          p.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+            velit esse cillum dolor
+          .links
+            a(href="" aria-labelledby="GitHubLink") GitHub
+            p#GitHubLink - Some text comes here
+            a(href="" aria-labelledby="DropboxLink") Dropbox
+            p#DropboxLink - Some text comes here
+            a(href="" aria-labelledby="EmailLink") Email
+            p#EmailLink - Some text comes here
+      .option
+        a.bordered-blue
+          i.fa-regular.fa-pen-to-square(aria-hidden="true")
+          | Edit existing file format
+        p.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+          velit esse cillum dolor
+      h2 Other enquiry
+      div
+        p For any other enquiry please contact us on
+        a(href="mailto:pronom@nationalarchive.gov.uk") pronom@nationalarchive.gov.uk
+        p.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+          velit esse cillum dolor

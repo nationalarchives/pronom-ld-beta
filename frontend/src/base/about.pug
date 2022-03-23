@@ -1,10 +1,14 @@
 extends /layouts/mainLayout.pug
 
+block vars
+  - var currentURL = "/about"
+  - var breadcrumbs = {'Home':"/", "About": "/about"}
+
 block content
   .unique-page-content#about
     article(th:utext="${@templateUtils.md('index_pronom-story')}")
       //- TODO - remove when #markdown is in use
-      h2 Pronom story
+      h2 PRONOM story
       h3 Background
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -46,7 +50,7 @@ block content
           div
             h3 John Doe
             p Title
-            p email
+            a(href="mailto:johndoe@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -57,7 +61,7 @@ block content
           div
             h3 John Doe
             p Title
-            p email
+            a(href="mailto:johndoe@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -68,7 +72,7 @@ block content
           div
             h3 John Doe
             p Title
-            p email
+            a(href="mailto:johndoe@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -79,7 +83,7 @@ block content
           div
             h3 John Doe
             p Title
-            p email
+            a(href="mailto:johndoe@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 

@@ -14,7 +14,28 @@ password - password
 
 Available endpoints:
 
-- hello world - http://localhost:8080/hello
+| Name                              | Endpoint                  | Template              | Description |
+|---|:--|:--|---|
+| 1. Home                           | /                         | index.html            | Homepage |
+| 2. Search                         | /search?q={query:string}  | search.html           | Search results page |
+| 3. About                          | /about                    | about.html            | About PRONOM |
+| 4. FAQ                            | /faq                      | faq.html              | Frequently asked questions |
+| 5. External projects              | /external-projects        | external.html         | Page about external projects |
+| 6. Contact                        | /contact                  | contact.html          | Contact page |
+| | | | |
+| 7. Contribute to Pronom           | /contribute               | contribute.html       | Contribution information |
+| 7. Make a submission              | /contribute/form          | form-choice.html      | Page where user chooses to start a new form or clone from existing PUID |
+| 7.1 New format                    | /contribute/form/new      | user-form.html        | External user form page (new format) |
+| 7.2 Edit/clone format             | /contribute/form/{PUID}   | user-form.html        | External user form page (clone existing) |
+| | | | |
+| 10. Release notes                 | /release-notes            | rel-notes-list.html   | Displays the latest release notes and links to earlier notes |
+| 11. Single release                | /release-notes/{version}  | rel-notes-single.html | Displays the release notes for a specific version of pronom |
+| | | | |
+| 12. Droid                         | /droid                    | droid.html            | Displays information about droid and download links |
+| | | | |
+| 13. PUID display page             | /{PUID}                   |                       | |
+| 13.1 File Format                  | /{PUID}                   | file-format.html      | Displays information on a file format |
+| 13.2 Software/Vendor/Generic PUID | /{PUID}                   | generic-puid.html     | Displays information on a generic PUID entity |
 
 ## Templates
 
@@ -36,3 +57,28 @@ This can be done through the `MARKDOWN_DIR` environment variable. It defaults to
 The application assumes the directory exists, and it doesn't attempt to create it.
 
 If a file is referenced in a template but doesn't exist, an error is logged and an empty string is returned.
+
+## Generating a runnable jar
+
+Spring boot comes pre-configured to output a "fat" jar which includes all resources required to run the project. To generate it run the following:
+
+```bash
+./gradlew bootJar # outputs to build/libs/${rootProject.name}-${version}.jar
+```
+
+The resulting jar will be in build/libs:
+
+```bash
+cd build/libs/
+tree
+.
+└── pronombackend-0.0.1-SNAPSHOT.jar
+```
+
+## Building a Docker image
+
+Once the Jar exists a Docker image can be built using the provided Dockerfile:
+
+```bash
+docker build -t pronombackend:0.0.1 .
+```

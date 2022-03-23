@@ -1,0 +1,13 @@
+include ../partials/head.pug
+
+.modal-container
+  .modal-header
+    .title
+      block modalHeader
+    .additionals
+      block modalHeaderAdditionals
+    .close
+      i.fa-solid.fa-xmark
+  .modal-body
+    div
+      block modalBody

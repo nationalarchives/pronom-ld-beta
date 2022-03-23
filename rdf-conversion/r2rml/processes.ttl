@@ -43,11 +43,11 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate process:ProcessType;
-        rr:objectMap [ rr:column "process_type_id" ; rr:datatype pr:ProcessType ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ProcessType/{process_type_id}" ];
  	];
  	rr:predicateObjectMap [
         rr:predicate process:Invariance;
-        rr:objectMap [ rr:column "invariance_id" ; rr:datatype pr:Invariance ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Invariance/{invariance_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate process:DefaultFlag;

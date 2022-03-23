@@ -38,7 +38,7 @@
  	];
  	rr:predicateObjectMap [
         rr:predicate document:DocumentType;
-        rr:objectMap [ rr:column "document_type_id" ; rr:datatype pr:DocumentType ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentType/{document_type_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate document:Display;

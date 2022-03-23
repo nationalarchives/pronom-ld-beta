@@ -1,5 +1,9 @@
 extends /layouts/mainLayout.pug
 
+block vars
+  - var currentURL = "/faq"
+  - var breadcrumbs = {'Home':"/", "FAQ": "/faq"}
+
 block pageTitle
   h1(th:text="${@templateUtils.md('index_title')}") FAQ
 
@@ -13,21 +17,21 @@ block content
             div
               input(type="search" id="pronom_search" placeholder="Search for term...")
               button.click-search(type="submit")
-                i.fa-solid.fa-magnifying-glass
+                i.fa-solid.fa-magnifying-glass(aria-hidden="true")
                 | Search
       .buttons
         button.bordered-blue.medium
           span Open all
-          i.fa-solid.fa-chevron-down
+          i.fa-solid.fa-chevron-down(aria-hidden="true")
         button.bordered-blue.medium
           span Collapse all
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
     h3 Category 1
     ul
       li.unfold
         button(aria-expanded="false" id="cat1btn1" aria-controls="cat1sec1")
           span How can I upload my files?
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p.hide(id="cat1sec1" role="region" aria-labeledby="cat1btn1").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -37,7 +41,7 @@ block content
       li
         button(aria-expanded="false" id="cat1btn2" aria-controls="cat1sec2")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat1sec2" role="region" aria-labeledby="cat1btn2").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -47,7 +51,7 @@ block content
       li
         button(aria-expanded="false" id="cat1btn3" aria-controls="cat1sec3")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat1sec3" role="region" aria-labeledby="cat1btn3").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -59,7 +63,7 @@ block content
       li
         button(aria-expanded="false" id="cat2btn1" aria-controls="cat2sec1")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat2sec1" role="region" aria-labeledby="cat2btn1").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -69,7 +73,7 @@ block content
       li
         button(aria-expanded="false" id="cat2btn2" aria-controls="cat2sec2")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat2sec2" role="region" aria-labeledby="cat2btn2").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -79,7 +83,7 @@ block content
       li
         button(aria-expanded="false" id="cat2btn3" aria-controls="cat2sec3")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat2sec3" role="region" aria-labeledby="cat2btn3").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -91,7 +95,7 @@ block content
       li
         button(aria-expanded="false" id="cat3btn1" aria-controls="cat3sec1")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat3sec1" role="region" aria-labeledby="cat3btn1").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -101,7 +105,7 @@ block content
       li
         button(aria-expanded="false" id="cat3btn2" aria-controls="cat3sec2")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat3sec2" role="region" aria-labeledby="cat3btn2").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -111,7 +115,7 @@ block content
       li
         button(aria-expanded="false" id="cat3btn3" aria-controls="cat3sec3")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat3sec3" role="region" aria-labeledby="cat3btn3").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -121,7 +125,7 @@ block content
       li
         button(aria-expanded="false" id="cat3btn4" aria-controls="cat3sec4")
           span Next subject
-          i.fa-solid.fa-chevron-up
+          i.fa-solid.fa-chevron-up(aria-hidden="true")
         p(id="cat3sec4" role="region" aria-labeledby="cat3btn4").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 

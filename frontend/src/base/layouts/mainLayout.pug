@@ -1,3 +1,7 @@
+block vars
+  - var currentURL = "/"
+  - var breadcrumbs = {'Home':"/", "Search": "/search"}
+
 include ../partials/head.pug
 
 .page-container
@@ -15,3 +19,5 @@ include ../partials/head.pug
         //- Unique page cotnent START
         block content
   //- Main - END
+//- Social media START
+include ../partials/socialMedia.pug

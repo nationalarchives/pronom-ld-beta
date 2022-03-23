@@ -3,9 +3,7 @@
     margin-top: 35px;
   }
   ul {
-    padding-left: 0;
     li {
-      list-style-type: none;
       border: 2px solid #DFDFDF;
       margin-bottom: 3px;
       button {
@@ -13,16 +11,20 @@
         background: none;
         padding: 6px 15px;
         font-family: 'Open Sans', sans-serif;
-        font-size: 18px;
+        font-size: 1.1em;
         display: flex;
         width: 100%;
+        transition: all 0.2s;
+        &:hover {
+          background: #ccdbea;
+        }
         i {
           margin-left: auto;
           color: #0f528d;
         }
       }
       p {
-        background: #ededed82;
+        background: #dbdbdb63;
         padding: 10px 15px;
         margin: 0;
       }
@@ -68,7 +70,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
+        font-size: 1.1em;
         i {
           margin-right: 5px;
         }
@@ -89,6 +91,7 @@
       height: 35px;
       display: flex;
       align-items: center;
+      transition: all 0.2s;
     }
     i {
       margin-left: 10px;

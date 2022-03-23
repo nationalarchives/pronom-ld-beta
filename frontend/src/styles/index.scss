@@ -33,6 +33,9 @@
     margin-top: 5px;
     button {
       margin-right: 6px;
+      &:focus {
+        outline: 5px solid #0f528d;
+      }
     }
   }
 }
