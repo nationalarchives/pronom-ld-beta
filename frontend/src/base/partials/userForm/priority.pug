@@ -1,6 +1,6 @@
 section.form-part#priority
   .form-header-main
-    h2 Signatures
+    h2 More information
     .nav
       button.bordered-blue.medium.left
         i.fa-solid.fa-angles-left
@@ -20,7 +20,7 @@ section.form-part#priority
   .form-partial-content
       .part
         fieldset
-          legend.sr-only Select signature type you wish to add
+          legend.sr-only For the current file format, specify others over which it has priority over
           .row-group
             #priority-inner
               p Priority over
@@ -29,11 +29,11 @@ section.form-part#priority
                   .form-row
                     .tooltip-container
                       .label
-                        label(for="Name") File format
+                        label(for="FileFormat") File format
                         span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    input(name="Name" id="Name")
+                    input(name="FileFormat" id="FileFormat")
                   button.bordered-red.small 
                     | Delete field
                 .priority-group

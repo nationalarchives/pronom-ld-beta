@@ -294,6 +294,7 @@ fieldset {
     border: 3px solid black;
   }
 }
+// Signatures =======================================
 #signatures {
   .checkbox-container {
     margin-top: 0;
@@ -411,6 +412,9 @@ section {
   &#signatures {
     display: none;
   }
+  &#priority {
+    display: none;
+  }
 }
 select {
   display: block;
@@ -419,7 +423,7 @@ select {
   color: #0f528d;
   border: 2px solid #0f528d;
   font-size: 1em;
-  height: 35px;
+  height: 40px;
   padding: 0 20px 0 0;
   font-weight: 500;
   font-family: 'Roboto Mono', monospace;
@@ -431,6 +435,7 @@ select {
 select:focus {
   outline: 5px solid #8EC0EC;
 }
+// Priority =======================================
 #priority {
   #priority-inner {
     display: grid;
@@ -464,6 +469,49 @@ select:focus {
     max-width: 900px;
     @media only screen and (max-width: 750px) {
       grid-column: 1/2;
+    }
+  }
+}
+// Identifiers =======================================
+#identifiers{
+  #identifiers-list {
+    .row-group {
+      display: grid;
+      grid-template-columns: auto 1fr 200px;
+      grid-gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 10px !important;
+      @media only screen and (max-width: 750px) {
+        grid-template-columns: 1fr;
+        grid-gap: 0;
+        .button-container {
+          grid-row: 1/2;
+          margin-left: auto;
+        }
+      }
+      .button-container {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  #aliases-list {
+    .row-group {
+      display: grid;
+      grid-template-columns: 1fr 200px 200px;
+      grid-gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 10px !important;
+      @media only screen and (max-width: 750px) {
+        grid-template-columns: 1fr;
+        grid-gap: 0;
+        .button-container {
+          grid-row: 1/2;
+          margin-left: auto;
+        }
+      }
+      .button-container {
+        margin-bottom: 10px;
+      }
     }
   }
 }
