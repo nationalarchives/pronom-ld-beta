@@ -1,6 +1,6 @@
 main {
   margin-left: 360px;
-  padding-left: 20px;
+  padding: 20px;
   background: #f3f3f3;
 }
 .modal-header {
@@ -415,6 +415,12 @@ section {
   &#priority {
     display: none;
   }
+  &#identifiers {
+    display: none;
+  }
+  &#relationships {
+    display: none;
+  }
 }
 select {
   display: block;
@@ -498,6 +504,29 @@ select:focus {
     .row-group {
       display: grid;
       grid-template-columns: 1fr 200px 200px;
+      grid-gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 10px !important;
+      @media only screen and (max-width: 750px) {
+        grid-template-columns: 1fr;
+        grid-gap: 0;
+        .button-container {
+          grid-row: 1/2;
+          margin-left: auto;
+        }
+      }
+      .button-container {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+// Identifiers =======================================
+#relationships{
+  #relationships-list{
+    .row-group {
+      display: grid;
+      grid-template-columns: auto 1fr 200px;
       grid-gap: 20px;
       align-items: flex-end;
       margin-bottom: 10px !important;
