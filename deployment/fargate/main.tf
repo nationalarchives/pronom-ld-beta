@@ -5,6 +5,7 @@ provider "aws" {
 module "logs" {
   source = "./logs"
   name   = var.name
+  environment   = var.environment
 }
 
 # terraform {
@@ -12,7 +13,7 @@ module "logs" {
 #     bucket  = "terraform-backend-store"
 #     encrypt = true
 #     key     = "terraform.tfstate"
-#     region  = "eu-central-1"
+#     region  = "eu-west-2"
 #     # dynamodb_table = "terraform-state-lock-dynamo" - uncomment this line once the terraform-state-lock-dynamo has been terraformed
 #   }
 # }

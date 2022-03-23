@@ -175,6 +175,7 @@ resource "aws_ecs_service" "main" {
   lifecycle {
     ignore_changes = [desired_count]
   }
+  depends_on = [var.log_name]
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
