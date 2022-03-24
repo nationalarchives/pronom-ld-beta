@@ -1,22 +1,27 @@
 section.form-part#core
-  .form-header-main
-    h2 Core
-    .nav
-      //- button.bordered-blue.medium.left
-        i.fa-solid.fa-angles-left
-        | Prev
-      button.bordered-blue.medium.right
-        | Next
-        i.fa-solid.fa-angles-right
-  //- .form-header-sub
-  //-   h3 Title
-  //-   .nav
-  //-     button.bordered-blue.small.left
-  //-       i.fa-solid.fa-angles-left
-  //-       | Prev
-  //-     button.bordered-blue.small.right
-  //-       | Next
-  //-       i.fa-solid.fa-angles-right
+  .smallScreen
+    button.accordion
+      i.fa-solid.fa-chevron-down
+      h2 Core
+  .largeScreen
+    .form-header-main
+      h2 Core
+      .nav
+        //- button.bordered-blue.medium.left
+          i.fa-solid.fa-angles-left
+          | Prev
+        button.bordered-blue.medium.right
+          | Next
+          i.fa-solid.fa-angles-right
+    //- .form-header-sub
+    //-   h3 Title
+    //-   .nav
+    //-     button.bordered-blue.small.left
+    //-       i.fa-solid.fa-angles-left
+    //-       | Prev
+    //-     button.bordered-blue.small.right
+    //-       | Next
+    //-       i.fa-solid.fa-angles-right
   .form-partial-content
     form(aria-label="Add new file format")
       h4.border Main

@@ -615,6 +615,8 @@ main {
 }
 .close {
   grid-column: 3/4;
+  border: none;
+  background: none;
   @media only screen and (max-width: 980px) {
     grid-column: 2/3;
   }
@@ -627,7 +629,7 @@ main {
 }
 .modal-header {
   display: grid;
-  grid-template-columns: 1fr auto 30px;
+  grid-template-columns: 1fr auto 40px;
   grid-gap: 30px;
   align-items: center;
   position: fixed;

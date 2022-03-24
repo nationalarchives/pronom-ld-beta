@@ -1,24 +1,19 @@
 section.form-part#signatures
-  .form-header-main
-    h2 Signatures
-    .nav
-      button.bordered-blue.medium.left
-        i.fa-solid.fa-angles-left
-        | Prev
-      button.bordered-blue.medium.right
-        | Next
-        i.fa-solid.fa-angles-right
-  //- .form-header-sub
-  //-   h3 Title
-  //-   .nav
-  //-     button.bordered-blue.small.left
-  //-       i.fa-solid.fa-angles-left
-  //-       | Prev
-  //-     button.bordered-blue.small.right
-  //-       | Next
-  //-       i.fa-solid.fa-angles-right
+  .smallScreen
+    button.accordion
+      i.fa-solid.fa-chevron-down
+      h2 Signatures
+  .largeScreen
+    .form-header-main
+      h2 Signatures
+      .nav
+        button.bordered-blue.medium.left
+          i.fa-solid.fa-angles-left
+          | Prev
+        button.bordered-blue.medium.right
+          | Next
+          i.fa-solid.fa-angles-right
   .form-partial-content
-    h4.border Signatures
       //- signature select
       .part
         fieldset
