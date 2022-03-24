@@ -421,6 +421,12 @@ section {
   &#relationships {
     display: none;
   }
+  &#additionalProperties {
+    display: none;
+  }
+  &#yourDetails {
+    // display: none;
+  }
 }
 select {
   display: block;
@@ -521,7 +527,7 @@ select:focus {
     }
   }
 }
-// Identifiers =======================================
+// Relationship =======================================
 #relationships{
   #relationships-list{
     .row-group {
@@ -541,6 +547,34 @@ select:focus {
       .button-container {
         margin-bottom: 10px;
       }
+    }
+  }
+}
+// Your details =======================================
+#yourDetails {
+  #main-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 40px;
+    @media only screen and (max-width: 820px) {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+  }
+  #recognition {
+    max-width: fit-content;
+    >div {
+      padding: 10px 10px 0 10px;
+      background: #ECECEC;
+      border:2px solid #D2D2D2;
+      label {
+        margin-top: 5px;
+      }
+    }
+    .checkbox-container {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      grid-gap: 5px;
     }
   }
 }
