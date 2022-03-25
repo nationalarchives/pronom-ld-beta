@@ -14,7 +14,7 @@ public class PronombackendApplication {
 
 	@Bean(name = "templateUtils")
 	public TemplateUtils templateUtils(){
-		return new TemplateUtils("md");
+		return new TemplateUtils(ApplicationConfig.MARKDOWN_DIR);
 	}
 
 
