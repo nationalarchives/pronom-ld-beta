@@ -50,9 +50,13 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([{
-    name        = "${var.name}-container-${var.environment}"
-    image       = "${var.container_image}:${var.container_tag}"
-    essential   = true
+    name      = "${var.name}-container-${var.environment}"
+    image     = "${var.container_image}:${var.container_tag}"
+    essential = true
+    mountPoints = [{
+      containerPath = "/md"
+      sourceVolume  = "markdown"
+    }]
     environment = var.container_environment
     portMappings = [{
       protocol      = "tcp"
@@ -68,6 +72,15 @@ resource "aws_ecs_task_definition" "main" {
       }
     }
   }])
+
+  volume {
+    name = "markdown"
+    efs_volume_configuration {
+      file_system_id = var.backend_md_efs_id
+      root_directory = "/"
+    }
+  }
+
   tags = {
     Name        = "${var.name}-task-${var.environment}"
     Environment = var.environment

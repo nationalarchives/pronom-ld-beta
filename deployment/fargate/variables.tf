@@ -18,6 +18,27 @@ variable "aws-region" {
   default     = "eu-west-2"
 }
 
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile to load."
+  default     = "pronomdev"
+}
+
+variable "aws_secret_id" {
+  type        = string
+  description = "AWS secret ID."
+}
+
+variable "aws_secret_key" {
+  type        = string
+  description = "AWS secret key."
+}
+
+variable "assume_role" {
+  type        = string
+  description = "ARN of the role to assume. This is required due to a bug/limitation in terraform with reading profiles from the aws credentials file"
+}
+
 variable "application-secrets" {
   description = "A map of secrets that is passed into the application. Formatted like ENV_VAR = VALUE"
   type        = map(any)

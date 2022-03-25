@@ -63,3 +63,11 @@ variable "container_secrets" {
 variable "container_secrets_arns" {
   description = "ARN for secrets"
 }
+
+variable "backend_md_efs_id" {
+  description = "EFS ID for the backend Markdown directory"
+}
+
+variable "backend_md_efs_name" {
+  description = "EFS Name for the backend Markdown directory"
+}

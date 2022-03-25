@@ -1,5 +1,11 @@
 provider "aws" {
-  region = var.region
+  region     = var.region
+  profile    = var.aws_profile
+  access_key = var.aws_secret_id
+  secret_key = var.aws_secret_key
+  assume_role {
+    role_arn = var.assume_role
+  }
 }
 
 module "logs" {
@@ -15,20 +21,6 @@ module "logs" {
 #     key     = "terraform.tfstate"
 #     region  = "eu-west-2"
 #     # dynamodb_table = "terraform-state-lock-dynamo" - uncomment this line once the terraform-state-lock-dynamo has been terraformed
-#   }
-# }
-
-# resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-#   name           = "terraform-state-lock-dynamo"
-#   hash_key       = "LockID"
-#   read_capacity  = 20
-#   write_capacity = 20
-#   attribute {
-#     name = "LockID"
-#     type = "S"
-#   }
-#   tags = {
-#     Name = "DynamoDB Terraform State Lock Table"
 #   }
 # }
 
@@ -71,6 +63,8 @@ module "ecs" {
   aws_alb_target_group_arn    = module.alb.aws_alb_target_group_arn
   ecs_service_security_groups = [module.security_groups.ecs_tasks]
   log_name                    = module.logs.name
+  backend_md_efs_id           = module.efs.backend_md_id
+  backend_md_efs_name         = module.efs.backend_md_name
   container_port              = var.container_port
   container_cpu               = var.container_cpu
   container_memory            = var.container_memory
@@ -83,4 +77,12 @@ module "ecs" {
     { name = "LOG_LEVEL", value = "DEBUG" },
     { name = "PORT", value = var.container_port }
   ]
+}
+
+module "efs" {
+  source         = "./efs"
+  name           = var.name
+  environment    = var.environment
+  security_group = module.security_groups.ecs_tasks
+  subnets        = module.vpc.private_subnets
 }
