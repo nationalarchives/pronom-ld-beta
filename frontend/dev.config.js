@@ -30,6 +30,10 @@ const rewrites = [
   { from: new RegExp("^\/vendor\/\d+$"), to: "/vendor.html" },
   { from: new RegExp("^\/(x-)?fmt\/\d+$"), to: "/file-format.html" },
   { from: new RegExp("^\/(?:x-)?(?:chr|sfw|cmp)\/\d+$"), to: "/generic-puid.html" },
+  // internal interface
+  { from: new RegExp("^\/dashboard$"), to: "/dashboard.html" },
+  { from: new RegExp("^\/internal-search$"), to: "/internalSearch.html" },
+  { from: new RegExp("^\/content-manager$"), to: "/contentManager.html" },
 ]
 
 module.exports = merge(common, {
