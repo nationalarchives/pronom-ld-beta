@@ -10,6 +10,9 @@
   .tooltip-container {
     margin-top: 10px;
   }
+  @media only screen and (max-width: 700px) {
+    margin-top: 5px;
+  }
 }
 .pronom-updates {
   background: #C4DFF8;
