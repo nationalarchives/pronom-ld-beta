@@ -2,10 +2,14 @@ package com.wallscope.pronombackend;
 
 import com.google.common.io.Resources;
 import com.wallscope.pronombackend.config.ApplicationConfig;
+import com.wallscope.pronombackend.utils.TemplateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,21 +30,29 @@ import java.util.regex.Pattern;
  * This controller handles all calls to form submission related pages.
  * This includes both GET operations for templates and POST operations with the data.
  * */
-@RestController
+@Controller
 public class ContentController {
+    Logger logger = LoggerFactory.getLogger(ContentController.class);
+
     @Value("classpath:templates/*")
     private Resource[] resources;
 
-    private String mdDir = ApplicationConfig.MARKDOWN_DIR;
+    private final String mdDir = ApplicationConfig.MARKDOWN_DIR;
 
     private final Pattern p = Pattern.compile("@templateUtils\\.md\\('(?<region>[a-z_-]+)'\\)");
 
-    @GetMapping("/content/list")
-    public List<String> contribute(Model model) throws IOException {
-        return getAvailableRegions();
+    @GetMapping("/content-manager")
+    public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
+        List<String> regions = getAvailableRegions();
+        HashMap<String, String> contentMap = new HashMap<>();
+        for (String r : regions) {
+            contentMap.put(r, templateUtils.raw(r));
+        }
+        model.addAttribute("contentMap", contentMap);
+        return "content-manager";
     }
 
-    @RequestMapping(value = "/content/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/content-manager/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveContent(Model model, @PathVariable(required = true) String region, @RequestParam HashMap<String, String> formData) {
         try {
             if (!getAvailableRegions().contains(region)) {
@@ -54,7 +66,7 @@ public class ContentController {
             FileWriter f2 = new FileWriter(f, false);
             f2.write(content);
             f2.close();
-            return "{\"status\": \"ok\"}";
+            return "redirect:/content-manager";
         } catch (IOException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "something went wrong");
