@@ -47,6 +47,8 @@ public class ContentController {
             contentMap.put(r, templateUtils.raw(r));
         }
         model.addAttribute("contentMap", contentMap);
+        // Adding the regions set allows for sorted iteration
+        model.addAttribute("regions", regions);
         return "content-manager";
     }
 
