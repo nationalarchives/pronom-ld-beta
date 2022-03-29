@@ -30,14 +30,8 @@ html, body {
 button, a {
   cursor: pointer;
 }
-.side-padding {
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-  padding-top: 40px;
-}
 .page-container {
   display: grid;
-  grid-template-columns: auto 1fr;
   min-height: 100vh;
   padding: 0 90px;
   @media only screen and (max-width: 1200px) {
@@ -67,6 +61,9 @@ h1 {
 h2 {
  font-size: 1.8em;
  margin: 10px 0;
+ @media only screen and (max-width: 700px) {
+  font-size: 1.6em;
+ }
 }
 h3{
   font-size: 1.3em;
@@ -155,6 +152,16 @@ button, a{
     &:hover {
       background: white;
       color: black !important;
+    }
+  }
+  &.bordered-black {
+    background: white;
+    color: black;
+    border: 2px solid black;
+    transition: all 0.2s;
+    &:hover {
+      background: black;
+      color: white !important;
     }
   }
   &.small {
@@ -309,10 +316,15 @@ textarea {
 
 /* Main START #main =======================================*/
 main {
-  margin-left: 30px;
-  margin-bottom: 50px;
+  margin-left: 250px;
+  border-left: 12px solid #C4DFF8;
+  min-height: 100vh;
+  padding: 60px 0 50px 50px;
   @media only screen and (max-width: 1200px) {
     margin-left: 0 !important;
+    margin-left: 20px;
+    border-left: none;
+    padding: 30px 20px 20px 20px;
   }
   @media only screen and (max-width: 700px) {
     margin-left: 20px;
@@ -327,6 +339,7 @@ main {
     grid-gap: 50px;
     @media only screen and (max-width: 700px) {
       grid-template-columns: 1fr;
+      grid-gap: 10px;
     }
   }
 }
@@ -335,12 +348,17 @@ main {
 /* Pronom main menu - START #pronommainmenu ============== */
 
 #pronom-nav {
-  border-right: 12px solid #C4DFF8;
+  position: fixed;
+  width: 250px;
   #page-title {
     text-decoration: none;
     color:black;
     font-weight: bold;
     font-size: 2.2em;
+    font-family: 'Open Sans', sans-serif;
+    @media only screen and (max-width: 700px) {
+      font-size: 1.8em;
+    }
   }
   .container {
     min-width: 230px;
@@ -361,7 +379,7 @@ main {
         color: $active-blue;
       }
       &.top-link {
-        margin-top: 20px;
+        margin-top: 18px;
         margin-bottom: 8px;
         display: flex;
         text-decoration: none;
@@ -426,13 +444,14 @@ main {
   display: flex;
   align-items: flex-end;
   background: white;
-  padding: 0 20px;
-  height: 65px;
-  padding-top: 10px;
+  height: 45px;
+  padding-top: 50px;
   @media only screen and (max-width: 1200px) {
     box-shadow: 1px -2px 8px black;
     align-items: center;
     padding-top: 0;
+    width: calc(100vw - 40px);
+    padding: 5px 20px;
   }
   button {
     margin-left: auto;
@@ -811,3 +830,167 @@ main {
 }
 /* Table END */
 
+// INTERNAL INTERFACE
+
+/* Pronom main menu - START #pronommainmenu ============== */
+
+#internal-pronom-nav {
+  position: fixed;
+  width: 250px;
+  top: 80px;
+  #page-title {
+    text-decoration: none;
+    color:black;
+    font-weight: bold;
+    font-size: 2.2em;
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-size: 0.6em;
+      font-weight: normal;
+      margin-top: -10px;
+    }
+    @media only screen and (max-width: 700px) {
+      font-size: 1.8em;
+    }
+  }
+  .container {
+    min-width: 230px;
+  }
+  ul, li {
+    font-family: 'Open Sans', sans-serif;
+    padding:0;
+    a {
+      font-family: 'Open Sans', sans-serif;
+    }
+  }
+  li {
+    a {
+      font-weight: 600;
+      color: black;
+      transition: all 0.2s;
+      &:hover {
+        color: $active-blue;
+      }
+      &.top-link {
+        margin-top: 18px;
+        margin-bottom: 8px;
+        display: flex;
+        text-decoration: none;
+        &.active {
+          font-weight: 800;
+        }
+      }
+    }
+    .sub-menu-pronom {
+      display: none;
+      margin-left: 4px;
+      margin-top: 15px;
+      a {
+        padding: 8px 12px;
+        border-left: 4px solid #D2E0ED;
+        display: flex;
+        color: black;
+        text-decoration: none;
+        font-size: 1em;
+        &:hover {
+          color: $active-blue;
+          transition: all 0.2s;
+        }
+        &.active {
+          border-left: 4px solid $active-blue;
+          color: $active-blue;
+        }
+      }
+    }
+    &.selected {
+      .sub-menu-pronom {
+        display: block;
+      }
+    }
+  }
+  a {
+    font-size: 1.2em;
+    &.active {
+      color: $active-blue;
+    }
+  }
+  @media only screen and (max-width: 1200px) {
+    border-right: none;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+  #internal-menu {
+    nav {
+      margin-left: 20px;
+      margin-top: -20px;
+    }
+  }
+  #internal-actions {
+    .buttons {
+      padding-right: 20px;
+      margin-left: 20px;
+      >div {
+        margin-bottom: 15px;
+        button {
+          text-align: left;
+          margin-bottom: 5px;
+          width: 100%;
+        }
+      }
+    }
+  }
+  h2 {
+    font-size: 1.3em;
+    font-weight: 900;
+  }
+  #internal-actions, #internal-menu {
+    margin-top: 35px;
+  }
+}
+#internal-banner {
+  position: fixed;
+  width: calc(100vw - 180px);
+  padding: 10px 90px;
+  display: flex;
+  background: black;
+  min-height: 60px;
+  align-items: center;
+  >button {
+    border: 2px solid white;
+    color: white;
+    background: black;
+    margin-left: auto;
+    i {
+      margin-left: 20px;
+    }
+  }
+}
+main#internal-main {
+  margin-left: 250px;
+  border-left: 10px solid black;
+  min-height: 100vh;
+  padding: 120px 0 50px 50px;
+  @media only screen and (max-width: 1200px) {
+    margin-left: 0 !important;
+    margin-left: 20px;
+    border-left: none;
+    padding: 30px 20px 20px 20px;
+  }
+  @media only screen and (max-width: 700px) {
+    margin-left: 20px;
+  }
+  
+}
+h1.internal-title {
+  display: block !important;
+  color: black !important;
+  height: auto !important;
+  width: auto !important;
+  font-weight: normal;
+  padding-top: 35px;
+  border-bottom: 3px solid black;
+  padding-bottom: 30px;
+}

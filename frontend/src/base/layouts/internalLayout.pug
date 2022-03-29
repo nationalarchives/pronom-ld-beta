@@ -1,0 +1,21 @@
+include ../partials/head.pug
+
+#internal-banner
+  img(src="../../public/images/National_Archive_Logo.png", alt="National Archive Logo")
+  button.medium
+    | John Doe
+    i.fa-solid.fa-chevron-down
+.page-container
+  //- Pronom main menu - START #pronommainmenu
+  include ../partials/internalNavigation.pug
+  //- Pronom main menu - END
+  //- Main #main - START
+  main#internal-main
+    //- H1 tag only for screen readers and SEO
+    block pageTitle
+    //- INFO page columns is div to handle home page and only here needs class of "two"
+    .page-columns
+      div
+        //- Unique page cotnent START
+        block content
+  //- Main - END
