@@ -1,0 +1,17 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/contact"
+  - var breadcrumbs = {'Home':"/", "Content Manager": "/content-manager"}
+
+block pageTitle
+  h1(th:text="${@templateUtils.md('content-manager_title')}") Content Manager
+
+block content
+  .unique-page-content#content-manager
+    h1 Editable regions:
+    div(th:each="region : ${contentMap}")
+      h2(th:text="${@templateUtils.humaniseRegion(region.key)}") Index: title
+      form(th:action="@{/content-manager/} + ${region.key}", method="post")
+        textarea(name="content", cols="80", rows="10", th:text="${region.value}")
+        button(type="submit") Save
