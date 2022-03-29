@@ -19,10 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +40,8 @@ public class ContentController {
 
     @GetMapping("/content-manager")
     public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
-        List<String> regions = getAvailableRegions();
+        ArrayList<String> regions = new ArrayList<>(getAvailableRegions());
+        Collections.sort(regions);
         HashMap<String, String> contentMap = new HashMap<>();
         for (String r : regions) {
             contentMap.put(r, templateUtils.raw(r));
@@ -73,9 +71,9 @@ public class ContentController {
         }
     }
 
-    private List<String> getAvailableRegions() {
+    private Set<String> getAvailableRegions() {
         try {
-            List<String> regions = new ArrayList<>();
+            Set<String> regions = new HashSet<>();
             for (final Resource res : resources) {
                 URL url = res.getURL();
                 // Get the contents of the template file
@@ -91,7 +89,7 @@ public class ContentController {
             return regions;
         } catch (IOException e) {
             // TODO: Handle exception
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
     }
 }
