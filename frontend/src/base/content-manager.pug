@@ -10,8 +10,8 @@ block pageTitle
 block content
   .unique-page-content#content-manager
     h1 Editable regions:
-    div(th:each="region : ${contentMap}")
-      h2(th:text="${@templateUtils.humaniseRegion(region.key)}") Index: title
-      form(th:action="@{/content-manager/} + ${region.key}", method="post")
-        textarea(name="content", cols="80", rows="10", th:text="${region.value}")
+    div(th:each="region : ${regions}")
+      h2(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
+      form(th:action="@{/content-manager/} + ${region}", method="post")
+        textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
         button(type="submit") Save
