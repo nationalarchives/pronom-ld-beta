@@ -22,6 +22,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	// Guava utils library
+	// https://github.com/google/guava
+	implementation("com.google.guava:guava:31.1-jre")
+
 	// Markdown Processor
 	// https://search.maven.org/artifact/org.lucee/txtmark/0.16.0/bundle
 	implementation 'org.lucee:txtmark:0.16.0'
