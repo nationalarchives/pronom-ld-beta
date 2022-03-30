@@ -1,0 +1,49 @@
+- var currentUrl = '/'
+
+section#internal-pronom-nav
+  .container
+    #pronom-nav-header
+      a#page-title(href='/')
+        | PRONOM
+        span Editorial Environment
+      button#pronom-nav-mobile-collapse(type='button')
+        | MENU
+    #internal-menu
+      h2 Menu
+      nav
+        ul.menu-pronom.side-padding.hide
+          // INFO to display sub-menu add class="selected" to <li>
+          li(class={selected: currentUrl === '/'})
+            // INFO for blue color add class="active"
+            a.top-link(class={active: currentUrl === '/dashboard'} href='/dashboard')
+              | Dashboard
+            ul.sub-menu-pronom
+              li
+                // INFO for blue color add class="active"
+                a.active
+                  | Submissions
+              li
+                a
+                  | Release plan
+              li
+                a(href='')
+                  | Submissions maintenance history
+          li(class={selected: currentUrl === '/internalSearch'})
+            a.top-link(class={active: currentUrl === '/internalSearch'} href='/internal-search')
+              | Search PRONOM
+          li(class={selected: currentUrl === '/contentManager'})
+            a.top-link(class={active: currentUrl === '/contentManager'} href='/content-manager')
+              | Edit website content
+    #internal-actions
+      h2 Actions
+      .buttons
+        div
+          button.bordered-black.medium
+            | Add file format
+          button.bordered-black.medium
+            | Edit file format
+        div
+          button.bordered-black.medium
+            | Add contributor
+          button.bordered-black.medium
+            | Add institutional actor
