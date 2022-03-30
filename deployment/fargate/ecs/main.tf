@@ -1,93 +1,38 @@
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "${var.name}-ecsTaskExecutionRole"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Effect" : "Allow",
+        "Sid" : ""
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.name}-ecsTaskRole"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Effect" : "Allow",
+        "Sid" : ""
+      }
+    ]
+  })
 }
-EOF
-}
-
-# resource "aws_iam_policy" "dynamodb" {
-#   name        = "${var.name}-task-policy-dynamodb"
-#   description = "Policy that allows access to DynamoDB"
-
-#   policy = <<EOF
-# {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#             "Effect": "Allow",
-#             "Action": [
-#                 "dynamodb:CreateTable",
-#                 "dynamodb:UpdateTimeToLive",
-#                 "dynamodb:PutItem",
-#                 "dynamodb:DescribeTable",
-#                 "dynamodb:ListTables",
-#                 "dynamodb:DeleteItem",
-#                 "dynamodb:GetItem",
-#                 "dynamodb:Scan",
-#                 "dynamodb:Query",
-#                 "dynamodb:UpdateItem",
-#                 "dynamodb:UpdateTable"
-#             ],
-#             "Resource": "*"
-#         }
-#     ]
-# }
-# EOF
-# }
-
-# resource "aws_iam_policy" "secrets" {
-#   name        = "${var.name}-task-policy-secrets"
-#   description = "Policy that allows access to the secrets we created"
-
-#   policy = <<EOF
-# {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#             "Sid": "AccessSecrets",
-#             "Effect": "Allow",
-#             "Action": [
-#               "secretsmanager:GetSecretValue"
-#             ],
-#             "Resource": ${jsonencode(var.container_secrets_arns)}
-#         }
-#     ]
-# }
-# EOF
-# }
 
 
 resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
@@ -95,15 +40,6 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
-#   role       = aws_iam_role.ecs_task_role.name
-#   policy_arn = aws_iam_policy.dynamodb.arn
-# }
-
-# resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment-for-secrets" {
-#   role       = aws_iam_role.ecs_task_execution_role.name
-#   policy_arn = aws_iam_policy.secrets.arn
-# }
 
 resource "aws_ecs_task_definition" "main" {
   family                   = "${var.name}-task-${var.environment}"
@@ -114,9 +50,13 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([{
-    name        = "${var.name}-container-${var.environment}"
-    image       = "${var.container_image}"
-    essential   = true
+    name      = "${var.name}-container-${var.environment}"
+    image     = "${var.container_image}:${var.container_tag}"
+    essential = true
+    mountPoints = [{
+      containerPath = "/md"
+      sourceVolume  = "markdown"
+    }]
     environment = var.container_environment
     portMappings = [{
       protocol      = "tcp"
@@ -132,6 +72,15 @@ resource "aws_ecs_task_definition" "main" {
       }
     }
   }])
+
+  volume {
+    name = "markdown"
+    efs_volume_configuration {
+      file_system_id = var.backend_md_efs_id
+      root_directory = "/"
+    }
+  }
+
   tags = {
     Name        = "${var.name}-task-${var.environment}"
     Environment = var.environment
@@ -156,6 +105,7 @@ resource "aws_ecs_service" "main" {
   health_check_grace_period_seconds  = 60
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
+  force_new_deployment               = true
 
   network_configuration {
     security_groups  = var.ecs_service_security_groups

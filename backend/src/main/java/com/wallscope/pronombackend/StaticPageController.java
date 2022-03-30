@@ -1,5 +1,7 @@
 package com.wallscope.pronombackend;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 * */
 @Controller
 public class StaticPageController {
+
+    Logger logger = LoggerFactory.getLogger(StaticPageController.class);
 
     @GetMapping("/")
     public String index(Model model) {

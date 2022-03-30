@@ -18,13 +18,26 @@ variable "aws-region" {
   default     = "eu-west-2"
 }
 
-# variable "aws-access-key" {
-#   type = string
-# }
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile to load."
+  default     = "pronomdev"
+}
 
-# variable "aws-secret-key" {
-#   type = string
-# }
+variable "aws_secret_id" {
+  type        = string
+  description = "AWS secret ID."
+}
+
+variable "aws_secret_key" {
+  type        = string
+  description = "AWS secret key."
+}
+
+variable "assume_role" {
+  type        = string
+  description = "ARN of the role to assume. This is required due to a bug/limitation in terraform with reading profiles from the aws credentials file"
+}
 
 variable "application-secrets" {
   description = "A map of secrets that is passed into the application. Formatted like ENV_VAR = VALUE"
@@ -75,7 +88,12 @@ variable "container_memory" {
 
 variable "container_image" {
   description = "The docker image to use"
-  default     = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:latest"
+  default     = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend"
+}
+
+variable "container_tag" {
+  description = "The docker image tag to use"
+  default     = "latest"
 }
 
 variable "health_check_path" {

@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1540px) {
     grid-template-columns: 1fr;
   }
 }
@@ -18,6 +18,11 @@
          margin: 0;
        }
      }
+  }
+  @media only screen and (max-width: 650px) {
+    >div {
+      grid-template-columns: 1fr;
+    }
   }
 }
   article {
