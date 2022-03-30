@@ -34,6 +34,10 @@ variable "container_image" {
   description = "Docker image to be launched"
 }
 
+variable "container_tag" {
+  description = "Docker image tag"
+}
+
 variable "aws_alb_target_group_arn" {
   description = "ARN of the alb target group"
 }
@@ -58,4 +62,12 @@ variable "container_secrets" {
 
 variable "container_secrets_arns" {
   description = "ARN for secrets"
+}
+
+variable "backend_md_efs_id" {
+  description = "EFS ID for the backend Markdown directory"
+}
+
+variable "backend_md_efs_name" {
+  description = "EFS Name for the backend Markdown directory"
 }

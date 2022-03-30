@@ -44,6 +44,15 @@ resource "aws_security_group" "ecs_tasks" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  ingress {
+    description = "EFS mount target"
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   egress {
     protocol         = "-1"
     from_port        = 0

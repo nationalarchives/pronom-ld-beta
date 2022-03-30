@@ -25,17 +25,17 @@ resource "aws_nat_gateway" "main" {
   depends_on    = [aws_internet_gateway.main]
 
   tags = {
-    Name        = "${var.name}-nat-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.name}-nat-${var.environment}-${format("%03d", count.index + 1)}"
     Environment = var.environment
   }
 }
 
 resource "aws_eip" "nat" {
   count = length(var.private_subnets)
-  vpc = true
+  vpc   = true
 
   tags = {
-    Name        = "${var.name}-eip-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.name}-eip-${var.environment}-${format("%03d", count.index + 1)}"
     Environment = var.environment
   }
 }
@@ -47,7 +47,7 @@ resource "aws_subnet" "private" {
   count             = length(var.private_subnets)
 
   tags = {
-    Name        = "${var.name}-private-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.name}-private-subnet-${var.environment}-${format("%03d", count.index + 1)}"
     Environment = var.environment
   }
 }
@@ -60,7 +60,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.name}-public-subnet-${var.environment}-${format("%03d", count.index+1)}"
+    Name        = "${var.name}-public-subnet-${var.environment}-${format("%03d", count.index + 1)}"
     Environment = var.environment
   }
 }
@@ -85,7 +85,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.name}-routing-table-private-${format("%03d", count.index+1)}"
+    Name        = "${var.name}-routing-table-private-${format("%03d", count.index + 1)}"
     Environment = var.environment
   }
 }
@@ -119,45 +119,41 @@ resource "aws_flow_log" "main" {
 resource "aws_iam_role" "vpc-flow-logs-role" {
   name = "${var.name}-vpc-flow-logs-role"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "vpc-flow-logs.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "vpc-flow-logs.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
   name = "${var.name}-vpc-flow-logs-policy"
   role = aws_iam_role.vpc-flow-logs-role.id
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+        ],
+        "Effect" : "Allow",
+        "Resource" : "*"
+      }
+    ]
+  })
 }
 
 output "id" {
