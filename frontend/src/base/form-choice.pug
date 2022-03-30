@@ -1,5 +1,9 @@
 extends /layouts/mainLayout.pug
 
+block vars
+  - var currentURL = "/form-choice"
+  - var breadcrumbs = {'Home':"/", "Contribute": "/contribute", "From choice": "/form-choice"}
+
 block pageTitle
   h1(th:text="${@templateUtils.md('index_title')}") Form choice
 
