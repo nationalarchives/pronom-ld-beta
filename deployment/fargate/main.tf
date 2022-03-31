@@ -40,7 +40,7 @@ module "security_groups" {
   name           = var.name
   vpc_id         = module.vpc.id
   environment    = var.environment
-  container_port = var.container_port
+  container_port = var.backend_port
 }
 
 module "alb" {
@@ -65,17 +65,17 @@ module "ecs" {
   log_name                    = module.logs.name
   backend_md_efs_id           = module.efs.backend_md_id
   backend_md_efs_name         = module.efs.backend_md_name
-  container_port              = var.container_port
-  container_cpu               = var.container_cpu
-  container_memory            = var.container_memory
-  container_image             = var.container_image
-  container_tag               = var.container_tag
+  backend_port                = var.backend_port
+  backend_image               = var.backend_image
+  backend_tag                 = var.backend_tag
+  triplestore_image           = var.triplestore_image
+  triplestore_tag             = var.triplestore_tag
   service_desired_count       = var.service_desired_count
   container_secrets_arns      = ""
   container_secrets           = []
-  container_environment = [
+  backend_environment = [
     { name = "LOG_LEVEL", value = "DEBUG" },
-    { name = "PORT", value = var.container_port }
+    { name = "PORT", value = var.backend_port }
   ]
 }
 

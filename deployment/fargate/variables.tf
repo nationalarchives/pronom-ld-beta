@@ -71,29 +71,29 @@ variable "service_desired_count" {
   default     = 2
 }
 
-variable "container_port" {
+variable "backend_port" {
   description = "The port where the Docker is exposed"
   default     = 8000
 }
 
-variable "container_cpu" {
-  description = "The number of cpu units used by the task"
-  default     = 256
+variable "backend_image" {
+  description = "The docker image to use for the backend service"
+  default     = "977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend"
 }
 
-variable "container_memory" {
-  description = "The amount (in MiB) of memory used by the task"
-  default     = 512
-}
-
-variable "container_image" {
-  description = "The docker image to use"
-  default     = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend"
-}
-
-variable "container_tag" {
-  description = "The docker image tag to use"
+variable "backend_tag" {
+  description = "The docker image tag to use for the backend service"
   default     = "latest"
+}
+
+variable "triplestore_image" {
+  description = "The docker image to use for the triplestore service"
+  default     = "977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore"
+}
+
+variable "triplestore_tag" {
+  description = "The docker image tag to use for the triplestore service"
+  default     = "0.0.0"
 }
 
 variable "health_check_path" {

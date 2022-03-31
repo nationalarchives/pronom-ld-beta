@@ -40,28 +40,36 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+resource "aws_ecs_cluster" "main" {
+  name = "${var.name}-cluster-${var.environment}"
+  tags = {
+    Name        = "${var.name}-cluster-${var.environment}"
+    Environment = var.environment
+  }
+}
 
-resource "aws_ecs_task_definition" "main" {
+# Backend Task definition and service
+resource "aws_ecs_task_definition" "backend" {
   family                   = "${var.name}-task-${var.environment}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.container_cpu
-  memory                   = var.container_memory
+  cpu                      = 256
+  memory                   = 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([{
-    name      = "${var.name}-container-${var.environment}"
-    image     = "${var.container_image}:${var.container_tag}"
+    name      = "${var.name}-container-${var.environment}-backend"
+    image     = "${var.backend_image}:${var.backend_tag}"
     essential = true
     mountPoints = [{
       containerPath = "/md"
       sourceVolume  = "markdown"
     }]
-    environment = var.container_environment
+    environment = var.backend_environment
     portMappings = [{
       protocol      = "tcp"
-      containerPort = var.container_port
-      hostPort      = var.container_port
+      containerPort = var.backend_port
+      hostPort      = var.backend_port
     }]
     logConfiguration = {
       logDriver = "awslogs"
@@ -82,23 +90,15 @@ resource "aws_ecs_task_definition" "main" {
   }
 
   tags = {
-    Name        = "${var.name}-task-${var.environment}"
+    Name        = "${var.name}-task-${var.environment}-backend"
     Environment = var.environment
   }
 }
 
-resource "aws_ecs_cluster" "main" {
-  name = "${var.name}-cluster-${var.environment}"
-  tags = {
-    Name        = "${var.name}-cluster-${var.environment}"
-    Environment = var.environment
-  }
-}
-
-resource "aws_ecs_service" "main" {
-  name                               = "${var.name}-service-${var.environment}"
+resource "aws_ecs_service" "backend" {
+  name                               = "${var.name}-service-${var.environment}-backend"
   cluster                            = aws_ecs_cluster.main.id
-  task_definition                    = aws_ecs_task_definition.main.arn
+  task_definition                    = aws_ecs_task_definition.backend.arn
   desired_count                      = var.service_desired_count
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
@@ -115,8 +115,8 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = var.aws_alb_target_group_arn
-    container_name   = "${var.name}-container-${var.environment}"
-    container_port   = var.container_port
+    container_name   = "${var.name}-container-${var.environment}-backend"
+    container_port   = var.backend_port
   }
 
   # we ignore task_definition changes as the revision changes on deploy
@@ -128,21 +128,21 @@ resource "aws_ecs_service" "main" {
   depends_on = [var.log_name]
 }
 
-resource "aws_appautoscaling_target" "ecs_target" {
+resource "aws_appautoscaling_target" "ecs_target_backend" {
   max_capacity       = 4
   min_capacity       = 1
-  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.backend.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
 
 
-resource "aws_appautoscaling_policy" "ecs_policy_memory" {
+resource "aws_appautoscaling_policy" "ecs_policy_memory_backend" {
   name               = "memory-autoscaling"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_backend.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_backend.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_backend.service_namespace
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
@@ -155,12 +155,124 @@ resource "aws_appautoscaling_policy" "ecs_policy_memory" {
   }
 }
 
-resource "aws_appautoscaling_policy" "ecs_policy_cpu" {
+resource "aws_appautoscaling_policy" "ecs_policy_cpu_backend" {
   name               = "cpu-autoscaling"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_backend.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_backend.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_backend.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    target_value       = 60
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
+  }
+}
+
+# Triplestore task definition and service
+
+resource "aws_ecs_task_definition" "triplestore" {
+  family                   = "${var.name}-task-${var.environment}"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 512
+  memory                   = 2048
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
+  container_definitions = jsonencode([{
+    name      = "${var.name}-container-${var.environment}-triplestore"
+    image     = "${var.triplestore_image}:${var.triplestore_tag}"
+    essential = true
+    # mountPoints = [{
+    #   containerPath = "/fuseki-base/databases"
+    #   sourceVolume  = "database"
+    # }]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = var.log_name
+        awslogs-stream-prefix = "ecs"
+        awslogs-region        = var.region
+      }
+    }
+  }])
+
+  # volume {
+  #   name = "database"
+  #   efs_volume_configuration {
+  #     file_system_id = var.triplestore_efs_id
+  #     root_directory = "/"
+  #   }
+  # }
+
+  tags = {
+    Name        = "${var.name}-task-${var.environment}-triplestore"
+    Environment = var.environment
+  }
+}
+
+resource "aws_ecs_service" "triplestore" {
+  name                               = "${var.name}-service-${var.environment}-triplestore"
+  cluster                            = aws_ecs_cluster.main.id
+  task_definition                    = aws_ecs_task_definition.triplestore.arn
+  desired_count                      = var.service_desired_count
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 200
+  launch_type                        = "FARGATE"
+  scheduling_strategy                = "REPLICA"
+  force_new_deployment               = true
+
+  network_configuration {
+    security_groups  = var.ecs_service_security_groups
+    subnets          = var.subnets.*.id
+    assign_public_ip = true
+  }
+
+  # we ignore task_definition changes as the revision changes on deploy
+  # of a new version of the application
+  # desired_count is ignored as it can change due to autoscaling policy
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+  depends_on = [var.log_name]
+}
+
+resource "aws_appautoscaling_target" "ecs_target_triplestore" {
+  max_capacity       = 4
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.triplestore.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "ecs_policy_memory_triplestore" {
+  name               = "memory-autoscaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target_triplestore.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_triplestore.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_triplestore.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+    }
+
+    target_value       = 80
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
+  }
+}
+
+resource "aws_appautoscaling_policy" "ecs_policy_cpu_triplestore" {
+  name               = "cpu-autoscaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target_triplestore.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_triplestore.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_triplestore.service_namespace
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
