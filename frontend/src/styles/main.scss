@@ -872,11 +872,14 @@ main {
 }
 /* Table END */
 
-// INTERNAL INTERFACE
+// INTERNAL INTERFACE START #internalInterface
 
 /* Pronom main menu - START #pronommainmenu ============== */
-
+.logo {
+  max-width: 300px;
+}
 #internal-pronom-nav {
+  padding-right: 10px;
   position: fixed;
   width: 250px;
   top: 80px;
@@ -977,7 +980,6 @@ main {
   }
   #internal-actions {
     .buttons {
-      padding-right: 20px;
       margin-left: 20px;
       >div {
         margin-bottom: 15px;
@@ -1016,7 +1018,7 @@ main {
   }
 }
 main#internal-main {
-  margin-left: 250px;
+  margin-left: 260px;
   border-left: 10px solid black;
   min-height: 100vh;
   padding: 120px 0 50px 50px;
@@ -1037,10 +1039,12 @@ h1.internal-title {
   height: auto !important;
   width: auto !important;
   font-weight: normal;
+  padding-bottom: 40px;
+  border-bottom: 3px solid black;
+  margin-bottom: 20px;
 }
 .collapse-container {
-  border-top: 3px solid black;
-  margin-top: 40px;
+  margin-top: 20px;
   .collapse-button {
     display: flex;
     align-items: center;
@@ -1218,7 +1222,7 @@ h1.internal-title {
     grid-template-columns: 1fr 300px;
     .column-name {
       display: grid;
-      grid-template-columns: 40px 110px 1fr 100px 90px 200px 110px 1fr;
+      grid-template-columns: 40px 110px 1fr 100px 80px 200px 110px 1fr;
       button {
         font-weight: bold;
         font-size: 1em;
