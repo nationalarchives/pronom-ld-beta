@@ -339,6 +339,11 @@ button:focus,
 textarea:focus {
   outline: 5px solid #8EC0EC;
 }
+.search-input {
+  input {
+    height: 45px;
+  }
+}
 input {
   padding: 0 10px;
   height: 35px;

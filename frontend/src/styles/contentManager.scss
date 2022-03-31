@@ -35,12 +35,17 @@
 .tab-content {
   padding: 10px 30px;
   form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-gap: 10px;
-  }
-  h2 {
-    font-size: 1.3em;
-    margin-bottom: 2px;
+    .form-group {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-column-gap: 10px;
+      margin-bottom: 10px;
+      label {
+        font-size: 1.3em;
+        margin-bottom: 2px;
+        grid-column: 1/3;
+        font-weight: 600;
+      }
+    } 
   }
 }
