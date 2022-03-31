@@ -8,7 +8,7 @@ section#internal-pronom-nav
         span Editorial Environment
       button#pronom-nav-mobile-collapse(type='button')
         | MENU
-    #internal-menu
+    #internal-menu.hide
       h2 Menu
       nav
         ul.menu-pronom.side-padding.hide
@@ -34,7 +34,7 @@ section#internal-pronom-nav
           li(class={selected: currentUrl === '/contentManager'})
             a.top-link(class={active: currentUrl === '/contentManager'} href='/content-manager')
               | Edit website content
-    #internal-actions
+    #internal-actions.hide
       h2 Actions
       .buttons
         div
