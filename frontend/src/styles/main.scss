@@ -880,6 +880,11 @@ main {
   position: fixed;
   width: 250px;
   top: 80px;
+  @media only screen and (max-width: 1200px) {
+    .hide {
+      display: none;
+    }
+  }
   #page-title {
     text-decoration: none;
     color:black;
