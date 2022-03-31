@@ -19,7 +19,8 @@ block content
       button Contact
     .tab-content
       div(th:each="region : ${regions}")
-        h2(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
         form(th:action="@{/content-manager/} + ${region}", method="post")
-          textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
-          button.small.bordered-blue(type="submit") Save
+          .form-group
+            label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
+            textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
+            button.small.bordered-blue(type="submit") Save
