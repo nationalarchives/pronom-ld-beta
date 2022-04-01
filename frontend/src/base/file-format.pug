@@ -2,12 +2,12 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1
+    h1(th:utext="'<span>fmt/'+${fileFormat.puid}+'</span>'+${fileFormat.name}")
       span fmt/11
       | Portable network Graphics
     .specs
       p Category: File format
-      p Last updated: 12/06/2000
+      p(th:text="'Last updated: '+${#temporals.format(fileFormat.updated, 'dd/MM/yyyy')}") Last updated: 12/06/2000
 block modalHeaderAdditionals
   div.audit-trail
     button.bordered-blue.medium
@@ -50,7 +50,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fName") Lorem ipsum dolor sit amet
+            p(aria-labeledby="#fName", th:text="${fileFormat.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
@@ -60,7 +60,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fVersion") 1.0
+            p(aria-labeledby="#fVersion", th:text="${fileFormat.version}") 1.0
         //- ROW
         li.row
           .tooltip-container
@@ -100,7 +100,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fPUID") fmt/11
+                p(aria-labeledby="#fPUID", th:text="'fmt/'+${fileFormat.puid}") fmt/11
             //- ROW
             li.row
               .tooltip-container
@@ -140,7 +140,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fDescription") audio
+            p(aria-labeledby="#fDescription", th:text="${fileFormat.description}") audio
         //- ROW
         li.row
           .tooltip-container
