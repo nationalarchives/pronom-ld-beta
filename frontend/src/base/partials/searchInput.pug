@@ -43,8 +43,8 @@ section.search-output
       .sort-by
         form(aria-label="Sort search results by selected measure")
           fieldset
-            label(for="sort_by") Sort by
             legend.sr-only Sort search results by selected measure
+            label(for="sort_by") Sort by
             div
               select(id="sort_by")
                 option(value='0') revelance
@@ -72,6 +72,8 @@ section.search-output
         h4 Name
         h4 Basic information
         h4 Description
+        h4.extended Status
+        h4.extended Maintain
       li
         a(href="")
           div
@@ -94,6 +96,13 @@ section.search-output
             p.data.desc
               span Description
               | fmt/412
+            p.data.extend.status
+              span Status
+              | Released
+            .extend.buttons
+              button.xsmall.bordered-blue View
+              button.xsmall.bordered-blue Clone
+              button.xsmall.bordered-red Delete
       li
         a(href="")
           div
@@ -116,6 +125,13 @@ section.search-output
             p.data.desc
               span Description
               | fmt/412
+            p.data.extend.status
+              span Status
+              | Released
+            .extend.buttons
+              button.xsmall.bordered-blue View
+              button.xsmall.bordered-blue Clone
+              button.xsmall.bordered-red Delete
       li
         a(href="")
           div
@@ -138,6 +154,13 @@ section.search-output
             p.data.desc
               span Description
               | fmt/412
+            p.data.extend.status
+              span Status
+              | Released
+            .extend.buttons
+              button.xsmall.bordered-blue View
+              button.xsmall.bordered-blue Clone
+              button.xsmall.bordered-red Delete
     .pagination
       ul
         li.controls

@@ -1,2 +1,2 @@
 import '@styles/main.scss'
-import '@styles/about.scss'
+import '@styles/contentManager.scss'

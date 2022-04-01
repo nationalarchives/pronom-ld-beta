@@ -5,13 +5,22 @@ block vars
   - var breadcrumbs = {'Home':"/", "Content Manager": "/content-manager"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('content-manager_title')}") Content Manager
+  h1.internal-title(th:text="${@templateUtils.md('content-manager_title')}") Edit website content
 
 block content
   .unique-page-content#content-manager
-    h1 Editable regions:
-    div(th:each="region : ${regions}")
-      h2(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
-      form(th:action="@{/content-manager/} + ${region}", method="post")
-        textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
-        button(type="submit") Save
+    .tab-buttons
+      button.active Home
+      button Search PRONOM
+      button About
+      button FAQ
+      button External Projects
+      button Submit to PRONOM
+      button Contact
+    .tab-content
+      div(th:each="region : ${regions}")
+        form(th:action="@{/content-manager/} + ${region}", method="post")
+          .form-group
+            label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
+            textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
+            button.small.bordered-blue(type="submit") Save
