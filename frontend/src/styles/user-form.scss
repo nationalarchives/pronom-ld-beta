@@ -1,3 +1,9 @@
+.from-internal-only {
+  display: none;
+}
+.from-external-only {
+  display: block;
+}
 main {
   margin-left: 360px;
   padding: 20px;
@@ -17,6 +23,23 @@ main {
   > li {
     height: auto;
     margin-top: -3px;
+    &.active {
+      button.segment {
+        border: 2px solid #0f528d;
+        .top-button {
+          .round {
+            background: #0f528d;
+          }
+        }
+      }
+      button.nested {
+        border: none;
+        border-left: 2px solid transparent;
+      }
+      .side-menu {
+        display: block;
+      }
+    }
     a {
       width: 100%;
       height: 100%;
@@ -31,18 +54,6 @@ main {
       // border-top: 2px solid white;
       margin-bottom: 4px;
       margin-top: 4px;
-      &.active {
-        border: 2px solid #0f528d;
-        .top-button {
-          .round {
-            background: #0f528d;
-          }
-        }
-      }
-      &.active.nested {
-        border: none;
-        border-left: 2px solid transparent;
-      }
       span {
         margin-left: 10px;
       }
@@ -89,6 +100,9 @@ main {
         }
       }
     }
+    .side-menu {
+      display: none;
+    }
   }
 }
 .side-menu {
@@ -105,7 +119,9 @@ main {
       margin-bottom: 6px;
       font-family: 'Open Sans', sans-serif !important;
       font-size: 0.9em;
-      &.active {
+    }
+    &.active {
+      button {
         border: 2px solid #0f528d;
         background: white;
       }
@@ -444,6 +460,9 @@ section {
   &#review {
     // display: none;
   }
+  &#contributors {
+    display: none;
+  }
 }
 select {
   display: block;
@@ -465,40 +484,37 @@ select:focus {
   outline: 5px solid #8EC0EC;
 }
 // Priority =======================================
-#priority {
-  #priority-inner {
+#priority-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 20px;
+  @media only screen and (max-width: 750px) {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+  .priority-group {
+    margin-bottom: 10px;
     display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 20px;
-    @media only screen and (max-width: 750px) {
+    grid-template-columns: 1fr auto;
+    grid-gap: 10px;
+    align-items: flex-end;
+    max-width: 800px;
+    @media only screen and (max-width: 570px) {
       grid-template-columns: 1fr;
-      grid-gap: 10px;
+      button {
+        max-width: 200px;
+        margin-left: auto;
+      }
     }
-    .priority-group {
-      margin-bottom: 10px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      grid-gap: 10px;
-      align-items: flex-end;
-      max-width: 800px;
-      @media only screen and (max-width: 570px) {
-        grid-template-columns: 1fr;
-        button {
-          max-width: 200px;
-          margin-left: auto;
-        }
-      }
-      .form-row {
-        margin-bottom: 0;
-      }
+    .form-row {
+      margin-bottom: 0;
     }
   }
-  .button-container {
-    grid-column: 1/3;
-    max-width: 900px;
-    @media only screen and (max-width: 750px) {
-      grid-column: 1/2;
-    }
+}
+.button-container {
+  // grid-column: 1/3;
+  @media only screen and (max-width: 750px) {
+    grid-column: 1/2;
   }
 }
 // Identifiers =======================================
@@ -543,6 +559,13 @@ select:focus {
       }
     }
   }
+}
+// Additional properties ==============================
+.add-actor {
+  display: grid;
+  grid-template-columns: 1fr 20px auto;
+  grid-column-gap: 20px;
+  align-items: flex-end;
 }
 // Relationship =======================================
 #relationships{
@@ -621,7 +644,6 @@ select:focus {
       padding-left: 20px;
       display: grid;
       grid-column-gap: 20px;
-      margin-bottom: 30px;
       height: fit-content;
       @media only screen and (max-width: 1100px) {
         margin-left: 0;
@@ -667,7 +689,7 @@ select:focus {
     .three {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 20px;
+      grid-column-gap: 20px;
       @media only screen and (max-width: 1100px) {
         grid-template-columns: 1fr;
       }

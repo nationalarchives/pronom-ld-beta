@@ -2,3 +2,420 @@ extends /layouts/internalLayout.pug
 
 block pageTitle
   h1.internal-title Dashboard
+block content
+  //- Submissions
+  .collapse-container
+    button.collapse-button
+      .icon-wrapper
+        i.fa-solid.fa-chevron-up
+      h2 Submissions (65)
+    .collapse-content
+      .table-wrapper
+        #submissions-contols
+          div
+            .selector-checkbox
+              fieldset
+                legend.sr-only Select or deselect all submissions
+                input(type="checkbox")
+              p Selected (2)
+            .buttons
+              button.xsmall
+                | Move to
+              button.xsmall.bordered-red
+                | Delete
+          div
+            fieldset
+              legend.sr-only Filter results by type
+              label(for="sort_by") Type
+              div
+                select(id="sort_by")
+                  option(value='0') All
+                  option(value='1') type 2
+                  option(value='2') type 3
+                  option(value='2') type 4
+            fieldset
+              legend.sr-only Filter results by action
+              label(for="sort_by") Action
+              div
+                select(id="sort_by")
+                  option(value='0') All
+                  option(value='1') type 2
+                  option(value='2') type 3
+                  option(value='2') type 4
+          form(aria-label="Search for submissions")
+            div
+              input(type="search" id="pronom_search" placeholder="Search for submissions ...")
+              button.search-button(type="submit")
+                i.fa-solid.fa-magnifying-glass(aria-hidden="true")
+                | Search
+        div
+          ul.column-name-container
+            li
+              .column-name
+                div
+                button
+                  | Date
+                  i.fa-solid.fa-sort
+                button
+                  | Contributor
+                  i.fa-solid.fa-sort
+                button
+                  | Type
+                  i.fa-solid.fa-sort
+                button
+                  | Action
+                  i.fa-solid.fa-sort
+                button
+                  | Subject
+                  i.fa-solid.fa-sort
+                button
+                  | Reviewed
+                  i.fa-solid.fa-sort
+                button
+                  | Reviewer
+                  i.fa-solid.fa-sort
+              div
+                p Maintain
+          ul.submissions
+            li.active
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor name
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name
+                div
+                  p.data
+                    span Review date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Reviewer
+                    | Ann Rose
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+            li
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor name
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name
+                div
+                  p.data
+                    span Review date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Reviewer
+                    | Ann Rose
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+            li
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name 
+                div
+                  p.data
+                    span Review date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Reviewer
+                    | Ann Rose
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+
+  //- Release plan
+  .collapse-container
+    button.collapse-button
+      .icon-wrapper
+        i.fa-solid.fa-chevron-up
+      h2 Release plan
+    .download-test-notes
+      p Download test notes
+      button.xsmall.bordered-blue XML
+      button.xsmall.bordered-blue CSV
+    .three-columns
+      div
+        h3 Next release plan (30)
+        .table-wrapper
+          ul.submissions.card
+            li
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name File format name
+                div
+                  p.data
+                    span Review date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Reviewer
+                    | Ann Rose
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+            li
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name
+                div
+                  p.data
+                    span Review date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Reviewer
+                    | Ann Rose
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+            li
+              a(href="")
+                .selector-checkbox
+                  fieldset
+                    legend.sr-only Select or deselect submission
+                    input(type="checkbox")
+                div
+                  p.data
+                    span Date
+                    | 12/05/2021
+                div
+                  p.data
+                    span Contributor
+                    | John Doe
+                div
+                  p.data
+                    span Type
+                    | Internal
+                div
+                  p.data
+                    span Action
+                    | Editing
+                div
+                  p.data
+                    span Subject
+                    | File format name
+                
+              .maintain-buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue
+                  | Move to
+                  i.fa-solid.fa-chevron-down
+                button.xsmall.bordered-red Delete
+          
+      div
+        h3 Work in progress (3)
+        .table-wrapper
+      div
+        h3 Testing enviroment (20)
+        .table-wrapper
+    .collapse-content
+      div
+      div
+        #make-a-release
+          h3 Make a release
+          div
+            fieldset
+              legend.sr-only Select filter
+              .selected
+                input.check#currentPlan(type='radio' name='plan' value='currentPlan' checked="true") 
+                label.stretch(for='currentPlan') Current release plan
+              .selected
+                input.check#otherPlan(type='radio' name='plan' value='otherPlan')
+                label(for='selectRelease') Other
+                fieldset
+                  legend.sr-only Select previous relese to pusblish into PRONOM
+                  select#selectRelease
+                    option(value='0') Select
+                    option(value='1') release 2
+                    option(value='2') release 3
+                    option(value='2') release 4
+          div
+            button.blue.medium
+              i.fa-solid.fa-rocket
+              | Release to PRONOM
+  //- Submissions maintenance history
+  .collapse-container
+    button.collapse-button
+      .icon-wrapper
+        i.fa-solid.fa-chevron-up
+      h2 Submissions maintenance history (124)
+    .collapse-content
+      .table-wrapper
+        ul#maintanance
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+          li
+            p 21/02/2022
+            p 12:10
+            p Johnathan McDonald
+            p Some action description comes here
+            p file format name
+
+
+
+
