@@ -12,7 +12,7 @@ resource "aws_efs_mount_target" "backend_md_mount" {
   count           = length(var.subnets.*.id)
   file_system_id  = aws_efs_file_system.backend_md.id
   subnet_id       = element(var.subnets.*.id, count.index)
-  security_groups = ["${var.security_group}"]
+  security_groups = var.security_groups
 }
 
 output "backend_md_id" {

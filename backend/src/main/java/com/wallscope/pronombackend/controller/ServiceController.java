@@ -1,4 +1,4 @@
-package com.wallscope.pronombackend;
+package com.wallscope.pronombackend.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

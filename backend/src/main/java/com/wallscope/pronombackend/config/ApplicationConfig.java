@@ -1,11 +1,10 @@
 package com.wallscope.pronombackend.config;
 
-import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ApplicationConfig {
-    static Logger logger = LoggerFactory.getLogger(TemplateUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     static String getEnvOr(String env, String or) {
         String v = System.getenv(env);
@@ -18,4 +17,5 @@ public class ApplicationConfig {
     }
 
     public static String MARKDOWN_DIR = getEnvOr("MARKDOWN_DIR", "/md");
+    public static String TRIPLESTORE = getEnvOr("TRIPLESTORE", "http://localhost:3030/ds");
 }

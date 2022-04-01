@@ -119,6 +119,11 @@ resource "aws_ecs_service" "backend" {
     container_port   = var.backend_port
   }
 
+  service_registries {
+    registry_arn   = var.discovery_backend_arn
+    container_name = "backend"
+  }
+
   # we ignore task_definition changes as the revision changes on deploy
   # of a new version of the application
   # desired_count is ignored as it can change due to autoscaling policy
@@ -191,6 +196,7 @@ resource "aws_ecs_task_definition" "triplestore" {
     #   containerPath = "/fuseki-base/databases"
     #   sourceVolume  = "database"
     # }]
+    environment = var.triplestore_environment
     logConfiguration = {
       logDriver = "awslogs"
       options = {
@@ -229,7 +235,12 @@ resource "aws_ecs_service" "triplestore" {
   network_configuration {
     security_groups  = var.ecs_service_security_groups
     subnets          = var.subnets.*.id
-    assign_public_ip = true
+    assign_public_ip = false
+  }
+
+  service_registries {
+    registry_arn   = var.discovery_triplestore_arn
+    container_name = "triplestore"
   }
 
   # we ignore task_definition changes as the revision changes on deploy

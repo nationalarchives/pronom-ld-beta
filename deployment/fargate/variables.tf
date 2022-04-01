@@ -96,6 +96,11 @@ variable "triplestore_tag" {
   default     = "0.0.0"
 }
 
+variable "triplestore_pw" {
+  description = "Triplestore password"
+  default     = ""
+}
+
 variable "health_check_path" {
   description = "Http path for task health check"
   default     = "/health"

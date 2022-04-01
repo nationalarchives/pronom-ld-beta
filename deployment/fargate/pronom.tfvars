@@ -13,7 +13,7 @@ tsl_certificate_arn = "arn:aws:acm:eu-west-2:977490479318:certificate/79e2b870-b
 #backend_image       = "955621375565.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend" # previously pushed to separately maintained ECR repository
 # pronomdev image
 backend_image         = "977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend"
-backend_tag           = "latest"
+backend_tag           = "0.0.1"
 backend_port          = 80
 triplestore_image     = "977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore"
 triplestore_tag       = "0.0.0"

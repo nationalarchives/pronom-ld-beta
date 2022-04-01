@@ -160,6 +160,10 @@ output "id" {
   value = aws_vpc.main.id
 }
 
+output "cidr" {
+  value = aws_vpc.main.cidr_block
+}
+
 output "public_subnets" {
   value = aws_subnet.public
 }

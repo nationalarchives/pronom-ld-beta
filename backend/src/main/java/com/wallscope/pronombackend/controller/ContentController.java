@@ -1,4 +1,4 @@
-package com.wallscope.pronombackend;
+package com.wallscope.pronombackend.controller;
 
 import com.google.common.io.Resources;
 import com.wallscope.pronombackend.config.ApplicationConfig;

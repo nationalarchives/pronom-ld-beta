@@ -10,6 +10,10 @@ variable "vpc_id" {
   description = "The VPC ID"
 }
 
+variable "vpc_cidr" {
+  description = "The VPC CIDR block"
+}
+
 variable "container_port" {
-  description = "Ingres and egress port of the container"
+  description = "Ingress and egress port of the container"
 }

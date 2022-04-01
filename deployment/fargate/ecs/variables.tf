@@ -54,6 +54,20 @@ variable "backend_environment" {
   description = "The container environmnent variables"
   type        = list(any)
 }
+variable "triplestore_environment" {
+  description = "The triplestore environmnent variables"
+  type        = list(any)
+}
+
+variable "discovery_backend_arn" {
+  description = "The arn of the backend discovery service"
+  type        = string
+}
+
+variable "discovery_triplestore_arn" {
+  description = "The arn of the triplestore discovery service"
+  type        = string
+}
 
 variable "container_secrets" {
   description = "The container secret environmnent variables"

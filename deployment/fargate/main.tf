@@ -39,6 +39,7 @@ module "security_groups" {
   source         = "./security-groups"
   name           = var.name
   vpc_id         = module.vpc.id
+  vpc_cidr       = module.vpc.cidr
   environment    = var.environment
   container_port = var.backend_port
 }
@@ -61,7 +62,7 @@ module "ecs" {
   region                      = var.aws-region
   subnets                     = module.vpc.private_subnets
   aws_alb_target_group_arn    = module.alb.aws_alb_target_group_arn
-  ecs_service_security_groups = [module.security_groups.ecs_tasks]
+  ecs_service_security_groups = [module.security_groups.backend_task, module.security_groups.triplestore_task]
   log_name                    = module.logs.name
   backend_md_efs_id           = module.efs.backend_md_id
   backend_md_efs_name         = module.efs.backend_md_name
@@ -73,16 +74,28 @@ module "ecs" {
   service_desired_count       = var.service_desired_count
   container_secrets_arns      = ""
   container_secrets           = []
+  discovery_triplestore_arn   = module.service_discovery.discovery_triplestore_arn
+  discovery_backend_arn       = module.service_discovery.discovery_backend_arn
+  triplestore_environment = [
+    { name = "ADMIN_PASSWORD", value = var.triplestore_pw }
+  ]
   backend_environment = [
     { name = "LOG_LEVEL", value = "DEBUG" },
-    { name = "PORT", value = var.backend_port }
+    { name = "PORT", value = var.backend_port },
+    { name = "MARKDOWN_DIR", value = "/md" },
+    { name = "TRIPLESTORE", value = "http://triplestore.local:3030/ds" },
   ]
 }
 
 module "efs" {
-  source         = "./efs"
-  name           = var.name
-  environment    = var.environment
-  security_group = module.security_groups.ecs_tasks
-  subnets        = module.vpc.private_subnets
+  source          = "./efs"
+  name            = var.name
+  environment     = var.environment
+  security_groups = [module.security_groups.backend_task, module.security_groups.triplestore_task]
+  subnets         = module.vpc.private_subnets
+}
+
+module "service_discovery" {
+  source = "./service-discovery"
+  vpc_id = module.vpc.id
 }

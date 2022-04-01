@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  # Backend app
+  pronom-backend:
+    image: 977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
+    ports:
+      - "8080:80"
+    environment:
+      - MARKDOWN_DIR=/md
+      - TRIPLESTORE=http://triplestore:3030/ds
+    volumes:
+      - ${PWD}/../backend/md:/md
+    restart: on-failure
+    depends_on:
+      - triplestore
+    networks:
+      - pronom-net
+  
+  # Triplestore
+  triplestore:
+    image: 977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:0.0.0
+    user: "9008:0"
+    ports:
+      - "8030:3030"
+    environment:
+      - ADMIN_PASSWORD=admin
+    restart: on-failure
+    networks:
+      - pronom-net
+
+networks:
+  pronom-net:

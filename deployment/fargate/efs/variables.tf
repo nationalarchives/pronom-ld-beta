@@ -10,6 +10,6 @@ variable "subnets" {
   description = "The public subnets to pass to the EFS configuration"
 }
 
-variable "security_group" {
-  description = "the name of th security group to use for the EFS"
+variable "security_groups" {
+  description = "list of security groups to use for the EFS"
 }
