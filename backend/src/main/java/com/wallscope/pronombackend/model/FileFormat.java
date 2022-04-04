@@ -11,7 +11,9 @@ import java.time.Instant;
 public class FileFormat implements RDFWritable {
     Logger logger = LoggerFactory.getLogger(FileFormat.class);
     private final Resource uri;
-    private final String puid;
+    private final Integer puid;
+    private final Resource puidType;
+    private final String puidTypeName;
     private final String name;
     private final String description;
     private final Instant updated;
@@ -19,9 +21,11 @@ public class FileFormat implements RDFWritable {
     private final Boolean binaryFlag;
     private final Boolean withdrawnFlag;
 
-    public FileFormat(Resource uri, String puid, String name, String description, Instant updated, String version, Boolean binaryFlag, Boolean withdrawnFlag) {
+    public FileFormat(Resource uri, Integer puid, Resource puidType, String puidTypeName, String name, String description, Instant updated, String version, Boolean binaryFlag, Boolean withdrawnFlag) {
         this.uri = uri;
         this.puid = puid;
+        this.puidType = puidType;
+        this.puidTypeName = puidTypeName;
         this.name = name;
         this.description = description;
         this.updated = updated;
@@ -34,8 +38,20 @@ public class FileFormat implements RDFWritable {
         return uri;
     }
 
-    public String getPuid() {
+    public Integer getPuid() {
         return puid;
+    }
+
+    public Resource getPuidType() {
+        return puidType;
+    }
+
+    public String getPuidTypeName() {
+        return puidTypeName;
+    }
+
+    public String getFormattedPuid() {
+        return puidTypeName.trim() + "/" + puid;
     }
 
     public String getName() {
@@ -86,7 +102,9 @@ public class FileFormat implements RDFWritable {
 
         public static FileFormat fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
-            String puid = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.puid)).asLiteral().getString();
+            Integer puid = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.Puid)).asLiteral().getInt();
+            Resource puidType = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.PuidTypeId)).asResource();
+            String puidTypeName = mu.getOneObjectOrNull(puidType, RDFUtil.makeProp(RDFUtil.PRONOM.PuidType.PuidType)).asLiteral().getString();
             String name = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.RDFS.label)).asLiteral().getString();
             String description = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.RDFS.comment)).asLiteral().getString();
             Literal updatedLit = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.LastUpdatedDate)).asLiteral();
@@ -102,7 +120,7 @@ public class FileFormat implements RDFWritable {
             if (withdrawnFlagNode != null) {
                 withdrawnFlag = withdrawnFlagNode.asLiteral().getBoolean();
             }
-            return new FileFormat(uri, puid, name, description, updated, version, binaryFlag, withdrawnFlag);
+            return new FileFormat(uri, puid, puidType, puidTypeName, name, description, updated, version, binaryFlag, withdrawnFlag);
         }
     }
 

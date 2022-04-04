@@ -17,26 +17,35 @@ public class FileFormatDAO {
     Logger logger = LoggerFactory.getLogger(FileFormatDAO.class);
     public static final String FILE_FORMAT_QUERY = RDFUtil.PREFIXES + """
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
+            prefix pt: <http://www.nationalarchives.gov.uk/PRONOM/puidType.>
             CONSTRUCT {
               ?f a pr:FileFormat ;
-                ff:Puid ?puid ;
                 rdfs:label ?label ;
                 rdfs:comment ?comment ;
+                ff:Puid ?puid ;
+                ff:PuidTypeId ?puidType ;
                 ff:LastUpdatedDate ?updated ;
                 ff:Version ?version ;
                 ff:BinaryFlag ?binaryFlag ;
                 ff:WithdrawnFlag ?withdrawn ;
                 .
+              # Links
+              ?puidType pt:PuidType ?puidTypeName .
             } WHERE {
               ?f a pr:FileFormat ;
-                ff:Puid ?puid ;
                 rdfs:label ?label ;
                 rdfs:comment ?comment ;
+                ff:Puid ?puid ;
+                ff:PuidTypeId ?puidType ;
                 ff:LastUpdatedDate ?updated ;
                 ff:Version ?version ;
                 .
+                # Non-required fields
                 OPTIONAL { ?f ff:BinaryFlag ?binaryFlag }
                 OPTIONAL { ?f ff:WithdrawnFlag ?withdrawn }
+                
+                # Links
+                ?puidType pt:PuidType ?puidTypeName .
             }
             """;
 

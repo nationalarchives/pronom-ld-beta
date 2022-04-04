@@ -27,8 +27,6 @@ public class PUIDController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
         model.addAttribute("fileFormat", f);
-        logger.info("returning File Format <" + f.getURI().getURI() + "> with PUID: " + f.getPuid());
-        logger.debug(f.toString());
         return "file-format";
     }
 
