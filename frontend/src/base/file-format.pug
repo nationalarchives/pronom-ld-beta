@@ -2,7 +2,7 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1(th:utext="'<span>fmt/'+${fileFormat.puid}+'</span>'+${fileFormat.name}")
+    h1(th:utext="'<span>'+${fileFormat.formattedPuid}+'</span>'+${fileFormat.name}")
       span fmt/11
       | Portable network Graphics
     .specs
@@ -100,7 +100,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fPUID", th:text="'fmt/'+${fileFormat.puid}") fmt/11
+                p(aria-labeledby="#fPUID", th:text="${fileFormat.puidTypeName}+'/'+${fileFormat.puid}") fmt/11
             //- ROW
             li.row
               .tooltip-container

@@ -77,8 +77,6 @@ public class RDFUtil {
 
     public static class PRONOM {
         public static final String uri = "http://www.nationalarchives.gov.uk/PRONOM/";
-        // Properties
-        public static final String puid = uri + "fileFormat.Puid";
 
         // FileFormat sub
         public static class FileFormat {
@@ -89,6 +87,14 @@ public class RDFUtil {
             public static final String BinaryFlag = uri + "BinaryFlag";
             public static final String WithdrawnFlag = uri + "WithdrawnFlag";
             public static final String Puid = uri + "Puid";
+            public static final String PuidTypeId = uri + "PuidTypeId";
+        }
+
+        // PuidType sub
+        public static class PuidType {
+            public static final String type = PRONOM.uri + "PuidType";
+            public static final String uri = PRONOM.uri + "puidType.";
+            public static String PuidType = uri + "PuidType";
         }
     }
 
