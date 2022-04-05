@@ -1,33 +1,26 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix alias: <http://www.nationalarchives.gov.uk/PRONOM/Alias.>
+@prefix formatAlias: <http://www.nationalarchives.gov.uk/PRONOM/formatAlias.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/format_aliases>
- 	rr:logicalTable [ rr:sqlQuery """
-      SELECT NEWID() as new_id
-           ,[alias_id]
-           ,[name_text]
-           ,[version_text]
-           ,[file_format_id]
-       FROM [PRONOM6].[dbo].[format_aliases]
-       """
- 	];
+ 	rr:logicalTable <#PRONOM6/format_aliases#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Alias/{new_id}";
- 		rr:class pr:Alias;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatAlias/{alias_id}";
+ 		rr:class pr:FormatAlias;
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:Name;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate alias:Version;
+        rr:predicate formatAlias:Version;
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:FileFormat;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
+        rr:predicate formatAlias:FileFormatId;
+        rr:objectMap [ rr:column "file_format_id" ];
  	];
  	.
 

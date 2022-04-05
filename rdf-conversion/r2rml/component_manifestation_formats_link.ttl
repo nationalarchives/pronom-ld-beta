@@ -3,8 +3,8 @@
 @prefix componentManifestationFormatsLink: <http://www.nationalarchives.gov.uk/PRONOM/componentManifestationFormatsLink.>
 
 
-<#PRONOM6/componentManifestationFormatsLinks>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_manifestation_formats_link" ];
+<#PRONOM6/component_manifestation_formats_link>
+ 	rr:logicalTable <#PRONOM6/component_manifestation_formats_link#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentManifestationFormatsLink/{component_manifestation_type_id}";
  		rr:class pr:ComponentManifestationFormatsLink;

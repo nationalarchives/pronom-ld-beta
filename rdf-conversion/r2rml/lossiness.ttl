@@ -1,6 +1,7 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix lossiness: <http://www.nationalarchives.gov.uk/PRONOM/lossiness.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/lossiness>
@@ -21,7 +22,7 @@
  		rr:class pr:Lossiness;
  	];
  	rr:predicateObjectMap [
-        rr:predicate lossiness:Lossiness;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "lossiness_text" ];
     ];
     rr:predicateObjectMap [
@@ -29,10 +30,4 @@
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
     ];
  	.
-
- <#PRONOM6/actors#view> rr:sqlQuery """
-SELECT [lossiness_id]
-     ,[lossiness_text]
- FROM [PRONOM6].[dbo].[lossiness]
-""" .
 

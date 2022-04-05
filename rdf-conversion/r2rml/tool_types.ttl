@@ -1,16 +1,17 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix toolType: <http://www.nationalarchives.gov.uk/PRONOM/toolType.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/tool_types>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.tool_types" ];
+ 	rr:logicalTable <#PRONOM6/tool_types#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ToolType/{tool_type_id}";
  		rr:class pr:ToolType;
  	];
  	rr:predicateObjectMap [
-        rr:predicate toolType:ToolType;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "tool_type" ];
     ];
  	.

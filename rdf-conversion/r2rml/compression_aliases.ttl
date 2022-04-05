@@ -1,33 +1,25 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix alias: <http://www.nationalarchives.gov.uk/PRONOM/Alias.>
-
+@prefix compressionAlias: <http://www.nationalarchives.gov.uk/PRONOM/compressionAlias.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/compression_aliases>
- 	rr:logicalTable [ rr:sqlQuery """
-      SELECT NEWID() as new_id
-           ,[alias_id]
-           ,[name_text]
-           ,[version_text]
-           ,[compression_id]
-       FROM [PRONOM6].[dbo].[compression_aliases]
-       """
- 	];
+ 	rr:logicalTable <#PRONOM6/compression_aliases#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Alias/{new_id}";
- 		rr:class pr:Alias;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionAlias/{alias_id}";
+ 		rr:class pr:CompressionAlias;
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:Name;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate alias:Version;
+        rr:predicate compressionAlias:Version;
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:CompressionType;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
+        rr:predicate compressionAlias:CompressionId;
+        rr:objectMap [ rr:column "compression_id" ];
  	];
  	.
 

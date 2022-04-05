@@ -4,7 +4,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/position_types>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.position_types" ];
+ 	rr:logicalTable <#PRONOM6/position_types#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PositionType/{position_type_id}";
  		rr:class pr:PositionType;

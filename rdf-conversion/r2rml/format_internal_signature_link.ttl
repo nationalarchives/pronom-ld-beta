@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/format_internal_signature_link>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_internal_signature_link" ];
+ 	rr:logicalTable <#PRONOM6/format_internal_signature_link#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatInternalSignatureLink/{file_format_id}";
  		rr:class pr:FormatInternalSignatureLink;

@@ -1,20 +1,21 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix referenceFile: <http://www.nationalarchives.gov.uk/PRONOM/referenceFile.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/reference_files>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.reference_files" ];
+ 	rr:logicalTable <#PRONOM6/reference_files#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ReferenceFile/{reference_file_id}";
  		rr:class pr:ReferenceFile;
  	];
  	rr:predicateObjectMap [
-        rr:predicate referenceFile:FileName;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "file_name_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate referenceFile:FileDescription;
+        rr:predicate rdfs:comment;
         rr:objectMap [ rr:column "file_Description_text" ];
  	];
  	rr:predicateObjectMap [

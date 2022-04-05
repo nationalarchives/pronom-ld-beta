@@ -105,22 +105,4 @@
     ];
  	.
 
- <#PRONOM6/actors#view> rr:sqlQuery """
-SELECT [compression_id]
-     ,[compression_name_text]
-     ,[version_text]
-     ,[compression_text]
-     ,[lossiness_id]
-     ,[release_date]
-     ,[withdrawn_date]
-     ,[withdrawn_flag]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
-     ,[puid_type_id]
-     ,[puid_value]
- FROM [PRONOM6].[dbo].[compression_types]
-""" .
 

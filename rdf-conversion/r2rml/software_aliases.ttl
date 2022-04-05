@@ -1,33 +1,25 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix alias: <http://www.nationalarchives.gov.uk/PRONOM/Alias.>
+@prefix softwareAlias: <http://www.nationalarchives.gov.uk/PRONOM/softwareAlias.>
 
 
 <#PRONOM6/software_aliases>
- 	rr:logicalTable [ rr:sqlQuery """
-      SELECT NEWID() as new_id
-           ,[alias_id]
-           ,[name_text]
-           ,[version_text]
-           ,[software_id]
-       FROM [PRONOM6].[dbo].[software_aliases]
-       """
- 	];
+ 	rr:logicalTable <#PRONOM6/software_aliases#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Alias/{new_id}";
- 		rr:class pr:Alias;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareAlias/{alias_id}";
+ 		rr:class pr:SoftwareAlias;
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:Name;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate alias:Version;
+        rr:predicate softwareAlias:Version;
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate alias:Software;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Software/{software_id}" ];
+        rr:predicate softwareAlias:SoftwareId;
+        rr:objectMap [ rr:column "software_id" ];
     ];
  	.
 
