@@ -27,10 +27,15 @@
         rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
+    rr:predicateObjectMap [
+        rr:predicate fileFormatFamily:Name;
+        rr:objectMap [ rr:column "name_text" ];
+    ];
  	rr:predicateObjectMap [
-        rr:predicate rdfs:comment;
+        rr:predicate fileFormatFamily:Family;
         rr:objectMap [ rr:column "family_text" ];
  	];
+
  	rr:predicateObjectMap [
         rr:predicate fileFormatFamily:Note;
         rr:objectMap [ rr:column "note_text" ];
@@ -44,13 +49,4 @@
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
     ];
  	.
-
- <#PRONOM6/format_families#view> rr:sqlQuery """
-SELECT [family_id]
-     ,[name_text]
-     ,[family_text]
-     ,[note_text]
-     ,[parent_family_id]
- FROM [PRONOM6].[dbo].[format_families]
-""" .
 

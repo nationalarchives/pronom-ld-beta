@@ -1,6 +1,7 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix document: <http://www.nationalarchives.gov.uk/PRONOM/document.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/documents>
@@ -45,6 +46,10 @@
         rr:objectMap [ rr:column "display_text" ];
  	];
  	rr:predicateObjectMap [
+        rr:predicate rdfs:comment;
+        rr:objectMap [ rr:column "display_text" ];
+    ];
+ 	rr:predicateObjectMap [
         rr:predicate document:SourceId;
         rr:objectMap [ rr:column "source_id" ];
     ];
@@ -65,7 +70,7 @@
         rr:objectMap [ rr:column "publication_date" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate document:Title;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "title_text" ];
  	];
  	rr:predicateObjectMap [
@@ -80,29 +85,14 @@
         rr:predicate document:DocumentNote;
         rr:objectMap [ rr:column "document_note_text" ];
     ];
-rr:predicateObjectMap [
-    rr:predicate document:Author.Actor;
-    rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
-];
-rr:predicateObjectMap [
-    rr:predicate document:Publisher.Actor;
-    rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
-];
+    rr:predicateObjectMap [
+        rr:predicate document:Author.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate document:Publisher.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+    ];
  	.
 
- <#PRONOM6/documents#view> rr:sqlQuery """
-SELECT [document_id]
-     ,[document_type_id]
-     ,[display_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
-     ,[publication_date]
-     ,[title_text]
-     ,[availability_id]
-     ,[availability_text]
-     ,[document_note_text]
- FROM [PRONOM6].[dbo].[documents]
-""" .
 

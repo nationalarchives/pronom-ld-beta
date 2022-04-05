@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/document_authors>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.document_authors" ];
+ 	rr:logicalTable <#PRONOM6/document_authors#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentAuthor/{document_id}";
  		rr:class pr:DocumentAuthor;

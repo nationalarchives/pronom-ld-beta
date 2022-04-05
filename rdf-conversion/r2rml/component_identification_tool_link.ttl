@@ -3,8 +3,8 @@
 @prefix componentIdentificationToolLink: <http://www.nationalarchives.gov.uk/PRONOM/componentIdentificationToolLink.>
 
 
-<#PRONOM6/componentIdentificationToolLinks>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_identification_tool_link" ];
+<#PRONOM6/component_identification_tool_link>
+ 	rr:logicalTable <#PRONOM6/component_identification_tool_link#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentIdentificationToolLink/{component_manifestation_type_id}";
  		rr:class pr:ComponentIdentificationToolLink;

@@ -1,10 +1,11 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix referenceFileIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/referenceFileIdentifier.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/reference_file_identifiers>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.reference_file_identifiers" ];
+ 	rr:logicalTable <#PRONOM6/reference_file_identifiers#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ReferenceFileIdentifier/{identifier_id}";
  		rr:class pr:ReferenceFileIdentifier;
@@ -14,7 +15,7 @@
         rr:objectMap [ rr:column "identifier_type_id" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate referenceFileIdentifier:Identifier;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "identifier_text" ];
  	];
  	rr:predicateObjectMap [

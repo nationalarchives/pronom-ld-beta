@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/tool_data>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.tool_data" ];
+ 	rr:logicalTable <#PRONOM6/tool_data#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ToolData/{tool_data_id}";
  		rr:class pr:ToolData;

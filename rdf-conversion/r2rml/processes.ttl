@@ -74,18 +74,3 @@
         rr:objectMap [ rr:column "provenance_text" ];
     ];
  	.
-
- <#PRONOM6/processes#view> rr:sqlQuery """
-SELECT [software_id]
-     ,[file_format_id]
-     ,[process_type_id]
-     ,[invariance_id]
-     ,[default_flag]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
- FROM [PRONOM6].[dbo].[processes]
-""" .
-

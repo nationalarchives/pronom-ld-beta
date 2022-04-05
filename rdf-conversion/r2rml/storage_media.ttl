@@ -4,13 +4,13 @@
 
 
 <#PRONOM6/storage_media>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.storage_media" ];
+ 	rr:logicalTable <#PRONOM6/storage_media#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/StorageMedium/{storage_medium_id}";
  		rr:class pr:StorageMedium;
  	];
  	rr:predicateObjectMap [
-        rr:predicate storageMedium:StorageMedium;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "storage_medium_text" ];
     ];
  	.

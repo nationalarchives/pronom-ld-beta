@@ -1,16 +1,17 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix country: <http://www.nationalarchives.gov.uk/PRONOM/country.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/countries>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.countries" ];
+ 	rr:logicalTable <#PRONOM6/countries#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Country/{country_code_text}";
  		rr:class pr:Country;
  	];
  	rr:predicateObjectMap [
-        rr:predicate country:CountryName;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "country_name_text" ];
     ];
  	.

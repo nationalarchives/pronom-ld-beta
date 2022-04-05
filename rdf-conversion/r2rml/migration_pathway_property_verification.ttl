@@ -1,10 +1,11 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix migrationPathwayPropertyVerification: <http://www.nationalarchives.gov.uk/PRONOM/migrationPathwayPropertyVerification.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/migration_pathway_property_verification>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.migration_pathway_property_verification" ];
+ 	rr:logicalTable <#PRONOM6/migration_pathway_property_verification#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/MigrationPathwayPropertyVerification/{migration_pathway_property_verification_id}";
  		rr:class pr:MigrationPathwayPropertyVerification;
@@ -27,6 +28,10 @@
  	];
  	rr:predicateObjectMap [
         rr:predicate migrationPathwayPropertyVerification:Notes;
+        rr:objectMap [ rr:column "notes" ];
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate rdfs:comment;
         rr:objectMap [ rr:column "notes" ];
  	];
  	.

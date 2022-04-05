@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/format_developers>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_developers" ];
+ 	rr:logicalTable <#PRONOM6/format_developers#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatDeveloper/{file_format_id}";
  		rr:class pr:FormatDeveloper;
