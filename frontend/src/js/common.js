@@ -1,5 +1,9 @@
 import '@styles/main.scss'
 
-const App = () => {}
+
+const App = () => {
+  console.log("common is running")
+  
+}
 
 App()

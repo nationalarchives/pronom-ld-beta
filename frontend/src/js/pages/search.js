@@ -1,10 +1,11 @@
 import { test } from '@js/lib/test'
+// import { common } from '@js/common'
+import '@js/common.js'
 
-import '@styles/main.scss'
+// import '@styles/main.scss'
 import '@styles/search.scss'
 
 const App = () => {
-  console.log("search page JS")
   test()
 }
 
