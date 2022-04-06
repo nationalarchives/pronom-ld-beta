@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const AssetConfigWebpackPlugin = require('asset-config-webpack-plugin');
@@ -81,6 +82,10 @@ module.exports = {
   plugins: [
     ...HTMLFiles.map(conf => new HtmlWebpackPlugin(conf)),
     new MiniCssExtractPlugin({ filename: "[name].css" }),
-    new AssetConfigWebpackPlugin()
+    new AssetConfigWebpackPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+    })
   ]
 }
