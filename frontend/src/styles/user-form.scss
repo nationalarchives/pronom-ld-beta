@@ -435,34 +435,45 @@ fieldset {
     }
   }
 }
+.form-section {
+  height: 0;
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  &.show {
+    height: auto;
+    width: auto;
+    position: inherit;
+  }
+}
 section {
-  &#core {
-    display: none;
-  }
-  &#signatures {
-    display: none;
-  }
-  &#priority {
-    display: none;
-  }
-  &#identifiers {
-    display: none;
-  }
-  &#relationships {
-    display: none;
-  }
-  &#additionalProperties {
-    display: none;
-  }
-  &#yourDetails {
-    display: none;
-  }
-  &#review {
-    // display: none;
-  }
-  &#contributors {
-    display: none;
-  }
+  // &#core {
+  //   display: none;
+  // }
+  // &#signatures {
+  //   display: none;
+  // }
+  // &#priority {
+  //   display: none;
+  // }
+  // &#identifiers {
+  //   display: none;
+  // }
+  // &#relationships {
+  //   display: none;
+  // }
+  // &#additionalProperties {
+  //   display: none;
+  // }
+  // &#yourDetails {
+  //   display: none;
+  // }
+  // &#review {
+  //   display: none;
+  // }
+  // &#contributors {
+  //   display: none;
+  // }
 }
 select {
   display: block;

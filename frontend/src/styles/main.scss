@@ -95,6 +95,9 @@ hr {
 .button-container {
   display: flex;
 }
+html {
+  scroll-behavior: smooth;  
+}
 // Checkbox #checkbox START
 input {
   &.check {
