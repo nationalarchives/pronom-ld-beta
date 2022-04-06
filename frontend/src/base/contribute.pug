@@ -11,7 +11,7 @@ block content
   .unique-page-content#contribute
     article.split-with-button
       div(th:utext="${@templateUtils.md('index_why-submitting')}")
-        h2 Why submit to PRONOM?
+        h2#contribute1 Why submit to PRONOM?
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -21,7 +21,7 @@ block content
       a.blue.xlarge(href="form-choice.html")
         | Make a submission
     article.two-columns(th:utext="${@templateUtils.md('index_how-to-make-submissions')}")
-      h2 How to make a submission
+      h2#contribute2 How to make a submission
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -79,7 +79,7 @@ block content
                 ut labore et dolore magna aliqua.
         
     article.two-columns(th:utext="${@templateUtils.md('index_how-do-we-process-your-submission')}")
-      h2 How do we process your submission
+      h2#contribute3 How do we process your submission
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 

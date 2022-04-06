@@ -8,7 +8,7 @@ block content
   .unique-page-content#about
     article(th:utext="${@templateUtils.md('index_pronom-story')}")
       //- TODO - remove when #markdown is in use
-      h2 PRONOM story
+      h2#about1 PRONOM story
       h3 Background
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -25,7 +25,7 @@ block content
         culpa qui officia deserunt mollit anim id est laborum.
     article(th:utext="${@templateUtils.md('index_pronom-documentation')}")
       //- TODO - remove when #markdown is in use
-      h2 Documentation
+      h2#about2 Documentation
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -42,7 +42,7 @@ block content
       a(href="") some links comes here
     article(th:utext="${@templateUtils.md('index_pronom-team')}")
       //- TODO - remove when #markdown is in use
-      h2 Meet the team
+      h2#about3 Meet the team
     .team-photo-container
       .team-photo-group
         div

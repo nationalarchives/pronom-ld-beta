@@ -17,48 +17,49 @@ section#pronom-nav
           ul.sub-menu-pronom
             li
               // INFO for blue color add class="active"
-              a.active
+              a.active(href="#home1")
                 | What is Pronom?
             li
-              a
+              a(href="#home2")
                 | PRONOM and DROID
             li
-              a(href='#newInformation')
+              a(href='#home3')
                 | New information
         li(class=(currentURL === "/search" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/search'} href='/search' )
             | Search PRONOM
           ul.sub-menu-pronom
             li
-              a How to search?
+              a(href="#search1")
+                | How to search?
             li
-              a
+              a(href="#search2")
                 | Search PRONOM
         li(class=(currentURL === "/about" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/about'} href='/about')
             | About
           ul.sub-menu-pronom
             li
-              a
+              a(href="#about1")
                 | PRONOM story
             li
-              a
+              a(href="#about2")
                 | Documentation
             li
-              a
+              a(href="#about3")
                 | Meet the team
         li(class=(currentURL === "/faq" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/faq'} href='/faq')
             | FAQ
           ul.sub-menu-pronom
             li
-              a
+              a(href="#faq1")
                 | Category 1
             li
-              a
+              a(href="#faq2")
                 | Category 2
             li
-              a
+              a(href="#faq3")
                 | Category 2
         li(class=(currentURL === "/external-projects" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/external-projects'} href='external-projects')
@@ -68,23 +69,23 @@ section#pronom-nav
             | Submit to Pronom
           ul.sub-menu-pronom
             li
-              a
+              a(href="##contribute1")
                 | Why submit to PRONOM?
             li
-              a
+              a(href="##contribute2")
                 | How to make a submission
             li
-              a
+              a(href="##contribute3")
                 | How do we proceed your submission
         li(class=(currentURL === "/contact" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/contact'} href='/contact')
             | Contact
           ul.sub-menu-pronom
             li
-              a
+              a(href="#contact1")
                 | Contact details
             li
-              a
+              a(href="#contact2")
                 | Map
     
 script.
