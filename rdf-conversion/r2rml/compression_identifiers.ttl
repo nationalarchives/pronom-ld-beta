@@ -1,10 +1,11 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix compressionIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/compressionIdentifier.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/compression_identifiers>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_identifiers" ];
+ 	rr:logicalTable <#PRONOM6/compression_identifiers#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionIdentifier/{identifier_id}";
  		rr:class pr:CompressionIdentifier;
@@ -14,7 +15,7 @@
         rr:objectMap [ rr:column "identifier_type_id" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate compressionIdentifier:Identifier;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "Identifier_text" ];
  	];
  	rr:predicateObjectMap [

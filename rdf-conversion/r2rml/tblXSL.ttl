@@ -1,16 +1,17 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix tblXSL: <http://www.nationalarchives.gov.uk/PRONOM/tblXSL.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/tblXSL>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.tblXSL" ];
+ 	rr:logicalTable <#PRONOM6/tblXSL#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/TblXSL/{name_text}";
  		rr:class pr:TblXSL;
  	];
  	rr:predicateObjectMap [
-        rr:predicate tblXSL:Name;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
  	rr:predicateObjectMap [

@@ -5,65 +5,65 @@ aside
   .form-nav-container
     .border &nbsp;
     ul.main-nav
-      li.active
-        button.segment(onclick=" currentFormSectionw = 2")
+      li#coreBtn
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Core
-      li
-        button.segment(onclick="showFormSection(2)")
+      li#signaturesBtn
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Signature
-      li.from-external-only
-        button.segment.nested(onclick="showFormSection(3)")
+      li#priorityBtn.from-external-only
+        button.segment.nested
           .top-button
             .line &nbsp;
             .round &nbsp;
             span More information
         ul.side-menu
-          li
-            button(onclick="showFormSection(3)") Priority
-          li
-            button(onclick="showFormSection(4)") Identifiers
-          li
-            button(onclick="showFormSection(5)") Relationship
-          li
-            button(onclick="showFormSection(6)") Additional properties
-      li.from-internal-only
-        button.segment(onclick="showFormSection(4)")
+          li#prioritySubBtn
+            button Priority
+          li#identifiersSubBtn
+            button Identifiers
+          li#relationshipSubBtn
+            button Relationship
+          li#additionalSubBtn
+            button Additional properties
+      li#identifiersBtn.from-internal-only
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Relationships
-      li.from-internal-only
-        button.segment(onclick="showFormSection(5)")
+      li#relationshipsBtn.from-internal-only
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Identifiers
-      li.from-internal-only
-        button.segment(onclick="showFormSection(6)")
+      li#additionalPropertiesBtn.from-internal-only
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Additional properties
-      li.from-internal-only
+      li#contributorBtn.from-internal-only
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Contributor
-      li.from-external-only
-        button.segment(onclick="showFormSection(7)")
+      li#yourDetailsBtn.from-external-only
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Your details
-      li
-        button.segment(onclick="showFormSection(8)")
+      li#reviewBtn
+        button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;

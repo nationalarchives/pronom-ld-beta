@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/ffsf_fragments>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.ffsf_fragments" ];
+ 	rr:logicalTable <#PRONOM6/ffsf_fragments#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FfsfFragment/{byte_sequence_id}";
  		rr:class pr:FfsfFragment;

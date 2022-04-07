@@ -2,9 +2,8 @@
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix componentMeasurementToolLink: <http://www.nationalarchives.gov.uk/PRONOM/componentMeasurementToolLink.>
 
-
 <#PRONOM6/component_measurement_tool_link>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_measurement_tool_link" ];
+ 	rr:logicalTable <#PRONOM6/component_measurement_tool_link#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentMeasurementToolLink/{component_manifestation_type_id}";
  		rr:class pr:ComponentMeasurementToolLink;

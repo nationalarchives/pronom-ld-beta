@@ -1,16 +1,16 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix componentManifestationTypes: <http://www.nationalarchives.gov.uk/PRONOM/componentManifestationTypes.>
-
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/component_manifestation_types>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_manifestation_types" ];
+ 	rr:logicalTable <#PRONOM6/component_manifestation_types#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentManifestationTypes/{component_manifestation_type_id}";
  		rr:class pr:ComponentManifestationTypes;
  	];
  	rr:predicateObjectMap [
-        rr:predicate componentManifestationTypes:ComponentManifestationType;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "component_manifestation_type" ];
     ];
  	rr:predicateObjectMap [
@@ -18,28 +18,16 @@
         rr:objectMap [ rr:column "component_type_id" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate componentManifestationTypes:Description;
+        rr:predicate rdfs:comment;
         rr:objectMap [ rr:column "description" ];
     ];
  	.
 
  <#PRONOM6/component_manifestation_types#view> rr:sqlQuery """
-SELECT [file_format_id]
-      ,[format_name_text]
-      ,[version_text]
-      ,[format_text]
-      ,[release_date]
-      ,[withdrawn_date]
-      ,[withdrawn_flag]
-      ,[binary_flag]
-      ,[disclosure_id]
-      ,[note_text]
-      ,[source_id]
-      ,[source_date]
-      ,[last_updated_date]
-      ,[provenance_text]
-      ,[puid_type_id]
-      ,[puid_value]
-  FROM [PRONOM6].[dbo].[file_formats]
+SELECT [component_manifestation_type_id]
+     ,[component_manifestation_type]
+     ,[component_type_id]
+     ,[description]
+ FROM [PRONOM6].[dbo].[component_manifestation_types]
 """ .
 

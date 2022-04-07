@@ -1,6 +1,7 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix formatIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/formatIdentifier.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/format_identifiers>
@@ -28,7 +29,7 @@
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatIdentifierType/{identifier_type_id}" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate formatIdentifier:Identifier;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "identifier_text" ];
  	];
  	rr:predicateObjectMap [
@@ -56,17 +57,4 @@
         rr:objectMap [ rr:column "provenance_text" ];
  	];
  	.
-
- <#PRONOM6/format_identifiers#view> rr:sqlQuery """
-SELECT [identifier_id]
-     ,[identifier_type_id]
-     ,[identifier_text]
-     ,[file_format_id]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
- FROM [PRONOM6].[dbo].[format_identifiers]
-""" .
 

@@ -1,6 +1,7 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix externalSignature: <http://www.nationalarchives.gov.uk/PRONOM/externalSignature.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/external_signatures>
@@ -32,16 +33,12 @@
         rr:objectMap [ rr:column "signature_type_id" ];
  	];
  	rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "signature_text" ];
+    ];
+    rr:predicateObjectMap [
         rr:predicate externalSignature:Extension;
         rr:objectMap [ rr:column "signature_text" ];
     ];
  	.
-
- <#PRONOM6/external_signatures#view> rr:sqlQuery """
-SELECT [external_signature_id]
-     ,[file_format_id]
-     ,[signature_type_id]
-     ,[signature_text]
- FROM [PRONOM6].[dbo].[external_signatures]
-""" .
 

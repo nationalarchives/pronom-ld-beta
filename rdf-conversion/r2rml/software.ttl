@@ -101,23 +101,3 @@ rr:predicateObjectMap [
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{maintainer_id}" ];
     ];
  	.
-
- <#PRONOM6/software#view> rr:sqlQuery """
-SELECT [software_id]
-     ,[software_name_text]
-     ,[version_text]
-     ,[software_text]
-     ,[service_pack_text]
-     ,[release_date]
-     ,[withdrawn_date]
-     ,[withdrawn_flag]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
-     ,[puid_type_id]
-     ,[puid_value]
- FROM [PRONOM6].[dbo].[software]
-""" .
-

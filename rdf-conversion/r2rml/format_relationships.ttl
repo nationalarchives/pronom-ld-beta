@@ -3,7 +3,7 @@
 @prefix fileFormatRelationship: <http://www.nationalarchives.gov.uk/PRONOM/fileFormatRelationship.>
 
 <#PRONOM6/format_relationships>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_relationships" ];
+ 	rr:logicalTable <#PRONOM6/format_relationships#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationship/{relationship_id}";
  		rr:class pr:FileFormatRelationship;
