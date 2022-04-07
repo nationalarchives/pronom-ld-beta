@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/document_ipr>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.document_ipr" ];
+ 	rr:logicalTable <#PRONOM6/document_ipr#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentIpr/{document_id}";
  		rr:class pr:DocumentIpr;

@@ -1,16 +1,17 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix language: <http://www.nationalarchives.gov.uk/PRONOM/language.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/languages>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.languages" ];
+ 	rr:logicalTable <#PRONOM6/languages#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Language/{language_id}";
  		rr:class pr:Language;
  	];
  	rr:predicateObjectMap [
-        rr:predicate language:Language;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "language_text" ];
     ];
  	.

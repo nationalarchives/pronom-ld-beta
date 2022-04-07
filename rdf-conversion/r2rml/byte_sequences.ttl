@@ -2,7 +2,6 @@
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix byteSequence: <http://www.nationalarchives.gov.uk/PRONOM/byteSequence.>
 
-
 <#PRONOM6/byte_sequences>
  	rr:logicalTable [ rr:sqlQuery """
   SELECT
@@ -62,16 +61,4 @@
     ];
  	.
 
- <#PRONOM6/byte_sequences#view> rr:sqlQuery """
-SELECT [byte_sequence_id]
-     ,[position_type_id]
-     ,[offset]
-     ,[byte_sequence]
-     ,[signature_id]
-     ,[big_endian_flag]
-     ,[max_offset]
-     ,[indirect_offset_location]
-     ,[indirect_offset_length]
- FROM [PRONOM6].[dbo].[byte_sequences]
-""" .
 

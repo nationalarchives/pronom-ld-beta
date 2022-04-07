@@ -66,15 +66,4 @@
     ];
  	.
 
- <#PRONOM6/internal_signatures#view> rr:sqlQuery """
-SELECT [signature_id]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
-     ,[signature_name_text]
-     ,[generic_flag]
- FROM [PRONOM6].[dbo].[internal_signatures]
-""" .
 

@@ -49,7 +49,7 @@
  		rr:class pr:Actor;
  	];
  	rr:predicateObjectMap [
- 		rr:predicate actor:Name;
+ 		rr:predicate rdfs:label;
  		rr:objectMap [ rr:column "name_text" ];
  	];
  	rr:predicateObjectMap [
@@ -126,22 +126,3 @@
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{supports_file_format_id}" ];
     ];
  	.
-
- <#PRONOM6/actors#view> rr:sqlQuery """
-SELECT [actor_id]
-      ,[name_text]
-      ,[job_title_text]
-      ,[organisation_name_text]
-      ,[actor_type_id]
-      ,[telephone_text]
-      ,[website_text]
-      ,[country_code_text]
-      ,[support_website_text]
-      ,[contact_email_text]
-      ,[source_id]
-      ,[source_date]
-      ,[last_updated_date]
-      ,[provenance_text]
-      ,[address_text]
-  FROM [PRONOM6].[dbo].[actors]
-""" .
