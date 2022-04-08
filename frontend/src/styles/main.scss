@@ -34,6 +34,7 @@ button, a {
   display: grid;
   min-height: 100vh;
   padding: 0 90px;
+  grid-template-columns: auto 1fr;
   @media only screen and (max-width: 1200px) {
     display: block;
     padding: 0;
@@ -364,7 +365,6 @@ textarea {
 
 /* Main START #main =======================================*/
 main {
-  margin-left: 250px;
   border-left: 12px solid #C4DFF8;
   min-height: 100vh;
   padding: 60px 0 50px 50px;
@@ -396,8 +396,7 @@ main {
 /* Pronom main menu - START #pronommainmenu ============== */
 
 #pronom-nav {
-  position: fixed;
-  width: 250px;
+  width: 230px;
   #page-title {
     text-decoration: none;
     color:black;
@@ -475,8 +474,11 @@ main {
   @media only screen and (max-width: 1200px) {
     border-right: none;
     position: sticky;
-    top: 0;
+    top: 90px;
     z-index: 9;
+    @media only screen and (max-width: 765px) {
+      top: 70px;
+    }
   }
 }
 .page-container {
@@ -485,9 +487,10 @@ main {
       @media only screen and (max-width: 1200px) {
         border-right: none;
         position:inherit;
-        top: 0;
+        top: 90px;
         z-index: 9;
       }
+      
     }
   }
 }
@@ -498,7 +501,7 @@ main {
   height: 45px;
   padding-top: 50px;
   @media only screen and (max-width: 1200px) {
-    box-shadow: 1px -2px 8px black;
+    box-shadow: 7px 4px 9px #00000066;
     align-items: center;
     padding-top: 0;
     width: calc(100vw - 40px);
@@ -595,7 +598,6 @@ main {
   background: #8BACCB;
   padding: 20px;
   min-height: 250px;
-  position: absolute;
   width: calc(100vw - 55px);
   .social-media-inner {
     display: grid;
@@ -1394,3 +1396,188 @@ h1.internal-title {
     }
   }
 }
+// TNA Header and Footer #tnaheaderandfooter START
+// header
+header#header {
+  background-color: #26262a;
+  color: #fff;
+  padding: 1em 0;
+  border-bottom: 12px solid #8f8f8f;
+  padding: 20px 90px;
+  z-index: 99;
+  @media only screen and (max-width: 1200px) {
+    border-bottom: none;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+  }
+  #skip-to-main-content {
+    position: absolute;
+    top: -30px;
+  }
+  .container {
+    width: 100%;
+  }
+  .top-TNA-header {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    grid-gap: 50px;
+    align-items: center;
+    @media only screen and (max-width: 765px) {
+      grid-template-columns: 40px 1fr 40px;
+      justify-content: center;
+      > div {
+        &:nth-child(2){
+          grid-column: 1/2;
+          grid-row: 1/2;
+          align-items: center;
+          justify-content: center;
+        }
+        &:nth-child(1){
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 250px;
+          }
+        }
+      }
+    }
+    @media only screen and (max-width: 500px) {
+      grid-template-columns: 40px 1fr ;
+      grid-gap: 20px;
+      > div:nth-child(1){
+        justify-content: flex-start;
+      }
+    }
+  }
+  #red-round-button {
+    background: #cb0d07;
+    border-radius: 50px;
+    height: 60px;
+    width: 60px;
+    border: none;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    margin-bottom: -50px;
+    .mobile-content {
+      display: none;
+      i {
+        font-size: 22px;
+      }
+    }
+    .regular-content {
+      display: block;
+      line-height: 1;
+    }
+    @media only screen and (max-width: 1200px) {
+      margin-bottom: 0;
+    }
+    @media only screen and (max-width: 765px) {
+      height: 40px;
+      width: 40px;
+      .mobile-content {
+        display: block;
+      }
+      .regular-content {
+        display: none;
+      }
+    }
+  }
+  .logo {
+    max-width: 310px;
+  }
+}
+// footer
+.footer-content {
+  background-color: #26262a;
+  padding: 30px 90px;
+  color: white;
+  @media only screen and (max-width: 1200px) {
+    padding: 30px 20px;
+  }
+  .top-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-gap: 30px;
+    @media only screen and (max-width: 995px) {
+      grid-template-columns: 1fr;
+      grid-gap: 100px;
+    }
+    > div {
+      p {
+        display: flex;
+        flex-direction: column;
+      }
+      img {
+        max-width: 150px;
+      }
+      &.links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 30px;
+        > div {
+          display: flex;
+          flex-direction: column;
+        }
+        a {
+          color: #fbe2bc;
+          text-decoration: underline;
+          border-top: 1px solid #444;
+          padding: 0.1em 0 0.5em 0;
+        }
+      }
+    }
+    .tna-social-media {
+      display: flex;
+      a {
+        margin-right: 7px;
+      }
+      div {
+        border: 1.5px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 35px;
+        width: 35px;
+        border-radius: 30px;
+        .fa-brands, .fa-solid {
+          color: white;
+        }
+      }
+    }
+  }
+  .bottom-section {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    @media only screen and (max-width: 995px) {
+      margin-top: 100px;
+    }
+    @media only screen and (max-width: 765px) {
+      grid-template-columns: 1fr;
+    }
+    p {
+      span {
+        margin-right: 5px;
+      }
+      a {
+        color: #fbe2bc;
+        text-decoration: underline;
+      }
+    }
+    > img{
+        max-width: 40px;
+        margin-right: 20px;
+    }
+    a {
+      max-width: 60px;
+    }
+  }
+}
+// TNA Header and Footer END
