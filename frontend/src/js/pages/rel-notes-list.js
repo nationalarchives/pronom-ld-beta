@@ -3,6 +3,9 @@ import { test } from '@js/lib/test'
 import '@styles/main.scss'
 import '@styles/rel-notes-list.scss'
 
-const App = () => {}
+const App = () => {
+    // Signal JS is active
+    $('.page-container').removeClass('noJS')
+}
 
 App()
