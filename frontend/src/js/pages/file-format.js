@@ -1,6 +1,9 @@
 import '@styles/main.scss'
 import '@styles/file-format.scss'
 
-const App = () => {}
+const App = () => {
+    // Signal JS is active
+    $('.page-container').removeClass('noJS')
+}
 
 App()

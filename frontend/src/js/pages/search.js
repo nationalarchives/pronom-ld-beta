@@ -6,6 +6,8 @@ import '@js/common.js'
 import '@styles/search.scss'
 
 const App = () => {
+  // Signal JS is active
+  $('.page-container').removeClass('noJS')
   test()
 }
 
