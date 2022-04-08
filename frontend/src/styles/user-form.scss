@@ -7,7 +7,6 @@
 }
 
 main {
-  margin-left: 360px;
   padding: 20px;
   background: #f3f3f3;
 
@@ -16,14 +15,7 @@ main {
   }
 }
 
-.modal-header {
-  min-height: 45px;
-  align-items: center;
 
-  @media only screen and (max-width: 980px) {
-    width: calc(100% - 40px);
-  }
-}
 
 .main-nav {
   >li {
@@ -159,7 +151,6 @@ aside {
   background: white;
   min-height: 100vh;
   padding: 20px 20px 20px 40px;
-  position: fixed;
   width: 300px;
 
   @media only screen and (max-width: 1200px) {
@@ -169,8 +160,19 @@ aside {
 
 .form-content {
   display: grid;
+  grid-template-columns: auto 1fr;
   background: #f3f3f3;
-  padding-top: 80px;
+  max-width: 1680px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: -6px 1px 4px #0000000f;
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    padding-bottom: 100px;
+  }
+  main {
+    border-left: none;
+  }
 }
 
 .form-nav-container {
