@@ -34,6 +34,11 @@ button, a {
   display: grid;
   min-height: 100vh;
   padding: 0 90px;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 2px 10px #00000021;
+  background: white;
   grid-template-columns: auto 1fr;
   @media only screen and (max-width: 1200px) {
     display: block;
@@ -599,6 +604,11 @@ main {
   padding: 20px;
   min-height: 250px;
   width: calc(100vw - 55px);
+  .social-media-wrapper {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .social-media-inner {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -701,17 +711,34 @@ main {
   }
 }
 .modal-header {
-  display: grid;
-  grid-template-columns: 1fr auto 40px;
-  grid-gap: 30px;
-  align-items: center;
-  position: fixed;
-  width: calc(100% - 200px);
+  width: 100%;
+  background: white;
+  box-shadow: 3px 3px 3px #00000061;
   z-index: 9;
-  @media only screen and (max-width: 1600px) {
-    grid-template-columns: 1fr 30px;
-    align-items:flex-start;
-    grid-gap: 10px;
+  border-bottom: 2px solid #00000026;
+  .modal-header-inner {
+    max-width: 1650px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 1fr auto 40px;
+    grid-gap: 30px;
+    align-items: center;
+    padding: 15px 100px;
+    min-height: 45px;
+    align-items: center;
+    @media only screen and (max-width: 1600px) {
+      grid-template-columns: 1fr 30px;
+      align-items:flex-start;
+      grid-gap: 10px;
+    }
+    @media only screen and (max-width: 980px) {
+      padding: 15px 20px;
+      width: calc(100% - 40px);
+      h1 {
+        font-size: 1.4em;
+      }
+    }
   }
 }
 .additionals {
@@ -738,20 +765,10 @@ main {
   }
   
 }
-.modal-header {
-  background: white;
-  box-shadow: 3px 3px 3px #00000061;
-  padding: 15px 100px;
-  border-bottom: 2px solid #00000026;
-  @media only screen and (max-width: 980px) {
-    padding: 15px 20px;
-    h1 {
-      font-size: 1.4em;
-    }
-  }
-}
+
 .modal-body {
-  background: #F3F3F3;
+  // background: #F3F3F3;
+  background: white;
 }
 /* Modal - END */
 
@@ -1400,15 +1417,21 @@ h1.internal-title {
 header#header {
   background-color: #26262a;
   color: #fff;
-  padding: 1em 0;
   border-bottom: 12px solid #8f8f8f;
-  padding: 20px 90px;
   z-index: 99;
   @media only screen and (max-width: 1200px) {
     border-bottom: none;
-    padding: 15px 20px;
     position: sticky;
     top: 0;
+  }
+  #header-inner {
+    padding: 20px 90px;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+    @media only screen and (max-width: 1200px) {
+      padding: 15px 20px;
+    }
   }
   #skip-to-main-content {
     position: absolute;
@@ -1493,6 +1516,11 @@ header#header {
   }
 }
 // footer
+.footer-inner {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .footer-content {
   background-color: #26262a;
   padding: 30px 90px;
