@@ -1,16 +1,17 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix invariance: <http://www.nationalarchives.gov.uk/PRONOM/invariance.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/invariances>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.invariances" ];
+ 	rr:logicalTable <#PRONOM6/invariances#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Invariance/{invariance_id}";
  		rr:class pr:Invariance;
  	];
  	rr:predicateObjectMap [
-        rr:predicate invariance:Invariance;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "invariance_text" ];
     ];
  	.

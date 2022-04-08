@@ -1,11 +1,17 @@
+variable "repositories" {
+  default = ["pronom-backend", "pronom-triplestore"]
+}
+
 # Set up AWS ECR Repo for the backend image
-resource "aws_ecr_repository" "pronom-backend-repo" {
-  name                 = "pronom-backend"
+resource "aws_ecr_repository" "repo" {
+  count                = length(var.repositories)
+  name                 = var.repositories[count.index]
   image_tag_mutability = "MUTABLE"
 }
 
-resource "aws_ecr_repository_policy" "pronom-backend-repo-policy" {
-  repository = aws_ecr_repository.pronom-backend-repo.name
+resource "aws_ecr_repository_policy" "repo-policy" {
+  count      = length(aws_ecr_repository.repo[*])
+  repository = aws_ecr_repository.repo[count.index].name
   policy = jsonencode({
     "Version" : "2008-10-17",
     "Statement" : [
@@ -29,5 +35,5 @@ resource "aws_ecr_repository_policy" "pronom-backend-repo-policy" {
 }
 
 output "aws_ecr_repository_url" {
-    value = aws_ecr_repository.pronom-backend-repo.repository_url
+  value = aws_ecr_repository.repo[*].repository_url
 }

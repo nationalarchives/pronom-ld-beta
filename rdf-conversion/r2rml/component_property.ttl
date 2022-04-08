@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/component_property>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.component_property" ];
+ 	rr:logicalTable <#PRONOM6/component_property#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ComponentProperty/{property_id}";
  		rr:class pr:ComponentProperty;

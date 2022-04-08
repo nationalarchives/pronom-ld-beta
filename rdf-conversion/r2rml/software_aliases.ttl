@@ -4,13 +4,13 @@
 
 
 <#PRONOM6/software_aliases>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_aliases" ];
+ 	rr:logicalTable <#PRONOM6/software_aliases#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareAlias/{alias_id}";
  		rr:class pr:SoftwareAlias;
  	];
  	rr:predicateObjectMap [
-        rr:predicate softwareAlias:Name;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "name_text" ];
     ];
  	rr:predicateObjectMap [

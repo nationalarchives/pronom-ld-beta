@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/software_documentation>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_documentation" ];
+ 	rr:logicalTable <#PRONOM6/software_documentation#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareDocument/{software_id}";
  		rr:class pr:SoftwareDocument;

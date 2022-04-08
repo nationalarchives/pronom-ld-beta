@@ -1,88 +1,113 @@
-- var currentUrl = '/'
+block vars
+  - var currentUrl = '/'
 
 section#pronom-nav
   .container
     #pronom-nav-header
       a#page-title(href='/') PRONOM
-      button#pronom-nav-mobile-collapse(type='button')
+      button#pronom-nav-mobile-collapse(type='button', onclick="toggleMenuFunction()")
         | MENU
     nav
-      ul.menu-pronom.side-padding.hide
+      ul.menu-pronom.side-padding.hide#toggleMenu
         // INFO to display sub-menu add class="selected" to <li>
-        li(class={selected: currentUrl === '/'} href='/')
+        li(class=(currentURL === "/" ? "selected" : undefined))
           // INFO for blue color add class="active"
-          a.top-link(class={active: currentUrl === '/'} href='/')
+          a.top-link(class={active: currentUrl === '/'} href='/' )
             | Home
           ul.sub-menu-pronom
             li
               // INFO for blue color add class="active"
-              a.active
+              a.active(href="#home1")
                 | What is Pronom?
             li
-              a
+              a(href="#home2")
                 | PRONOM and DROID
             li
-              a(href='#newInformation')
+              a(href='#home3')
                 | New information
-        li(class={selected: currentUrl === '/search'} href='/search')
-          a.top-link(class={active: currentUrl === '/search'} href='/search')
+        li(class=(currentURL === "/search" ? "selected" : undefined))
+          a.top-link(class={active: currentUrl === '/search'} href='/search' )
             | Search PRONOM
           ul.sub-menu-pronom
             li
-              a How to search?
+              a(href="#search1")
+                | How to search?
             li
-              a
+              a(href="#search2")
                 | Search PRONOM
-        li(class={selected: currentUrl === '/about'} href='/about')
+        li(class=(currentURL === "/about" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/about'} href='/about')
             | About
           ul.sub-menu-pronom
             li
-              a
+              a(href="#about1")
                 | PRONOM story
             li
-              a
+              a(href="#about2")
                 | Documentation
             li
-              a
+              a(href="#about3")
                 | Meet the team
-        li(class={selected: currentUrl === '/faq'} href='/faq')
+        li(class=(currentURL === "/faq" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/faq'} href='/faq')
             | FAQ
           ul.sub-menu-pronom
             li
-              a
+              a(href="#faq1")
                 | Category 1
             li
-              a
+              a(href="#faq2")
                 | Category 2
             li
-              a
+              a(href="#faq3")
                 | Category 2
-        li(class={selected: currentUrl === '/external-projects'} href='external-projects')
+        li(class=(currentURL === "/external-projects" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/external-projects'} href='external-projects')
             | External Projects
-        li(class={selected: currentUrl === '/contribute'})
+        li(class=(currentURL === "/contribute" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/contribute'} href='/contribute')
             | Submit to Pronom
           ul.sub-menu-pronom
             li
-              a
+              a(href="##contribute1")
                 | Why submit to PRONOM?
             li
-              a
+              a(href="##contribute2")
                 | How to make a submission
             li
-              a
+              a(href="##contribute3")
                 | How do we proceed your submission
-        li(class={selected: currentUrl === '/contact'} href='/contact')
+        li(class=(currentURL === "/contact" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/contact'} href='/contact')
             | Contact
           ul.sub-menu-pronom
             li
-              a
+              a(href="#contact1")
                 | Contact details
             li
-              a
+              a(href="#contact2")
                 | Map
     
+script.
+  
+  window.addEventListener("resize", myFunction);
+  var menuStatus = false;
+  var toggleMenu = document.getElementById("toggleMenu");
+  function myFunction(){
+    if(window.innerWidth < 1200){
+      toggleMenu.style.display = "none";
+      menuStatus = true;
+    }else{
+      toggleMenu.style.display = "block";
+      menuStatus = false;
+    }
+  }
+  function toggleMenuFunction(){
+    if (menuStatus === true) {
+      toggleMenu.style.display = "block";
+      menuStatus = false;
+    } else {
+      toggleMenu.style.display = "none";
+      menuStatus = true;
+    }
+  }

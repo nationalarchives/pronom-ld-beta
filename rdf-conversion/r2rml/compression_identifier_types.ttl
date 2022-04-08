@@ -1,16 +1,16 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix compressionIdentifierType: <http://www.nationalarchives.gov.uk/PRONOM/compressionIdentifierType.>
-
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 <#PRONOM6/compression_identifier_types>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_identifier_types" ];
+ 	rr:logicalTable <#PRONOM6/compression_identifier_types#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionIdentifierType/{identifier_type_id}";
  		rr:class pr:CompressionIdentifierType;
  	];
  	rr:predicateObjectMap [
-        rr:predicate compressionIdentifierType:IdentifierType;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "identifier_type_text" ];
     ];
  	.

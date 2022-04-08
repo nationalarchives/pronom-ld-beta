@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/software_storage_media>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_storage_media" ];
+ 	rr:logicalTable <#PRONOM6/software_storage_media#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareStorageMedium/{software_id}";
  		rr:class pr:SoftwareStorageMedium;

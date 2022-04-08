@@ -1,66 +1,33 @@
 extends /layouts/modal.pug
-
+  
 block modalHeader
   div
     h1
       | Add new file fomat
 block modalBody
-  .form-content
-    aside
-      .form-nav-container
-        .border &nbsp;
-        ul.main-nav
-          li
-            button.segment
-              .top-button
-                .line &nbsp;
-                .round &nbsp;
-                span Core
-          li
-            button.segment
-              .top-button
-                .line &nbsp;
-                .round &nbsp;
-                span Signature
-          li
-            button.segment.nested.active
-              .top-button
-                .line &nbsp;
-                .round &nbsp;
-                span More information
-            ul.side-menu
-              li
-                button.active Priority
-              li
-                button Identifiers
-              li
-                button Relationship
-              li
-                button Additional properties
-          li
-            button.segment
-              .top-button
-                .line &nbsp;
-                .round &nbsp;
-                span Your details
-          li
-            button.segment
-              .top-button
-                .line &nbsp;
-                .round &nbsp;
-                span Review
-
+  .form-content#user-form
+    
+    include ./partials/userForm/form-navigation.pug
+   
     main
-      include ./partials/userForm/core.pug
-      include ./partials/userForm/signatures.pug
-      include ./partials/userForm/priority.pug
-      include ./partials/userForm/identifiers.pug
-      include ./partials/userForm/releationships.pug
-      include ./partials/userForm/additionalProperties.pug
-      include ./partials/userForm/yourDetails.pug
-      include ./partials/userForm/review.pug
+      .form-section(class=(currentFormSection === 1 ? "show" : undefined))
+        include ./partials/userForm/core.pug
+      .form-section(class=(currentFormSection === 2 ? "show" : undefined))
+        include ./partials/userForm/signatures.pug
+      .form-section(class=(currentFormSection === 3 ? "show" : undefined))
+        include ./partials/userForm/priority.pug
+      .form-section(class=(currentFormSection === 4 ? "show" : undefined))
+        include ./partials/userForm/identifiers.pug
+      .form-section(class=(currentFormSection === 5 ? "show" : undefined))
+        include ./partials/userForm/releationships.pug
+      .form-section(class=(currentFormSection === 6 ? "show" : undefined))
+        include ./partials/userForm/additionalProperties.pug
+      .form-section(class=(currentFormSection === 7 ? "show" : undefined))
+        include ./partials/userForm/yourDetails.pug
+      .form-section(class=(currentFormSection === 8 ? "show" : undefined))
+        include ./partials/userForm/review.pug
+      
     .smallScreen#submit-mobile
       div
         button.blue.medium.right.submit-button
           | Submit
-      

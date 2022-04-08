@@ -1,0 +1,78 @@
+block vars
+  - var currentFormSectionw = 1
+
+aside
+  .form-nav-container
+    .border &nbsp;
+    ul.main-nav
+      li#coreBtn
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Core
+      li#signaturesBtn
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Signature
+      li#priorityBtn.from-external-only
+        button.segment.nested
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span More information
+        ul.side-menu
+          li#prioritySubBtn
+            button Priority
+          li#identifiersSubBtn
+            button Identifiers
+          li#relationshipSubBtn
+            button Relationship
+          li#additionalSubBtn
+            button Additional properties
+      li#identifiersBtn.from-internal-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Relationships
+      li#relationshipsBtn.from-internal-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Identifiers
+      li#additionalPropertiesBtn.from-internal-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Additional properties
+      li#contributorBtn.from-internal-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Contributor
+      li#yourDetailsBtn.from-external-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Your details
+      li#reviewBtn
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
+            span Review
+
+script.
+  var currentFormSectionw = 0;
+  function showFormSection(formPart){
+    var currentFormSection = formPart;
+    console.log(currentFormSection);
+    return var currentFormSection
+  }

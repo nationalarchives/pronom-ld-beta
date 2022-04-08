@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/software_relationships>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.software_relationships" ];
+ 	rr:logicalTable <#PRONOM6/software_relationships#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/SoftwareRelationship/{relationship_id}";
  		rr:class pr:SoftwareRelationship;

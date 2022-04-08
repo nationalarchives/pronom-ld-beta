@@ -1,0 +1,88 @@
+package com.wallscope.pronombackend.dao;
+
+import com.wallscope.pronombackend.model.FileFormat;
+import com.wallscope.pronombackend.model.FileFormatDeserializer;
+import com.wallscope.pronombackend.model.PUID;
+import com.wallscope.pronombackend.utils.ModelUtil;
+import com.wallscope.pronombackend.utils.TriplestoreUtil;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.ResIterator;
+import org.apache.jena.rdf.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.wallscope.pronombackend.dao.InternalSignatureDAO.SIGNATURE_SUB_QUERY;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
+
+public class FileFormatDAO {
+    Logger logger = LoggerFactory.getLogger(FileFormatDAO.class);
+    public static final String FILE_FORMAT_SUB_QUERY = """
+            ?f a pr:FileFormat ;
+                 rdfs:label ?label ;
+                 rdfs:comment ?comment ;
+                 ff:Puid ?puid ;
+                 ff:PuidTypeId ?puidType ;
+                 ff:LastUpdatedDate ?updated ;
+                 .
+                 
+                 # Links
+                 ?puidType rdfs:label ?puidTypeName .
+               	 
+                 # Non-required fields
+                 OPTIONAL { ?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType . }#END OPTIONAL
+                 OPTIONAL { ?f ff:Classification ?classification .
+                    ?classification rdfs:label ?classificationName .
+                 }#END OPTIONAL
+                 OPTIONAL { ?f ff:Version ?version . }#END OPTIONAL
+                 OPTIONAL { ?f ff:BinaryFlag ?binaryFlag . }#END OPTIONAL
+                 OPTIONAL { ?f ff:WithdrawnFlag ?withdrawn . }#END OPTIONAL
+               	 OPTIONAL { ?f ff:InternalSignature ?sig .
+               	    """ + SIGNATURE_SUB_QUERY + """
+               	 }#END OPTIONAL
+               	 OPTIONAL { ?f ff:Development.Actor ?devActor . }#END OPTIONAL
+                 OPTIONAL { ?f ff:Support.Actor ?supportActor . }#END OPTIONAL
+            """;
+    public static final String FILE_FORMAT_QUERY = PREFIXES + """
+            prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
+            prefix pt: <http://www.nationalarchives.gov.uk/PRONOM/puidType.>
+            CONSTRUCT {
+            """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
+             } WHERE {
+            """ + FILE_FORMAT_SUB_QUERY + """
+             }
+            """;
+    public static final String PUID_QUERY = PREFIXES + "CONSTRUCT {?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName} WHERE{ ?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName }";
+
+    public FileFormat getFileFormatByPuid(String puid) {
+        return getFileFormatByPuid(puid, "fmt");
+    }
+
+    public FileFormat getFileFormatByPuid(String puid, String puidType) {
+        logger.debug("fetching file format by PUID: " + puidType + "/" + puid);
+        FileFormatDeserializer deserializer = new FileFormatDeserializer();
+        Map<String, RDFNode> params = new HashMap<>();
+        params.put("puid", makeLiteral(puid, XSDDatatype.XSDinteger));
+        params.put("puidTypeName", makeLiteral(puidType));
+        Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY, params);
+        ResIterator subject = m.listSubjectsWithProperty(makeProp(RDF.type), deserializer.getRDFType());
+        if (subject == null || !subject.hasNext()) return null;
+        return deserializer.fromModel(subject.nextResource(), m);
+    }
+
+    public PUID getPuidForURI(Resource uri) {
+        Map<String, RDFNode> params = new HashMap<>();
+        params.put("f", uri);
+        Model m = TriplestoreUtil.constructQuery(PUID_QUERY, params);
+        ModelUtil mu = new ModelUtil(m);
+        RDFNode puidNode = mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Puid));
+        if (puidNode == null || !puidNode.isLiteral()) return null;
+        Integer puid = puidNode.asLiteral().getInt();
+        String puidType = mu.getOneObjectOrNull(null, makeProp(RDFS.label)).asLiteral().getString();
+        return new PUID(puid, puidType.trim());
+    }
+}

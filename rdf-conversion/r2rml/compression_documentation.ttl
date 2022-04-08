@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/compression_documentation>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.compression_documentation" ];
+ 	rr:logicalTable <#PRONOM6/compression_documentation#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Compression/{compression_id}";
  		rr:class pr:Compression;

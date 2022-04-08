@@ -8,7 +8,7 @@ section.form-part#review
       h2 Review
       div
         .nav
-          button.bordered-blue.medium.left
+          button.bordered-blue.medium.left.prev
             i.fa-solid.fa-angles-left
             | Prev
           button.blue.medium.right.submit-button
@@ -28,6 +28,13 @@ section.form-part#review
           .element
             p.label File format description
             p.value Lorem ipsum
+          //- Internal only
+          .element.from-internal-only  
+            #priority-over
+              p Priority over 
+              .element
+                p.label File format
+                p.value Lorem ipsum
       .part
         h4.border References
         .count
@@ -140,16 +147,111 @@ section.form-part#review
               .element
                 p.label Path
                 p.value Lorem ipsum
-      h3 More information
-      .part
-        h4 Priority
-        .review-part
-          #priority-over
-            p Priority over 
+      //- External only
+      .from-external-only
+        h3 More information
+        .part
+          h4 Priority
+          .review-part
+            #priority-over
+              p Priority over 
+              .element
+                p.label File format
+                p.value Lorem ipsum
+          h4 Identifiers
+          .review-part
+            #review-identifiers
+              .two
+                .element
+                  p.label File format
+                  p.value Lorem ipsum
+                .element
+                  p.label File format
+                  p.value Lorem ipsum
+            h5 Aliases
+            .review-part#review-aliases
+              .two
+                .element
+                  p.label Name
+                  p.value Lorem ipsum
+                .element
+                  p.label Version
+                  p.value Lorem ipsum
+              .two
+                .element
+                  p.label Name
+                  p.value Lorem ipsum
+                .element
+                  p.label Version
+                  p.value Lorem ipsum
+          h4 Relationships
+          .review-part
+            #review-relationships
+              .two
+                .element
+                  p.label Relationship type
+                  p.value Lorem ipsum
+                .element
+                  p.label Related file format
+                  p.value Lorem ipsum
             .element
-              p.label File format
+              p.label Format families
               p.value Lorem ipsum
-        h4 Identifiers
+          h4 Additional properties
+          .review-part
+            h3 Byte sequences
+            .review-part
+              .element
+                p.label File format byte order
+                p.value Lorem ipsum
+              .element
+                p.label Compression Type
+                p.value Lorem ipsum
+            h3 Stakeholders and specification
+            .element
+              p.label Developer
+              p.value Lorem ipsum
+      //- External only
+      .from-external-only
+        h3 Your details
+        .part
+          .review-part
+            .two
+              div
+                .element
+                  p.label Name
+                  p.value Lorem ipsum
+                .element
+                  p.label Organisation
+                  p.value Lorem ipsum
+                .element
+                  p.label Contact email
+                  p.value Lorem ipsum
+                .element
+                  p.label Country
+                  p.value Lorem ipsum
+              div
+                .element
+                  p.label Comment
+                  p.value Lorem ipsum
+            h5 Recognition
+            p.value I give persmission ...
+      //- Internal only
+      .from-internal-only
+        h3 Relationships
+        .review-part
+          #review-relationships
+            .two
+              .element
+                p.label Relationship type
+                p.value Lorem ipsum
+              .element
+                p.label Related file format
+                p.value Lorem ipsum
+          .element
+            p.label Format families
+            p.value Lorem ipsum
+        h3 Identifiers
         .review-part
           #review-identifiers
             .two
@@ -175,52 +277,65 @@ section.form-part#review
               .element
                 p.label Version
                 p.value Lorem ipsum
-        h4 Relationships
-        .review-part
-          #review-relationships
-            .two
+        h3 Additional properties
+        .review-part.two
+          div
+            h4 Byte sequences
+            .review-part
               .element
-                p.label Relationship type
+                p.label File format byte order
                 p.value Lorem ipsum
               .element
-                p.label Related file format
+                p.label Compression Type
                 p.value Lorem ipsum
+          div
+            .review-part
+              h4 Stakeholders and specification
+              .element
+                p.label Developer
+                p.value Lorem ipsum
+              .element
+                p.label Support
+                p.value Lorem ipsum
+              .element
+                p.label Format IPR
+                p.value Lorem ipsum
+              .element
+                p.label Document
+                p.value Lorem ipsum
+              .element
+                p.label Selected file format byte order
+                p.value Lorem ipsum
+              .two
+                .element
+                  p.label Withdrawn
+                  p.value NO
+                .element
+                  p.label Withdrawn Date
+                  p.value ---
+            .review-part
+              h4 Technical enviroment
+              .element
+                p.label Technical enviroment
+                p.value Lorem ipsum
+        h3 Contributors
+        .review-part.three
           .element
-            p.label Format families
+            p.label Date
             p.value Lorem ipsum
-        h4 Additional properties
-        .review-part
-          h3 Byte sequences
-          .review-part
-            .element
-              p.label File format byte order
-              p.value Lorem ipsum
-            .element
-              p.label Compression Type
-              p.value Lorem ipsum
-          h3 Stakeholders and specification
           .element
-            p.label Developer
+            p.label Contributor
             p.value Lorem ipsum
-        h4 Your details
-        .review-part
-          .two
-            div
-              .element
-                p.label Name
-                p.value Lorem ipsum
-              .element
-                p.label Organisation
-                p.value Lorem ipsum
-              .element
-                p.label Contact email
-                p.value Lorem ipsum
-              .element
-                p.label Country
-                p.value Lorem ipsum
-            div
-              .element
-                p.label Comment
-                p.value Lorem ipsum
-          h5 Recognition
-          p.value I give persmission ...
+          .element
+            p.label Ation
+            p.value Lorem ipsum
+        .review-part.three
+          .element
+            p.label Date
+            p.value Lorem ipsum
+          .element
+            p.label Contributor
+            p.value Lorem ipsum
+          .element
+            p.label Ation
+            p.value Lorem ipsum

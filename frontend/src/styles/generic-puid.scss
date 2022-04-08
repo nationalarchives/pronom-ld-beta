@@ -59,6 +59,10 @@
   .file-format-container {
     display: grid;
     grid-template-columns:300px 1fr;
+    max-width: 1660px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: -6px 1px 4px #0000000f;
     @media only screen and (max-width: 980px) {
       grid-template-columns:200px 1fr;
     }

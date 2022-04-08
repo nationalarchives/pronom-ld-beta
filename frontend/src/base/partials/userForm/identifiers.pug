@@ -4,24 +4,35 @@ section.form-part#identifiers
       i.fa-solid.fa-chevron-down
       h2 Identifiers
   .largeScreen
-    .form-header-main
-      h2 More information
-      .nav
-        button.bordered-blue.medium.left
-          i.fa-solid.fa-angles-left
-          | Prev
-        button.bordered-blue.medium.right
-          | Next
-          i.fa-solid.fa-angles-right
-  .form-header-sub.largeScreen
-    h3 Identifiers
-    .nav
-      button.bordered-blue.xsmall.left
-        i.fa-solid.fa-angles-left
-        | Prev
-      button.bordered-blue.xsmall.right
-        | Next
-        i.fa-solid.fa-angles-right
+    .from-external-only
+      .form-header-main
+        h2 More information
+        .nav
+          button.bordered-blue.medium.left.prevSkip
+            i.fa-solid.fa-angles-left
+            | Prev
+          button.bordered-blue.medium.right.nextSkip
+            | Next
+            i.fa-solid.fa-angles-right
+      .form-header-sub
+        h3 Identifiers
+        .nav
+          button.bordered-blue.xsmall.left.prev
+            i.fa-solid.fa-angles-left
+            | Prev
+          button.bordered-blue.xsmall.right.next
+            | Next
+            i.fa-solid.fa-angles-right
+    .from-internal-only
+      .form-header-main
+        h2 Identifiers
+        .nav
+          button.bordered-blue.medium.left
+            i.fa-solid.fa-angles-left
+            | Prev
+          button.bordered-blue.medium.right
+            | Next
+            i.fa-solid.fa-angles-right
   .form-partial-content
     .part
       fieldset

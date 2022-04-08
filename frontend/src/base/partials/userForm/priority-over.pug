@@ -1,0 +1,20 @@
+fieldset
+  legend.sr-only For the current file format, specify others over which it has priority over
+  .row-group
+    #priority-inner
+      p Priority over
+      .priority-list
+        .priority-group
+          .form-row
+            .tooltip-container
+              .label
+                label(for="FileFormat") File format
+                span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+            input(name="FileFormat" id="FileFormat")
+          button.bordered-red.small 
+            | Delete field
+      .button-container
+        button.black.small.push-right
+          | Add field

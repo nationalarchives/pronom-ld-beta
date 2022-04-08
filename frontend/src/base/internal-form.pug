@@ -1,0 +1,22 @@
+extends /layouts/modal.pug
+
+block modalHeader
+  div
+    h1
+      | Add new file fomat
+block modalBody
+  .form-content#user-form
+    include ./partials/userForm/form-navigation.pug
+    main
+      include ./partials/userForm/core.pug
+      include ./partials/userForm/signatures.pug
+      include ./partials/userForm/releationships.pug
+      include ./partials/userForm/identifiers.pug
+      include ./partials/userForm/additionalProperties.pug
+      include ./partials/userForm/contributor.pug
+      include ./partials/userForm/review.pug
+    .smallScreen#submit-mobile
+      div
+        button.blue.medium.right.submit-button
+          | Submit
+      

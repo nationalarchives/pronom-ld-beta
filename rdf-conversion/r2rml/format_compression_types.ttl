@@ -4,7 +4,7 @@
 
 
 <#PRONOM6/format_compression_types>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.format_compression_types" ];
+ 	rr:logicalTable <#PRONOM6/format_compression_types#view>;
  	rr:subjectMap [
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatCompressionType/{file_format_id}";
  		rr:class pr:FormatCompressionType;
