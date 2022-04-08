@@ -70,7 +70,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fExtension") PLACEHOLDER(1.0)
+            p(aria-labeledby="#fExtension", th:text="${#lists.size(fileFormat.externalSignatures) gt 0 ? fileFormat.externalSignatures?.get(0)?.name : 'no value'}") PLACEHOLDER(1.0)
         //- ROW
         li.row
           .tooltip-container
@@ -80,7 +80,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fMediaType") audio
+            p(aria-labeledby="#fMediaType") NOT IMPLEMENTED
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
@@ -110,7 +110,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fMIME") Lorem ipsum
+                p(aria-labeledby="#fMIME") NOT IMPLEMENTED
             //- ROW
             li.row
               .tooltip-container
@@ -120,7 +120,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fOther") Lorem ipsum
+                p(aria-labeledby="#fOther") NOT IMPLEMENTED
           //- ROW
         li.row
           .tooltip-container
@@ -130,7 +130,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fClassification") audio
+            p(aria-labeledby="#fClassification", th:text="${fileFormat.classificationsListString}") audio
         //- ROW
         li.row
           .tooltip-container
@@ -150,9 +150,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            a(aria-labeledby="#fRelatedFileFormats" href="") File format name
-            a(aria-labeledby="#fRelatedFileFormats" href="") File format name
-            a(aria-labeledby="#fRelatedFileFormats" href="") File format name
+            a(aria-labeledby="#fRelatedFileFormats" href="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -162,12 +160,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            a(aria-labeledby="#fPriorityOver" href="") File format name 
-            a(aria-labeledby="#fPriorityOver" href="") File format name
-            a(aria-labeledby="#fPriorityOver" href="") File format name
-            a(aria-labeledby="#fPriorityOver" href="") File format name 
-            a(aria-labeledby="#fPriorityOver" href="") File format name
-            a(aria-labeledby="#fPriorityOver" href="") File format name
+            a(aria-labeledby="#fPriorityOver" href="") NOT IMPLEMENTED
       h2 References
       //- TABLE =========================================================================
       ul.table
@@ -180,16 +173,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-          div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED 1
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -201,7 +185,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED 2.1
         li.row
           .tooltip-container
             .label
@@ -210,7 +194,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED 2.2
 
       h3 Documentation
       //- TABLE =========================================================================
@@ -224,7 +208,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -234,7 +218,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -244,7 +228,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -254,7 +238,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
         li.row
           .tooltip-container
@@ -264,7 +248,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
         li.row
           .tooltip-container
@@ -274,7 +258,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
         li.row
           .tooltip-container
@@ -284,12 +268,12 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
 
       h2 Signatures
       h3 External signatures
       //- TABLE =========================================================================
-      ul.table
+      ul.table(th:each=" extSig : ${fileFormat.externalSignatures}")
         //- ROW 
         li.row
           .tooltip-container
@@ -299,11 +283,21 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="", th:text="${extSig.name}") Lorem ipsum dolor sit amet
+        //- ROW
+        li.row
+          .tooltip-container
+            .label
+              p.label-text Type
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+          div
+            p(aria-labeledby="", th:text="${extSig.signatureType}") Lorem ipsum dolor sit amet
 
       h3 Internal signatures
       //- TABLE =========================================================================
-      ul.table
+      ul.table(th:each="intSig : ${fileFormat.internalSignatures}")
         //- ROW
         li.row
           .tooltip-container
@@ -313,7 +307,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="", th:text="${intSig.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
@@ -323,7 +317,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="", th:text="${intSig.note ?: ''}") Lorem ipsum dolor sit amet
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
@@ -333,7 +327,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           //- TABLE =========================================================================
-          ul.table
+          ul.table(th:each="byteSeq : ${intSig.byteSequences}")
             //- ROW
             li.row
               .tooltip-container
@@ -343,7 +337,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fPUID") fmt/11
+                p(aria-labeledby="#fPUID", th:text="${byteSeq.positionName} ?: ''") Absolute from EOF
             //- ROW
             li.row
               .tooltip-container
@@ -353,7 +347,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fMIME") Lorem ipsum
+                p(aria-labeledby="#fMIME", th:text="${byteSeq.offset} ?: ''") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
@@ -363,7 +357,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fOther") Lorem ipsum
+                p(aria-labeledby="#fOther", th:text="${byteSeq.maxOffset} ?: ''") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
@@ -373,7 +367,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fOther") Lorem ipsum
+                p(aria-labeledby="#fOther", , th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
@@ -383,59 +377,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fOther") Lorem ipsum
-          //- TABLE =========================================================================
-          ul.table
-            //- ROW
-            li.row
-              .tooltip-container
-                .label
-                  p.label-text#fPUID Position type
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              div
-                p(aria-labeledby="#fPUID") fmt/11
-            //- ROW
-            li.row
-              .tooltip-container
-                .label
-                  p.label-text#fMIME Min Offset
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              div
-                p(aria-labeledby="#fMIME") Lorem ipsum
-            //- ROW
-            li.row
-              .tooltip-container
-                .label
-                  p.label-text#fOther Max offset
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              div
-                p(aria-labeledby="#fOther") Lorem ipsum
-            //- ROW
-            li.row
-              .tooltip-container
-                .label
-                  p.label-text#fOther Byte order
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              div
-                p(aria-labeledby="#fOther") Lorem ipsum
-            //- ROW
-            li.row
-              .tooltip-container
-                .label
-                  p.label-text#fOther Value
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              div
-                p(aria-labeledby="#fOther") Lorem ipsum
+                p(aria-labeledby="#fOther", th:text="${byteSeq.sequence}") Lorem ipsum
       h2 More information
       //- TABLE =========================================================================
       ul.table
@@ -448,7 +390,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -458,7 +400,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -468,7 +410,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -478,7 +420,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -488,7 +430,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -508,7 +450,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -518,7 +460,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       h2 Compression
       //- TABLE =========================================================================
       ul.table
@@ -531,7 +473,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -541,7 +483,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -551,7 +493,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -561,7 +503,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -571,7 +513,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -581,7 +523,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -591,7 +533,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -601,7 +543,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -611,7 +553,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -621,7 +563,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -631,7 +573,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -641,7 +583,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -651,7 +593,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       h2 Character encoding
       h2 Properties
       //- TABLE =========================================================================
@@ -665,7 +607,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -675,7 +617,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -687,7 +629,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -697,7 +639,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -709,7 +651,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -719,7 +661,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -731,7 +673,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -741,7 +683,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -753,7 +695,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -763,7 +705,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -775,7 +717,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -785,7 +727,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -797,7 +739,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -807,7 +749,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -819,7 +761,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -829,7 +771,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -841,7 +783,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -851,7 +793,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -863,7 +805,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -873,7 +815,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -885,7 +827,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -895,4 +837,4 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(aria-labeledby="") NOT IMPLEMENTED
