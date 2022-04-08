@@ -62,7 +62,7 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate actor:TypeId;
-        rr:objectMap [ rr:column "actor_type_id" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ActorType/{actor_type_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate actor:Telephone;

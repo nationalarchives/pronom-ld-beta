@@ -12,9 +12,9 @@
        ,[external_signatures].[file_format_id]
      --,[external_signatures].[signature_type_id]
      -- signature_type_id is replaced since there's only 3 values and this way we can build the URI
-        ,COALESCE(CASE WHEN ([external_signatures].signature_type_id = 1) THEN 'Other' ELSE NULL END,
-                  CASE WHEN ([external_signatures].signature_type_id = 2) THEN 'File extension' ELSE NULL END,
-                  CASE WHEN ([external_signatures].signature_type_id = 3) THEN 'Mac OS data fork' ELSE NULL END) as signature_type_id
+        ,COALESCE(CASE WHEN ([external_signatures].signature_type_id = 0) THEN 'Other' ELSE NULL END,
+                  CASE WHEN ([external_signatures].signature_type_id = 1) THEN 'File extension' ELSE NULL END,
+                  CASE WHEN ([external_signatures].signature_type_id = 2) THEN 'Mac OS data fork' ELSE NULL END) as signature_type_id
        ,[external_signatures].[signature_text]
 
     FROM [PRONOM6].[dbo].[external_signatures]
