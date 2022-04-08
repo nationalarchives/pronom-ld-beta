@@ -19,7 +19,7 @@ services:
   
   # Triplestore
   triplestore:
-    image: 977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:0.0.0
+    image: 977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:0.0.1
     user: "9008:0"
     ports:
       - "8030:3030"

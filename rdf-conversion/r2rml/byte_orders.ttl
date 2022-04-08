@@ -1,22 +1,23 @@
-@prefix rr: <http://www.w3.org/ns/r2rml#>. 
-@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix byteOrder: <http://www.nationalarchives.gov.uk/PRONOM/byteOrder.>
+@prefix rr: <http://www.w3.org/ns/r2rml#> . 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 
 <#PRONOM6/byte_orders>
- 	rr:logicalTable [ rr:tableName "PRONOM6.dbo.byte_orders" ];
+ 	rr:logicalTable <#PRONOM6/byte_order#view> ;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteOrder/{byte_order_id}";
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteOrder/{byte_order_name}";
  		rr:class pr:ByteOrder;
  	];
  	rr:predicateObjectMap [
-        rr:predicate byteOrder:ByteOrder;
+        rr:predicate rdfs:label;
         rr:objectMap [ rr:column "byte_order_text" ];
     ];
  	.
 
- <#PRONOM6/actors#view> rr:sqlQuery """
-SELECT [byte_order_id]
+ <#PRONOM6/byte_order#view> rr:sqlQuery """
+SELECT COALESCE(CASE WHEN (byte_order_id = 1) THEN 'littleEndian' ELSE NULL END,
+       CASE WHEN (byte_order_id = 2) THEN 'bigEndian' ELSE NULL END) as [byte_order_name]
      ,[byte_order_text]
  FROM [PRONOM6].[dbo].[byte_orders]
 """ .

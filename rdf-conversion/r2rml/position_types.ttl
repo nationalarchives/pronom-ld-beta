@@ -6,7 +6,7 @@
 <#PRONOM6/position_types>
  	rr:logicalTable <#PRONOM6/position_types#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PositionType/{position_type_id}";
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ByteSequencePosition/{position_type_id}";
  		rr:class pr:PositionType;
  	];
  	rr:predicateObjectMap [

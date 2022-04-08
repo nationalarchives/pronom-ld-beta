@@ -1,12 +1,16 @@
 package com.wallscope.pronombackend.model;
 
-import com.wallscope.pronombackend.utils.ModelUtil;
-import com.wallscope.pronombackend.utils.RDFUtil;
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FileFormat implements RDFWritable {
     Logger logger = LoggerFactory.getLogger(FileFormat.class);
@@ -20,8 +24,28 @@ public class FileFormat implements RDFWritable {
     private final String version;
     private final Boolean binaryFlag;
     private final Boolean withdrawnFlag;
+    private final List<Classification> classifications;
+    private final List<InternalSignature> internalSignatures;
+    private final List<ExternalSignature> externalSignatures;
+    private final List<Actor> developmentActors;
+    private final List<Actor> supportActors;
 
-    public FileFormat(Resource uri, Integer puid, Resource puidType, String puidTypeName, String name, String description, Instant updated, String version, Boolean binaryFlag, Boolean withdrawnFlag) {
+    public FileFormat(
+            Resource uri,
+            Integer puid,
+            Resource puidType,
+            String puidTypeName,
+            String name,
+            String description,
+            Instant updated,
+            String version,
+            Boolean binaryFlag,
+            Boolean withdrawnFlag,
+            List<Classification> classifications,
+            List<InternalSignature> internalSignatures,
+            List<ExternalSignature> externalSignatures,
+            List<Actor> developmentActors,
+            List<Actor> supportActors) {
         this.uri = uri;
         this.puid = puid;
         this.puidType = puidType;
@@ -32,6 +56,11 @@ public class FileFormat implements RDFWritable {
         this.version = version;
         this.binaryFlag = binaryFlag;
         this.withdrawnFlag = withdrawnFlag;
+        this.classifications = classifications;
+        this.internalSignatures = internalSignatures;
+        this.externalSignatures = externalSignatures;
+        this.developmentActors = developmentActors;
+        this.supportActors = supportActors;
     }
 
     public Resource getURI() {
@@ -78,54 +107,49 @@ public class FileFormat implements RDFWritable {
         return withdrawnFlag;
     }
 
+    public List<Classification> getClassifications() {
+        return classifications;
+    }
+
+    public String getClassificationsListString() {
+        return classifications.stream().map(Classification::getName).collect(Collectors.joining(", "));
+    }
+
+    public List<InternalSignature> getInternalSignatures() {
+        return internalSignatures;
+    }
+
+    public List<ExternalSignature> getExternalSignatures() {
+        return externalSignatures;
+    }
+
+    public List<Actor> getDevelopmentActors() {
+        return developmentActors;
+    }
+
+    public List<Actor> getSupportActors() {
+        return supportActors;
+    }
+
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
-        m.add(uri, RDFUtil.makeProp(RDFUtil.RDF.type), RDFUtil.makeResource(RDFUtil.PRONOM.FileFormat.type));
-        m.add(uri, RDFUtil.makeProp(RDFUtil.RDFS.label), RDFUtil.makeLiteral(name));
-        m.add(uri, RDFUtil.makeProp(RDFUtil.RDFS.comment), RDFUtil.makeLiteral(description));
-        m.add(uri, RDFUtil.makeProp(RDFUtil.RDFS.label), RDFUtil.makeLiteral(name));
-        m.add(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.LastUpdatedDate), RDFUtil.makeXSDDateTime(updated));
-        m.add(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.Version), RDFUtil.makeLiteral(version));
+        m.add(uri, makeProp(RDF.type), makeResource(PRONOM.FileFormat.type));
+        m.add(uri, makeProp(PRONOM.FileFormat.Puid), makeLiteral(puid));
+        m.add(uri, makeProp(PRONOM.FileFormat.PuidTypeId), puidType);
+        m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
+        m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
+        m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
         if (binaryFlag != null) {
-            m.add(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.BinaryFlag), RDFUtil.makeLiteral(binaryFlag));
+            m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         }
         if (withdrawnFlag != null) {
-            m.add(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.WithdrawnFlag), RDFUtil.makeLiteral(withdrawnFlag));
+            m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
         }
         return m;
     }
 
-    public static class FileFormatDeserializer {
-        public static Resource getRDFType() {
-            return RDFUtil.makeResource(RDFUtil.PRONOM.FileFormat.type);
-        }
-
-        public static FileFormat fromModel(Resource uri, Model model) {
-            ModelUtil mu = new ModelUtil(model);
-            Integer puid = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.Puid)).asLiteral().getInt();
-            Resource puidType = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.PuidTypeId)).asResource();
-            String puidTypeName = mu.getOneObjectOrNull(puidType, RDFUtil.makeProp(RDFUtil.PRONOM.PuidType.PuidType)).asLiteral().getString();
-            String name = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.RDFS.label)).asLiteral().getString();
-            String description = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.RDFS.comment)).asLiteral().getString();
-            Literal updatedLit = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.LastUpdatedDate)).asLiteral();
-            Instant updated = RDFUtil.parseDate(updatedLit);
-            String version = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.Version)).asLiteral().getString();
-            Boolean binaryFlag = null;
-            RDFNode binaryFlagNode = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.BinaryFlag));
-            if (binaryFlagNode != null) {
-                binaryFlag = binaryFlagNode.asLiteral().getBoolean();
-            }
-            Boolean withdrawnFlag = null;
-            RDFNode withdrawnFlagNode = mu.getOneObjectOrNull(uri, RDFUtil.makeProp(RDFUtil.PRONOM.FileFormat.WithdrawnFlag));
-            if (withdrawnFlagNode != null) {
-                withdrawnFlag = withdrawnFlagNode.asLiteral().getBoolean();
-            }
-            return new FileFormat(uri, puid, puidType, puidTypeName, name, description, updated, version, binaryFlag, withdrawnFlag);
-        }
-    }
-
     // Boilerplate
-
     @Override
     public String toString() {
         return "FileFormat{" +
@@ -138,5 +162,12 @@ public class FileFormat implements RDFWritable {
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof FileFormat)) return false;
+        FileFormat cast = (FileFormat) other;
+        return this.toRDF().isIsomorphicWith(cast.toRDF());
     }
 }
