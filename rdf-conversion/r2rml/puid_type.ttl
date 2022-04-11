@@ -12,7 +12,7 @@
  	];
  	rr:predicateObjectMap [
         rr:predicate rdfs:label;
-        rr:objectMap [ rr:column "puid_type" ];
+        rr:objectMap [ rr:column "puid_type_clean" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate puidType:NextAvailableValue;
@@ -22,7 +22,7 @@
 
  <#PRONOM6/puid_type#view> rr:sqlQuery """
 SELECT [puid_type_id]
-     ,[puid_type]
+     ,TRIM([puid_type]) AS [puid_type_clean]
      ,[next_available_value]
  FROM [PRONOM6].[dbo].[puid_type]
 """ .
