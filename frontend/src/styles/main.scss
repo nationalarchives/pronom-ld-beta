@@ -402,13 +402,19 @@ main {
 
 #pronom-nav {
   width: 230px;
+  #toggleMenu {
+    display: block;
+    @media only screen and (max-width: 1200px) {
+      display: none;
+    }
+  }
   #page-title {
     text-decoration: none;
     color:black;
     font-weight: bold;
     font-size: 2.2em;
     font-family: 'Open Sans', sans-serif;
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 1200px) {
       font-size: 1.8em;
     }
   }
@@ -522,6 +528,8 @@ main {
   display: flex;
   flex-direction: column;
   z-index: 9;
+  min-height: calc(100vh - 120px);
+  overflow: auto;
   @media only screen and (max-width: 1200px) {
     margin-top: 0;
     background: white;
@@ -1433,6 +1441,54 @@ header#header {
       padding: 15px 20px;
     }
   }
+  nav#header-collapse {
+    border-top: 2px solid white;
+    max-height: calc(100vh - 140px);
+    overflow: auto;
+    background: #555;
+    color: white;
+    padding: 1.6em 2em;
+    display: none;
+    .tna-menu-list{
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-gap: 30px;
+      @media only screen and (max-width: 1000px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media only screen and (max-width: 580px) {
+        grid-template-columns: 1fr;
+      }
+      >li >a , >li >p{
+        font-family: 'Roboto Mono', monospace;
+        font-size: 1.3em !important;
+      }
+      p {
+        margin:0;
+      }
+    }
+    .header-links {
+      margin-top: 20px;
+      li {
+        display: flex; 
+        a {
+          border-top: 1px solid #444;
+          padding: 0.1em 0;
+          margin: 0;
+          line-height: 1.8em;
+          width: 100%;
+          font-family: 'Open Sans', sans-serif !important;
+          img {
+            max-width: 280px;
+          }
+        }
+      }
+    }
+    a {
+      color: white !important;
+      text-decoration: underline;
+    }
+  }
   #skip-to-main-content {
     position: absolute;
     top: -30px;
@@ -1462,6 +1518,9 @@ header#header {
           justify-content: center;
           img {
             width: 250px;
+            @media only screen and (max-width: 1000px) {
+              width: 300px;
+            }
           }
         }
       }
@@ -1513,6 +1572,9 @@ header#header {
   }
   .logo {
     max-width: 310px;
+    @media only screen and (max-width: 765px) {
+      max-width: 220px;
+    }
   }
 }
 // footer

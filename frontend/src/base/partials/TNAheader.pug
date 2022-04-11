@@ -1,3 +1,5 @@
+block vars
+
 header#header(role="banner")
   #header-inner
     a(id="skip-to-main-content" href="#reviewBtn")
@@ -6,11 +8,132 @@ header#header(role="banner")
         div
           img.logo(src="https://www.nationalarchives.gov.uk/wp-content/themes/tna-base/img/tna-horizontal-white-logo.svg" alt="The National Archives logo")
         div
-          button#red-round-button
+          button#red-round-button(type='button', onclick="tnaToggleMenuFunction()" title="Toggles The National Archoves main website menu")
             .regular-content
               | Menu
               i.fa-solid.fa-chevron-down
             .mobile-content
               i.fa-solid.fa-bars
-
+  nav#header-collapse
+    #header-collapse-inner
+      ul.tna-menu-list
+        li
+          a(href="https://www.nationalarchives.gov.uk/about/" title="Opens a new tab" target="_blank")
+            | About us
+          ul.header-links
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/our-role/" title="Opens a new tab" target="_blank") Our role
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/visit-us/" title="Opens a new tab" target="_blank") Visit us
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/visit-us/opening-times/" title="Opens a new tab" target="_blank") Opening times
+            li 
+              a(href="https://www.nationalarchives.gov.uk/about/visit-us/whats-on/" title="Opens a new tab" target="_blank") What’s on
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/visit-us/whats-on/exhibitions/" title="Opens a new tab" target="_blank") Exhibitions
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/visit-us/whats-on/events/" title="Opens a new tab" target="_blank") Events
+            li 
+              a(href="https://www.nationalarchives.gov.uk/about/get-involved/" title="Opens a new tab" target="_blank") Get involved
+            li
+              a(href="https://www.nationalarchives.gov.uk/about/news/" title="Opens a new tab" target="_blank") News
+            li 
+              a(href="https://www.nationalarchives.gov.uk/about/commercial-opportunities/" title="Opens a new tab" target="_blank") Commercial opportunities
+        li
+          a(href="https://www.nationalarchives.gov.uk/education/" title="Opens a new tab" target="_blank")
+            | Education
+          ul.header-links
+            li
+              a(href="https://www.nationalarchives.gov.uk/education/sessions-and-resources/?time-period=medieval,early-modern,empire-and-industry,victorians,early-20th-century,interwar,second-world-war,postwar" title="Opens a new tab" target="_blank") Time periods
+            li
+              a(href="https://www.nationalarchives.gov.uk/education/sessions-and-resources/?resource-type=lesson" title="Opens a new tab" target="_blank") Lessons
+            li
+              a(href="https://www.nationalarchives.gov.uk/education/sessions-and-resources/?resource-type=workshop" title="Opens a new tab" target="_blank") Workshops
+            li 
+              a(href="https://www.nationalarchives.gov.uk/education/teachers/professional-development/" title="Opens a new tab" target="_blank") Professional development
+            li
+              a(href="https://www.nationalarchives.gov.uk/education/teachers/" title="Opens a new tab" target="_blank") For teachers
+            li
+              a(href="https://www.nationalarchives.gov.uk/education/students/" title="Opens a new tab" target="_blank") For students
+        li
+          a(href="https://www.nationalarchives.gov.uk/help-with-your-research/" title="Opens a new tab" target="_blank")
+            | Help with your research
+          ul.header-links
+            li
+              a(href="https://discovery.nationalarchives.gov.uk/" title="Opens a new tab" target="_blank") Search Discovery, our catalogue
+            li
+              a(href="https://www.nationalarchives.gov.uk/help-with-your-research/start-here/" title="Opens a new tab" target="_blank") Start your research here
+            li
+              a(href="https://www.nationalarchives.gov.uk/help-with-your-research/research-guides-keywords/" title="Opens a new tab" target="_blank") Research guides A-Z
+            li 
+              a(href="https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/?research-category=online" title="Opens a new tab" target="_blank") Online collections
+            li
+              a(href="https://www.nationalarchives.gov.uk/webarchive/" title="Opens a new tab" target="_blank") UK Government Web Archive
+            li
+              a(href="https://www.nationalarchives.gov.uk/contact-us/british-citizenship-services/" title="Opens a new tab" target="_blank") British citizenship services
+            li
+              a(href="https://www.nationalarchives.gov.uk/help-with-your-research/record-copying/" title="Opens a new tab" target="_blank") Record copying
+        li
+          a(href="https://www.nationalarchives.gov.uk/information-management/" title="Opens a new tab" target="_blank")
+            | Information management
+          ul.header-links
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/browse-guidance-standards/" title="Opens a new tab" target="_blank") Guidance and standards A-Z
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/") Copyright
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/manage-information/" title="Opens a new tab" target="_blank") How to manage your information
+            li 
+              a(href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/" title="Opens a new tab" target="_blank") Re-using PSI
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/producing-official-publications/" title="Opens a new tab" target="_blank") Producing official publications
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/legislation/" title="Opens a new tab" target="_blank") Legislation and regulations
+            li
+              a(href="https://www.nationalarchives.gov.uk/information-management/training/" title="Opens a new tab" target="_blank") Training
+        li
+          a(href="https://www.nationalarchives.gov.uk/archives-sector/" title="Opens a new tab" target="_blank")
+            | Archives sector
+          ul.header-links
+            li
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/our-archives-sector-role/historical-manuscripts-commission/" title="Opens a new tab" target="_blank") Historical Manuscripts Commission
+            li
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/finding-funding/" title="Opens a new tab" target="_blank") Finding funding
+            li
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/projects-and-programmes/" title="Opens a new tab" target="_blank") Projects and programmes
+            li 
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/case-studies-and-research-reports/" title="Opens a new tab" target="_blank") Case studies and research reports
+            li
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/advice-and-guidance/" title="Opens a new tab" target="_blank") Operating your archive
+            li
+              a(href="https://www.nationalarchives.gov.uk/archives-sector/our-archives-sector-role/" title="Opens a new tab" target="_blank") Our role in the archives sector
+        li
+          p More…
+          ul.header-links
+            li
+              a(href="https://shop.nationalarchives.gov.uk/" title="Opens a new tab" target="_blank") Shop
+            li
+              a(href="https://images.nationalarchives.gov.uk/assetbank-nationalarchives/action/viewHome" title="Opens a new tab" target="_blank") Image library
+            li
+              a(href="https://blog.nationalarchives.gov.uk/" title="Opens a new tab" target="_blank") Blog
+            li 
+              a(href="https://media.nationalarchives.gov.uk/" title="Opens a new tab" target="_blank") Podcasts and videos
+            li
+              a(href="https://www.nationalarchives.gov.uk/contact-us/" title="Opens a new tab" target="_blank") Contact us
+            li
+              a(href="https://www.nationalarchives.gov.uk/20s-people/" title="20s People - Opens a new tab" target="_blank")
+                img(src="https://cdn.nationalarchives.gov.uk/images/20s-people-mega-menu-image.jpg" alt="20s People")
     
+script.
+  var tnaMenuStatus = true;
+  var tnaToggleMenu = document.getElementById("header-collapse");
+  
+  function tnaToggleMenuFunction(){
+    if (tnaMenuStatus === true) {
+      tnaToggleMenu.style.display = "block";
+      tnaMenuStatus = false;
+    } else {
+      tnaToggleMenu.style.display = "none";
+      tnaMenuStatus = true;
+    }
+  }
