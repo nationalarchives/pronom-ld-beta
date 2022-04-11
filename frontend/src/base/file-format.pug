@@ -46,7 +46,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fName Format name
-              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '1.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
@@ -56,7 +56,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fVersion Version
-              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '1.1.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
