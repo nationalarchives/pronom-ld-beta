@@ -18,4 +18,4 @@ backend_port          = 80
 triplestore_image     = "977490479318.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore"
 triplestore_tag       = "0.0.0"
 service_desired_count = 1
-health_check_path     = "/"
+health_check_path     = "/health"
