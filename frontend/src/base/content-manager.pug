@@ -10,17 +10,45 @@ block pageTitle
 block content
   .unique-page-content#content-manager
     .tab-buttons
-      button.active Home
-      button Search PRONOM
-      button About
-      button FAQ
-      button External Projects
-      button Submit to PRONOM
-      button Contact
+      button#home-edit Home
+      button#search-edit Search PRONOM
+      button#about-edit About
+      button#faq-edit FAQ
+      button#external-edit External Projects
+      button#submit-edit Submit to PRONOM
+      button#content-edit Contact
+      button#droid-edit Droid
+      button#form-edit Form choice
     .tab-content
-      div(th:each="region : ${regions}")
-        form(th:action="@{/content-manager/} + ${region}", method="post")
-          .form-group
-            label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
-            textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
-            button.small.bordered-blue(type="submit") Save
+      #home-content
+        div(th:each="region : ${regions}")
+          form(th:action="@{/content-manager/} + ${region}", method="post")
+            .form-group
+              label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
+              textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
+              button.small.bordered-blue(type="submit") Save
+      #search-content
+        div
+          p search
+      #about-content
+        div
+          p About
+      #faq-content
+        div
+          p faq
+      #external-content
+        div
+          p External
+      #submit-content
+        div
+          p Submit
+      #contact-content
+        div
+          p contact
+      #droid-content
+        div
+          p droid
+      #formChoice-content
+        div
+          p formChoice
+      

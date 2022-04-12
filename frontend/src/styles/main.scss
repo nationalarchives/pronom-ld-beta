@@ -776,7 +776,6 @@ main {
 
 .modal-body {
   background: #F3F3F3;
-  padding-top: 90px;
 }
 /* Modal - END */
 
@@ -910,6 +909,7 @@ main {
 /* Table END */
 // Scroll to top 
 #scrollToTop {
+  display: none;
   button {
     position: fixed;
     top: calc( 100vh - 90px);
@@ -932,7 +932,6 @@ main {
 }
 #internal-pronom-nav {
   padding-right: 10px;
-  position: fixed;
   width: 250px;
   top: 80px;
   @media only screen and (max-width: 1200px) {
@@ -1053,8 +1052,8 @@ main {
 }
 #internal-banner {
   position: fixed;
-  width: calc(100vw - 180px);
-  padding: 10px 90px;
+  width: calc(100vw - 75px);
+  padding: 10px 30px;
   display: flex;
   background: black;
   min-height: 60px;
@@ -1068,12 +1067,15 @@ main {
       margin-left: 20px;
     }
   }
+  .page-container {
+    grid-template-columns: 1fr !important;
+    max-width: unset !important;
+  }
 }
 main#internal-main {
-  margin-left: 260px;
   border-left: 10px solid black;
   min-height: 100vh;
-  padding: 120px 0 50px 50px;
+  padding: 30px 0 50px 50px;
   @media only screen and (max-width: 1200px) {
     margin-left: 0 !important;
     margin-left: 20px;
@@ -1193,7 +1195,7 @@ h1.internal-title {
   overflow: auto;
   li {
     display: grid;
-    grid-template-columns: 95px 50px 200px 1fr 200px;
+    grid-template-columns: 95px 50px 200px 1fr 300px;
     grid-gap: 20px;
     border-bottom: 2px solid lightgrey;
     &:last-child {

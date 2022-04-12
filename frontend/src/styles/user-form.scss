@@ -291,7 +291,122 @@ textarea {
 }
 
 .form-row {
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    button {
+      padding: 2px 5px;
+      border-radius: 30px;
+      border: 2px solid black;
+      margin-bottom: 3px;
+      margin-top: 3px;
+      background: white;
+      margin-left: auto;
+      width: fit-content;
+      display: none;
+    }
+  }
+  .action-monitoring {
+    display: none;
+  }
+  .inputType {
+    display: none;
+  }
   margin-bottom: 10px;
+  &.before-review {
+    border: 2px solid orange;
+    padding: 10px;
+    margin-top: 30px;
+    .action-monitoring {
+      display: block;
+      > div {
+        display: none;
+        &:nth-child(1){
+          display: flex;
+        }
+      }
+      i {
+        color: orange;
+      }
+    }
+    .inputType {
+      display: flex;
+    }
+    .input-group {
+      button {
+        display: block;
+      }
+    }
+  }
+  &.after-review {
+    border: 2px solid green;
+    padding: 10px;
+    margin-top: 30px;
+    .action-monitoring {
+      display: block;
+      > div {
+        display: none;
+        &:nth-child(2){
+         display: flex;
+        }
+      }
+      i {
+        color: green;
+      }
+    }
+    .inputType {
+      display: flex;
+    }
+    .input-group {
+      button {
+        display: block;
+      }
+    }
+  }
+  
+  p {
+    margin:0;
+  }
+  .inputType {
+    margin-top: -32px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    display: flex;
+    align-content: right;
+    justify-content: right;
+  }
+  .tooltipPlusAction {
+    display: flex;
+    margin-bottom: 3px;
+    .action-monitoring {
+      border-left: 2px solid grey;
+      margin-left: 10px;
+      > div {
+        display: none;
+        align-items: center;
+        i {
+          margin: 0 5px 0 10px;
+        }
+      }
+      &.before-review {
+        > div:nth-child(1){
+          display: flex;
+        }
+        i {
+          color: orange;
+        }
+      }
+      &.after-review {
+        > div:nth-child(1){
+          display: flex;
+        }
+        i {
+          color: green;
+        }
+      }
+    }
+  }
+  
 }
 
 .row-group {
@@ -300,7 +415,6 @@ textarea {
   border-left: 3px solid black;
   padding: 10px 15px;
   margin-bottom: 20px;
-
   &.inline {
     display: grid;
     grid-gap: 20px;
@@ -396,6 +510,42 @@ fieldset {
     width: 30px;
     height: 30px;
     border: 3px solid black;
+  }
+}
+// Core =============================================
+#find-PUID {
+  .tooltipPlusAction {
+    margin-top: 10px;
+  }
+  p {
+    margin: 0;
+  }
+  margin-bottom: 20px;
+  .search-puid-input {
+    display: flex;
+    button {
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      i {
+        margin: 0 10px;
+      }
+    }
+  }
+  .explanation {
+    padding: 10px;
+    background: #dde5d5;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 20px;
+    a {
+      height: fit-content;
+      padding: 5px 20px;
+      background: transparent;
+      &:hover {
+        background: black;
+      }
+    }
   }
 }
 
@@ -539,46 +689,6 @@ fieldset {
       padding: 20px;
     }
   }
-}
-// .form-section {
-//   height: 0;
-//   width: 0;
-//   position: absolute;
-//   overflow: hidden;
-//   &.show {
-//     height: auto;
-//     width: auto;
-//     position: inherit;
-//   }
-// }
-section {
-  // &#core {
-  //   display: none;
-  // }
-  // &#signatures {
-  //   display: none;
-  // }
-  // &#priority {
-  //   display: none;
-  // }
-  // &#identifiers {
-  //   display: none;
-  // }
-  // &#relationships {
-  //   display: none;
-  // }
-  // &#additionalProperties {
-  //   display: none;
-  // }
-  // &#yourDetails {
-  //   display: none;
-  // }
-  // &#review {
-  //   display: none;
-  // }
-  // &#contributors {
-  //   display: none;
-  // }
 }
 .form-part {
   height: 0;
