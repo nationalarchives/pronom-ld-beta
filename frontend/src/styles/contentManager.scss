@@ -1,21 +1,23 @@
 .tab-buttons {
   display: grid;
-  grid-template-columns: repeat(7, auto);
+  grid-template-columns: repeat(9, auto);
   margin-bottom: 10px;
-  border-bottom: 3px solid #0f528d;
+  border-bottom: 3px solid #63a3db;
+  width: 100%;
   button {
     border: 3px solid transparent;
     background: transparent;
-    padding: 10px 30px;
-    font-size: 1.2em;
+    padding: 10px;
+    font-size: 1em;
     font-weight: 800;
     transition: all 0.2s;
     &.active {
-      border: 3px solid #0f528d;
+      border: 3px solid #63a3db;
       border-bottom: 3px solid transparent;
       color: #0f528d;
       background: white;
       margin-bottom: -3px;
+      padding: 10px 10px 13px 10px;
     }
     &:hover {
       color: #0f528d;
@@ -48,4 +50,16 @@
       }
     } 
   }
+  > div {
+    display: none;
+    &.show {
+      display: block;
+    }
+  }
+}
+.page-container {
+  max-width: unset !important;
+  min-width: 1600px;
+  padding: 0 30px;
+  padding-top: 80px;
 }
