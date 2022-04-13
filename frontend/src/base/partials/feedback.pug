@@ -1,7 +1,7 @@
 //- options: success, info, alert, error
 - var feedback = 'success'
 
-.feedback-container
+.feedback-container#feedback
  .feedback-inner
     case feedback
       when 'success'
@@ -28,4 +28,11 @@
             i.fa-solid.fa-circle-xmark
             h3 Error
           p some message comes here
-    button.bordered-black.medium OK
+    button.bordered-black.medium(onclick="closeFeedback()") OK
+
+
+script. 
+  function closeFeedback() {
+    element = document.getElementById("feedback");
+    element.classList.add("hide");
+  }

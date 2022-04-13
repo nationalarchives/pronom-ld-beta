@@ -8,12 +8,29 @@ const App = () => {
     // Signal JS is active
     $('.page-container').removeClass('noJS')
     // Initialise form
-    let formStep = 6
+    let formStep = 0
   
     // active class to the button
     $(formMenuButtons[formStep]).addClass( "active" );
     // Show first step
     $(formParts[formStep]).addClass('show');
+
+    $('.next').on('click', () => {
+        $(formParts[formStep]).removeClass('show');
+        $( '.main-nav li' ).removeClass( "active" );
+        formStep++;
+        $(formParts[formStep]).addClass('show');
+        $(formMenuButtons[formStep]).addClass( "active" );
+      });
+      // Whenever .prev is clicked return a step ========= PREV
+      $('.prev').on('click', () => {
+        $(formParts[formStep]).removeClass('show');
+        $( '.main-nav li' ).removeClass( "active" );
+        formStep--;
+        $(formParts[formStep]).addClass('show');
+        $(formMenuButtons[formStep]).addClass( "active" );
+      });
+      
 }
 
 App()
