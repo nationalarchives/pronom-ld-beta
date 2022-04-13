@@ -1,0 +1,31 @@
+//- options: success, info, alert, error
+- var feedback = 'success'
+
+.feedback-container
+ .feedback-inner
+    case feedback
+      when 'success'
+        .feedback-box.green
+          div
+            i.fa-solid.fa-circle-check
+            h3 Success
+          p some message comes here
+      when 'info'
+        .feedback-box.blue
+          div
+            i.fa-solid.fa-circle-info
+            h3 Info
+          p some message comes here
+      when 'alert'
+        .feedback-box.yellow
+          div
+            i.fa-solid.fa-triangle-exclamation
+            h3 Alert
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      when 'error'
+        .feedback-box.red
+          div
+            i.fa-solid.fa-circle-xmark
+            h3 Error
+          p some message comes here
+    button.bordered-black.medium OK
