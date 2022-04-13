@@ -60,7 +60,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fVersion", th:text="${fileFormat.version}") 1.0
+            p(aria-labeledby="#fVersion", th:text="${fileFormat.version ?: ''}") 1.0
         //- ROW
         li.row
           .tooltip-container
@@ -70,7 +70,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            p(aria-labeledby="#fExtension", th:text="${#lists.size(fileFormat.externalSignatures) gt 0 ? fileFormat.externalSignatures?.get(0)?.name : 'no value'}") PLACEHOLDER(1.0)
+            p(aria-labeledby="#fExtension", th:text="${fileFormat.firstExtension ?: ''}") PLACEHOLDER(1.0)
         //- ROW
         li.row
           .tooltip-container
@@ -100,7 +100,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               div
-                p(aria-labeledby="#fPUID", th:text="${fileFormat.puidTypeName}+'/'+${fileFormat.puid}") fmt/11
+                p(aria-labeledby="#fPUID", th:text="${fileFormat.formattedPuid}") fmt/11
             //- ROW
             li.row
               .tooltip-container
@@ -150,7 +150,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            a(aria-labeledby="#fRelatedFileFormats" href="") NOT IMPLEMENTED
+            a(aria-labeledby="#fRelatedFileFormats" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -160,7 +160,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
           div
-            a(aria-labeledby="#fPriorityOver" href="") NOT IMPLEMENTED
+            a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
       h2 References
       //- TABLE =========================================================================
       ul.table
