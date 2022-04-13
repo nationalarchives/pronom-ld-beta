@@ -5,7 +5,7 @@ section#pronom-nav
   .container
     #pronom-nav-header
       a#page-title(href='/') PRONOM
-      button#pronom-nav-mobile-collapse(type='button', onclick="toggleMenuFunction()")
+      button#pronom-nav-mobile-collapse(type='button', onclick="toggleMenuFunction()" title="Toggles Pronom menu")
         | MENU
     nav
       ul.menu-pronom.side-padding.hide#toggleMenu
@@ -89,9 +89,8 @@ section#pronom-nav
                 | Map
     
 script.
-  
   window.addEventListener("resize", myFunction);
-  var menuStatus = false;
+  var menuStatus = true;
   var toggleMenu = document.getElementById("toggleMenu");
   function myFunction(){
     if(window.innerWidth < 1200){
