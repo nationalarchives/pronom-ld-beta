@@ -135,6 +135,7 @@ const App = () => {
     $(formMenuButtons[7]).addClass( "active" );
     $(formParts[formStep]).addClass('show');
   });
+  
 }
 
 App()

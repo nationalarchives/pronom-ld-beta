@@ -28,82 +28,21 @@ block content
         button.bordered-blue.medium#closeAllFAQ
           span Collapse all
           i.fa-solid.fa-chevron-up(aria-hidden="true")
-    h3#faq1 Category 1
 
+    h3#faq1 Category 1
     ul.faq-questions
       for item, index in category1List
         li
-          button(aria-expanded="false" id=( (Object.keys({category1List})[0]) + index) aria-controls="cat1sec1" )
+          button.closed(aria-expanded="false" id=( (Object.keys({category1List})[0]) + index) aria-controls=( (Object.keys({category1List})[0]) + index) )
             span= item.title
             i.fa-solid.fa-chevron-up(aria-hidden="true")
-          p.hide(id=( (Object.keys({category1List})[0]) +  index + 'text') role="region" aria-labeledby="cat1btn1")= item.text
-    //- ul
-      li.unfold
-        button(aria-expanded="false" id="cat1btn1" aria-controls="cat1sec1")
-          span How can I upload my files?
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p.hide(id="cat1sec1" role="region" aria-labeledby="cat1btn1").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat1btn2" aria-controls="cat1sec2")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat1sec2" role="region" aria-labeledby="cat1btn2").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat1btn3" aria-controls="cat1sec3")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat1sec3" role="region" aria-labeledby="cat1btn3").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
+          p.hide(id=( (Object.keys({category1List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category1List})[0]) + index))= item.text
+    
     h3#faq2 Category 2
     ul.faq-questions
       for item, index in category2List
         li
-          button(aria-expanded="false" id=( (Object.keys({category2List})[0]) + index) aria-controls="cat1sec1" )
+          button.closed(aria-expanded="false" id=( (Object.keys({category2List})[0]) + index) aria-controls=( (Object.keys({category2List})[0]) + index) )
             span= item.title
             i.fa-solid.fa-chevron-up(aria-hidden="true")
-          p.hide(id=( (Object.keys({category2List})[0]) +  index + 'text') role="region" aria-labeledby="cat1btn1")= item.text
-    //- ul
-      li
-        button(aria-expanded="false" id="cat2btn1" aria-controls="cat2sec1")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec1" role="region" aria-labeledby="cat2btn1").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat2btn2" aria-controls="cat2sec2")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec2" role="region" aria-labeledby="cat2btn2").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat2btn3" aria-controls="cat2sec3")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec3" role="region" aria-labeledby="cat2btn3").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
+          p.hide(id=( (Object.keys({category2List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category2List})[0]) + index))= item.text
