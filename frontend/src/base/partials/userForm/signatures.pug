@@ -55,15 +55,26 @@ section.form-part#signatures
                 button.bordered-red.small
                   | Delete signature
               .collapse-content
-                .form-row
-                  .tooltip-container
-                    .label
-                      label.from-external-only(for="FileFormatName") Signature name
-                      label.from-internal-only(for="FileFormatName") Signature name (required)
-                      span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                        .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                  input(name="FileFormatName" id="FileFormatName")
+                .form-part.form-row#signature-name
+                  p.inputType Edited content
+                  .tooltipPlusAction
+                    .tooltip-container
+                      .label
+                        label.from-external-only(for="SignatureName") Signature name
+                        label.from-internal-only(for="SignatureName") Signature name (required)
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                    .action-monitoring
+                      .review-type
+                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                        p Require reviewing
+                      .review-type
+                        i.fa-solid.fa-square-check
+                        p Reviewed
+                  .input-group
+                    button Accept current
+                    input(name="FileFormatName" id="FileFormatName")
                 //- TODO confirm if GF is no longer required
                 //- .form-row.checkbox-container
                   input(name="Documentation" id="Documentation" type="checkbox")
@@ -79,63 +90,118 @@ section.form-part#signatures
                     .tooltip-container
                       .label
                         label(for="endianess") Select endianess
-                        span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
                     select(id="endianess")
                       option(value='0') option1
                       option(value='1') option2
-                  .form-row
-                    .tooltip-container
-                      .label
-                        label.from-external-only(for="FileFormatDescription") Description
-                        label.from-internal-only(for="FileFormatDescription") Description (required)
-                        span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    textarea(cols="30", rows="6" name="FileFormatDescription" id="FileFormatDescription")
+                  .form-row#signature-description
+                    p.inputType Edited content
+                    .tooltipPlusAction
+                      .tooltip-container
+                        .label
+                          label.from-external-only(for="SignatureDescription") Description
+                          label.from-internal-only(for="SignatureDescription") Description (required)
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.2') tabindex='0')
+                            .i-wrapper
+                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      .action-monitoring
+                        .review-type
+                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                          p Require reviewing
+                        .review-type
+                          i.fa-solid.fa-square-check
+                          p Reviewed
+                    .input-group
+                      button Accept current
+                      textarea(cols="30", rows="6" name="SignatureDescription" id="SignatureDescription")
                   //- byte sequence
                   .row-group-inner2
                     .info
                       h6 Byte sequence
                       button.bordered-red.small
                         | Delete byte sequence
-                    .form-row
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="BinaryValue") Binary value
-                          label.from-internal-only(for="BinaryValue") Binary value (required)
-                          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                      input(name="BinaryValue" id="BinaryValue")
-                    .form-row
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="PositionType") Position type
-                          label.from-internal-only(for="PositionType") Position type (required)
-                          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                      input(name="PositionType" id="PositionType")
-                    .form-row
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="MinOffset") Min offset
-                          label.from-internal-only(for="MinOffset") Min offset (required)
-                          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                      input(name="MinOffset" id="MinOffset")
-                    .form-row
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="MaxOffset") Max offset
-                          label.from-internal-only(for="MaxOffset") Max offset (required)
-                          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                      input(name="MaxOffset" id="MaxOffset")
+                    .form-row#binary-value
+                      p.inputType Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="BinaryValue") Binary value
+                            label.from-internal-only(for="BinaryValue") Binary value (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.3') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        input(name="BinaryValue" id="BinaryValue")
+                    .form-row#position-type
+                      p.inputType Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="PositionType") Position type
+                            label.from-internal-only(for="PositionType") Position type (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.4') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        input(name="PositionType" id="PositionType")
+                    .form-row#min-offset
+                      p.inputType Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="MinOffset") Min offset
+                            label.from-internal-only(for="MinOffset") Min offset (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.5') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        input(name="MinOffset" id="MinOffset")
+                    .form-row#max-offset
+                      p.inputType Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="MaxOffset") Max offset
+                            label.from-internal-only(for="MaxOffset") Max offset (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.6') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        input(name="MaxOffset" id="MaxOffset")
                   button.black.small
                     | Add byte sequence
           //- Container Signature

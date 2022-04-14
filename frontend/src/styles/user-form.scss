@@ -371,7 +371,7 @@ textarea {
     margin-top: -32px;
     margin-bottom: 10px;
     margin-left: auto;
-    display: flex;
+    display: none;
     align-content: right;
     justify-content: right;
   }
@@ -395,6 +395,9 @@ textarea {
         i {
           color: orange;
         }
+        .inputType {
+          display: flex;
+        }
       }
       &.after-review {
         > div:nth-child(1){
@@ -402,6 +405,9 @@ textarea {
         }
         i {
           color: green;
+        }
+        .inputType {
+          display: flex;
         }
       }
     }
