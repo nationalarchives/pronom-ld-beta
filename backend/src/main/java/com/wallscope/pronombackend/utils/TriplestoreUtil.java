@@ -53,4 +53,8 @@ public class TriplestoreUtil {
         logger.debug("sending query: " + q);
         return conn.build().queryConstruct(q.asQuery());
     }
+
+    public static Model constructQuery(String query) {
+        return constructQuery(query, null);
+    }
 }

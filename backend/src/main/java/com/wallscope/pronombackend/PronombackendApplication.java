@@ -17,6 +17,19 @@ public class PronombackendApplication {
     }
 
     @Bean
+    public ClassLoaderTemplateResolver htmlTemplateResolver() {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setOrder(1);
+        templateResolver.setCheckExistence(true);
+
+        return templateResolver;
+    }
+
+    @Bean
     public ClassLoaderTemplateResolver xmlTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("xml/");
@@ -24,6 +37,7 @@ public class PronombackendApplication {
         templateResolver.setTemplateMode(TemplateMode.XML);
         templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(2);
+        templateResolver.setCheckExistence(true);
 
         return templateResolver;
     }
