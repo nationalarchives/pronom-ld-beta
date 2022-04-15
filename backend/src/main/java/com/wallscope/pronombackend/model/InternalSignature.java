@@ -30,6 +30,15 @@ public class InternalSignature implements RDFWritable {
         this.byteSequences = byteSequences;
     }
 
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
+    }
+
+    public String getSpecificity() {
+        return genericFlag ? "Generic" : "Specific";
+    }
+
     public String getName() {
         return name;
     }
@@ -79,5 +88,19 @@ public class InternalSignature implements RDFWritable {
         }
 
         return m;
+    }
+
+    @Override
+    public String toString() {
+        return "InternalSignature{" +
+                "uri=" + uri +
+                ", name='" + name + '\'' +
+                ", note='" + note + '\'' +
+                ", updated=" + updated +
+                ", genericFlag=" + genericFlag +
+                ", provenance='" + provenance + '\'' +
+                ", fileFormat=" + fileFormat +
+                ", byteSequences=" + byteSequences +
+                '}';
     }
 }

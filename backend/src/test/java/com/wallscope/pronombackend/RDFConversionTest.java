@@ -1,15 +1,5 @@
 package com.wallscope.pronombackend;
 
-import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FileFormatDeserializer;
-import com.wallscope.pronombackend.utils.ModelUtil;
-import com.wallscope.pronombackend.utils.RDFUtil;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Resource;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
