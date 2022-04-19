@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FFSignatureFile th:DateCreated="${#temporals.formatISO(#temporals.createNowForTimeZone('Europe/London'))}" Version="104" xmlns="http://www.nationalarchives.gov.uk/pronom/SignatureFile" xmlns:th="http://www.thymeleaf.org">
-    <InternalSignatureCollection>
-        <th:block th:each="f : ${formats}" th:if="${f.hasSignature}"><InternalSignature th:each="sig : ${f.internalSignatures}" th:ID="${sig.ID}" th:Specificity="${sig.specificity}">
+    <InternalSignatureCollection><th:block th:each="f : ${formats}" th:if="${f.hasSignature}">
+        <InternalSignature th:each="sig : ${f.internalSignatures}" th:ID="${sig.ID}" th:Specificity="${sig.specificity}">
             <ByteSequence th:each="bs : ${sig.byteSequences}" th:attrappend="Endianness=${bs.byteOrderName != null}?${bs.byteOrderName}" th:Reference="${bs.reference}">
                 <DevFullSequence th:text="${bs.sequence}"/>
                 <SubSequence th:each="ss : ${bs.subSequences}" MinFragLength="NOT IMPLEMENTED" th:Position="${ss.position}" th:SubSeqMaxOffset="${ss.subSeqMaxOffset}" th:SubSeqMinOffset="${ss.subSeqMinOffset}">
-                    <Sequence th:text="${ss.sequence}">49492A00</Sequence>
-                    <th:block th:each="fr : ${ss.fragments}"><th:block th:switch="${fr.type.name()}">
-                    <LeftFragment th:case="'LEFT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</LeftFragment>
-                    <RightFragment th:case="'RIGHT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</RightFragment>
-                    </th:block></th:block>
+                    <Sequence th:text="${ss.sequence}">49492A00</Sequence><th:block th:each="fr : ${ss.fragments}"><th:block th:switch="${fr.type.name()}">
+                    <LeftFragment th:case="'LEFT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</LeftFragment><RightFragment th:case="'RIGHT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</RightFragment></th:block></th:block>
                     <!--<DefaultShift>5</DefaultShift>-->
                     <!--<Shift Byte="00">1</Shift>-->
                 </SubSequence>
@@ -17,10 +14,10 @@
         </InternalSignature></th:block>
     </InternalSignatureCollection>
     <FileFormatCollection>
-        <FileFormat th:each="f : ${formats}" th:ID="${f.ID}" th:MIMEType="${formattedMimeType}" th:Name="${f.name}" th:PUID="${f.formattedPuid}" th:Version="${f.version}">
-            <InternalSignatureID th:each="sig : ${f.internalSignatures}" th:text="${sig.ID}">415</InternalSignatureID>
-            <Extension th:each="ext : ${f.externalSignatures}" th:text="${ext.name}">mcw</Extension>
-            <HasPriorityOverFileFormatID th:each="prRel : ${f.hasPriorityOver}" th:text="${prRel.targetID}">221</HasPriorityOverFileFormatID>
+        <FileFormat th:each="f : ${formats}" th:ID="${f.ID}" th:MIMEType="${formattedMimeType}" th:Name="${f.name}" th:PUID="${f.formattedPuid}" th:Version="${f.version}"><th:block th:each="sig : ${f.internalSignatures}">
+            <InternalSignatureID th:text="${sig.ID}">415</InternalSignatureID></th:block><th:block th:each="ext : ${f.externalSignatures}">
+            <Extension th:text="${ext.name}">mcw</Extension></th:block><th:block th:each="prRel : ${f.hasPriorityOver}">
+            <HasPriorityOverFileFormatID th:text="${prRel.targetID}">221</HasPriorityOverFileFormatID></th:block>
         </FileFormat>
     </FileFormatCollection>
 </FFSignatureFile>
