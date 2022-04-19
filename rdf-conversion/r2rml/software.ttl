@@ -3,10 +3,11 @@
 @prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.>
 @prefix software: <http://www.nationalarchives.gov.uk/PRONOM/software.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/software>
  	rr:logicalTable [ rr:sqlQuery """
-  SELECT
+  SELECT TOP 10
      -- SOFTWARE BASIC FIELDS
         [software].[software_id]
        ,[software].[software_name_text]
@@ -27,9 +28,12 @@
        ,[software_developers].[developer_id] as developer_id
      -- software_maintainers fields - predicate: actor.Maintains.Software, type: Software
        ,[software_maintainers].[maintainer_id] as maintainer_id
+     -- search helper, concat puid_type and puid to create a skos:notation field for search
+     ,CONCAT(TRIM([puid_type].puid_type),'/',[software].puid_value) as full_puid
    FROM [PRONOM6].[dbo].[software]
    LEFT JOIN [PRONOM6].[dbo].[software_developers] ON [PRONOM6].[dbo].[software].software_id = [PRONOM6].[dbo].[software_developers].software_id
    LEFT JOIN [PRONOM6].[dbo].[software_maintainers] ON [PRONOM6].[dbo].[software].software_id = [PRONOM6].[dbo].[software_maintainers].software_id
+   LEFT JOIN [PRONOM6].[dbo].[puid_type] ON [PRONOM6].[dbo].[software].puid_type_id = [PRONOM6].[dbo].[puid_type].puid_type_id
 
   """
    ];
@@ -109,5 +113,9 @@ rr:predicateObjectMap [
     rr:predicateObjectMap [
         rr:predicate global:PuidTypeId;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate skos:notation;
+        rr:objectMap [ rr:column "full_puid" ];
     ];
  	.
