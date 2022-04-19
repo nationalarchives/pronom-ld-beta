@@ -1,5 +1,6 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.>
 @prefix encoding: <http://www.nationalarchives.gov.uk/PRONOM/encoding.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -94,7 +95,7 @@
  	];
  	rr:predicateObjectMap [
         rr:predicate encoding:PuidTypeId;
-        rr:objectMap [ rr:column "puid_type_id" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate encoding:PuidValue;
@@ -104,5 +105,14 @@
         rr:predicate encoding:FileFormat;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
     ];
- 	.
+    # Add global Puid indicator to simplify search query
+    rr:predicateObjectMap [
+        rr:predicate global:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate global:PuidTypeId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
+    ];
+    .
 
