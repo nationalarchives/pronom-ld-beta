@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-SCRIPTS=${1:-r2rml/*.ttl}
+TEMP_SCRIPTS=${@:1}
+SCRIPTS=${TEMP_SCRIPTS:-r2rml/*.ttl}
 R2RML=r2rml-f/r2rml.jar
 OUT=out
 CONNECTION_URL="jdbc:sqlserver://dev.verinote.net:10433;user=sa;"
