@@ -3,6 +3,7 @@
 @prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.>
 @prefix encoding: <http://www.nationalarchives.gov.uk/PRONOM/encoding.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/encoding>
  	rr:logicalTable [ rr:sqlQuery """
@@ -25,11 +26,12 @@
        ,[encoding].[provenance_text]
        ,[encoding].[puid_type_id]
        ,[encoding].[puid_value]
-    -- file_format_id is replaced since there's only 2 values and this way we can build the URI
-       ,COALESCE(CASE WHEN ([format_encodings].file_format_id = 1029) THEN 1029 ELSE NULL END,
-                 CASE WHEN ([format_encodings].file_format_id = 2173) THEN 2173 ELSE NULL END) as file_format_id
+       ,[format_encodings].file_format_id
+    -- search helper, concat puid_type and puid to create a skos:notation field for search
+      ,CONCAT(TRIM([puid_type].puid_type),'/',[encoding].puid_value) as full_puid
    FROM [PRONOM6].[dbo].[encoding]
    LEFT JOIN [PRONOM6].[dbo].[format_encodings] ON [PRONOM6].[dbo].[encoding].encoding_id = [PRONOM6].[dbo].[format_encodings].encoding_id
+   LEFT JOIN [PRONOM6].[dbo].[puid_type] ON [PRONOM6].[dbo].[encoding].puid_type_id = [PRONOM6].[dbo].[puid_type].puid_type_id
 
   """
  	];
@@ -113,6 +115,10 @@
     rr:predicateObjectMap [
         rr:predicate global:PuidTypeId;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate skos:notation;
+        rr:objectMap [ rr:column "full_puid" ];
     ];
     .
 
