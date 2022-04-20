@@ -1,56 +1,49 @@
-seation.search-input-container
+section.search-input-container
   .search-input
-    form(aria-label="Search for file format, software or vendor")
-      fieldset
-        legend.sr-only Enter search file format name, PUID or keywords
-        div
-          input(type="search" id="pronom_search" placeholder="Search for file format, software or vendor...")
-          button(type="submit")
-            i.fa-solid.fa-magnifying-glass(aria-hidden="true")
-            | Search
+    fieldset(aria-label="Search for file format, software or vendor")
+      legend.sr-only Enter search file format name, PUID or keywords
+      div
+        input(type="search", id="pronom_search", name="q", placeholder="Search for file format, software or vendor...")
+        button(type="submit")
+          i.fa-solid.fa-magnifying-glass(aria-hidden="true") Search
   .filters(aria-label="Filters")
     h4 Filters
     fieldset
       legend.sr-only Select filter
       div.selected
-        input#extension(type='checkbox' name='format' value='' checked="true") 
-        label(for='extension') File format extension
+        input#extension(type='checkbox' name='f_name' value='false') 
+        label(for='extension') File format name
       div
-        input#name(type='checkbox' name='format' value='')
-        label(for='name') File format name
+        input#name(type='checkbox' name='f_ext' value='false')
+        label(for='name') File format extension
       div
-        input#type(type='checkbox' name='format' value='')
-        label(for='type') File format name
+        input#type(type='checkbox' name='f_desc' value='false')
+        label(for='type') File format description
       div
-        input#signature(type='checkbox' name='format' value='')
-        label(for='signature') Signature
-      div
-        input#puid(type='checkbox' name='format' value='')
+        input#puid(type='checkbox' name='f_uid' value='false')
         label(for='puid') PUID
 
-section.search-output
+section.search-output(th:if="${results != null and !results.empty}")
   h4 Results
     span (32)
   .additionals
     .manage-results
       .result-counts
-        form(aria-label="Set number of result per page")
-          fieldset
-            label(for="results_per_page") Show
-            legend.sr-only Change number of results per page
-            div
-              input(id="results_per_page" class="small" maxlength="2" type="number" min="5" max="99" value="5")
+        fieldset(aria-label="Set number of result per page")
+          label(for="results_per_page") Show
+          legend.sr-only Change number of results per page
+          div
+            input(id="results_per_page", class="small", maxlength="2", type="number", min="5", max="99", th:value="${pageSize}")
       .sort-by
-        form(aria-label="Sort search results by selected measure")
-          fieldset
-            legend.sr-only Sort search results by selected measure
-            label(for="sort_by") Sort by
-            div
-              select(id="sort_by")
-                option(value='relevance') relevance
-                option(value='type') type
-                option(value='name') name
-                option(value='puid') PUID
+        fieldset(aria-label="Sort search results by selected measure")
+          legend.sr-only Sort search results by selected measure
+          label(for="sort_by") Sort by
+          div
+            select(id="sort_by", name="sort")
+              option(value='relevance') relevance
+              option(value='type') type
+              option(value='name') name
+              option(value='puid') PUID
     .save-options
       label Save as
       .button-list
@@ -74,93 +67,30 @@ section.search-output
         h4 Description
         h4.extended Status
         h4.extended Maintain
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
+      th:block(th:each="r : ${results}")
+        li
+          a(href="",)
+            div
+              p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
+                span Type
+                | File format
+              h5.data.name(th:utext="'<span>Name</span>'+${r.name}")
+                span Name
+                | Portable Network Graphics
+              p.data.desc(th:utext="'<span>Description</span>'+${r.description}")
+                span Description
                 | fmt/412
-              p.data
-                span Version
-                | 1.0
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
-                | fmt/412
-              p.data
-                span Version
-                | 1.0
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
-                | fmt/412
-              p.data
-                span Version
-                | Lorem ipsum dolor sit amet
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
+              div.basic(th:each="i : ${r.humanProperties}")
+                p.data(th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
+                  span PUID
+                  | fmt/412
+              p.data.extend.status
+                span Status
+                | Released
+              .extend.buttons
+                button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
+                button.xsmall.bordered-blue Clone
+                button.xsmall.bordered-red Delete
     .pagination
       ul
         li.controls
