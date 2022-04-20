@@ -18,6 +18,7 @@ public class RDFUtil {
     public static final String PREFIXES = """
             prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            prefix skos: <http://www.w3.org/2004/02/skos/core#>
             prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
             """;
 
@@ -70,6 +71,34 @@ public class RDFUtil {
                 .replaceAll("\\}#END OPTIONAL", "");
     }
 
+    public static Resource safelyGetResourceOrDefault(RDFNode n, Resource def) {
+        if (n == null) return def;
+        return n.asResource();
+    }
+
+    public static Literal safelyGetLiteralOrDefault(RDFNode n, Literal def) {
+        if (n == null) return def;
+        return n.asLiteral();
+    }
+
+    public static String safelyGetStringOrDefault(RDFNode n, String def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getString();
+    }
+
+    public static Boolean safelyGetBooleanOrDefault(RDFNode n, boolean def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getBoolean();
+    }
+
+    public static Integer safelyGetIntegerOrDefault(RDFNode n, int def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getInt();
+    }
+
     public static Resource safelyGetResourceOrNull(RDFNode n) {
         if (n == null) return null;
         return n.asResource();
@@ -109,8 +138,29 @@ public class RDFUtil {
         public static final String comment = uri + "comment";
     }
 
+    public static final class SKOS {
+        public static final String uri = "http://www.w3.org/2004/02/skos/core#";
+        public static final String notation = uri + "notation";
+        public static final String hiddenLabel = uri + "hiddenLabel";
+    }
+
     public static class PRONOM {
         public static final String uri = "http://www.nationalarchives.gov.uk/PRONOM/";
+
+        // Global sub
+        public static class Global {
+            public static final String uri = PRONOM.uri + "global.";
+            public static final String Puid = uri + "Puid";
+        }
+
+        // SearchResult sub
+        public static class SearchResult {
+            public static final String type = PRONOM.uri + "SearchResult";
+            public static final String uri = PRONOM.uri + "search.";
+            public static final String Score = uri + "Score";
+            public static final String Match = uri + "Match";
+            public static final String Field = uri + "Field";
+        }
 
         // FileFormat sub
         public static class FileFormat {
@@ -126,6 +176,7 @@ public class RDFUtil {
             public static final String InternalSignature = uri + "InternalSignature";
             public static final String ExternalSignature = uri + "ExternalSignature";
             public static final String InFileFormatRelationship = uri + "In.FileFormatRelationship";
+            public static final String ReleaseDate = uri + "ReleaseDate";
         }
 
         // FileFormatRelationship
@@ -172,6 +223,7 @@ public class RDFUtil {
             public static final String type = PRONOM.uri + "ExternalSignature";
             public static final String uri = PRONOM.uri + "externalSignature.";
             public static final String SignatureType = uri + "SignatureType";
+            public static final String FileFormat = uri + "FileFormat";
         }
 
         // ByteSequence sub

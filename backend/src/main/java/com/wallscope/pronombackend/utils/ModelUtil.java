@@ -53,16 +53,20 @@ public class ModelUtil {
         return this.m.listObjectsOfProperty(s, p).toList();
     }
 
-    public List<Resource> getSubjects() {
+    public List<Resource> getAllSubjects() {
         return this.m.listSubjects().toList();
     }
 
-    public List<Resource> getSubjects(Resource type) {
-        return this.m.listSubjectsWithProperty(makeProp(RDF.type), type).toList();
+    public List<Resource> getAllSubjects(Resource s) {
+        return this.m.listSubjectsWithProperty(makeProp(RDF.type), s).toList();
     }
 
-    public List<Resource> getSubjects(Property prop, Resource type) {
-        return this.m.listSubjectsWithProperty(prop, type).toList();
+    public List<Resource> getAllSubjects(Property p, Resource s) {
+        return this.m.listSubjectsWithProperty(p, s).toList();
+    }
+
+    public List<Statement> list(Resource s, Property p, RDFNode o) {
+        return m.listStatements(s, p, o).toList();
     }
 
     public Model extractModel(Resource s, Property p, RDFNode o) {
@@ -73,12 +77,12 @@ public class ModelUtil {
     }
 
     public <T extends RDFWritable> List<T> buildAllFromModel(RDFDeserializer<T> deserializer) {
-        return buildFromModel(deserializer, this.getSubjects(makeProp(RDF.type), deserializer.getRDFType()));
+        return buildFromModel(deserializer, this.getAllSubjects(makeProp(RDF.type), deserializer.getRDFType()));
 
     }
 
     public <T extends RDFWritable> List<T> buildAllFromModelParallel(RDFDeserializer<T> deserializer) {
-        return buildFromModelParallel(deserializer, this.getSubjects(makeProp(RDF.type), deserializer.getRDFType()));
+        return buildFromModelParallel(deserializer, this.getAllSubjects(makeProp(RDF.type), deserializer.getRDFType()));
 
     }
 

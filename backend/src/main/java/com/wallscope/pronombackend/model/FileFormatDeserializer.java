@@ -47,7 +47,7 @@ public class FileFormatDeserializer implements RDFDeserializer<FileFormat> {
         List<Resource> intSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
         List<InternalSignature> internalSignatures = mu.buildFromModel(new InternalSignatureDeserializer(), intSigSubjects);
         // ExternalSignature
-        List<Resource> extSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.ExternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+        List<Resource> extSigSubjects = mu.getAllSubjects(makeProp(PRONOM.ExternalSignature.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
         List<ExternalSignature> externalSignatures = mu.buildFromModel(new ExternalSignatureDeserializer(), extSigSubjects);
         // FileFormatRelationship
         List<Resource> relationshipSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship)).stream().map(RDFNode::asResource).collect(Collectors.toList());
