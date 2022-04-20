@@ -46,6 +46,7 @@
          [ text:field "comment" ; text:predicate rdfs:comment ]
          [ text:field "Puid" ; text:predicate global:Puid ]
          [ text:field "fullPuid" ; text:predicate skos:notation ]
+         [ text:field "extensions" ; text:predicate skos:hiddenLabel ]
          )
     .
 
