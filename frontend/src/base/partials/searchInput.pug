@@ -3,7 +3,7 @@ section.search-input-container
     fieldset(aria-label="Search for file format, software or vendor")
       legend.sr-only Enter search file format name, PUID or keywords
       div
-        input(type="search", id="pronom_search", name="q", placeholder="Search for file format, software or vendor...")
+        input(type="search", id="pronom_search", name="q", th:value="${q ?: ''}", placeholder="Search for file format, software or vendor...")
         button(type="submit")
           i.fa-solid.fa-magnifying-glass(aria-hidden="true") Search
   .filters(aria-label="Filters")
@@ -11,21 +11,21 @@ section.search-input-container
     fieldset
       legend.sr-only Select filter
       div.selected
-        input#extension(type='checkbox' name='f_name' value='false') 
+        input#extension(type='checkbox' name='f_name' th:value="${f_name ?: 'true'}" th:checked="${f_name ?: 'true'}")
         label(for='extension') File format name
       div
-        input#name(type='checkbox' name='f_ext' value='false')
+        input#name(type='checkbox' name='f_ext' th:value="${ ?: 'true'}" th:checked="${f_ext ?: 'true'}")
         label(for='name') File format extension
       div
-        input#type(type='checkbox' name='f_desc' value='false')
+        input#type(type='checkbox' name='f_desc' th:value="${f_desc ?: 'true'}" th:checked="${f_desc ?: 'true'}")
         label(for='type') File format description
       div
-        input#puid(type='checkbox' name='f_uid' value='false')
+        input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
         label(for='puid') PUID
 
 section.search-output(th:if="${results != null and !results.empty}")
   h4 Results
-    span (32)
+    span(th:text="'('+${totalResults}+')'")
   .additionals
     .manage-results
       .result-counts
@@ -39,11 +39,11 @@ section.search-output(th:if="${results != null and !results.empty}")
           legend.sr-only Sort search results by selected measure
           label(for="sort_by") Sort by
           div
-            select(id="sort_by", name="sort")
-              option(value='relevance') relevance
-              option(value='type') type
-              option(value='name') name
-              option(value='puid') PUID
+            select(id="sort_by", name="sort", th:value="${sort}")
+              option(th:selected="${sort eq 'relevance'}", value='relevance') relevance
+              option(th:selected="${sort eq 'type'}", value='type') type
+              option(th:selected="${sort eq 'name'}", value='name') name
+              option(th:selected="${sort eq 'puid'}", value='puid') PUID
     .save-options
       label Save as
       .button-list
@@ -74,13 +74,13 @@ section.search-output(th:if="${results != null and !results.empty}")
               p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
                 span Type
                 | File format
-              h5.data.name(th:utext="'<span>Name</span>'+${r.name}")
+              h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
                 span Name
                 | Portable Network Graphics
-              p.data.desc(th:utext="'<span>Description</span>'+${r.description}")
+              p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
                 span Description
                 | fmt/412
-              div.basic(th:each="i : ${r.humanProperties}")
+              div.basic(th:each="i : ${r.HTMLProperties}")
                 p.data(th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
                   span PUID
                   | fmt/412
@@ -93,19 +93,10 @@ section.search-output(th:if="${results != null and !results.empty}")
                 button.xsmall.bordered-red Delete
     .pagination
       ul
-        li.controls
-          a(href="")
-            | Previous
-        li.active
-          a(href="")
-            | 1
-        li
-          a(href="")
-            | 2
-        li
-          a(href="")
-            | 3
-        li.controls
-          a(href="")
-            | Next
+        th:block(th:each="p : ${pages}")
+          li(th:class="${p.text eq 'Next' || p.text eq 'Previous' ? 'controls' : ''}",
+            th:classappend="${p.active ? 'active' : ''}")
+            a(th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}", 
+              th:href="${urlBuilder.replaceQueryParam('offset', p.offset).toUriString()}",
+              th:text="${p.text}") #
       
