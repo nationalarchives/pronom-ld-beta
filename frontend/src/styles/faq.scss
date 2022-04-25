@@ -53,6 +53,7 @@
   }
   .search-input {
     fieldset {
+      width: 100%;
       >div {
         display: grid;
         grid-template-columns: 1fr 140px;

@@ -5,7 +5,8 @@ section.search-input-container
       div
         input(type="search", id="pronom_search", name="q", th:value="${q ?: ''}", placeholder="Search for file format, software or vendor...")
         button(type="submit")
-          i.fa-solid.fa-magnifying-glass(aria-hidden="true") Search
+          i.fa-solid.fa-magnifying-glass(aria-hidden="true")
+          | Search
   .filters(aria-label="Filters")
     h4 Filters
     fieldset
@@ -93,38 +94,38 @@ section.search-output(th:if="${results != null and !results.empty}")
                 button.xsmall.bordered-red Delete
         //- Example with multiple basic data properties
         //- Uncomment to test while running the frontend with no backend
-        //- li
-        //-   a(href="")
-        //-     div
-        //-       p.data.type
-        //-         span Type
-        //-         | File format
-        //-       h5.data.name
-        //-         span Name
-        //-         | Portable Network Graphics
-        //-       div.basic
-        //-         p.data
-        //-           span Version
-        //-           | 3.0.0
-        //-         p.data
-        //-           span PUID
-        //-           | fmt/412
-        //-         p.data
-        //-           span Last Updated
-        //-           | 2015-08-03T00:00:00
-        //-         p.data
-        //-           span File Extension(s)
-        //-           | png
-        //-       p.data.desc
-        //-         span Description
-        //-         | Portable Network Graphics (PNG) was designed for the lossless, portable, compressed storage of raster images.  PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. PNG is designed to work in online viewing applications, so it is fully streamable.  It can store gamma and chromaticity.  PNG also detects file corruption.
-        //-       p.data.extend.status
-        //-         span Status
-        //-         | Released
-        //-       .extend.buttons
-        //-         button.xsmall.bordered-blue View
-        //-         button.xsmall.bordered-blue Clone
-        //-         button.xsmall.bordered-red Delete
+        li
+          a(href="")
+            div
+              p.data.type
+                span Type
+                | File format
+              h5.data.name
+                span Name
+                | Portable Network Graphics
+              div.basic
+                p.data
+                  span Version
+                  | 3.0.0
+                p.data
+                  span PUID
+                  | fmt/412
+                p.data.extended
+                  span Last Updated
+                  | 2015-08-03T00:00:00
+                p.data
+                  span File Extension(s)
+                  | png
+              p.data.desc
+                span Description
+                | Portable Network Graphics (PNG) was designed for the lossless, portable, compressed storage of raster images.  PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. PNG is designed to work in online viewing applications, so it is fully streamable.  It can store gamma and chromaticity.  PNG also detects file corruption.
+              p.data.extend.status
+                span Status
+                | Released
+              .extend.buttons
+                button.xsmall.bordered-blue View
+                button.xsmall.bordered-blue Clone
+                button.xsmall.bordered-red Delete
 
 
     .pagination

@@ -349,6 +349,9 @@ textarea:focus {
   outline: 5px solid #8EC0EC;
 }
 .search-input {
+  fieldset {
+    width: 100%;
+  }
   input {
     height: 45px;
   }

@@ -24,6 +24,7 @@
   }
   .search-input {
     fieldset {
+      width: 100%;
       >div {
         display: grid;
         grid-template-columns: 1fr 140px;
@@ -106,6 +107,9 @@
   }
 }
 .search-output {
+  .extended {
+    display: none !important;
+  }
   .additionals {
     display: flex;
     @media only screen and (max-width: 980px) {
@@ -275,6 +279,9 @@
       transition: all 0.2s;
       &:hover {
         background: #ccdbea;
+        .data, .basic {
+          border-color: #b3b3b3;
+        }
       }
       &.column-names {
         display: grid;
@@ -307,8 +314,8 @@
           grid-gap: 5px;
           color: black;
           @media only screen and (max-width: 1000px) {
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 10px;
+            grid-template-columns: 200px 1fr;
+            grid-gap: 20px;
           }
           @media only screen and (max-width: 760px) {
             grid-template-columns: 1fr;
@@ -358,9 +365,15 @@
         }
       }
       .basic {
-        @media only screen and (max-width: 650px) {
-          grid-template-columns: 1fr;
+        @media only screen and (max-width: 1430px) {
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto 1fr;
         }
+        @media only screen and (max-width: 1000px) {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto 1fr;
+        }
+        p.data {border-left: none;}
       }
     }
   }

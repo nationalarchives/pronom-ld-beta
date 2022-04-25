@@ -17,6 +17,7 @@
     }
     .search-input {
       fieldset {
+        width: 100%;
         >div {
           display: grid;
           grid-template-columns: 1fr 140px;
@@ -99,6 +100,9 @@
     }
   }
   .search-output {
+    .extended {
+      display: block !important;
+    }
     .additionals {
       display: flex;
       @media only screen and (max-width: 980px) {
