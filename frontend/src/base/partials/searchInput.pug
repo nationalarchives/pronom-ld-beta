@@ -69,7 +69,7 @@ section.search-output(th:if="${results != null and !results.empty}")
         h4.extended Maintain
       th:block(th:each="r : ${results}")
         li
-          a(href="",)
+          a(th:href="@{/id/{target}(target=${r.idUri})}")
             div
               p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
                 span Type
@@ -77,13 +77,13 @@ section.search-output(th:if="${results != null and !results.empty}")
               h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
                 span Name
                 | Portable Network Graphics
+              div.basic
+                p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
+                  span PUID
+                  | fmt/412
               p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
                 span Description
                 | fmt/412
-              div.basic(th:each="i : ${r.HTMLProperties}")
-                p.data(th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
-                  span PUID
-                  | fmt/412
               p.data.extend.status
                 span Status
                 | Released
