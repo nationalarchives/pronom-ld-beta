@@ -8,7 +8,6 @@ import org.apache.jena.rdf.model.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
@@ -103,14 +102,16 @@ public class SearchResult implements RDFWritable {
     }
 
     private String replaceMatch(String str) {
-        String[] matches = match.split("\\|");
-        String result = str;
-        for (String m : matches) {
-            String clean = m.replaceAll(MATCH_CHAR_START, "").replaceAll(MATCH_CHAR_END, "");
-            String html = "<em class=\"highlight\">" + clean + "</em>";
-            result = result.replaceAll(Pattern.quote(clean), html);
-        }
-        return result;
+        // Disabling highlighting but leaving the possibility open for future
+//        String[] matches = match.split("\\|");
+//        String result = str;
+//        for (String m : matches) {
+//            String clean = m.replaceAll(MATCH_CHAR_START, "").replaceAll(MATCH_CHAR_END, "");
+//            String html = "<em class=\"highlight\">" + clean + "</em>";
+//            result = result.replaceAll(Pattern.quote(clean), html);
+//        }
+//        return result;
+        return str;
     }
 
     @Override
@@ -127,6 +128,14 @@ public class SearchResult implements RDFWritable {
         if (this.type == null) return "";
         String[] parts = this.type.getURI().split("/");
         return parts[parts.length - 1];
+    }
+
+    // Returns the last 2 parts of the uri, which allows us to link to the generic /id endpoint which will then redirect accordingly.
+    public String getIdUri() {
+        if (this.uri == null || this.uri.getURI().isBlank()) return "";
+        String[] parts = this.uri.getURI().split("/");
+        String id = parts[parts.length - 1];
+        return getStringType() + "/" + id;
     }
 
     public Map<String, String> getHTMLProperties() {
