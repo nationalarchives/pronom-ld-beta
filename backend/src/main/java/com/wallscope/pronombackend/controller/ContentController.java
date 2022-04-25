@@ -36,8 +36,6 @@ public class ContentController {
 
     private final String mdDir = ApplicationConfig.MARKDOWN_DIR;
 
-    private final Pattern p = Pattern.compile("@templateUtils\\.md\\('(?<region>[a-z_-]+)'\\)");
-
     @GetMapping("/content-manager")
     public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
         ArrayList<String> regions = new ArrayList<>(getAvailableRegions());
@@ -73,6 +71,7 @@ public class ContentController {
         }
     }
 
+    private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ)\\('(?<region>[a-z_-]+)'\\)");
     private Set<String> getAvailableRegions() {
         try {
             Set<String> regions = new HashSet<>();
