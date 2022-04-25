@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.utils;
 
 import com.github.rjeschke.txtmark.Processor;
 import com.wallscope.pronombackend.config.ApplicationConfig;
+import com.wallscope.pronombackend.model.FAQCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.StringUtils;
@@ -11,7 +12,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TemplateUtils {
@@ -32,6 +36,10 @@ public class TemplateUtils {
             logger.debug("MD LOADER: No template for region: " + region);
             return "";
         }
+    }
+
+    public String mdString(String md) {
+        return Processor.process(md);
     }
 
     public String raw(String region) {
@@ -61,5 +69,29 @@ public class TemplateUtils {
             logger.info("HUMANISER: Failed to transform region name: " + region);
             return "";
         }
+    }
+
+    private static final Pattern catRegex = Pattern.compile("^# ", Pattern.MULTILINE);
+    private static final Pattern itemRegex = Pattern.compile("^## ", Pattern.MULTILINE);
+
+    public List<FAQCategory> parseFAQ(String region) {
+        String md = this.raw(region);
+        List<FAQCategory> FAQs = new ArrayList<>();
+        // break into category blocks
+        Arrays.stream(catRegex.split(md)).forEach(c -> {
+            int firstBreak = c.indexOf("\n");
+            if (firstBreak < 0) return;
+            String catTitle = c.substring(0, firstBreak).trim();
+            List<FAQCategory.FAQItem> items = new ArrayList<>();
+            Arrays.stream(itemRegex.split(c.substring(firstBreak + 1))).forEach(it -> {
+                int itFirstBreak = it.indexOf("\n");
+                if (itFirstBreak < 0) return;
+                String itemTitle = it.substring(0, itFirstBreak).trim();
+                String text = it.substring(itFirstBreak + 1);
+                items.add(new FAQCategory.FAQItem(itemTitle, text));
+            });
+            FAQs.add(new FAQCategory(catTitle, items));
+        });
+        return FAQs;
     }
 }
