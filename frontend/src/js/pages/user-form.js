@@ -7,14 +7,45 @@ const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#priorityBtn', '#identif
 const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipSubBtn, #additionalSubBtn']
 
 const App = () => {
+
+  $(document).ready(myfunction);
+  $(window).on('resize',myfunction);
+  let formStep = 0
+
+  function myfunction() {
+    if ($(window).width() < 1200) {
+      $('.form-section .form-part').addClass('show');
+      $(".form-partial-content").addClass('hide');
+      $(".accordion").click(function(){ 
+        if($(this).closest('.form-section').hasClass( "open" )){
+          $('.form-section').removeClass('open');
+          $(".form-partial-content").addClass('hide');
+          console.log('hide')
+        } else {
+          $('.form-section').removeClass('open');
+          $(".form-partial-content").addClass('hide');
+          $(this).closest('.form-section').addClass('open');
+          $(".open .form-partial-content").removeClass('hide');
+          console.log('no hide')
+        }
+      });
+    }
+    else {
+      $(".form-section .form-part").removeClass('show');
+      $(".form-section").removeClass('open');
+      $(".form-partial-content").removeClass('hide');
+      // Initialise form
+      let formStep = 0
+      // active class to the button
+      $(formMenuButtons[formStep]).addClass( "active" );
+      // Show first step
+      $(formParts[formStep]).addClass('show');
+    }
+  }
+
   // Signal JS is active
   $('.page-container').removeClass('noJS')
-  // Initialise form
-  let formStep = 0
-  // active class to the button
-  $(formMenuButtons[formStep]).addClass( "active" );
-  // Show first step
-  $(formParts[formStep]).addClass('show');
+  
   // Whenever .next is clicked add a step ========= NEXT
   $('.next').on('click', () => {
     $(formParts[formStep]).removeClass('show');

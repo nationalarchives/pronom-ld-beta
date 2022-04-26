@@ -244,6 +244,9 @@ aside {
 
 .form-partial-content {
   padding: 20px;
+  &.hide {
+    display: none;
+  }
 }
 
 .nav {
@@ -1021,24 +1024,30 @@ select:focus {
     }
   }
 }
-
-.accordion {
-  background: white;
-  border: none;
-  border-bottom: 3px solid #c1c1c1;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  min-height: 50px;
-
-  h2 {
-    margin: 0;
-    font-size: 1.4em;
+.form-section {
+  .accordion {
+    background: white;
+    border: none;
+    border-bottom: 3px solid #c1c1c1;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    min-height: 50px;
+  
+    h2 {
+      margin: 0;
+      font-size: 1.4em;
+    }
+  
+    i {
+      font-size: 20px;
+      padding: 0 20px
+    }
   }
-
-  i {
-    font-size: 20px;
-    padding: 0 20px
+  &.open {
+    i {
+      transform: rotate(180deg) scaleX(-1);
+    }
   }
 }
 
