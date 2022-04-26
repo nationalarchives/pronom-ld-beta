@@ -7,17 +7,17 @@ block vars
   - var category2List= [ {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'some title', text: 'some text'},]
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('faq_title')}") FAQ
+  h1.hidden-title(th:utext="${@templateUtils.md('faq_accessibility_title')}") FAQ
 
 block content
   .unique-page-content#faq
     .faq-search
       .search-input
-        form(aria-label="Search for term")
+        form(aria-label="Search for term", method="GET", action="/search")
           fieldset
             legend.sr-only Enter search term
             div
-              input(type="search" id="pronom_search" placeholder="Search for term...")
+              input(type="search", id="pronom_search", name="q", placeholder="Search for term...")
               button.click-search(type="submit")
                 i.fa-solid.fa-magnifying-glass(aria-hidden="true")
                 | Search

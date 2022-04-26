@@ -5,7 +5,7 @@ block vars
   - var breadcrumbs = {'Home':"/", "Contribute": "/contribute", "From choice": "/form-choice"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") Form choice
+  h1.hidden-title(th:utext="${@templateUtils.md('form-choice_accessibility_title')}") Form choice
 
 block content
   .unique-page-content#formChoice
@@ -15,7 +15,7 @@ block content
         a.bordered-blue(href="/user-form.html")
           i.fa-regular.fa-file(aria-hidden="true")
           | Add new file format
-        div
+        div(th:utext="${@templateUtils.md('form-choice_new-format')}")
           p.
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -32,18 +32,19 @@ block content
         a.bordered-blue
           i.fa-regular.fa-pen-to-square(aria-hidden="true")
           | Edit existing file format
-        p.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolor
-      h2 Other enquiry
-      div
+        div(th:utext="${@templateUtils.md('form-choice_edit-format')}")
+          p.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+            velit esse cillum dolor
+        h2 Other enquiries
         p For any other enquiry please contact us on
         a(href="mailto:pronom@nationalarchive.gov.uk") pronom@nationalarchive.gov.uk
-        p.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolor
+        div(th:utext="${@templateUtils.md('form-choice_other-enquiries')}")
+          p.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+            velit esse cillum dolor
   include ./partials/feedback.pug

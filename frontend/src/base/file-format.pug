@@ -2,7 +2,7 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1(th:utext="'<span>'+${fileFormat.formattedPuid}+'</span>'+${fileFormat.name}")
+    h1.hidden-title(th:utext="'<span>'+${fileFormat.formattedPuid}+'</span>'+${fileFormat.name}")
       span fmt/11
       | Portable network Graphics
     .specs
