@@ -5,12 +5,12 @@ block vars
   - var breadcrumbs = {'Home':"/", "Contribute": "/contribute"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") Contribute to Pronom
+  h1.title(th:utext="${@templateUtils.md('contribute_accessibility_title')}") Contribute to Pronom
 
 block content
   .unique-page-content#contribute
     article.split-with-button
-      div(th:utext="${@templateUtils.md('index_why-submitting')}")
+      div(th:utext="${@templateUtils.md('contribute_why-submit')}")
         h2#contribute1 Why submit to PRONOM?
         p.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -20,7 +20,7 @@ block content
           culpa qui officia deserunt mollit anim id est laborum.
       a.blue.xlarge(href="form-choice.html")
         | Make a submission
-    article.two-columns(th:utext="${@templateUtils.md('index_how-to-make-submissions')}")
+    article.two-columns(th:utext="${@templateUtils.md('contribute_how-to-submit')}")
       h2#contribute2 How to make a submission
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -38,13 +38,13 @@ block content
         li
           div.step-title
             p.number 1
-            h3(th:utext="${@templateUtils.md('index_step1title')}") Some title here
-          div(th:utext="${@templateUtils.md('index_step1')}")
+            h3(th:utext="${@templateUtils.md('contribute_step1title')}") Some title here
+          div(th:utext="${@templateUtils.md('contribute_step1')}")
             p.
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
               ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
               laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('index_example1')}")
+            div(th:utext="${@templateUtils.md('contribute_example1')}")
               h4 Example
               p.
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -52,13 +52,13 @@ block content
         li
           div.step-title
             p.number 2
-            h3(th:utext="${@templateUtils.md('index_step2title')}") Some title here
-          div(th:utext="${@templateUtils.md('index_step2')}")
+            h3(th:utext="${@templateUtils.md('contribute_step-2-title')}") Some title here
+          div(th:utext="${@templateUtils.md('contribute_step-2')}")
             p.
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
               ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
               laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('index_example2')}")
+            div(th:utext="${@templateUtils.md('contribute_example-2')}")
               h4 Example
               p.
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -66,19 +66,19 @@ block content
         li
           div.step-title
             p.number 3
-            h3(th:utext="${@templateUtils.md('index_step3title')}") Some title here
-          div(th:utext="${@templateUtils.md('index_step3')}")
+            h3(th:utext="${@templateUtils.md('contribute_step-3-title')}") Some title here
+          div(th:utext="${@templateUtils.md('contribute_step-3')}")
             p.
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
               ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
               laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('index_example3')}")
+            div(th:utext="${@templateUtils.md('contribute_example-3')}")
               h4 Example
               p.
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
                 ut labore et dolore magna aliqua.
         
-    article.two-columns(th:utext="${@templateUtils.md('index_how-do-we-process-your-submission')}")
+    article.two-columns(th:utext="${@templateUtils.md('contribute_how-do-we-process-your-submission')}")
       h2#contribute3 How do we process your submission
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 

@@ -71,8 +71,8 @@ public class TemplateUtils {
         }
     }
 
-    private static final Pattern catRegex = Pattern.compile("^# ", Pattern.MULTILINE);
-    private static final Pattern itemRegex = Pattern.compile("^## ", Pattern.MULTILINE);
+    private static final Pattern catRegex = Pattern.compile("^## ", Pattern.MULTILINE);
+    private static final Pattern itemRegex = Pattern.compile("^### ", Pattern.MULTILINE);
 
     public List<FAQCategory> parseFAQ(String region) {
         String md = this.raw(region);

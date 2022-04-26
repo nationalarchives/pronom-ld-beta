@@ -1,12 +1,12 @@
 aside.home-page-additional-info(aria-label="Quick search, links and additional information")
   #small-search-container
-    form(aria-label="Search for file format, software or vendor")
+    form(aria-label="Search for file format, software or vendor", method="GET", action="/search")
       fieldset
         label(for="small_search")
           h3 Search Pronom
         legend.sr-only Enter search file format name, PUID or keywords
         div
-          input(type="search" id="small_search" placeholder="Search for file formats...")
+          input(type="search", name="q", id="small_search", placeholder="Search for file formats...")
           button(type="submit" aria-label="Search")
             i.fa-solid.fa-magnifying-glass(aria-hidden="true")
   div

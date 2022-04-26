@@ -72,6 +72,7 @@ public class ContentController {
     }
 
     private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ)\\('(?<region>[a-z_-]+)'\\)");
+
     private Set<String> getAvailableRegions() {
         try {
             Set<String> regions = new HashSet<>();
