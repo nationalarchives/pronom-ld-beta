@@ -5,7 +5,8 @@ import '@styles/external.scss'
 
 const App = () => {
   // Signal JS is active
-  $('.page-container').removeClass('noJS')
+  $('.page-container').removeClass('noJS');
+  $('#header').removeClass('noJS');
   console.log("external page JS")
   test()
 }
