@@ -495,6 +495,15 @@ main {
     }
   }
 }
+.noJS {
+  #pronom-nav {
+    #toggleMenu {
+      @media only screen and (max-width: 1200px) {
+        display: block;
+      }
+    }
+  }
+}
 .page-container {
   &.noJS {
     #pronom-nav {
@@ -552,6 +561,7 @@ main {
           position: inherit;
           box-shadow: none;
           border-bottom: 4px solid black;
+          min-height: fit-content;
       }
     }
   }
@@ -575,6 +585,7 @@ main {
     }
   }
 }
+
 
 /* Pronom main menu - END */
 
@@ -719,6 +730,17 @@ main {
     font-size: 40px;
     @media only screen and (max-width: 980px) {
       font-size: 30px;
+    }
+  }
+  &.forNoJS {
+    display: none;
+  }
+}
+.noJS {
+  .close {
+    display: none;
+    &.forNoJS {
+      display: block;
     }
   }
 }
@@ -1494,6 +1516,7 @@ h1.internal-title {
 }
 // TNA Header and Footer #tnaheaderandfooter START
 // header
+
 header#header {
   background-color: #26262a;
   color: #fff;
@@ -1513,6 +1536,7 @@ header#header {
       padding: 15px 20px;
     }
   }
+
   nav#header-collapse {
     border-top: 2px solid white;
     max-height: calc(100vh - 140px);
@@ -1521,6 +1545,9 @@ header#header {
     color: white;
     padding: 1.6em 2em;
     display: none;
+    &.noJS {
+      display: block;
+    }
     .tna-menu-list{
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1561,6 +1588,7 @@ header#header {
       text-decoration: underline;
     }
   }
+  
   #skip-to-main-content {
     position: absolute;
     top: -30px;
@@ -1648,7 +1676,23 @@ header#header {
       max-width: 220px;
     }
   }
+  &.noJS {
+    position: relative;
+    nav#header-collapse {
+      display: block !important;
+      height: fit-content;
+      overflow: visible;
+      max-height: fit-content;
+    }
+    #pronom-nav #toggleMenu {
+      display: block !important;
+    }
+    .menu-pronom {
+      max-height: auto;
+    }
+  }
 }
+
 // footer
 .footer-inner {
   max-width: 1500px;

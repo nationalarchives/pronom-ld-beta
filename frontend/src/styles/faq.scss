@@ -101,3 +101,16 @@
     }
   }
 }
+.noJS {
+  .faq-search {
+    #closeAllFAQ, #openAllFAQ {
+      display: none;
+    }
+  }
+  #faq ul li p.hide {
+    display: block;
+  }
+  #faq ul button i {
+    display: none;
+  }
+}
