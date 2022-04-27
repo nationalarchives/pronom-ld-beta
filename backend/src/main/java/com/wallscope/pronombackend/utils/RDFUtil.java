@@ -128,6 +128,16 @@ public class RDFUtil {
         return lit.getInt();
     }
 
+    public static String safelyGetUriOrNull(Resource r) {
+        if (r == null) return null;
+        return r.getURI();
+    }
+
+    public static String safelyGetUriOrNull(RDFNode r) {
+        if (!r.isURIResource()) return null;
+        return safelyGetUriOrNull(r.asResource());
+    }
+
     public static class RDF {
         public static final String uri = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
         public static final String type = uri + "type";
@@ -251,6 +261,7 @@ public class RDFUtil {
         // ByteOrder Instances
         public static class ByteOrder {
             public static final String uri = PRONOM.uri + "id/ByteOrder/";
+            public static final String type = PRONOM.uri + "ByteOrder";
             public static final String littleEndian = uri + "littleEndian";
             public static final String bigEndian = uri + "bigEndian";
         }
