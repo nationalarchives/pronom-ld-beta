@@ -5,11 +5,11 @@ block vars
   - var breadcrumbs = {'Home':"/", "External Projects": "/external"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") External projects
+  h1.hidden-title(th:utext="${@templateUtils.md('external_accessibility_title')}") External projects
 
 block content
   .unique-page-content#external
-    article(th:utext="${@templateUtils.md('index_projects')}")
+    article(th:utext="${@templateUtils.md('external_projects')}")
       h3 Project 1
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 

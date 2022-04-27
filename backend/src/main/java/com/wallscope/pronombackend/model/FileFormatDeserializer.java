@@ -2,9 +2,11 @@ package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,20 +35,26 @@ public class FileFormatDeserializer implements RDFDeserializer<FileFormat> {
         Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
         Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));
 
-        List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream()
-                .map(node -> {
-                    Resource res = node.asResource();
-                    String[] parts = res.getURI().split("/");
-                    String id = parts[parts.length - 1];
-                    String label = mu.getOneObjectOrNull(res, makeProp(RDFS.label)).asLiteral().getString();
-                    return new Classification(id, label);
-                }).collect(Collectors.toList());
+        List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream().map(node -> {
+            Resource res = node.asResource();
+            String[] parts = res.getURI().split("/");
+            String id = parts[parts.length - 1];
+            String label = mu.getOneObjectOrNull(res, makeProp(RDFS.label)).asLiteral().getString();
+            return new Classification(id, label);
+        }).collect(Collectors.toList());
 
-        List<InternalSignature> internalSignatures = mu.buildAllFromModel(new InternalSignatureDeserializer());
-        List<ExternalSignature> externalSignatures = mu.buildAllFromModel(new ExternalSignatureDeserializer());
-        // TODO: Create actors table
-        List<Actor> developmentActors = mu.buildAllFromModel(new ActorDeserializer());
-        List<Actor> supportActors = mu.buildAllFromModel(new ActorDeserializer());
+        // InternalSignature
+        List<Resource> intSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+        List<InternalSignature> internalSignatures = mu.buildFromModel(new InternalSignatureDeserializer(), intSigSubjects);
+        // ExternalSignature
+        List<Resource> extSigSubjects = mu.getAllSubjects(makeProp(PRONOM.ExternalSignature.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
+        List<ExternalSignature> externalSignatures = mu.buildFromModel(new ExternalSignatureDeserializer(), extSigSubjects);
+        // FileFormatRelationship
+        List<Resource> relationshipSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+        List<FileFormatRelationship> hasRelationships = mu.buildFromModel(new FileFormatRelationshipDeserializer(), relationshipSubjects);
+        // TODO: Create actors connection
+        List<Actor> developmentActors = Collections.emptyList();
+        List<Actor> supportActors = Collections.emptyList();
         return new FileFormat(uri,
                 puid,
                 puidType,
@@ -61,6 +69,7 @@ public class FileFormatDeserializer implements RDFDeserializer<FileFormat> {
                 internalSignatures,
                 externalSignatures,
                 developmentActors,
-                supportActors);
+                supportActors,
+                hasRelationships);
     }
 }

@@ -1,0 +1,52 @@
+@prefix fuseki:  <http://jena.apache.org/fuseki#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+@prefix text:    <http://jena.apache.org/text#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.> .
+@prefix :        <#> .
+
+<#service> rdf:type fuseki:Service ;
+    fuseki:name              "ds" ;   # http://host:port/ds
+    fuseki:serviceQuery      "sparql" ;    # SPARQL query service
+    fuseki:serviceUpdate     "update" ;    # SPARQL update service
+    #fuseki:serviceUpload     "upload" ;    # Non-SPARQL upload service
+    fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol
+    #fuseki:serviceReadGraphStore    "data" ;     # SPARQL Graph store protocol (read only)
+    fuseki:dataset           <#text> ;
+#    fuseki:dataset           <#tdb> ;
+    .
+
+<#text> rdf:type text:TextDataset ;
+    text:dataset <#tdb> ;
+    text:index <#lucene> ;
+    .
+
+<#tdb> rdf:type tdb:DatasetTDB ;
+    tdb:location "/fuseki-base/databases/tdb" ;
+    # Make the default graph be the union of all named graphs.
+    tdb:unionDefaultGraph true ;
+    .
+
+<#lucene> a text:TextIndexLucene ;
+    text:directory <file:/fuseki-base/databases/lucene> ;
+    text:storeValues true ;
+    text:entityMap <#entity-map> ;
+    .
+
+<#entity-map> a text:EntityMap ;
+    text:entityField "uri" ;
+    text:graphField "graph" ; ## enable graph-specific indexing
+    text:defaultField "text" ; ## Must be defined in the text:map
+    text:uidField "uid" ;
+    text:langField "lang" ;
+    text:map (
+         [ text:field "text" ; text:predicate rdfs:label ]
+         [ text:field "comment" ; text:predicate rdfs:comment ]
+         [ text:field "Puid" ; text:predicate global:Puid ]
+         [ text:field "fullPuid" ; text:predicate skos:notation ]
+         [ text:field "extensions" ; text:predicate skos:hiddenLabel ]
+         )
+    .
+

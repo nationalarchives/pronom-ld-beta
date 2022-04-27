@@ -5,13 +5,13 @@ block vars
   - var breadcrumbs = {'Home':"/", "Search": "/search"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('search_title')}") Search Pronom
+  h1.hidden-title(th:utext="${@templateUtils.md('search_accessibility_title')}") Search Pronom
 
 block content
   .unique-page-content.search-content
     article
       //- TODO - remove when #markdown is in use
-      h2#search1(th:text="${@templateUtils.md('search_header')}")  How do I search PRONOM?
+      h2#search1(th:utext="${@templateUtils.md('search_header')}")  How do I search PRONOM?
       div(th:utext="${@templateUtils.md('search_main')}")
         span.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
@@ -34,5 +34,6 @@ block content
           culpa qui officia deserunt mollit anim id est laborum.
     article
       h2#search2 Search PRONOM
-    include /partials/searchInput.pug
+    form#search-form(method="GET", action="")
+      include /partials/searchInput.pug
     

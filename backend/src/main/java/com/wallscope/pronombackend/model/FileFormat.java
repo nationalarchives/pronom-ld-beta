@@ -29,6 +29,7 @@ public class FileFormat implements RDFWritable {
     private final List<ExternalSignature> externalSignatures;
     private final List<Actor> developmentActors;
     private final List<Actor> supportActors;
+    private final List<FileFormatRelationship> hasRelationships;
 
     public FileFormat(
             Resource uri,
@@ -45,7 +46,8 @@ public class FileFormat implements RDFWritable {
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
             List<Actor> developmentActors,
-            List<Actor> supportActors) {
+            List<Actor> supportActors,
+            List<FileFormatRelationship> hasRelationships) {
         this.uri = uri;
         this.puid = puid;
         this.puidType = puidType;
@@ -61,10 +63,16 @@ public class FileFormat implements RDFWritable {
         this.externalSignatures = externalSignatures;
         this.developmentActors = developmentActors;
         this.supportActors = supportActors;
+        this.hasRelationships = hasRelationships;
     }
 
     public Resource getURI() {
         return uri;
+    }
+
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
     }
 
     public Integer getPuid() {
@@ -80,7 +88,11 @@ public class FileFormat implements RDFWritable {
     }
 
     public String getFormattedPuid() {
-        return puidTypeName.trim() + "/" + puid;
+        return puidTypeName + "/" + puid;
+    }
+
+    public String getFormattedMimeType() {
+        return "MIME/type";
     }
 
     public String getName() {
@@ -123,6 +135,24 @@ public class FileFormat implements RDFWritable {
         return externalSignatures;
     }
 
+    public List<FileFormatRelationship> getHasRelationships() {
+        return hasRelationships;
+    }
+
+    public boolean getHasSignature() {
+        return !(internalSignatures.isEmpty() && externalSignatures.isEmpty());
+    }
+
+    public String getFirstExtension() {
+        return !externalSignatures.isEmpty() ? externalSignatures.get(0).getName() : null;
+    }
+
+    public List<FileFormatRelationship> getHasPriorityOver() {
+        return hasRelationships.stream()
+                .filter(r -> r.getRelationshipType().getURI().equals(PRONOM.FormatRelationshipType.PriorityOver))
+                .collect(Collectors.toList());
+    }
+
     public List<Actor> getDevelopmentActors() {
         return developmentActors;
     }
@@ -150,17 +180,27 @@ public class FileFormat implements RDFWritable {
     }
 
     // Boilerplate
+
+
     @Override
     public String toString() {
         return "FileFormat{" +
                 "uri=" + uri +
-                ", puid='" + puid + '\'' +
+                ", puid=" + puid +
+                ", puidType=" + puidType +
+                ", puidTypeName='" + puidTypeName + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", updated=" + updated +
                 ", version='" + version + '\'' +
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
+                ", classifications=" + classifications +
+                ", internalSignatures=" + internalSignatures +
+                ", externalSignatures=" + externalSignatures +
+                ", developmentActors=" + developmentActors +
+                ", supportActors=" + supportActors +
+                ", hasRelationships=" + hasRelationships +
                 '}';
     }
 

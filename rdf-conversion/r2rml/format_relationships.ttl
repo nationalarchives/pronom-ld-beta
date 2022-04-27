@@ -9,16 +9,16 @@
  		rr:class pr:FileFormatRelationship;
  	];
  	rr:predicateObjectMap [
-        rr:predicate fileFormatRelationship:SourceId;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{source_id}" ];
+        rr:predicate fileFormatRelationship:Source;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{source_id}" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate fileFormatRelationship:TargetId;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{target_id}" ];
+        rr:predicate fileFormatRelationship:Target;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{target_id}" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate fileFormatRelationship:FileFormatRelationshipTypeId;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipTypeId/{relationship_type_id}" ];
+        rr:predicate fileFormatRelationship:FileFormatRelationshipType;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipType/{relationship_type_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate fileFormatRelationship:Note;

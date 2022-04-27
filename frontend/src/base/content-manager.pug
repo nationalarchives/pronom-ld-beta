@@ -5,7 +5,7 @@ block vars
   - var breadcrumbs = {'Home':"/", "Content Manager": "/content-manager"}
 
 block pageTitle
-  h1.internal-title(th:text="${@templateUtils.md('content-manager_title')}") Edit website content
+  h1.internal-title(th:utext="${@templateUtils.md('content-manager_accessibility_title')}") Edit website content
 
 block content
   .unique-page-content#content-manager
@@ -27,28 +27,4 @@ block content
               label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
               textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
               button.small.bordered-blue(type="submit") Save
-      #search-content
-        div
-          p search
-      #about-content
-        div
-          p About
-      #faq-content
-        div
-          p faq
-      #external-content
-        div
-          p External
-      #submit-content
-        div
-          p Submit
-      #contact-content
-        div
-          p contact
-      #droid-content
-        div
-          p droid
-      #formChoice-content
-        div
-          p formChoice
       

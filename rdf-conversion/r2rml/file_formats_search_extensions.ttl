@@ -1,0 +1,26 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>. 
+@prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix fileFormat: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+<#PRONOM6/file_format_extensions>
+ 	rr:logicalTable [ rr:sqlQuery """
+ SELECT 
+     [file_formats].[file_format_id]
+    ,STRING_AGG([external_signatures].signature_text, ' ') as extensions
+  FROM [PRONOM6].[dbo].[file_formats]
+  RIGHT JOIN [PRONOM6].[dbo].[external_signatures] ON [PRONOM6].[dbo].[external_signatures].[file_format_id] = [file_formats].[file_format_id]
+  -- Allow only type = 1 (file extensions)
+  WHERE signature_type_id = 1
+  GROUP BY [file_formats].[file_format_id]
+"""
+ 	];
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
+ 	];
+    rr:predicateObjectMap [
+        rr:predicate skos:hiddenLabel;
+        rr:objectMap [ rr:column "extensions" ];
+    ];
+ 	.

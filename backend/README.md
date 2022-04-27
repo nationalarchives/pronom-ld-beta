@@ -58,6 +58,36 @@ The application assumes the directory exists, and it doesn't attempt to create i
 
 If a file is referenced in a template but doesn't exist, an error is logged and an empty string is returned.
 
+## Recommendation on page headers
+
+Accessibility guidelines recommend that only 1 <h1/> header is present in each HTML page.
+The defined markdown areas are either accessibility page titles or regions in the page body, therefore the markdown header 1 ('#') shouldn't be used as it renders as an h1 tag.
+
+### Custom format for FAQ page
+
+The FAQ page follows a specific Markdown format so categories can be parsed into the right format. The format is as follows:
+
+**IMPORTANT:** Whitespace is important, especially in parsing the category headers. There is no white space between the start of a line and the header markers ('#'). 
+
+```md
+## Category 1 Title
+### Cat 1 Item 1 Title
+Cat 1 Item 1 text which can be infinitely long. 
+It can also have line breaks
+The only things that are not allowed here are headers 1 ('#') and 2 ('##') which will cause unexpected output if present at the start of a line
+
+### Cat 1 Item 2 Title
+Some text for the 2nd item of category 1
+
+Random line breaks may occur and will be treated as they are normally by the markdown processor
+
+## Category 2 Title
+### Cat 2 Item 1 Title
+Some text for cat 2 item 1
+```
+
+The markers the parser look for are the header markers at the start of a line, followed by a space: "^## " for category titles, "^### " for category items. Whatever comes after the line containing "^### " is considered the category text 
+
 ## Generating a runnable jar
 
 Spring boot comes pre-configured to output a "fat" jar which includes all resources required to run the project. To generate it run the following:

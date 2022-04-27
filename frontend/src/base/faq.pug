@@ -7,17 +7,17 @@ block vars
   - var category2List= [ {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'some title', text: 'some text'},]
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") FAQ
+  h1.hidden-title(th:utext="${@templateUtils.md('faq_accessibility_title')}") FAQ
 
 block content
   .unique-page-content#faq
     .faq-search
       .search-input
-        form(aria-label="Search for term")
+        form(aria-label="Search for term", method="GET", action="/search")
           fieldset
             legend.sr-only Enter search term
             div
-              input(type="search" id="pronom_search" placeholder="Search for term...")
+              input(type="search", id="pronom_search", name="q", placeholder="Search for term...")
               button.click-search(type="submit")
                 i.fa-solid.fa-magnifying-glass(aria-hidden="true")
                 | Search
@@ -29,20 +29,22 @@ block content
           span Collapse all
           i.fa-solid.fa-chevron-up(aria-hidden="true")
 
-    h3#faq1 Category 1
-    ul.faq-questions
-      for item, index in category1List
-        li
-          button.closed(aria-expanded="false" id=( (Object.keys({category1List})[0]) + index) aria-controls=( (Object.keys({category1List})[0]) + index) )
-            span= item.title
+    th:block(th:each="cat, catI : ${@templateUtils.parseFAQ('faq_main')}")
+      h3(th:text="${cat.title}") Category 1
+      ul.faq-questions 
+        li(th:each="item, itemI : ${cat.items}")
+          button.closed(aria-expanded="false" th:id="|cat-${catI.index}-item-${itemI.index}|" th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )
+            span(th:text="${item.title}") some title
             i.fa-solid.fa-chevron-up(aria-hidden="true")
-          p.hide(id=( (Object.keys({category1List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category1List})[0]) + index))= item.text
+          p.hide(th:id="|cat-${catI.index}-item-${itemI.index}|" role="region" th:aria-labeledby="|cat-${catI.index}-item-${itemI.index}|", th:utext="${@templateUtils.mdString(item.text)}") some text
     
-    h3#faq2 Category 2
-    ul.faq-questions
-      for item, index in category2List
-        li
-          button.closed(aria-expanded="false" id=( (Object.keys({category2List})[0]) + index) aria-controls=( (Object.keys({category2List})[0]) + index) )
-            span= item.title
-            i.fa-solid.fa-chevron-up(aria-hidden="true")
-          p.hide(id=( (Object.keys({category2List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category2List})[0]) + index))= item.text
+    //- Kept here for debugging multiple categories when developing without a backend.
+    //- Uncomment to have another category
+    //- h3#faq2 Category 2
+    //- ul.faq-questions
+    //-   for item, index in category2List
+    //-     li
+    //-       button.closed(aria-expanded="false" id=( (Object.keys({category2List})[0]) + index) aria-controls=( (Object.keys({category2List})[0]) + index) )
+    //-         span= item.title
+    //-         i.fa-solid.fa-chevron-up(aria-hidden="true")
+    //-       p.hide(id=( (Object.keys({category2List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category2List})[0]) + index))= item.text

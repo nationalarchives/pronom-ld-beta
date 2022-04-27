@@ -31,4 +31,13 @@ public class ExternalSignature implements RDFWritable {
     public Model toRDF() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "ExternalSignature{" +
+                "uri=" + uri +
+                ", name='" + name + '\'' +
+                ", signatureType='" + signatureType + '\'' +
+                '}';
+    }
 }
