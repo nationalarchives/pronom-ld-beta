@@ -6,7 +6,8 @@ const formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#a
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorBtn', '#reviewBtn']
 const App = () => {
     // Signal JS is active
-    $('.page-container').removeClass('noJS')
+    $('.page-container').removeClass('noJS');
+    $('#header').removeClass('noJS');
     // Initialise form
     let formStep = 0
   

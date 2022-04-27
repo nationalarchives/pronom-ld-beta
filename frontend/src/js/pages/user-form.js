@@ -8,11 +8,13 @@ const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipS
 
 const App = () => {
 
-  $(document).ready(myfunction);
-  $(window).on('resize',myfunction);
-  let formStep = 0
+  $(document).ready(formSetup);
+  $(window).on('resize',formSetup);
+  let formStep = 0;
+  $('.modal-container').removeClass('noJS');
 
-  function myfunction() {
+  function formSetup() {
+    $('.form-part').addClass('hide');
     if ($(window).width() < 1200) {
       $('.form-section .form-part').addClass('show');
       $(".form-partial-content").addClass('hide');
@@ -44,7 +46,8 @@ const App = () => {
   }
 
   // Signal JS is active
-  $('.page-container').removeClass('noJS')
+  $('.page-container').removeClass('noJS');
+  $('#header').removeClass('noJS');
   
   // Whenever .next is clicked add a step ========= NEXT
   $('.next').on('click', () => {

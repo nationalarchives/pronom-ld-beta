@@ -7,7 +7,8 @@ import '@styles/faq.scss'
 
 const App = () => {
   // Signal JS is active
-  $('.page-container').removeClass('noJS')
+  $('.page-container').removeClass('noJS');
+  $('#header').removeClass('noJS');
 
   $('.faq-questions button').on('click', function() {
     var selectedButton = this.id;

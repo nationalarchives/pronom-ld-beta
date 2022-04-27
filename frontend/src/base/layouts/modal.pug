@@ -1,6 +1,6 @@
 include ../partials/head.pug
 
-.modal-container
+.modal-container.noJS
   .modal-header
     .modal-header-inner
       .title
@@ -8,6 +8,8 @@ include ../partials/head.pug
       .additionals
         block modalHeaderAdditionals
       a.close(a href="javascript:window.history.back();" aria-label="Close modal")
+        i.fa-solid.fa-xmark(aria-hidden="true")
+      a.close.forNoJS(a href="/" aria-label="Close modal")
         i.fa-solid.fa-xmark(aria-hidden="true")
   .modal-body
     div
