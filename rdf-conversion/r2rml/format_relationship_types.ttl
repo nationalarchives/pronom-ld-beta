@@ -7,8 +7,8 @@
 <#PRONOM6/format_relationship_types>
  	rr:logicalTable <#PRONOM6/format_relationship_types#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatRelationshipType/{relationship_type_id}";
- 		rr:class pr:FormatRelationshipType;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipType/{relationship_type_id}";
+ 		rr:class pr:FileFormatRelationshipType;
  	];
  	rr:predicateObjectMap [
         rr:predicate formatRelationshipType:TypeName;

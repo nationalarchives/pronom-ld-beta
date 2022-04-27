@@ -44,8 +44,7 @@ section.form-part#additionalProperties
                   .i-wrapper
                     i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
             select(id="SelectByteOrder")
-              option(value='0') option1
-              option(value='1') option2
+              option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
           .form-row
             .tooltip-container
               .label

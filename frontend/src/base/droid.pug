@@ -5,9 +5,9 @@ block vars
   - var breadcrumbs = {'Home':"/", "Droid": "/droid"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") Droid
+  h1.hidden-title(th:utext="${@templateUtils.md('droid_accessibility_title')}") Droid
 
 block content
   .unique-page-content#droid
-    article(th:utext="${@templateUtils.md('index_droid')}")
+    article(th:utext="${@templateUtils.md('droid_main')}")
       p all comes from the Markdown - text not yet specified

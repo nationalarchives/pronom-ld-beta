@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.wallscope.pronombackend.dao.InternalSignatureDAO.SIGNATURE_SUB_QUERY;
@@ -46,10 +47,23 @@ public class FileFormatDAO {
                	 }#END OPTIONAL
                	 OPTIONAL { ?f ff:Development.Actor ?devActor . }#END OPTIONAL
                  OPTIONAL { ?f ff:Support.Actor ?supportActor . }#END OPTIONAL
+                 
+                 OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
+                   ?fRel pr:fileFormatRelationship.FileFormatRelationshipType ?fRelType ;
+                     pr:fileFormatRelationship.Source ?fRelSource ;
+                     pr:fileFormatRelationship.Target ?fRelTarget ;
+                     .
+                     OPTIONAL { ?fRel pr:fileFormatRelationship.Note ?fRelNote . }#END OPTIONAL
+                     
+                     ?fRelSource rdfs:label ?fRelSourceName .
+                     ?fRelTarget rdfs:label ?fRelTargetName .
+                    
+                   ?fRelType pr:formatRelationshipType.TypeName ?fRelTypeName ;
+                     pr:formatRelationshipType.InverseTypeName ?fRelInverseTypeName .
+                 }#END OPTIONAL
             """;
     public static final String FILE_FORMAT_QUERY = PREFIXES + """
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
-            prefix pt: <http://www.nationalarchives.gov.uk/PRONOM/puidType.>
             CONSTRUCT {
             """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
              } WHERE {
@@ -84,5 +98,15 @@ public class FileFormatDAO {
         Integer puid = puidNode.asLiteral().getInt();
         String puidType = mu.getOneObjectOrNull(null, makeProp(RDFS.label)).asLiteral().getString();
         return new PUID(puid, puidType.trim());
+    }
+
+    public List<FileFormat> getAll() {
+        logger.debug("fetching all file formats");
+        Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY);
+        ModelUtil mu = new ModelUtil(m);
+        logger.debug("building file format objects");
+        List<FileFormat> fs = mu.buildAllFromModel(new FileFormatDeserializer());
+        logger.debug("file formats built");
+        return fs;
     }
 }

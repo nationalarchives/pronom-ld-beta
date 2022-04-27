@@ -1,5 +1,6 @@
 FROM secoresearch/fuseki:4.3.2
 
+COPY ${PWD}/triplestore/assembler.ttl /fuseki-base/configuration/assembler.ttl
 COPY --chown=9008 ${PWD}/out /tmp/load
 
 RUN $TDBLOADER --graph=http://www.nationalarchives.gov.uk/PRONOM/ /tmp/load/* \

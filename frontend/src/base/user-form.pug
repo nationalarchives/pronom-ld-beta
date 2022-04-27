@@ -2,32 +2,31 @@ extends /layouts/modal.pug
   
 block modalHeader
   div
-    h1
-      | Add new file fomat
+    h1 Add new file fomat
 block modalBody
   .form-content#user-form
     
     include ./partials/userForm/form-navigation.pug
    
     main
-      .form-section(class=(currentFormSection === 1 ? "show" : undefined))
-        include ./partials/userForm/core.pug
-      .form-section(class=(currentFormSection === 2 ? "show" : undefined))
-        include ./partials/userForm/signatures.pug
-      .form-section(class=(currentFormSection === 3 ? "show" : undefined))
-        include ./partials/userForm/priority.pug
-      .form-section(class=(currentFormSection === 4 ? "show" : undefined))
-        include ./partials/userForm/identifiers.pug
-      .form-section(class=(currentFormSection === 5 ? "show" : undefined))
-        include ./partials/userForm/releationships.pug
-      .form-section(class=(currentFormSection === 6 ? "show" : undefined))
-        include ./partials/userForm/additionalProperties.pug
-      .form-section(class=(currentFormSection === 7 ? "show" : undefined))
-        include ./partials/userForm/yourDetails.pug
-      .form-section(class=(currentFormSection === 8 ? "show" : undefined))
-        include ./partials/userForm/review.pug
-      
-    .smallScreen#submit-mobile
-      div
-        button.blue.medium.right.submit-button
-          | Submit
+      form(action="#", th:action='@{/contribute/form/new}', method='POST', th:object="${ff}") 
+        .form-section
+          include ./partials/userForm/core.pug
+        .form-section
+          include ./partials/userForm/signatures.pug
+        .form-section
+          include ./partials/userForm/priority.pug
+        .form-section
+          include ./partials/userForm/identifiers.pug
+        .form-section
+          include ./partials/userForm/releationships.pug
+        .form-section
+          include ./partials/userForm/additionalProperties.pug
+        .form-section
+          include ./partials/userForm/yourDetails.pug
+        .form-section
+          include ./partials/userForm/review.pug
+
+        .smallScreen#submit-mobile
+          div
+            button.blue.medium.right.submit-button Submit

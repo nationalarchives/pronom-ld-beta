@@ -9,265 +9,264 @@ section.form-part#core
     .form-header-main
       h2 Core
       .nav
-        button.bordered-blue.medium.right.next
-          | Next
+        button.bordered-blue.medium.right.next Next
           i.fa-solid.fa-angles-right
   .form-partial-content
-    form(aria-label="Add new file format")
-        //- TODO make sure to display only if editing file format (var formAction = 'edit')
-        if(formAction === 'edit')
-          .part
-            include ./searchPUID.pug  
-        h4.border Main
-        .part
-          fieldset
-            //- TODO - read INFO : 
-            //- 1) each .form-row has unique id with dashes (inside is input with same name and id just cammel case)
-            //- 2) if element is to be reviewed add class '.before-review' or 'after-review'
-            .form-row#file-format-name.after-review
-              p.inputType New content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="FileFormatName") File format name (required)
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.1') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Revert changes
-                input(name="FileFormatName" id="FileFormatName")
+    
+    //- TODO make sure to display only if editing file format (var formAction = 'edit')
+    if(formAction === 'edit')
+      .part(th:if="${edit}")
+        include ./searchPUID.pug  
+    h4.border Main
+    .part
+      fieldset
+        //- TODO - read INFO : 
+        //- 1) each .form-row has unique id with dashes (inside is input with same name and id just cammel case)
+        //- 2) if element is to be reviewed add class '.before-review' or 'after-review'
+        .form-row#file-format-name.after-review
+          p.inputType New content
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="FileFormatName") File format name (required)
+                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.1') tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+            .action-monitoring
+              .review-type
+                i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                p Require reviewing
+              .review-type
+                i.fa-solid.fa-square-check
+                p Reviewed
+          .input-group
+            button Revert changes
+            input(th:field="*{name}", name="FileFormatName" id="FileFormatName")
 
-            .form-row#version.before-review
-              p.inputType Edited content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="Version") Version
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Accept current
-                input(name="Version" id="Version")
-              .input-group
-                button Accept incoming
-                input(name="Version" id="Version")
+        .form-row#version.before-review
+          p.inputType Edited content
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="Version") Version
+                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+            .action-monitoring
+              .review-type
+                i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                p Require reviewing
+              .review-type
+                i.fa-solid.fa-square-check
+                p Reviewed
+          .input-group
+            button Accept current
+            input(name="Version" id="Version")
+          .input-group
+            button Accept incoming
+            input(name="Version" id="Version")
 
-            .form-row#file-format-description
-              p.inputType Edited content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="FileFormatDescription") File format description
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.3') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Accept current
-                textarea(cols="30", rows="10" name="FileFormatDescription" id="FileFormatDescription")
+        .form-row#file-format-description
+          p.inputType Edited content
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="FileFormatDescription") File format description
+                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.3') tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+            .action-monitoring
+              .review-type
+                i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                p Require reviewing
+              .review-type
+                i.fa-solid.fa-square-check
+                p Reviewed
+          .input-group
+            button Accept current
+            textarea(cols="30", rows="10", th:field="*{description}", name="FileFormatDescription", id="FileFormatDescription")
 
-            .form-row#format-type
-              p.inputType Edited content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="FormatType") Format type
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Accept current
-                input(name="FormatType" id="FormatType")
+        .form-row#format-type
+          p.inputType Edited content
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="FormatType") Format type
+                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+            .action-monitoring
+              .review-type
+                i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                p Require reviewing
+              .review-type
+                i.fa-solid.fa-square-check
+                p Reviewed
+          .input-group
+            button Accept current
+            input(name="FormatType" id="FormatType")
 
-            include ./priority-over.pug
+        include ./priority-over.pug
 
-        h4.border References
-        .part
-          fieldset
-            .row-group.inline
-              .form-row#reference-name
-                p.inputType Edited content
-                .tooltipPlusAction
-                  .tooltip-container
-                    .label
-                      label(for="ReferenceName") Reference Name
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2') tabindex='0')
-                        .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                  .action-monitoring
-                    .review-type
-                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                      p Require reviewing
-                    .review-type
-                      i.fa-solid.fa-square-check
-                      p Reviewed
-                .input-group
-                  button Accept current
-                  input(name="ReferenceName" id="ReferenceName")
+    h4.border References
+    .part
+      fieldset
+        .row-group.inline
+          .form-row#reference-name
+            p.inputType Edited content
+            .tooltipPlusAction
+              .tooltip-container
+                .label
+                  label(for="ReferenceName") Reference Name
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button Accept current
+              input(name="ReferenceName" id="ReferenceName")
 
-              .form-row#reference-link-url
-                p.inputType Edited content
-                .tooltipPlusAction
-                  .tooltip-container
-                    .label
-                      label(for="ReferenceLinkURL") Link URL
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.2') tabindex='0')
-                        .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                  .action-monitoring
-                    .review-type
-                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                      p Require reviewing
-                    .review-type
-                      i.fa-solid.fa-square-check
-                      p Reviewed
-                .input-group
-                  button Accept current
-                  input(name="ReferenceLinkURL" id="ReferenceLinkURL")
+          .form-row#reference-link-url
+            p.inputType Edited content
+            .tooltipPlusAction
+              .tooltip-container
+                .label
+                  label(for="ReferenceLinkURL") Link URL
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.2') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button Accept current
+              input(name="ReferenceLinkURL" id="ReferenceLinkURL")
 
-              .form-row#reference-documentation.checkbox-container
-                input(name="ReferenceDocumentation" id="ReferenceDocumentation" type="checkbox")
-                .tooltip-container
-                  .label
-                    label(for="ReferenceDocumentation") Documentation
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.3') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+          .form-row#reference-documentation.checkbox-container
+            input(name="ReferenceDocumentation" id="ReferenceDocumentation" type="checkbox")
+            .tooltip-container
+              .label
+                label(for="ReferenceDocumentation") Documentation
+                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.3') tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
               
-              .additional-fields
-                .form-row#reference-author
-                  p.inputType Edited content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="ReferenceAuthor") Author
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.4') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="ReferenceAuthor" id="ReferenceAuthor")
+          .additional-fields
+            .form-row#reference-author
+              p.inputType Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="ReferenceAuthor") Author
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.4') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="ReferenceAuthor" id="ReferenceAuthor")
 
-                .form-row#reference-identifiers
-                  p.inputType Edited content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="ReferenceIdentifiers") Identifiers
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="ReferenceIdentifiers" id="ReferenceIdentifiers")
+            .form-row#reference-identifiers
+              p.inputType Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="ReferenceIdentifiers") Identifiers
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="ReferenceIdentifiers" id="ReferenceIdentifiers")
 
-                .form-row#publication-date
-                  p.inputType Edited content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="PublicationDate") Publication date
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.6') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="PublicationDate" id="PublicationDate")
+            .form-row#publication-date
+              p.inputType Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="PublicationDate") Publication date
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.6') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="PublicationDate" id="PublicationDate")
 
-                .form-row#publication-type
-                  p.inputType Edited content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="PublicationType") Type
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.7') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="PublicationType" id="PublicationType")
+            .form-row#publication-type
+              p.inputType Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="PublicationType") Type
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.7') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="PublicationType" id="PublicationType")
 
-                .form-row#publication-note
-                  p.inputType Edited content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="PublicationNote") Note
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.8') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="PublicationNote" id="PublicationNote")
-              .button-container
-                button.bordered-red.small.push-right
-                  | Delete reference
+            .form-row#publication-note
+              p.inputType Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="PublicationNote") Note
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.8') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="PublicationNote" id="PublicationNote")
           .button-container
-            button.black.medium.push-right#add-reference
-              | Add reference
+            button.bordered-red.small.push-right
+              | Delete reference
+      .button-container
+        button.black.medium.push-right#add-reference
+          | Add reference
           
           
     

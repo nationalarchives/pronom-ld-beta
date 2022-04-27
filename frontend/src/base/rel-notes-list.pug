@@ -5,21 +5,21 @@ block vars
   - var breadcrumbs = {'Home':"/", "Release Notes": "/release-notes"}
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") Release Notes
+  h1.hidden-title(th:utext="${@templateUtils.md('release-notes_accessibility_title')}") Release Notes
 
 block content
   .unique-page-content#droid
     article
-      h2(th:utext="${@templateUtils.md('index_testEnviromentTitle')}") File Formats in the Test Enviroment
+      h2(th:utext="${@templateUtils.md('release-notes_test-environment-title')}") File Formats in the Test Enviroment
       .test-enviroment-group
-        p(th:utext="${@templateUtils.md('index_testEnviromentExplanation')}").
+        p(th:utext="${@templateUtils.md('release-notes_test-enviroment-explanation')}").
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
           laboris nisi ut aliquip ex ea commodo consequat.
         button.bordered-blue.xlarge
           i.fa-solid.fa-arrow-down(aria-hidden="true")
           | Download CSV
-    article(th:utext="${@templateUtils.md('index_releaseNotes')}")
+    article(th:utext="${@templateUtils.md('release-notes_release-notes')}")
       h2 Release notes
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 

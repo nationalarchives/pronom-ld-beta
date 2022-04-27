@@ -16,8 +16,10 @@ import java.time.temporal.TemporalAccessor;
 public class RDFUtil {
     static Logger logger = LoggerFactory.getLogger(RDFUtil.class);
     public static final String PREFIXES = """
+            prefix xsd: <http://www.w3.org/2001/XMLSchema#>
             prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            prefix skos: <http://www.w3.org/2004/02/skos/core#>
             prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
             """;
 
@@ -70,6 +72,34 @@ public class RDFUtil {
                 .replaceAll("\\}#END OPTIONAL", "");
     }
 
+    public static Resource safelyGetResourceOrDefault(RDFNode n, Resource def) {
+        if (n == null) return def;
+        return n.asResource();
+    }
+
+    public static Literal safelyGetLiteralOrDefault(RDFNode n, Literal def) {
+        if (n == null) return def;
+        return n.asLiteral();
+    }
+
+    public static String safelyGetStringOrDefault(RDFNode n, String def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getString();
+    }
+
+    public static Boolean safelyGetBooleanOrDefault(RDFNode n, boolean def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getBoolean();
+    }
+
+    public static Integer safelyGetIntegerOrDefault(RDFNode n, int def) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return def;
+        return lit.getInt();
+    }
+
     public static Resource safelyGetResourceOrNull(RDFNode n) {
         if (n == null) return null;
         return n.asResource();
@@ -98,6 +128,16 @@ public class RDFUtil {
         return lit.getInt();
     }
 
+    public static String safelyGetUriOrNull(Resource r) {
+        if (r == null) return null;
+        return r.getURI();
+    }
+
+    public static String safelyGetUriOrNull(RDFNode r) {
+        if (!r.isURIResource()) return null;
+        return safelyGetUriOrNull(r.asResource());
+    }
+
     public static class RDF {
         public static final String uri = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
         public static final String type = uri + "type";
@@ -109,8 +149,29 @@ public class RDFUtil {
         public static final String comment = uri + "comment";
     }
 
+    public static final class SKOS {
+        public static final String uri = "http://www.w3.org/2004/02/skos/core#";
+        public static final String notation = uri + "notation";
+        public static final String hiddenLabel = uri + "hiddenLabel";
+    }
+
     public static class PRONOM {
         public static final String uri = "http://www.nationalarchives.gov.uk/PRONOM/";
+
+        // Global sub
+        public static class Global {
+            public static final String uri = PRONOM.uri + "global.";
+            public static final String Puid = uri + "Puid";
+        }
+
+        // SearchResult sub
+        public static class SearchResult {
+            public static final String type = PRONOM.uri + "SearchResult";
+            public static final String uri = PRONOM.uri + "search.";
+            public static final String Score = uri + "Score";
+            public static final String Match = uri + "Match";
+            public static final String Field = uri + "Field";
+        }
 
         // FileFormat sub
         public static class FileFormat {
@@ -122,14 +183,36 @@ public class RDFUtil {
             public static final String WithdrawnFlag = uri + "WithdrawnFlag";
             public static final String Puid = uri + "Puid";
             public static final String PuidTypeId = uri + "PuidTypeId";
-            public static String Classification = uri + "Classification";
+            public static final String Classification = uri + "Classification";
+            public static final String InternalSignature = uri + "InternalSignature";
+            public static final String ExternalSignature = uri + "ExternalSignature";
+            public static final String InFileFormatRelationship = uri + "In.FileFormatRelationship";
+            public static final String ReleaseDate = uri + "ReleaseDate";
+        }
+
+        // FileFormatRelationship
+        public static class FileFormatRelationship {
+            public static final String type = PRONOM.uri + "FileFormatRelationship";
+            public static final String uri = PRONOM.uri + "fileFormatRelationship.";
+            public static final String Source = uri + "Source";
+            public static final String Target = uri + "Target";
+            public static final String FileFormatRelationshipType = uri + "FileFormatRelationshipType";
+            public static final String Note = uri + "Note";
+        }
+
+        public static class FormatRelationshipType {
+            public static final String type = PRONOM.uri + "FormatRelationshipType";
+            public static final String uri = PRONOM.uri + "formatRelationshipType.";
+            public static final String TypeName = uri + "TypeName";
+            public static final String InverseTypeName = uri + "InverseTypeName";
+            // Instances
+            public static final String PriorityOver = PRONOM.uri + "id/FileFormatRelationshipType/7";
         }
 
         // PuidType sub
         public static class PuidType {
             public static final String type = PRONOM.uri + "PuidType";
             public static final String uri = PRONOM.uri + "puidType.";
-            public static String PuidType = uri + "PuidType";
         }
 
         // InternalSignature sub
@@ -151,6 +234,7 @@ public class RDFUtil {
             public static final String type = PRONOM.uri + "ExternalSignature";
             public static final String uri = PRONOM.uri + "externalSignature.";
             public static final String SignatureType = uri + "SignatureType";
+            public static final String FileFormat = uri + "FileFormat";
         }
 
         // ByteSequence sub
@@ -165,6 +249,21 @@ public class RDFUtil {
             public static final String MaxOffset = uri + "MaxOffset";
             public static final String IndirectOffsetLocation = uri + "IndirectOffsetLocation";
             public static final String IndirectOffsetLength = uri + "IndirectOffsetLength";
+            // Byte Sequence Positions
+            public static final String BSPuri = PRONOM.uri + "id/ByteSequencePosition/";
+            public static final String AbsoluteFromBOF = BSPuri + "1";
+            public static final String AbsoluteFromEOF = BSPuri + "2";
+            public static final String Variable = BSPuri + "3";
+            public static final String IndirectFromBOF = BSPuri + "4";
+            public static final String IndirectFromEOF = BSPuri + "5";
+        }
+
+        // ByteOrder Instances
+        public static class ByteOrder {
+            public static final String uri = PRONOM.uri + "id/ByteOrder/";
+            public static final String type = PRONOM.uri + "ByteOrder";
+            public static final String littleEndian = uri + "littleEndian";
+            public static final String bigEndian = uri + "bigEndian";
         }
 
         // Actor sub
