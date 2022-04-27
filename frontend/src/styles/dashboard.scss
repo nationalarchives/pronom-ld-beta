@@ -7,3 +7,9 @@
 .menu-pronom {
   min-height: auto;
 }
+.collapsed{
+  button i {
+    transform: rotate(180deg);
+  }
+  border-bottom: 3px solid #cacaca;
+}
