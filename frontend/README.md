@@ -201,3 +201,4 @@ The following table maps the applicaiton endpoint to their respective templates 
 | 13. PUID display page             | /{PUID}                   |                       | |
 | 13.1 File Format                  | /{PUID}                   | file-format.html      | Displays information on a file format |
 | 13.2 Software/Vendor/Generic PUID | /{PUID}                   | generic-puid.html     | Displays information on a generic PUID entity |
+

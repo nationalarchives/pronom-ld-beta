@@ -1,12 +1,20 @@
 
 /* Style Menu 
-- Overall page style / #pagestyle
-- Pronom main menu / #pronommainmenu
-- Main / #main
-- Breadcrumbs / #breadcrumbs
-- Buttons / #buttons
-- Tooltip / #tooltip
-- Social media links / #spcialmedia
+- Overall page style    / #pagestyle
+- Pronom main menu      / #pronommainmenu
+- Main                  / #main
+- Breadcrumbs           / #breadcrumbs
+- Buttons               / #buttons
+- Tooltip               / #tooltip
+- Social media links    / #socialmedia
+- Select                / #select
+- Save options          / #saveoptions
+- Checkbox              / #checkbox
+- Table                 / #table
+- List                  / #list
+- Modal                 / #modal
+- Feedback              / #feedback
+- TNA Header and Footer / #tnaheaderandfooter
 */
 
 /* Font Awesome Import */
@@ -85,7 +93,7 @@ p {
 article {
   border-top: 2px solid black;
   padding-top: 10px;
-  margin-top: 35px;
+  margin-top: 30px;
 }
 a {
   text-decoration: none;
@@ -470,6 +478,9 @@ main {
     &.selected {
       .sub-menu-pronom {
         display: block;
+        @media only screen and (max-width: 1200px) {
+          display: none;
+        }
       }
     }
     &:last-child {
@@ -489,6 +500,15 @@ main {
     z-index: 9;
     @media only screen and (max-width: 765px) {
       top: 70px;
+    }
+  }
+}
+.noJS {
+  #pronom-nav {
+    #toggleMenu {
+      @media only screen and (max-width: 1200px) {
+        display: block;
+      }
     }
   }
 }
@@ -549,6 +569,7 @@ main {
           position: inherit;
           box-shadow: none;
           border-bottom: 4px solid black;
+          min-height: fit-content;
       }
     }
   }
@@ -572,6 +593,7 @@ main {
     }
   }
 }
+
 
 /* Pronom main menu - END */
 
@@ -708,6 +730,7 @@ main {
   grid-column: 3/4;
   border: none;
   background: none;
+  color: black;
   @media only screen and (max-width: 980px) {
     grid-column: 2/3;
   }
@@ -715,6 +738,17 @@ main {
     font-size: 40px;
     @media only screen and (max-width: 980px) {
       font-size: 30px;
+    }
+  }
+  &.forNoJS {
+    display: none;
+  }
+}
+.noJS {
+  .close {
+    display: none;
+    &.forNoJS {
+      display: block;
     }
   }
 }
@@ -725,14 +759,14 @@ main {
   z-index: 9;
   border-bottom: 2px solid #00000026;
   .modal-header-inner {
-    max-width: 1650px;
+    max-width: 1625px;
     margin-left: auto;
     margin-right: auto;
     display: grid;
     grid-template-columns: 1fr auto 40px;
     grid-gap: 30px;
     align-items: center;
-    padding: 15px 100px;
+    padding: 15px 20px;
     min-height: 45px;
     align-items: center;
     @media only screen and (max-width: 1600px) {
@@ -1071,6 +1105,9 @@ main {
     &.selected {
       .sub-menu-pronom {
         display: block;
+        @media only screen and (max-width: 1200px) {
+          display: none;
+        }
       }
     }
   }
@@ -1487,6 +1524,7 @@ h1.internal-title {
 }
 // TNA Header and Footer #tnaheaderandfooter START
 // header
+
 header#header {
   background-color: #26262a;
   color: #fff;
@@ -1506,6 +1544,7 @@ header#header {
       padding: 15px 20px;
     }
   }
+
   nav#header-collapse {
     border-top: 2px solid white;
     max-height: calc(100vh - 140px);
@@ -1514,6 +1553,9 @@ header#header {
     color: white;
     padding: 1.6em 2em;
     display: none;
+    &.noJS {
+      display: block;
+    }
     .tna-menu-list{
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1554,6 +1596,7 @@ header#header {
       text-decoration: underline;
     }
   }
+  
   #skip-to-main-content {
     position: absolute;
     top: -30px;
@@ -1641,7 +1684,23 @@ header#header {
       max-width: 220px;
     }
   }
+  &.noJS {
+    position: relative;
+    nav#header-collapse {
+      display: block !important;
+      height: fit-content;
+      overflow: visible;
+      max-height: fit-content;
+    }
+    #pronom-nav #toggleMenu {
+      display: block !important;
+    }
+    .menu-pronom {
+      max-height: auto;
+    }
+  }
 }
+
 // footer
 .footer-inner {
   max-width: 1500px;

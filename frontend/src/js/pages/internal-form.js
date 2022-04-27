@@ -3,12 +3,13 @@ import '@styles/user-form.scss'
 import '@styles/internal-form.scss'
 
 const formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#additionalProperties', '#contributors', '#review']
-const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorBtn', '#reviewBtn']
+const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
 const App = () => {
     // Signal JS is active
-    $('.page-container').removeClass('noJS')
+    $('.modal-container').removeClass('noJS');
     // Initialise form
     let formStep = 0
+    $('.form-part').addClass('hide');
   
     // active class to the button
     $(formMenuButtons[formStep]).addClass( "active" );
@@ -16,20 +17,30 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
 
     $('.next').on('click', () => {
-        $(formParts[formStep]).removeClass('show');
-        $( '.main-nav li' ).removeClass( "active" );
-        formStep++;
-        $(formParts[formStep]).addClass('show');
-        $(formMenuButtons[formStep]).addClass( "active" );
-      });
-      // Whenever .prev is clicked return a step ========= PREV
-      $('.prev').on('click', () => {
-        $(formParts[formStep]).removeClass('show');
-        $( '.main-nav li' ).removeClass( "active" );
-        formStep--;
-        $(formParts[formStep]).addClass('show');
-        $(formMenuButtons[formStep]).addClass( "active" );
-      });
+      $(formParts[formStep]).removeClass('show');
+      $( '.main-nav li' ).removeClass( "active" );
+      formStep++;
+      $(formParts[formStep]).addClass('show');
+      $(formMenuButtons[formStep]).addClass( "active" );
+    });
+    // Whenever .prev is clicked return a step ========= PREV
+    $('.prev').click(function(){ 
+      $(formParts[formStep]).removeClass('show');
+      $( '.main-nav li' ).removeClass( "active" );
+      formStep--;
+      $(formParts[formStep]).addClass('show');
+      $(formMenuButtons[formStep]).addClass( "active" );
+    });
+    // clicking on the side menu buttons
+    $('.segment').click(function(){
+      $( '.main-nav li' ).removeClass( "active" );
+      $('.form-part').removeClass('show');
+      var currentBtn = ('#' + $(this).closest('li').attr('id'));
+      var currentFormPart = currentBtn.replace('Btn', '');
+      formStep = formParts.indexOf(currentFormPart);
+      $( currentBtn ).addClass('active');
+      $(formParts[formStep]).addClass('show');
+    });
       
 }
 

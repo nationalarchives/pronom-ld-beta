@@ -1,3 +1,45 @@
+
+.modal-container {
+  &.noJS {
+    button.next, button.prev, button.nextSkip, button.prevSkip {
+      display: none !important;
+    }
+    .accordion {
+      padding-left: 20px;
+      i {
+        display: none;
+      }
+    }
+    .form-part {
+      border-top: 3px solid black;
+      &.form-row {
+        border: 0;
+      }
+      &#relationships, &#identifiers, &#additionalProperties {
+        border-top: 0;
+        h2 {
+          display: none;
+        }
+      }
+      &#relationships, &#identifiers, &#additionalProperties, &#priority {
+        .form-header-sub {
+          margin-left: 30px;
+        }
+      }
+    }
+    .form-content {
+      grid-template-columns: 1fr;
+      aside {
+        display: none;
+      }
+      main {
+        max-width: 1000px;
+      }
+    }
+  }
+}
+
+
 .from-internal-only {
   display: none;
 }
@@ -244,6 +286,9 @@ aside {
 
 .form-partial-content {
   padding: 20px;
+  &.hide {
+    display: none;
+  }
 }
 
 .nav {
@@ -556,6 +601,13 @@ fieldset {
 }
 
 // Signatures =======================================
+.noJS{
+  .collapse-buttons {
+    button {
+      display: none;
+    }
+  }
+}
 #signatures {
   .checkbox-container {
     margin-top: 0;
@@ -697,15 +749,18 @@ fieldset {
   }
 }
 .form-part {
-  height: 0;
-  width: 0;
-  position: absolute;
-  overflow: hidden;
-
+  
+  &.hide {
+    height: 0;
+    width: 0;
+    position: absolute;
+    overflow: hidden;
+  }
   &.show {
     height: auto;
     width: auto;
     position: inherit;
+    overflow:visible;
   }
 }
 select {
@@ -1021,24 +1076,41 @@ select:focus {
     }
   }
 }
-
-.accordion {
-  background: white;
-  border: none;
-  border-bottom: 3px solid #c1c1c1;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  min-height: 50px;
-
-  h2 {
-    margin: 0;
-    font-size: 1.4em;
+.noJS {
+  .form-section {
+    .accordion {
+      background: transparent;
+      border-bottom: none;
+      h2 {
+        font-size: 1.8em;
+      }
+    }
   }
-
-  i {
-    font-size: 20px;
-    padding: 0 20px
+}
+.form-section {
+  .accordion {
+    background: white;
+    border: none;
+    border-bottom: 3px solid #c1c1c1;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    min-height: 50px;
+  
+    h2 {
+      margin: 0;
+      font-size: 1.4em;
+    }
+  
+    i {
+      font-size: 20px;
+      padding: 0 20px
+    }
+  }
+  &.open {
+    i {
+      transform: rotate(180deg) scaleX(-1);
+    }
   }
 }
 
