@@ -28,3 +28,18 @@
     }
   }
 }
+.form-part {
+  
+  &.hide {
+    height: 0;
+    width: 0;
+    position: absolute;
+    overflow: hidden;
+  }
+  &.show {
+    height: auto;
+    width: auto;
+    position: inherit;
+    overflow:visible;
+  }
+}
