@@ -7,6 +7,7 @@ const tabButtons = ['#home-edit', '#search-edit', '#about-edit', '#faq-edit', '#
 const App = () => {
   // Signal JS is active
   $('.page-container').removeClass('noJS');
+  $('#header').removeClass('noJS');
   // Initialise tabs
   let tabStep = 0
   // active class to the button
