@@ -297,8 +297,8 @@ ul {
     }
     &::before {
       position: absolute;
-      top: -80px;
-      left: -80px;
+      top: -10px;
+      left: 30px;
       background-color: white;
       border-radius: 5px;
       color: black;
@@ -306,16 +306,18 @@ ul {
       padding: 1rem;
       text-transform: none;
       transition: all 0.5s ease;
-      width: 160px;
+      width: 300px;
+      z-index: 9999;
       box-shadow: 3px 3px 8px 3px #00000045;
     }
     &::after {
       position: absolute;
-      top: -12px;
-      left: 9px;
+      top: 5px;
+      left: 20px;
       border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid #2B222A;
+      border-right: 5px solid #2B222A;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
       content: " ";
       font-size: 0;
       line-height: 0;
@@ -329,7 +331,7 @@ ul {
       font-size: 1em;
       opacity: 0;
       pointer-events: none;
-      text-align: center;
+      text-align: left;
     }
     &:focus::before,
     &:focus::after,

@@ -42,7 +42,7 @@ section.form-part#additionalProperties
                 label(for="SelectByteOrder") Select file format byte order
                 span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                   .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
             select(id="SelectByteOrder")
               option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
           .form-row
@@ -51,7 +51,7 @@ section.form-part#additionalProperties
                 label(for="CompressionType") Compression Type
                 span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                   .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
             input(name="CompressionType" id="CompressionType")
         h4.border Stakeholders and specification
         .part
@@ -62,7 +62,7 @@ section.form-part#additionalProperties
                   label(for="Developer") Developer
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               input(name="Developer" id="Developer")
             .from-internal-only
               .add-actor
@@ -72,7 +72,7 @@ section.form-part#additionalProperties
                       label(for="Developer") Developer
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                   input(name="Developer" id="Developer")
                 p or
                 button.black.small
@@ -85,7 +85,7 @@ section.form-part#additionalProperties
                       label(for="Support") Support
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                   input(name="Support" id="Support")
                 p or
                 button.black.small
@@ -96,7 +96,7 @@ section.form-part#additionalProperties
                     label(for="FormatIPR") Format IPR
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="FormatIPR" id="FormatIPR")
               div
                 .tooltip-container
@@ -104,7 +104,7 @@ section.form-part#additionalProperties
                     label(for="FormatIPR") Document
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="FormatIPR" id="FormatIPR")
               div
                 .tooltip-container
@@ -112,5 +112,5 @@ section.form-part#additionalProperties
                     label(for="FormatIPR") Release date
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="FormatIPR" id="FormatIPR")

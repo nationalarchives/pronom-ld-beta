@@ -24,7 +24,7 @@ section.form-part#yourDetails
                     label(for="UserName") Name
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="UserName", id="UserName", th:field="*{submittedBy.name}")
               .form-row
                 .tooltip-container
@@ -32,7 +32,7 @@ section.form-part#yourDetails
                     label(for="Organisation") Organisation
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Organisation" id="Organisation" th:field="*{submittedBy.organisation}")
               .form-row
                 .tooltip-container
@@ -40,7 +40,7 @@ section.form-part#yourDetails
                     label(for="Email") Contact email(required)
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Email" id="Email" th:field="*{submittedBy.email}")
               .form-row
                 .tooltip-container
@@ -48,7 +48,7 @@ section.form-part#yourDetails
                     label(for="Country") Country
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Country" id="Country" th:field="*{submittedBy.country}")
             div
               .form-row
@@ -57,7 +57,7 @@ section.form-part#yourDetails
                     label(for="Comment") Comment
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 textarea(cols="30", rows="10" name="Comment" id="Comment" th:field="*{submittedBy.comment}")
           #recognition
             h3 Recognition (required)
@@ -71,7 +71,7 @@ section.form-part#yourDetails
                       label(for="Documentation") I give permission for my details to be recorded and displayed on PRONOM
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
                   input(type="radio" id="css" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
                   .tooltip-container
@@ -79,4 +79,4 @@ section.form-part#yourDetails
                       label(for="Documentation") Prefer to stay anonymous
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
