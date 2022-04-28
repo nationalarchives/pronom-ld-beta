@@ -332,6 +332,8 @@ ul {
       opacity: 0;
       pointer-events: none;
       text-align: left;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
     }
     &:focus::before,
     &:focus::after,
