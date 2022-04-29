@@ -1162,13 +1162,33 @@ main {
   background: black;
   min-height: 60px;
   align-items: center;
-  >button {
-    border: 2px solid white;
-    color: white;
-    background: black;
+  .dropdown{
     margin-left: auto;
-    i {
-      margin-left: 20px;
+    >button {
+      border: 2px solid white;
+      color: white;
+      background: black;
+      i {
+        margin-left: 20px;
+      }
+    }
+    .dropdown-content {
+      margin-left: 0;
+      min-width: 125px;
+      background: black;
+      color: white;
+      padding: 10px;
+      > button {
+        border: 2px solid white;
+        background: black;
+        color: white;
+        font-size: 1em;
+        width: 100%;
+        &:hover {
+          background: white;
+          color: black;
+        }
+      }
     }
   }
   .page-container {
@@ -1442,6 +1462,9 @@ h1.internal-title {
         button {
           width: 100%;
           margin-bottom: 10px;
+          &.option {
+            margin-bottom: 0;
+          }
         }
       }
       .selector-checkbox {
@@ -1798,3 +1821,61 @@ header#header {
   }
 }
 // TNA Header and Footer END
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  i {
+    margin-left: 10px;
+  }
+  .option {
+    width: 100%;
+    text-align: left;
+    padding: 3px;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    // padding: 12px 16px;
+    z-index: 1;
+    margin-left: -40px;
+  }
+  &:hover {
+    i {
+      transform: rotate(180deg) scaleX(-1);
+    }
+    .dropdown-content {
+      display: block;
+    }
+  }
+  &.audit {
+    .dropdown-content {
+      padding: 10px 8px;
+      margin-left: 0;
+      width: 300px;
+      ul {
+        max-height: 200px;
+        overflow: auto;
+        li {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          grid-gap: 15px;
+          p{
+            margin:0;
+            margin-bottom: 8px;
+            &:nth-child(1){
+              border-right: 2px solid lightgrey;
+              padding-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
