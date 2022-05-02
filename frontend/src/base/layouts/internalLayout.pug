@@ -6,9 +6,12 @@ include ../partials/head.pug
 
 #internal-banner
   img.logo(src="https://www.nationalarchives.gov.uk/wp-content/themes/tna-base/img/tna-horizontal-white-logo.svg", alt="National Archive Logo")
-  button.medium
-    | John Doe
-    i.fa-solid.fa-chevron-down
+  .dropdown
+    button.medium
+      | John Doe
+      i.fa-solid.fa-chevron-down
+    .dropdown-content
+      button Logout 
 .page-container
   //- Pronom main menu - START #pronommainmenu
   include ../partials/internalNavigation.pug

@@ -26,7 +26,7 @@ section.form-part#signatures
                     label(for="Documentation") Select signature type
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 div
                   select(id="sort_by")
                     option(value='0') Signature
@@ -64,7 +64,7 @@ section.form-part#signatures
                         label.from-internal-only(for="SignatureName") Signature name (required)
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
                           .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                     .action-monitoring
                       .review-type
                         i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -83,7 +83,7 @@ section.form-part#signatures
                       label(for="Documentation") Generic Flag
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 h5.border Byte Sequence
                 .part
                   div
@@ -92,7 +92,7 @@ section.form-part#signatures
                         label(for="endianess") Select endianess
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
                           .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                     select(id="endianess")
                       option(value='0') option1
                       option(value='1') option2
@@ -105,7 +105,7 @@ section.form-part#signatures
                           label.from-internal-only(for="SignatureDescription") Description (required)
                           span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.2') tabindex='0')
                             .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                       .action-monitoring
                         .review-type
                           i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -131,7 +131,7 @@ section.form-part#signatures
                             label.from-internal-only(for="BinaryValue") Binary value (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.3') tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         .action-monitoring
                           .review-type
                             i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -151,7 +151,7 @@ section.form-part#signatures
                             label.from-internal-only(for="PositionType") Position type (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.4') tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         .action-monitoring
                           .review-type
                             i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -171,7 +171,7 @@ section.form-part#signatures
                             label.from-internal-only(for="MinOffset") Min offset (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.5') tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         .action-monitoring
                           .review-type
                             i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -191,7 +191,7 @@ section.form-part#signatures
                             label.from-internal-only(for="MaxOffset") Max offset (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.6') tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         .action-monitoring
                           .review-type
                             i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -224,7 +224,7 @@ section.form-part#signatures
                       label.from-internal-only(for="SignatureName") Signature name (required)
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                   input(name="SignatureName" id="SignatureName")
                 //- .form-row.checkbox-container
                   input(name="GenericFlag" id="GenericFlag" type="checkbox")
@@ -233,7 +233,7 @@ section.form-part#signatures
                       label(for="GenericFlag") Generic Flag
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 h5.border Byte Sequence
                 .part
                   fieldset
@@ -245,7 +245,7 @@ section.form-part#signatures
                           label.from-internal-only(for="endianess") Select endianess (required)
                           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                             .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                       select(id="endianess")
                         option(value='0') option1
                         option(value='1') option2
@@ -256,7 +256,7 @@ section.form-part#signatures
                         label.from-internal-only(for="FileFormatDescription") Description (required)
                         span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                           .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                     textarea(cols="30", rows="6" name="FileFormatDescription" id="FileFormatDescription")
                   h5.border Container signature
                   .row-group-inner1
@@ -270,7 +270,7 @@ section.form-part#signatures
                           label.from-internal-only(for="Path") Path (required)
                           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                             .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                       input(name="Path" id="Path")
                     .row-group-inner2
                       .info
@@ -284,7 +284,7 @@ section.form-part#signatures
                             label.from-internal-only(for="BinaryValue") Binary value (required)
                             span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         input(name="BinaryValue" id="BinaryValue")
                       .form-row
                         .tooltip-container
@@ -293,7 +293,7 @@ section.form-part#signatures
                             label.from-internal-only(for="PositionType") Position type (required)
                             span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         input(name="PositionType" id="PositionType")
                       .form-row
                         .tooltip-container
@@ -302,7 +302,7 @@ section.form-part#signatures
                             label.from-internal-only(for="MinOffset") Min offset (required)
                             span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         input(name="MinOffset" id="MinOffset")
                       .form-row
                         .tooltip-container
@@ -311,7 +311,7 @@ section.form-part#signatures
                             label.from-internal-only(for="MaxOffset") Max offset (required)
                             span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                               .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         input(name="MaxOffset" id="MaxOffset")
                     button.black.small
                       | Add byte sequence

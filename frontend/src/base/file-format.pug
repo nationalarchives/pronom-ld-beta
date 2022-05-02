@@ -10,10 +10,31 @@ block modalHeader
       p(th:text="'Last updated: '+${#temporals.format(fileFormat.updated, 'dd/MM/yyyy')}") Last updated: 12/06/2000
 block modalHeaderAdditionals
   div.audit-trail
-    button.bordered-blue.medium
-      i.fa-regular.fa-clock
-      | Audit trail
-      i.fa-solid.fa-angle-down
+    .dropdown.audit
+      button.medium.bordered-blue
+        i.fa-regular.fa-clock
+        | Audit trail
+        i.fa-solid.fa-angle-down
+      .dropdown-content
+        ul
+          li
+            p 12/04/2022
+            p Some texte cones here texte cones here texte cones here texte cones here
+          li
+            p 03/04/2022
+            p Some texte cones here
+          li
+            p 01/04/2022
+            p Some texte cones here
+          li
+            p 12/04/2022
+            p Some texte cones here texte cones here texte cones here texte cones here
+          li
+            p 03/04/2022
+            p Some texte cones here
+          li
+            p 01/04/2022
+            p Some texte cones here
   include ./partials/savingOptions.pug
   div.propose-edition
     button.blue.medium
@@ -48,7 +69,7 @@ block modalBody
               p.label-text#fName Format name
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '1.1.1') tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fName", th:text="${fileFormat.name}") Lorem ipsum dolor sit amet
         //- ROW
@@ -58,7 +79,7 @@ block modalBody
               p.label-text#fVersion Version
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '1.1.2') tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fVersion", th:text="${fileFormat.version ?: ''}") 1.0
         //- ROW
@@ -68,7 +89,7 @@ block modalBody
               p.label-text#fExtension Extension
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fExtension", th:text="${fileFormat.firstExtension ?: ''}") PLACEHOLDER(1.0)
         //- ROW
@@ -78,7 +99,7 @@ block modalBody
               p.label-text#fMediaType Media Type
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fMediaType") NOT IMPLEMENTED
         //- NESTED ROW
@@ -88,7 +109,7 @@ block modalBody
               p.label-text#fMediaType Identifiers
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           //- TABLE =========================================================================
           ul.table
             //- ROW
@@ -98,7 +119,7 @@ block modalBody
                   p.label-text#fPUID PUID
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fPUID", th:text="${fileFormat.formattedPuid}") fmt/11
             //- ROW
@@ -108,7 +129,7 @@ block modalBody
                   p.label-text#fMIME MIME
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fMIME") NOT IMPLEMENTED
             //- ROW
@@ -118,7 +139,7 @@ block modalBody
                   p.label-text#fOther Other
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther") NOT IMPLEMENTED
           //- ROW
@@ -128,7 +149,7 @@ block modalBody
               p.label-text#fClassification Classification
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fClassification", th:text="${fileFormat.classificationsListString}") audio
         //- ROW
@@ -138,7 +159,7 @@ block modalBody
               p.label-text#fDescription Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fDescription", th:text="${fileFormat.description}") audio
         //- ROW
@@ -148,7 +169,7 @@ block modalBody
               p.label-text#fRelatedFileFormats Related file formats
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             a(aria-labeledby="#fRelatedFileFormats" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
         //- ROW
@@ -158,7 +179,7 @@ block modalBody
               p.label-text#fPriorityOver Priority over
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
       h2 References
@@ -171,7 +192,7 @@ block modalBody
               p.label-text Link name/title
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED 1
       //- TABLE =========================================================================
@@ -183,7 +204,7 @@ block modalBody
               p.label-text Link name/title
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED 2.1
         li.row
@@ -192,7 +213,7 @@ block modalBody
               p.label-text Link name/title
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED 2.2
 
@@ -206,7 +227,7 @@ block modalBody
               p.label-text Link name/title
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -216,7 +237,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -226,7 +247,7 @@ block modalBody
               p.label-text Author
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -236,7 +257,7 @@ block modalBody
               p.label-text Identifiers
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
@@ -246,7 +267,7 @@ block modalBody
               p.label-text Publication date
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
@@ -256,7 +277,7 @@ block modalBody
               p.label-text Type
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW 
@@ -266,7 +287,7 @@ block modalBody
               p.label-text Note
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
 
@@ -281,7 +302,7 @@ block modalBody
               p.label-text Name
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="", th:text="${extSig.name}") Lorem ipsum dolor sit amet
         //- ROW
@@ -291,7 +312,7 @@ block modalBody
               p.label-text Type
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="", th:text="${extSig.signatureType}") Lorem ipsum dolor sit amet
 
@@ -305,7 +326,7 @@ block modalBody
               p.label-text Name
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="", th:text="${intSig.name}") Lorem ipsum dolor sit amet
         //- ROW
@@ -315,7 +336,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="", th:text="${intSig.note ?: ''}") Lorem ipsum dolor sit amet
         //- NESTED ROW
@@ -325,7 +346,7 @@ block modalBody
               p.label-text#fMediaType Byte sequence
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           //- TABLE =========================================================================
           ul.table(th:each="byteSeq : ${intSig.byteSequences}")
             //- ROW
@@ -335,7 +356,7 @@ block modalBody
                   p.label-text#fPUID Position type
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fPUID", th:text="${byteSeq.positionName} ?: ''") Absolute from EOF
             //- ROW
@@ -345,7 +366,7 @@ block modalBody
                   p.label-text#fMIME Min Offset
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fMIME", th:text="${byteSeq.offset} ?: ''") Lorem ipsum
             //- ROW
@@ -355,7 +376,7 @@ block modalBody
                   p.label-text#fOther Max offset
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther", th:text="${byteSeq.maxOffset} ?: ''") Lorem ipsum
             //- ROW
@@ -365,7 +386,7 @@ block modalBody
                   p.label-text#fOther Byte order
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther", , th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
             //- ROW
@@ -375,7 +396,7 @@ block modalBody
                   p.label-text#fOther Value
                   span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                     .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther", th:text="${byteSeq.sequence}") Lorem ipsum
       h2 More information
@@ -388,7 +409,7 @@ block modalBody
               p.label-text Byte order
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -398,7 +419,7 @@ block modalBody
               p.label-text Orientation
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -408,7 +429,7 @@ block modalBody
               p.label-text Family
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -418,7 +439,7 @@ block modalBody
               p.label-text Released
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -428,7 +449,7 @@ block modalBody
               p.label-text Developed by
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -438,7 +459,7 @@ block modalBody
               p.label-text Supported by
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") Lorem ipsum dolor sit amet
         //- ROW
@@ -448,7 +469,7 @@ block modalBody
               p.label-text Supported until
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -458,7 +479,7 @@ block modalBody
               p.label-text Technical enviroment
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       h2 Compression
@@ -471,7 +492,7 @@ block modalBody
               p.label-text Name
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -481,7 +502,7 @@ block modalBody
               p.label-text Other names
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -491,7 +512,7 @@ block modalBody
               p.label-text Identifier(s)
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -501,7 +522,7 @@ block modalBody
               p.label-text Family
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -511,7 +532,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -521,7 +542,7 @@ block modalBody
               p.label-text Lossiness
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -531,7 +552,7 @@ block modalBody
               p.label-text Released
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -541,7 +562,7 @@ block modalBody
               p.label-text Withdrawn
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -551,7 +572,7 @@ block modalBody
               p.label-text Developed by
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -561,7 +582,7 @@ block modalBody
               p.label-text Supported by
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -571,7 +592,7 @@ block modalBody
               p.label-text Documentation
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -581,7 +602,7 @@ block modalBody
               p.label-text Rights
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -591,7 +612,7 @@ block modalBody
               p.label-text Note
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       h2 Character encoding
@@ -605,7 +626,7 @@ block modalBody
               p.label-text Compression Type
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -615,7 +636,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -627,7 +648,7 @@ block modalBody
               p.label-text Compression Level
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -637,7 +658,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -649,7 +670,7 @@ block modalBody
               p.label-text Image Width
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -659,7 +680,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -671,7 +692,7 @@ block modalBody
               p.label-text Image Height
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -681,7 +702,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -693,7 +714,7 @@ block modalBody
               p.label-text Color Space
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -703,7 +724,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -715,7 +736,7 @@ block modalBody
               p.label-text Sampling Frequency Unit
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -725,7 +746,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -737,7 +758,7 @@ block modalBody
               p.label-text X Sampling Frequency
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -747,7 +768,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -759,7 +780,7 @@ block modalBody
               p.label-text Bits Per Sample
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -769,7 +790,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -781,7 +802,7 @@ block modalBody
               p.label-text Sample Per Pixel
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -791,7 +812,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -803,7 +824,7 @@ block modalBody
               p.label-text Byte Order
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -813,7 +834,7 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
       //- TABLE =========================================================================
@@ -825,7 +846,7 @@ block modalBody
               p.label-text Comments
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
@@ -835,6 +856,6 @@ block modalBody
               p.label-text Description
               span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED

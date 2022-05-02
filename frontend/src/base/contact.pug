@@ -5,7 +5,7 @@ block vars
   - var breadcrumbs = {'Home':"/", "Contact": "/contact"}
 
 block pageTitle
-  h1.title(th:utext="${@templateUtils.md('contact_accessibility_title')}") Contact
+  h1.title.hidden-title(th:utext="${@templateUtils.md('contact_accessibility_title')}") Contact
 
 block content
   .unique-page-content#contact
