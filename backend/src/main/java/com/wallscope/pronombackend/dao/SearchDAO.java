@@ -1,7 +1,6 @@
 package com.wallscope.pronombackend.dao;
 
 import com.wallscope.pronombackend.model.SearchResult;
-import com.wallscope.pronombackend.model.SearchResultDeserializer;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.rdf.model.Model;
@@ -70,7 +69,7 @@ public class SearchDAO {
         params.put("offset", makeLiteral(offset));
         Model m = TriplestoreUtil.constructQuery(preprocessQuery(SEARCH_QUERY, filters, sort), params);
         ModelUtil mu = new ModelUtil(m);
-        return mu.buildAllFromModel(new SearchResultDeserializer());
+        return mu.buildAllFromModel(new SearchResult.Deserializer());
     }
 
     public Integer count(String q, Integer limit, Integer offset, Filters filters) {
