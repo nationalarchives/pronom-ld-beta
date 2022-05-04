@@ -1,7 +1,6 @@
 package com.wallscope.pronombackend.dao;
 
 import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FileFormatDeserializer;
 import com.wallscope.pronombackend.model.PUID;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
@@ -78,7 +77,7 @@ public class FileFormatDAO {
 
     public FileFormat getFileFormatByPuid(String puid, String puidType) {
         logger.debug("fetching file format by PUID: " + puidType + "/" + puid);
-        FileFormatDeserializer deserializer = new FileFormatDeserializer();
+        FileFormat.Deserializer deserializer = new FileFormat.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("puid", makeLiteral(puid, XSDDatatype.XSDinteger));
         params.put("puidTypeName", makeLiteral(puidType));
@@ -105,7 +104,7 @@ public class FileFormatDAO {
         Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY);
         ModelUtil mu = new ModelUtil(m);
         logger.debug("building file format objects");
-        List<FileFormat> fs = mu.buildAllFromModel(new FileFormatDeserializer());
+        List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
         logger.debug("file formats built");
         return fs;
     }
