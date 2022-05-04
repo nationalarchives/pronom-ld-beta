@@ -8,7 +8,7 @@ const App = () => {
     $('.page-container').removeClass('noJS');
     $('#header').removeClass('noJS');
 
-    $('.collapse-button').click(function(){ 
+    $('.collapse-button').on('click', function() {
       if($(this).closest('.collapse-container').hasClass('collapsed')){
         $(this).closest('.collapse-container').removeClass('collapsed');
         $('.collapse-container .collapse-content').css('display','block');

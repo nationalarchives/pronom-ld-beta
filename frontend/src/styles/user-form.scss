@@ -249,7 +249,8 @@ aside {
   align-items: center;
   grid-template-columns: 1fr auto;
   margin-bottom: 10px;
-
+  border-bottom: 3px solid white;
+  padding-bottom: 10px;
   h2 {
     font-weight: normal;
   }
@@ -260,7 +261,6 @@ aside {
 }
 
 .form-header-sub {
-  border-top: 3px solid white;
   display: flex;
   align-items: center;
   padding-right: 20px;
@@ -281,6 +281,7 @@ aside {
     border-top: 3px solid white;
     margin: 0;
     margin-bottom: 20px;
+    padding-top: 20px;
   }
 }
 
@@ -465,7 +466,7 @@ textarea {
   border: 2px solid #D2D2D2;
   border-left: 3px solid black;
   padding: 10px 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   &.inline {
     display: grid;
     grid-gap: 20px;
@@ -549,7 +550,7 @@ fieldset {
 
 .checkbox-container {
   display: flex;
-  margin-top: 20px;
+  margin-top: 30px;
   align-items: center;
   height: fit-content;
 
@@ -599,8 +600,48 @@ fieldset {
     }
   }
 }
+.references .row-group{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  .additional-fields {
+    grid-column: 3/4;
+  }
+  .button-container {
+    grid-column: 1/4;
+  }
+}
+.references {
+  .reference-group {
+    &:nth-child(1) {
+      .delete-reference {
+        display: none;
+      }
+    }
+  }
+}
 
 // Signatures =======================================
+.collapse-content-container {
+  margin-bottom: 15px !important;
+  &.collapse {
+    margin-bottom: 0 !important;
+    .collapse-content {
+      display: none;
+    }
+    .accordion i {
+      transform: rotate(180deg) scaleX(-1);
+    }
+    .top {
+      border-bottom: 0 !important;
+    }
+  }
+}
+.container-signature, .signature {
+  margin-bottom: 0;
+}
+.byte-sequence {
+  margin-top: 15px;
+}
 .noJS{
   .collapse-buttons {
     button {
@@ -615,7 +656,10 @@ fieldset {
 
   .info {
     display: flex;
-
+    p {
+      font-size: 1.1em;
+      text-align: left;
+    }
     @media only screen and (max-width: 510px) {
       display: block;
       margin-bottom: 10px;
@@ -705,7 +749,7 @@ fieldset {
       }
 
       &.bordered-red {
-        max-width: 200px;
+        max-width: 270px;
         margin-right: 80px;
         margin-left: auto;
       }
@@ -715,7 +759,7 @@ fieldset {
         border: none;
         transition: all 0.2s;
         min-height: 55px;
-
+        padding: 0 10px;
         &:hover {
           background: #dbdbdb;
         }
@@ -787,6 +831,18 @@ select:focus {
 }
 
 // Priority =======================================
+.priority-list {
+  .priority-group {
+    &:nth-child(1){
+      .delete-priority-over {
+        display: none;
+      }
+      .input-group input {
+        max-width: 630px;
+      }
+    }
+  }
+}
 #priority-inner {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -818,6 +874,9 @@ select:focus {
       margin-bottom: 0;
     }
   }
+  .button-container {
+    grid-column: 1/3;
+  }
 }
 
 .button-container {
@@ -830,8 +889,11 @@ select:focus {
 
 // Identifiers =======================================
 #identifiers {
+  .add-identifier {
+    margin-bottom: 10px;
+  }
   #identifiers-list {
-    .row-group {
+    .identifier {
       display: grid;
       grid-template-columns: auto 1fr 200px;
       grid-gap: 20px;
@@ -851,11 +913,16 @@ select:focus {
       .button-container {
         margin-bottom: 10px;
       }
+      &:nth-child(1){
+        .delete-identifier {
+          display: none;
+        }
+      }
     }
   }
 
   #aliases-list {
-    .row-group {
+    .alias {
       display: grid;
       grid-template-columns: 1fr 200px 200px;
       grid-gap: 20px;
@@ -875,6 +942,11 @@ select:focus {
       .button-container {
         margin-bottom: 10px;
       }
+      &:nth-child(1){
+        .delete-alias {
+          display: none;
+        }
+      }
     }
   }
 }
@@ -890,7 +962,7 @@ select:focus {
 // Relationship =======================================
 #relationships {
   #relationships-list {
-    .row-group {
+    .relationship {
       display: grid;
       grid-template-columns: auto 1fr 200px;
       grid-gap: 20px;
@@ -910,9 +982,19 @@ select:focus {
       .button-container {
         margin-bottom: 10px;
       }
+      &:nth-child(1){
+        .delete-relationship {
+          display: none;
+        }
+      }
     }
   }
 }
+// Signatures ================================
+.holder {
+  display: none;
+}
+
 
 // Your details =======================================
 #yourDetails {

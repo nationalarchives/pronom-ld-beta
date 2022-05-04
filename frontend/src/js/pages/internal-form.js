@@ -24,7 +24,7 @@ const App = () => {
       $(formMenuButtons[formStep]).addClass( "active" );
     });
     // Whenever .prev is clicked return a step ========= PREV
-    $('.prev').click(function(){ 
+    $('.prev').on('click', function() {
       $(formParts[formStep]).removeClass('show');
       $( '.main-nav li' ).removeClass( "active" );
       formStep--;
@@ -32,7 +32,7 @@ const App = () => {
       $(formMenuButtons[formStep]).addClass( "active" );
     });
     // clicking on the side menu buttons
-    $('.segment').click(function(){
+    $('.segment').on('click', function() {
       $( '.main-nav li' ).removeClass( "active" );
       $('.form-part').removeClass('show');
       var currentBtn = ('#' + $(this).closest('li').attr('id'));
