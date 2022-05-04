@@ -1277,6 +1277,7 @@ h1.internal-title {
   display: flex;
   align-items: flex-end;
   margin-left: 5px;
+  margin-bottom: 30px;
   p {
     margin:0;
     padding-left: 5px;
@@ -1308,6 +1309,7 @@ h1.internal-title {
     margin-left: 5px;
     input {
       height: 30px;
+      min-width: 250px;
     }
     >div {
       display: flex;
@@ -1403,7 +1405,7 @@ h1.internal-title {
       grid-template-columns: 40px 110px 1fr 100px 80px 200px 110px 1fr;
       button {
         font-weight: bold;
-        font-size: 1em;
+        font-size: 0.9em;
         border: 2px solid lightgray;
         margin: 2.5px;
         background: white;
@@ -1426,7 +1428,7 @@ h1.internal-title {
     p {
       margin: 0;
       font-weight: bold;
-      font-size: 1em;
+      font-size: 0.9em;
       text-align: left;
       margin-left: 5px;
     }
@@ -1461,7 +1463,7 @@ h1.internal-title {
         justify-content: flex-start;
         button {
           width: 100%;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
           &.option {
             margin-bottom: 0;
           }
@@ -1540,14 +1542,20 @@ h1.internal-title {
       display: flex;
       align-items: center;
       justify-content: center;
-      button {
-        margin-left: 5px;
-        &:last-child {
-          margin-right: 5px;
-        }
-      }
     }
   }
+  .maintain-buttons {
+    button {
+      margin-left: 5px;
+    }
+  }
+  &.card {
+    .maintain-buttons {
+      button {
+        margin-left: 0;
+      }
+    } 
+  } 
 }
 // TNA Header and Footer #tnaheaderandfooter START
 // header
@@ -1823,7 +1831,7 @@ header#header {
 // TNA Header and Footer END
 
 .dropdown {
-  position: relative;
+  // position: relative;
   display: inline-block;
   i {
     margin-left: 10px;
@@ -1841,7 +1849,8 @@ header#header {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     // padding: 12px 16px;
     z-index: 1;
-    margin-left: -40px;
+    max-width: 300px;
+    margin-left: -182px;
   }
   &:hover {
     i {
