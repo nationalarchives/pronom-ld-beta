@@ -36,8 +36,8 @@ section.form-part#relationships
   .form-partial-content
     fieldset
       legend.sr-only Provide relationships and format families
-      #relationships-list
-        .row-group
+      #relationships-list.row-group
+        .relationship
           .form-row
             .tooltip-container
               .label
@@ -57,10 +57,10 @@ section.form-part#relationships
                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
             input(name="Identifier" id="Identifier")
           .button-container
-            button.bordered-red.small
-              | Delete identifier
+            button.bordered-red.small.delete-relationship
+              | Delete relationship
       .button-container
-        button.black.small.push-right
+        button.black.small.push-right.add-relationship
           | Add relationship
       .form-row
         .tooltip-container

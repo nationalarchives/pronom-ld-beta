@@ -17,7 +17,7 @@ section.form-part#core
     if(formAction === 'edit')
       .part(th:if="${edit}")
         include ./searchPUID.pug  
-    h4.border Main
+    h4 Main
     .part
       fieldset
         //- TODO - read INFO : 
@@ -110,8 +110,8 @@ section.form-part#core
 
     h4.border References
     .part
-      fieldset
-        .row-group.inline
+      fieldset.references
+        .row-group.inline.reference-group
           .form-row#reference-name
             p.inputType Edited content
             .tooltipPlusAction
@@ -262,7 +262,7 @@ section.form-part#core
                 button Accept current
                 input(name="PublicationNote" id="PublicationNote")
           .button-container
-            button.bordered-red.small.push-right
+            button.bordered-red.small.push-right.delete-reference
               | Delete reference
       .button-container
         button.black.medium.push-right#add-reference

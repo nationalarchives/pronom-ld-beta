@@ -18,7 +18,8 @@ const App = () => {
     if ($(window).width() < 1200) {
       $('.form-section .form-part').addClass('show');
       $(".form-partial-content").addClass('hide');
-      $(".accordion").click(function(){ 
+      $('.accordion').on('click', function(evt) {
+        evt.preventDefault();
         if($(this).closest('.form-section').hasClass( "open" )){
           $('.form-section').removeClass('open');
           $(".form-partial-content").addClass('hide');
@@ -170,6 +171,120 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
   });
   
+
+  // cloning form fields
+  
+
+
+  // priority
+  $('.add-priority-over').on('click', function(evt) {
+    console.log('clicked')
+    evt.preventDefault();
+    $('.priority-group:last').clone(true).appendTo('.priority-list')
+  });
+  $('.delete-priority-over').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".priority-group").remove();
+  });
+
+
+
+  // reference
+  $('#add-reference').on('click', function(evt) {
+    evt.preventDefault();
+    $('.reference-group:last').clone(true).appendTo('.references');
+  });
+  $('.delete-reference').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".reference-group").remove();
+  });
+
+
+
+  // signature
+  $('#add-signature').on('click', function(evt) {
+    evt.preventDefault();
+    if($('#select-signature-type').val() == 'signature'){
+      $('.holder .signature:last').clone(true).appendTo('#signature-container');
+    } else {
+      $('.container-signature:last').clone(true).appendTo('#signature-container');
+    }
+  });
+  $('.delete-signature').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".signature").remove();
+  });
+  $('.delete-container-signature').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".container-signature").remove();
+  });
+  // byte sequence
+  $('.add-byte-sequence').on('click', function(evt) {
+    evt.preventDefault();
+    var $container =$(this).closest('.byte-sequence-list').find('.list');
+    $('.holder .byte-sequence:last').clone(true).appendTo($container);
+  });
+  $('.delete-byte-sequence').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".byte-sequence").remove();
+  });
+  // path
+  $('.add-path').on('click', function(evt) {
+    evt.preventDefault();
+    var $container =$(this).closest('.paths-list-container').find('.paths-list');
+    $('.holder .path:last').clone(true).appendTo($container);
+  });
+  $('.delete-path').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".path").remove();
+  });
+  // collapse-all
+  $('.collapse-all-signatures').on('click', function(evt) {
+    evt.preventDefault();
+    $( '.collapse-content-container' ).addClass( "collapse" );
+  });
+  // open-all
+  $('.open-all-signatures').on('click', function(evt) {
+    evt.preventDefault();
+    $( '.collapse-content-container' ).removeClass( "collapse" );
+  });
+
+
+
+  // identifier
+  $('.add-identifier').on('click', function(evt) {
+    evt.preventDefault();
+    $('.identifier:last').clone(true).appendTo('#identifiers-list');
+  });
+  $('.delete-identifier').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".identifier").remove();
+  });
+
+
+
+  // aliases
+  $('.add-alias').on('click', function(evt) {
+    evt.preventDefault();
+    $('.alias:last').clone(true).appendTo('#aliases-list');
+  });
+  $('.delete-alias').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".alias").remove();
+  });
+
+
+
+  // relationships
+  $('.add-relationship').on('click', function(evt) {
+    evt.preventDefault();
+    $('.relationship:last').clone(true).appendTo('#relationships-list');
+  });
+  $('.delete-relationship').on('click', function(evt) {
+    evt.preventDefault();
+    $(this).closest(".relationship").remove();
+  });
+
 }
 
 App()

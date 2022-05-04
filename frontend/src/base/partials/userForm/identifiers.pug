@@ -37,8 +37,8 @@ section.form-part#identifiers
     .part
       fieldset
         legend.sr-only Provide identifiers and aliases
-        #identifiers-list
-          .row-group
+        #identifiers-list.row-group
+          .identifier
             .form-row#identifier-type
               .tooltip-container
                 .label
@@ -58,16 +58,16 @@ section.form-part#identifiers
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               input(name="Identifier" id="Identifier")
             .button-container
-              button.bordered-red.small
+              button.bordered-red.small.delete-identifier
                 | Delete identifier
         .button-container
-          button.black.small.push-right
+          button.black.small.push-right.add-identifier
             | Add identifier
         h4.border
           | Aliases
         .part
-          #aliases-list
-            .row-group
+          #aliases-list.row-group
+            .alias
               .form-row
                 .tooltip-container
                   .label
@@ -85,8 +85,8 @@ section.form-part#identifiers
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="AliasVersion" id="AliasVersion")
               .button-container
-                button.bordered-red.small
+                button.bordered-red.small.delete-alias
                   | Delete identifier
           .button-container
-            button.black.small.push-right
+            button.black.small.push-right.add-alias
               | Add alias
