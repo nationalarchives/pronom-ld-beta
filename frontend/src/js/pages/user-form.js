@@ -248,7 +248,16 @@ const App = () => {
     evt.preventDefault();
     $( '.collapse-content-container' ).removeClass( "collapse" );
   });
-
+  // open selected
+  $('.accordion').on('click', function(evt) {
+    evt.preventDefault();
+    // $( '.collapse-content-container' ).removeClass( "collapse" );
+    if( $(this).closest(".collapse-content-container").hasClass("collapse")) {
+      $(this).closest(".collapse-content-container").removeClass("collapse")
+    }else{
+      $(this).closest(".collapse-content-container").addClass("collapse")
+    }
+  });
 
 
   // identifier
