@@ -89,12 +89,19 @@ section.form-part#core
         .form-row#format-type
           p.inputType Edited content
           .tooltipPlusAction
-            .tooltip-container
-              .label
-                label(for="FormatType") Format type
-                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
-                  .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+            fieldset
+              legend.sr-only Select format type
+              div
+                .tooltip-container
+                  .label
+                    label.from-external-only(for="formatType") Format type
+                    label.from-internal-only(for="formatType") Format type (required)
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                select(id="formatType")
+                  option(value='0') option1
+                  option(value='1') option2
             .action-monitoring
               .review-type
                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -102,11 +109,8 @@ section.form-part#core
               .review-type
                 i.fa-solid.fa-square-check
                 p Reviewed
-          .input-group
-            button Accept current
-            input(name="FormatType" id="FormatType")
-
-        include ./priority-over.pug
+        .from-internal-only
+          include ./priority-over.pug
 
     h4.border References
     .part
