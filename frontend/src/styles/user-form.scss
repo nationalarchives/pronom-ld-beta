@@ -286,6 +286,7 @@ aside {
 }
 
 .form-partial-content {
+  max-width: 100v;
   padding: 20px;
   &.hide {
     display: none;
@@ -504,11 +505,9 @@ textarea {
     @media only screen and (max-width: 1090px) {
       grid-template-columns: 1fr;
       grid-gap: 10px;
-
       .additional-fields {
         grid-column: 1/2;
       }
-
       .button-container {
         display: flex;
         grid-column: 1/2;
@@ -554,9 +553,6 @@ fieldset {
   align-items: center;
   height: fit-content;
 
-  @media only screen and (max-width: 1090px) {
-    margin-top: 0;
-  }
 
   input {
     width: 30px;
@@ -603,8 +599,19 @@ fieldset {
 .references .row-group{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    > div {
+      grid-column: 1/2 !important;
+    }
+  }
   .additional-fields {
     grid-column: 3/4;
+    @media only screen and (max-width: 700px) {
+      border-top: 2px solid white;
+      padding-top: 10px;
+    }
   }
   .button-container {
     grid-column: 1/4;
@@ -733,7 +740,10 @@ fieldset {
       grid-row: 1/2;
       justify-content: center;
       align-items: center;
-
+      @media only screen and (max-width: 650px) {
+        grid-column:auto;
+        grid-row: auto;
+      }
       &.bordered-red {
         margin: 5px;
       }
@@ -752,6 +762,9 @@ fieldset {
         max-width: 270px;
         margin-right: 80px;
         margin-left: auto;
+        @media only screen and (max-width: 650px) {
+          margin-left: 5px;
+        }
       }
 
       &.accordion {
@@ -861,8 +874,14 @@ select:focus {
     align-items: flex-end;
     max-width: 800px;
 
-    @media only screen and (max-width: 570px) {
+    @media only screen and (max-width: 750px) {
       grid-template-columns: 1fr;
+      border-top: 2px solid white;
+      padding-top: 10px;
+      &:nth-child(1){
+        border-top: 0;
+        padding-top: 0;
+      }
 
       button {
         max-width: 200px;
@@ -876,6 +895,9 @@ select:focus {
   }
   .button-container {
     grid-column: 1/3;
+    @media only screen and (max-width: 750px) {
+      grid-column: 1/2;
+    }
   }
 }
 
@@ -903,6 +925,12 @@ select:focus {
       @media only screen and (max-width: 750px) {
         grid-template-columns: 1fr;
         grid-gap: 0;
+        border-top: 2px solid white;
+        padding-top: 10px;
+        &:nth-child(1){
+          border-top: 0;
+          padding-top: 0;
+        }
 
         .button-container {
           grid-row: 1/2;
@@ -932,6 +960,12 @@ select:focus {
       @media only screen and (max-width: 750px) {
         grid-template-columns: 1fr;
         grid-gap: 0;
+        border-top: 2px solid white;
+        padding-top: 10px;
+        &:nth-child(1){
+          border-top: 0;
+          padding-top: 0;
+        }
 
         .button-container {
           grid-row: 1/2;
@@ -972,6 +1006,12 @@ select:focus {
       @media only screen and (max-width: 750px) {
         grid-template-columns: 1fr;
         grid-gap: 0;
+        border-top: 2px solid white;
+        padding-top: 10px;
+        &:nth-child(1){
+          border-top: 0;
+          padding-top: 0;
+        }
 
         .button-container {
           grid-row: 1/2;

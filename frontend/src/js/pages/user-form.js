@@ -51,7 +51,8 @@ const App = () => {
   $('#header').removeClass('noJS');
   
   // Whenever .next is clicked add a step ========= NEXT
-  $('.next').on('click', () => {
+  $('.next').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
     $( '.main-nav li' ).removeClass( "active" );
     formStep++;
@@ -64,7 +65,8 @@ const App = () => {
     }
   });
   // Whenever .prev is clicked return a step ========= PREV
-  $('.prev').on('click', () => {
+  $('.prev').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
     $( '.main-nav li' ).removeClass( "active" );
     formStep--;
@@ -76,7 +78,8 @@ const App = () => {
     }
   });
   // Whenever skipping 3 steps forwards (only aplied to More intormation in external interface) ========= NEXT + 3
-  $('.nextSkip').on('click', () => {
+  $('.nextSkip').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
     $( '.main-nav li' ).removeClass( "active" );
     if(1 < formStep && formStep < 6){
@@ -93,7 +96,8 @@ const App = () => {
     
   });
   // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
-  $('.prevSkip').on('click', () => {
+  $('.prevSkip').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
     $( '.main-nav li' ).removeClass( "active" );
     if(1 < formStep && formStep < 6){

@@ -5,7 +5,8 @@ section.search-input-container
       div
         input(type="search", id="pronom_search", name="q", th:value="${q ?: ''}", placeholder="Search for file format, software or vendor...")
         button(type="submit")
-          i.fa-solid.fa-magnifying-glass(aria-hidden="true") Search
+          i.fa-solid.fa-magnifying-glass(aria-hidden="true")
+          | Search
   .filters(aria-label="Filters")
     h4 Filters
     fieldset

@@ -252,6 +252,9 @@ button, a{
     display: flex;
     align-items: center;
     justify-content: center;
+    @media only screen and (max-width: 700px) {
+      font-size: 1.2em;
+    }
   }
 }
 // Buttons - END
@@ -375,9 +378,10 @@ input {
   }
 }
 textarea {
-  padding: 0 10px;
+  padding: 5px 10px;
   border: 2.5px solid black;
   font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Main START #main =======================================*/
@@ -955,11 +959,11 @@ main {
   display: none;
   button {
     position: fixed;
-    top: calc( 100vh - 90px);
-    left: calc(100vw - 90px);
+    top: calc( 100vh - 80px);
+    left: calc(100vw - 80px);
     border-radius: 50px;
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     border: 2px solid #16568f;
     background: white;
     i {
@@ -987,6 +991,10 @@ main {
     grid-template-columns: 1fr auto;
     grid-gap: 20px;
     padding: 20px;
+    @media only screen and (max-width: 650px) {
+      grid-gap: 10px;
+      padding: 10px;
+    }
     button {
       height: fit-content;
     }
@@ -994,6 +1002,9 @@ main {
       align-items: flex-start;
       display: flex;
       padding: 20px;
+      @media only screen and (max-width: 650px) {
+        display: block;
+      }
       h3, p {
         margin:0;
       }
