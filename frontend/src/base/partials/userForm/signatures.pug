@@ -54,7 +54,7 @@ section.form-part#signatures
                   .label
                     label.from-external-only(for="Path") Path
                     label.from-internal-only(for="Path") Path (required)
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Path" id="Path")
@@ -164,26 +164,15 @@ section.form-part#signatures
                   button.bordered-red.small.delete-signature
                     | Delete signature
                 .collapse-content
-                  .form-part.form-row#signature-name
-                    p.inputType Edited content
-                    .tooltipPlusAction
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="SignatureName") Signature name
-                          label.from-internal-only(for="SignatureName") Signature name (required)
-                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      .action-monitoring
-                        .review-type
-                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                          p Require reviewing
-                        .review-type
-                          i.fa-solid.fa-square-check
-                          p Reviewed
-                    .input-group
-                      button Accept current
-                      input(name="FileFormatName" id="FileFormatName")
+                  .form-row
+                    .tooltip-container
+                      .label
+                        label.from-external-only(for="SignatureName") Signature name
+                        label.from-internal-only(for="SignatureName") Signature name (required)
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    input(name="SignatureName" id="SignatureName")
                   //- TODO confirm if GF is no longer required
                   //- .form-row.checkbox-container
                     input(name="Documentation" id="Documentation" type="checkbox")
@@ -198,7 +187,8 @@ section.form-part#signatures
                     .form-row
                       .tooltip-container
                         .label
-                          label(for="endianess") Select endianess
+                          label.from-external-only(for="endianess") Select endianess
+                          label.from-internal-only(for="endianess") Select endianess (required)
                           span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
                             .i-wrapper
                               i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -249,7 +239,7 @@ section.form-part#signatures
                       .label
                         label.from-external-only(for="SignatureName") Signature name
                         label.from-internal-only(for="SignatureName") Signature name (required)
-                        span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                     input(name="SignatureName" id="SignatureName")
@@ -270,7 +260,7 @@ section.form-part#signatures
                           .label
                             label.from-external-only(for="endianess") Select endianess
                             label.from-internal-only(for="endianess") Select endianess (required)
-                            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
                               .i-wrapper
                                 i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                         select(id="endianess")
@@ -279,11 +269,11 @@ section.form-part#signatures
                     .form-row
                       .tooltip-container
                         .label
-                          label.from-external-only(for="FileFormatDescription") Description
-                          label.from-internal-only(for="FileFormatDescription") Description (required)
-                          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                            label.from-external-only(for="SignatureDescription") Description
+                            label.from-internal-only(for="SignatureDescription") Description (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.2') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                       textarea(cols="30", rows="6" name="FileFormatDescription" id="FileFormatDescription")
                     h5.border Container signature
                     .paths-list-container
