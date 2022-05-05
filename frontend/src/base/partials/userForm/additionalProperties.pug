@@ -64,6 +64,7 @@ section.form-part#additionalProperties
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               input(name="Developer" id="Developer")
+          .form-row
             .from-internal-only
               .add-actor
                 div
@@ -77,9 +78,9 @@ section.form-part#additionalProperties
                 p or
                 button.black.small
                   | Add institutional actor
-            .from-internal-only
+          .from-internal-only
               .add-actor
-                div
+                .form-row
                   .tooltip-container
                     .label
                       label(for="Support") Support
@@ -90,7 +91,7 @@ section.form-part#additionalProperties
                 p or
                 button.black.small
                   | Add institutional actor
-              div
+              .form-row
                 .tooltip-container
                   .label
                     label(for="FormatIPR") Format IPR
@@ -98,7 +99,7 @@ section.form-part#additionalProperties
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="FormatIPR" id="FormatIPR")
-              div
+              .form-row
                 .tooltip-container
                   .label
                     label(for="Document") Document
@@ -106,14 +107,14 @@ section.form-part#additionalProperties
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Document" id="Document")
-              div
+              .form-row
                 .tooltip-container
                   .label
                     label(for="ReleaseDate") Release date
                     span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="ReleaseDate" id="ReleaseDate" type="date")
+                input.date(name="ReleaseDate" id="ReleaseDate" type="date")
         .from-internal-only
           h4.border Technical enviroment 
           .part

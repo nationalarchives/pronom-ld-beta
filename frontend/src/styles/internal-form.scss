@@ -43,3 +43,13 @@
     overflow:visible;
   }
 }
+
+.contributors-list {
+  .action-container {
+    &:nth-child(1) {
+      .delete-record {
+        display: none;
+      }
+    }
+  }
+}

@@ -373,8 +373,22 @@ input {
   height: 35px;
   border: 2.5px solid black;
   font-size: 1em;
+  font-family: 'Open Sans';
   &.small {
     height: 20px;
+  }
+  &.short {
+    max-width: 100px;
+    height: 30px;
+  }
+  &.medium-short {
+    max-width: 300px;
+    height: 30px;
+  }
+  &.date{
+    max-width: 120px;
+    height: 30px;
+    font-family: 'Open Sans';
   }
 }
 textarea {
@@ -728,6 +742,7 @@ main {
     width: auto;
     color: black;
     font-weight: normal;
+    margin:0;
     span {
       font-weight: 600;
       margin-right: 10px;

@@ -348,7 +348,6 @@ textarea {
       margin-bottom: 3px;
       margin-top: 3px;
       background: white;
-      margin-left: auto;
       width: fit-content;
       display: none;
     }
@@ -380,6 +379,8 @@ textarea {
       display: flex;
     }
     .input-group {
+      border-bottom: 2px solid lightgrey;
+      padding-bottom: 3px;
       button {
         display: block;
       }
@@ -1240,3 +1241,4 @@ select:focus {
 .additionals {
   display: none;
 }
+
