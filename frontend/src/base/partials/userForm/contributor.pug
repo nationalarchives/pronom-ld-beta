@@ -16,60 +16,62 @@ section.form-part#contributors
   .form-partial-content
     #manage-contributors-buttons
       button.black.small
-        | Add record
-      button.black.small
         | Add contributor
-    .row-group.action-container
-      div
-        .tooltip-container
-          .label
-            label(for="ActionDate") Date
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="ActionDate" id="ActionDate")
-      div
-        .tooltip-container
-          .label
-            label(for="Contributor") Contributor
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="Contributor" id="Contributor")
-      div
-        .tooltip-container
-          .label
-            label(for="Action") Related file format
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="Action" id="Action")
-      button.bordered-red.small
-        | Delete record
-    .row-group.action-container
-      div
-        .tooltip-container
-          .label
-            label(for="ActionDate") Date
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="ActionDate" id="ActionDate")
-      div
-        .tooltip-container
-          .label
-            label(for="Contributor") Contributor
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="Contributor" id="Contributor")
-      div
-        .tooltip-container
-          .label
-            label(for="Action") Related file format
-            span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-              .i-wrapper
-                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-        input(name="Action" id="Action")
-      button.bordered-red.small
-        | Delete record
+    .contributors-list
+      .row-group.action-container
+        .form-row
+          .tooltip-container
+            .label
+              label(for="ActionDate") Date
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="ActionDate" id="ActionDate")
+        .form-row
+          .tooltip-container
+            .label
+              label(for="Contributor") Contributor
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="Contributor" id="Contributor")
+        .form-row
+          .tooltip-container
+            .label
+              label(for="Action") Related file format
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="Action" id="Action")
+        button.bordered-red.small.delete-record
+          | Delete record
+      .row-group.action-container
+        .form-row
+          .tooltip-container
+            .label
+              label(for="ActionDate") Date
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="ActionDate" id="ActionDate")
+        .form-row
+          .tooltip-container
+            .label
+              label(for="Contributor") Contributor
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="Contributor" id="Contributor")
+        .form-row
+          .tooltip-container
+            .label
+              label(for="Action") Related file format
+              span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          input(name="Action" id="Action")
+        button.bordered-red.small.delete-record
+          | Delete record
+    .button-container
+      button.black.small.push-right.add-record
+        | Add record

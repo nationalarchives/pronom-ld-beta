@@ -108,7 +108,9 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="PositionType" id="PositionType")
+                  select(id="PositionType")
+                    option(value='0') option1
+                    option(value='1') option2
               .form-row#min-offset
                 p.inputType Edited content
                 .tooltipPlusAction
@@ -128,7 +130,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="MinOffset" id="MinOffset")
+                  input.short(name="MinOffset" id="MinOffset")
               .form-row#max-offset
                 p.inputType Edited content
                 .tooltipPlusAction
@@ -148,7 +150,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="MaxOffset" id="MaxOffset")
+                  input.short(name="MaxOffset" id="MaxOffset")
             //- signature
             fieldset.signature.collapse-content-container
               legend.sr-only Fill up information about signature
