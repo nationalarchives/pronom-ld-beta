@@ -56,6 +56,9 @@ public class SubmissionController {
     @GetMapping("/contribute/form/new")
     public String newFormTemplate(Model model) {
         model.addAttribute("edit", false);
+        FormFileFormat compare = new FormFileFormat();
+        compare.setVersion("3.2.1");
+        model.addAttribute("compare", compare);
         model.addAttribute("ff", new FormFileFormat());
         setFormOptions(model);
         return "user-form";
@@ -78,8 +81,10 @@ public class SubmissionController {
     private void setFormOptions(Model model) {
         FormOptionsDAO dao = new FormOptionsDAO();
         Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
-                makeResource(RDFUtil.PRONOM.ByteOrder.type)
+                makeResource(RDFUtil.PRONOM.ByteOrder.type),
+                makeResource(RDFUtil.PRONOM.FormatIdentifierType.type)
         ));
         model.addAttribute("byteOrderOptions", options.get(RDFUtil.PRONOM.ByteOrder.type));
+        model.addAttribute("formatIdentifierOptions", options.get(RDFUtil.PRONOM.FormatIdentifierType.type));
     }
 }

@@ -23,8 +23,8 @@ section.form-part#core
         //- TODO - read INFO : 
         //- 1) each .form-row has unique id with dashes (inside is input with same name and id just cammel case)
         //- 2) if element is to be reviewed add class '.before-review' or 'after-review'
-        .form-row#file-format-name.after-review
-          p.inputType New content
+        .form-row#file-format-name(th:classappend="${compare?.name} ? 'before-review' : ''")
+          p.inputType(th:text="${#strings.isEmpty(ff?.name) ? 'New content' : 'Edited content'}") New content
           .tooltipPlusAction
             .tooltip-container
               .label
@@ -40,11 +40,14 @@ section.form-part#core
                 i.fa-solid.fa-square-check
                 p Reviewed
           .input-group
-            button Revert changes
-            input(th:field="*{name}", name="FileFormatName" id="FileFormatName")
+            button Accept current
+            input(name="Name" id="FileFormatName" th:field="*{name}", th:data-undo="${ff?.name}")
+          .input-group(th:if="${compare?.name}")
+            button.incoming Accept incoming
+            input.medium-short(th:value="${compare.name}")
 
-        .form-row#version.before-review
-          p.inputType Edited content
+        .form-row#version(th:classappend="${compare?.version} ? 'before-review' : ''")
+          p.inputType(th:text="${#strings.isEmpty(ff?.version) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             .tooltip-container
               .label
@@ -60,14 +63,14 @@ section.form-part#core
                 i.fa-solid.fa-square-check
                 p Reviewed
           .input-group
-            button Accept current
-            input.medium-short(name="Version" id="Version")
-          .input-group
-            button Accept incoming
-            input.medium-short(name="Version" id="Version")
+            button.current Accept current
+            input.medium-short(name="Version" id="Version", th:field="*{version}", th:data-undo="${ff?.version}")
+          .input-group(th:if="${compare?.version}")
+            button.incoming Accept incoming
+            input.medium-short(th:value="${compare.version}")
 
-        .form-row#file-format-description
-          p.inputType Edited content
+        .form-row#file-format-description(th:classappend="${compare?.description} ? 'before-review' : ''")
+          p.inputType(th:text="${#strings.isEmpty(ff?.description) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             .tooltip-container
               .label
@@ -83,11 +86,11 @@ section.form-part#core
                 i.fa-solid.fa-square-check
                 p Reviewed
           .input-group
-            button Accept current
+            button.current Accept current
             textarea(cols="30", rows="10", th:field="*{description}", name="FileFormatDescription", id="FileFormatDescription")
 
-        .form-row#format-type
-          p.inputType Edited content
+        .form-row#format-type(th:classappend="${compare?.formatType} ? 'before-review' : ''")
+          p.inputType(th:text="${#strings.isEmpty(ff?.formatType) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             fieldset
               legend.sr-only Select format type
@@ -99,9 +102,8 @@ section.form-part#core
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                select(id="formatType")
-                  option(value='0') option1
-                  option(value='1') option2
+                select(id="formatType", th:field="*{formatType}")
+                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
             .action-monitoring
               .review-type
                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -117,7 +119,7 @@ section.form-part#core
       fieldset.references
         .row-group.inline.reference-group
           .form-row#reference-name
-            p.inputType Edited content
+            p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
@@ -133,11 +135,11 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(name="ReferenceName" id="ReferenceName")
 
           .form-row#reference-link-url
-            p.inputType Edited content
+            p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
@@ -153,7 +155,7 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(name="ReferenceLinkURL" id="ReferenceLinkURL")
 
           .form-row#reference-documentation.checkbox-container
@@ -167,7 +169,7 @@ section.form-part#core
               
           .additional-fields
             .form-row#reference-author
-              p.inputType Edited content
+              p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -183,11 +185,11 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(name="ReferenceAuthor" id="ReferenceAuthor")
 
             .form-row#reference-identifiers
-              p.inputType Edited content
+              p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -203,11 +205,11 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(name="ReferenceIdentifiers" id="ReferenceIdentifiers")
 
             .form-row#publication-date
-              p.inputType Edited content
+              p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -223,11 +225,11 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input.date(name="PublicationDate" id="PublicationDate" type="date")
 
             .form-row#publication-type
-              p.inputType Edited content
+              p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -243,11 +245,11 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(name="PublicationType" id="PublicationType")
 
             .form-row#publication-note
-              p.inputType Edited content
+              p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -263,7 +265,7 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(name="PublicationNote" id="PublicationNote")
           .button-container
             button.bordered-red.small.push-right.delete-reference
