@@ -4,6 +4,9 @@ block vars
   - var currentURL = "/about"
   - var breadcrumbs = {'Home':"/", "About": "/about"}
 
+block pageTitle
+  h1.title.hidden-title(th:utext="${@templateUtils.md('about_accessibility_title')}") About
+
 block content
   .unique-page-content#about
     article(th:utext="${@templateUtils.md('index_pronom-story')}")
@@ -46,7 +49,7 @@ block content
     .team-photo-container
       .team-photo-group
         div
-          img(src="https://via.placeholder.com/200x110.png", alt="")
+          img(src="https://via.placeholder.com/200x110.png", alt="Pronom employee")
           div
             h3 John Doe
             p Title
@@ -57,7 +60,18 @@ block content
           laboris nisi ut aliquip ex ea commodo consequat.
       .team-photo-group
         div
-          img(src="https://via.placeholder.com/200x110.png", alt="")
+          img(src="https://via.placeholder.com/200x110.png", alt="Pronom employee")
+          div
+            h3 John Doe
+            p Title
+            a(href="mailto:andywoody@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
+        p.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+          laboris nisi ut aliquip ex ea commodo consequat.
+      .team-photo-group
+        div
+          img(src="https://via.placeholder.com/200x110.png", alt="Pronom employee")
           div
             h3 John Doe
             p Title
@@ -68,18 +82,7 @@ block content
           laboris nisi ut aliquip ex ea commodo consequat.
       .team-photo-group
         div
-          img(src="https://via.placeholder.com/200x110.png", alt="")
-          div
-            h3 John Doe
-            p Title
-            a(href="mailto:johndoe@nationalarchive.gov.uk") johndoe@nationalarchive.gov.uk
-        p.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat.
-      .team-photo-group
-        div
-          img(src="https://via.placeholder.com/200x110.png", alt="")
+          img(src="https://via.placeholder.com/200x110.png", alt="Pronom employee")
           div
             h3 John Doe
             p Title

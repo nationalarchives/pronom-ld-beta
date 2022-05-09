@@ -17,6 +17,7 @@ block content
           fieldset
             legend.sr-only Enter search term
             div
+              label.sr-only(for="pronom_search") Search PRONOM
               input(type="search", id="pronom_search", name="q", placeholder="Search for term...")
               button.click-search(type="submit")
                 i.fa-solid.fa-magnifying-glass(aria-hidden="true")
@@ -30,7 +31,7 @@ block content
           i.fa-solid.fa-chevron-up(aria-hidden="true")
 
     th:block(th:each="cat, catI : ${@templateUtils.parseFAQ('faq_main')}")
-      h3(th:text="${cat.title}") Category 1
+      h2(th:text="${cat.title}") Category 1
       ul.faq-questions 
         li(th:each="item, itemI : ${cat.items}")
           button.closed(aria-expanded="false" th:id="|cat-${catI.index}-item-${itemI.index}|" th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )

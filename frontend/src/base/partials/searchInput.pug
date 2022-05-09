@@ -3,12 +3,13 @@ section.search-input-container
     fieldset(aria-label="Search for file format, software or vendor")
       legend.sr-only Enter search file format name, PUID or keywords
       div
+        label.sr-only(for="pronom_search") Search Pronom
         input(type="search", id="pronom_search", name="q", th:value="${q ?: ''}", placeholder="Search for file format, software or vendor...")
         button(type="submit")
           i.fa-solid.fa-magnifying-glass(aria-hidden="true")
           | Search
   .filters(aria-label="Filters")
-    h4 Filters
+    h3 Filters
     fieldset
       legend.sr-only Select filter
       div.selected
@@ -25,7 +26,7 @@ section.search-input-container
         label(for='puid') PUID
 
 section.search-output(th:if="${results != null and !results.empty}")
-  h4 Results
+  h3 Results
     span(th:text="'('+${totalResults}+')'")
   .additionals
     .manage-results
