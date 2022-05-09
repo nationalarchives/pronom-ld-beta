@@ -2,12 +2,12 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1.hidden-title(th:utext="'<span>'+${fileFormat.formattedPuid}+'</span>'+${fileFormat.name}")
+    h1.hidden-title(th:utext="'<span>'+${ff.formattedPuid}+'</span>'+${ff.name}")
       span fmt/11
       | Portable network Graphics
     .specs
       p Category: File format
-      p(th:text="'Last updated: '+${#temporals.format(fileFormat.updated, 'dd/MM/yyyy')}") Last updated: 12/06/2000
+      p(th:text="'Last updated: '+${#temporals.format(ff.updated, 'dd/MM/yyyy')}") Last updated: 12/06/2000
 block modalHeaderAdditionals
   div.audit-trail
     .dropdown.audit
@@ -37,9 +37,9 @@ block modalHeaderAdditionals
             p Some texte cones here
   include ./partials/savingOptions.pug
   div.propose-edition
-    button.blue.medium
-      i.fa-regular.fa-pen-to-square
-      | Propose update
+    a(th:href="@{/contribute/form/{target}(target=${ff.formattedPuid})}")
+      button.blue.medium
+        i.fa-regular.fa-pen-to-square Propose update
 block modalBody
   .file-format-container
     aside(aria-label="Sponsors")
@@ -71,7 +71,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fName", th:text="${fileFormat.name}") Lorem ipsum dolor sit amet
+            p(aria-labeledby="#fName", th:text="${ff.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
@@ -81,7 +81,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fVersion", th:text="${fileFormat.version ?: ''}") 1.0
+            p(aria-labeledby="#fVersion", th:text="${ff.version ?: ''}") 1.0
         //- ROW
         li.row
           .tooltip-container
@@ -91,7 +91,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fExtension", th:text="${fileFormat.firstExtension ?: ''}") PLACEHOLDER(1.0)
+            p(aria-labeledby="#fExtension", th:text="${ff.firstExtension ?: ''}") PLACEHOLDER(1.0)
         //- ROW
         li.row
           .tooltip-container
@@ -121,7 +121,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fPUID", th:text="${fileFormat.formattedPuid}") fmt/11
+                p(aria-labeledby="#fPUID", th:text="${ff.formattedPuid}") fmt/11
             //- ROW
             li.row
               .tooltip-container
@@ -151,7 +151,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fClassification", th:text="${fileFormat.classificationsListString}") audio
+            p(aria-labeledby="#fClassification", th:text="${ff.classificationsListString}") audio
         //- ROW
         li.row
           .tooltip-container
@@ -161,7 +161,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fDescription", th:text="${fileFormat.description}") audio
+            p(aria-labeledby="#fDescription", th:text="${ff.description}") audio
         //- ROW
         li.row
           .tooltip-container
@@ -171,7 +171,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            a(aria-labeledby="#fRelatedFileFormats" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
+            a(aria-labeledby="#fRelatedFileFormats" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -181,7 +181,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${fileFormat.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
+            a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
       h2 References
       //- TABLE =========================================================================
       ul.table
@@ -294,7 +294,7 @@ block modalBody
       h2 Signatures
       h3 External signatures
       //- TABLE =========================================================================
-      ul.table(th:each=" extSig : ${fileFormat.externalSignatures}")
+      ul.table(th:each=" extSig : ${ff.externalSignatures}")
         //- ROW 
         li.row
           .tooltip-container
@@ -318,7 +318,7 @@ block modalBody
 
       h3 Internal signatures
       //- TABLE =========================================================================
-      ul.table(th:each="intSig : ${fileFormat.internalSignatures}")
+      ul.table(th:each="intSig : ${ff.internalSignatures}")
         //- ROW
         li.row
           .tooltip-container
