@@ -34,6 +34,8 @@ public class FileFormatDAO {
                  ?puidType rdfs:label ?puidTypeName .
                	 
                  # Non-required fields
+                 OPTIONAL { ?f ff:FormatIdentifier ?formatIdentifier . }#END OPTIONAL
+                 
                  OPTIONAL { ?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType . }#END OPTIONAL
                  OPTIONAL { ?f ff:Classification ?classification .
                     ?classification rdfs:label ?classificationName .

@@ -266,6 +266,12 @@ public class RDFUtil {
             public static final String bigEndian = uri + "bigEndian";
         }
 
+        // FormatIdentifierType
+        public static class FormatIdentifierType {
+            public static final String uri = PRONOM.uri + "id/FormatIdentifierType/";
+            public static final String type = PRONOM.uri + "FormatIdentifierType";
+        }
+
         // Actor sub
         public static class Actor {
             public static final String type = PRONOM.uri + "Actor";
