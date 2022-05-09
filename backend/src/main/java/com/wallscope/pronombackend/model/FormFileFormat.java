@@ -11,6 +11,7 @@ public class FormFileFormat {
     private String version;
     private Boolean binaryFlag;
     private Boolean withdrawnFlag;
+    private String formatType;
     private List<String> classifications;
     private List<FormInternalSignature> internalSignatures;
     private List<FormExternalSignature> externalSignatures;
@@ -133,6 +134,14 @@ public class FormFileFormat {
         this.submittedBy = submittedBy;
     }
 
+    public String getFormatType() {
+        return formatType;
+    }
+
+    public void setFormatType(String formatType) {
+        this.formatType = formatType;
+    }
+
     @Override
     public String toString() {
         return "FormFileFormat{" +
@@ -142,6 +151,7 @@ public class FormFileFormat {
                 ", version='" + version + '\'' +
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
+                ", formatType='" + formatType + '\'' +
                 ", classifications=" + classifications +
                 ", internalSignatures=" + internalSignatures +
                 ", externalSignatures=" + externalSignatures +

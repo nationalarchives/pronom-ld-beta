@@ -32,7 +32,7 @@ public class PUIDController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
         logger.debug("File format: "+f);
-        model.addAttribute("fileFormat", f);
+        model.addAttribute("ff", f);
         return "file-format";
     }
 
