@@ -38,6 +38,8 @@ section.form-part#relationships
       legend.sr-only Provide relationships and format families
       #relationships-list.row-group
         .relationship
+
+          //- Choose relationship type
           .form-row(th:classappend="${compare?.relationshipType} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.relationshipType) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
@@ -63,6 +65,7 @@ section.form-part#relationships
               select(th:if="${compare?.relationshipType}")
                 option(th:each="fio : ${relationshipTypeOptions}", th:value="${compare.relationshipType}", th:text="${fio.label}") option 1
 
+          //- Related file format
           .form-row(th:classappend="${compare?.relatedFileFormat} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.relatedFileFormat) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
@@ -91,8 +94,10 @@ section.form-part#relationships
       .button-container
         button.black.small.push-right.add-relationship
           | Add relationship
+
+      //- Format families
       .form-row(th:classappend="${compare?.formatFamilies} ? 'before-review' : ''")
-        p.inputType(th:text="${#strings.isEmpty(ff?.relatedFileFormat) ? 'New content' : 'Edited content'}") New content
+        p.inputType(th:text="${#strings.isEmpty(ff?.formatFamilies) ? 'New content' : 'Edited content'}") New content
         .tooltipPlusAction
           .tooltip-container
             .label
