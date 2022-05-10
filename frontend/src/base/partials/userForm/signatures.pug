@@ -44,7 +44,7 @@ section.form-part#signatures
         //- Signature 
         #signature-container
           .holder
-            //- path
+            //- Path
             .row-group-inner1.path
               .button-container 
                 button.bordered-red.small.push-right.delete-path
@@ -78,7 +78,7 @@ section.form-part#signatures
                   button.black.small.add-byte-sequence.push-right
                     | Add byte sequence
 
-            //- byte sequence
+            //- Byte sequence
             .row-group-inner2.byte-sequence
               .info
                 h6 Byte sequence
@@ -108,6 +108,7 @@ section.form-part#signatures
                   button.incoming Accept incoming
                   input(th:value="${compare.binaryValue}")
 
+              //- Position type
               .form-row#position-type(th:classappend="${compare?.positionType} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.positionType) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
@@ -136,6 +137,7 @@ section.form-part#signatures
                     option(value='0') option1
                     option(value='1') option2
 
+              //- Min offset
               .form-row#min-offset(th:classappend="${compare?.minOffset} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.minOffset) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
@@ -160,6 +162,7 @@ section.form-part#signatures
                   button.incoming Accept incoming
                   input.short(th:value="${compare.minOffset}")
                   
+              //- Max offset
               .form-row#max-offset(th:classappend="${compare?.minOffset} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.minOffset) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
@@ -184,7 +187,7 @@ section.form-part#signatures
                   button.incoming Accept incoming
                   input.short(th:value="${compare.maxOffset}")
 
-            //- signature
+            //- Signature
             fieldset.signature.collapse-content-container
               legend.sr-only Fill up information about signature
               .row-group
@@ -198,8 +201,9 @@ section.form-part#signatures
                     | Delete signature
                 .collapse-content
 
+                  //- Signature name
                   .form-row(th:classappend="${compare?.signatureName} ? 'before-review' : ''")
-                    p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                    p.inputType(text="${#strings.isEmpty(ff?.signatureName) ? 'New content' : 'Edited content'}") Edited content
                     .tooltipPlusAction
                       .tooltip-container
                         .label
@@ -224,8 +228,9 @@ section.form-part#signatures
                   
                   h5 Byte Sequences
                   .part
+                    //- Endianess
                     .form-row(th:classappend="${compare?.endianess} ? 'before-review' : ''")
-                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      p.inputType(text="${#strings.isEmpty(ff?.endianess) ? 'New content' : 'Edited content'}") Edited content
                       .tooltipPlusAction
                         .tooltip-container
                           .label
@@ -250,8 +255,9 @@ section.form-part#signatures
                         select(th:if="${compare?.endianess}")
                           option(th:each="fio : ${endianess}", th:value="${compare.endianess}", th:text="${fio.label}") option 1
 
+                    //- Description
                     .form-row#signature-description(th:classappend="${compare?.signatureDescription} ? 'before-review' : ''")
-                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      p.inputType(text="${#strings.isEmpty(ff?.signatureDescription) ? 'New content' : 'Edited content'}") Edited content
                       .tooltipPlusAction
                         .tooltip-container
                           .label
@@ -293,8 +299,10 @@ section.form-part#signatures
                   button.bordered-red.small.delete-container-signature
                     | Delete container signature
                 .collapse-content
+
+                  //- Signature name
                   .form-row(th:classappend="${compare?.containerSignatureName} ? 'before-review' : ''")
-                    p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                    p.inputType(text="${#strings.isEmpty(ff?.containerSignatureName) ? 'New content' : 'Edited content'}") Edited content
                     .tooltipPlusAction
                       .tooltip-container
                         .label
@@ -319,8 +327,10 @@ section.form-part#signatures
 
                   h5.border Byte Sequences
                   .part
+                  
+                    //- Select endianess
                     .form-row(th:classappend="${compare?.endianess} ? 'before-review' : ''")
-                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      p.inputType(text="${#strings.isEmpty(ff?.endianess) ? 'New content' : 'Edited content'}") Edited content
                       .tooltipPlusAction
                         fieldset
                           legend.sr-only Select endianess
@@ -348,8 +358,9 @@ section.form-part#signatures
                         select(th:if="${compare?.endianess}")
                           option(th:each="fio : ${endianess}", th:value="${compare.endianess}", th:text="${fio.label}") option 1
 
+                    //- Description
                     .form-row(th:classappend="${compare?.signatureDescription} ? 'before-review' : ''")
-                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      p.inputType(text="${#strings.isEmpty(ff?.signatureDescription) ? 'New content' : 'Edited content'}") Edited content
                       .tooltipPlusAction
                         .tooltip-container
                           .label

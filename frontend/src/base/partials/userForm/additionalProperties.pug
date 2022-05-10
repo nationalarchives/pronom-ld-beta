@@ -36,6 +36,8 @@ section.form-part#additionalProperties
       .part
         h4 Byte Sequences
         .part
+
+          //- Byte Order
           .form-row(th:classappend="${compare?.byteOrder} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.byteOrder) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
@@ -61,6 +63,7 @@ section.form-part#additionalProperties
               select(th:if="${compare?.byteOrder}")
                 option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
 
+          //- Compression Type
           .form-row(th:classappend="${compare?.compressionType} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.compressionType) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
@@ -87,8 +90,9 @@ section.form-part#additionalProperties
         h4.border Stakeholders and specification
         .part
           div
-            //- Developer
+            
             .add-actor
+              //- Developer
               .form-row(th:classappend="${compare?.developer} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.developer) ? 'New content' : 'Edited content'}") New content
                 .tooltipPlusAction
@@ -117,10 +121,10 @@ section.form-part#additionalProperties
 
           div
             .from-internal-only
-                //- Support
                 .add-actor
+                  //- Support
                   .form-row(th:classappend="${compare?.support} ? 'before-review' : ''")
-                    p.inputType(th:text="${#strings.isEmpty(ff?.developer) ? 'New content' : 'Edited content'}") New content
+                    p.inputType(th:text="${#strings.isEmpty(ff?.support) ? 'New content' : 'Edited content'}") New content
                     .tooltipPlusAction
                       .tooltip-container
                         .label
@@ -144,6 +148,7 @@ section.form-part#additionalProperties
                   p or
                   button.black.small
                     | Add institutional actor
+
                 //- Format IPR
                 .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.formatIPR) ? 'New content' : 'Edited content'}") New content
@@ -167,6 +172,7 @@ section.form-part#additionalProperties
                   .input-group(th:if="${compare?.formatIPR}")
                     button.incoming Accept incoming
                     input(th:value="${compare.formatIPR}")
+
                 //- Document
                 .form-row(th:classappend="${compare?.document} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.document) ? 'New content' : 'Edited content'}") New content
@@ -190,6 +196,7 @@ section.form-part#additionalProperties
                   .input-group(th:if="${compare?.document}")
                     button.incoming Accept incoming
                     input(th:value="${compare.document}")
+
                 //- Release date
                 .form-row(th:classappend="${compare?.releaseDate} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.releaseDate) ? 'New content' : 'Edited content'}") New content
@@ -216,6 +223,7 @@ section.form-part#additionalProperties
         .from-internal-only
           h4.border Technical enviroment 
           .part
+
             //- Technical enviroment
             .form-row(th:classappend="${compare?.technicalEnviroment} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(ff?.technicalEnviroment) ? 'New content' : 'Edited content'}") New content

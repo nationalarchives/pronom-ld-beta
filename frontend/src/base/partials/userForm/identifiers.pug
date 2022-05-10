@@ -40,6 +40,7 @@ section.form-part#identifiers
         #identifiers-list.row-group
           .identifier
 
+            //- Identifier type
             .form-row#identifier-type(th:classappend="${compare?.identifierType} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(ff?.identifierType) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
@@ -65,6 +66,7 @@ section.form-part#identifiers
                 select(th:if="${compare?.identifierType}")
                   option(th:each="fio : ${formatIdentifierType}", th:value="${compare.identifierType}", th:text="${fio.label}") option 1
 
+            //- Identifier
             .form-row#identifier(th:classappend="${compare?.identifier} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(ff?.identifier) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
@@ -99,6 +101,8 @@ section.form-part#identifiers
         .part
           #aliases-list.row-group
             .alias
+
+              //- Alias Name
               .form-row(th:classappend="${compare?.aliasName} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.aliasName) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
@@ -122,6 +126,7 @@ section.form-part#identifiers
                   button.incoming Accept incoming
                   input(th:value="${compare.aliasName}")
 
+              //- Alias Version
               .form-row(th:classappend="${compare?.aliasVersion} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.aliasVersion) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
