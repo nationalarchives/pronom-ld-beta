@@ -44,7 +44,7 @@ section.form-part#core
             input(name="Name" id="FileFormatName" th:field="*{name}", th:data-undo="${ff?.name}")
           .input-group(th:if="${compare?.name}")
             button.incoming Accept incoming
-            input.medium-short(th:value="${compare.name}")
+            input(th:value="${compare.name}")
 
         .form-row#version(th:classappend="${compare?.version} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.version) ? 'New content' : 'Edited content'}") Edited content
@@ -87,7 +87,10 @@ section.form-part#core
                 p Reviewed
           .input-group
             button.current Accept current
-            textarea(cols="30", rows="10", th:field="*{description}", name="FileFormatDescription", id="FileFormatDescription")
+            textarea.medium-short(name="description" id="description" cols="30" rows="10", th:field="*{description}", th:data-undo="${ff?.description}")
+          .input-group(th:if="${compare?.description}")
+            button.incoming Accept incoming
+            textarea.medium-short(th:value="${compare.description}" cols="30" rows="10")
 
         .form-row#format-type(th:classappend="${compare?.formatType} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.formatType) ? 'New content' : 'Edited content'}") Edited content
@@ -102,8 +105,6 @@ section.form-part#core
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                select(id="formatType", th:field="*{formatType}")
-                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
             .action-monitoring
               .review-type
                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
@@ -111,6 +112,14 @@ section.form-part#core
               .review-type
                 i.fa-solid.fa-square-check
                 p Reviewed
+          .input-group
+            button.current Accept current
+            select(id="formatType", th:field="*{formatType}")
+              option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
+          .input-group
+            button.incoming Accept incoming
+            select(th:if="${compare?.formatType}")
+              option(th:each="fio : ${formatIdentifierOptions}", th:value="${compare.formatType}", th:text="${fio.label}") option 1
         .from-internal-only
           include ./priority-over.pug
 
@@ -118,12 +127,12 @@ section.form-part#core
     .part
       fieldset.references
         .row-group.inline.reference-group
-          .form-row#reference-name
+          .form-row#reference-name(th:classappend="${compare?.referenceName} ? 'before-review' : ''")
             p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="ReferenceName") Reference Name
+                  label(for="referenceName") Reference Name
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -135,15 +144,19 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button.current Accept current
-              input(name="ReferenceName" id="ReferenceName")
+              button Accept current
+              input(name="referenceName" id="referenceName" th:field="*{referenceName}", th:data-undo="${ff?.referenceName}")
+            .input-group(th:if="${compare?.referenceName}")
+              button.incoming Accept incoming
+              input(th:value="${compare.nreferenceNameame}")
+            
 
-          .form-row#reference-link-url
+          .form-row#reference-link-url(th:classappend="${compare?.referenceLinkURL} ? 'before-review' : ''")
             p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="ReferenceLinkURL") Link URL
+                  label(for="referenceLinkURL") Link URL
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.2') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -155,25 +168,42 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button.current Accept current
-              input(name="ReferenceLinkURL" id="ReferenceLinkURL")
+              button Accept current
+              input(name="referenceLinkURL" id="referenceLinkURL" th:field="*{referenceLinkURL}", th:data-undo="${ff?.referenceLinkURL}")
+            .input-group(th:if="${compare?.referenceLinkURL}")
+              button.incoming Accept incoming
+              input(th:value="${compare.referenceLinkURL}")
 
-          .form-row#reference-documentation.checkbox-container
-            input(name="ReferenceDocumentation" id="ReferenceDocumentation" type="checkbox")
-            .tooltip-container
-              .label
-                label(for="ReferenceDocumentation") Documentation
-                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.3') tabindex='0')
-                  .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          .form-row#reference-documentation.checkbox-container(th:classappend="${compare?.referenceDocumentation} ? 'before-review' : ''")
+            p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+            .input-group
+              button Accept current
+              input(name="referenceDocumentation" id="referenceDocumentation" type="checkbox" th:field="*{referenceDocumentation}", th:data-undo="${ff?.referenceDocumentation}")
+            .input-group(th:if="${compare?.referenceDocumentation}")
+              button.incoming Accept incoming
+              input(th:value="${compare.referenceDocumentation}")
+            .tooltipPlusAction
+              .tooltip-container
+                .label
+                  label(for="referenceDocumentation") Documentation
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.3') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
               
           .additional-fields
-            .form-row#reference-author
+            .form-row#reference-author(th:classappend="${compare?.referenceAuthor} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="ReferenceAuthor") Author
+                    label(for="referenceAuthor") Author
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -185,15 +215,18 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button.current Accept current
-                input(name="ReferenceAuthor" id="ReferenceAuthor")
+                button Accept current
+                input(name="referenceAuthor" id="referenceAuthor" th:field="*{referenceAuthor}", th:data-undo="${ff?.referenceAuthor}")
+              .input-group(th:if="${compare?.referenceAuthor}")
+                button.incoming Accept incoming
+                input(th:value="${compare.referenceAuthor}")
 
-            .form-row#reference-identifiers
+            .form-row#reference-identifiers(th:classappend="${compare?.referenceIdentifiers} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="ReferenceIdentifiers") Identifiers
+                    label(for="referenceIdentifiers") Identifiers
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.5') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -205,15 +238,18 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button.current Accept current
-                input(name="ReferenceIdentifiers" id="ReferenceIdentifiers")
+                button Accept current
+                input(name="referenceIdentifiers" id="referenceIdentifiers" th:field="*{referenceIdentifiers}", th:data-undo="${ff?.referenceIdentifiers}")
+              .input-group(th:if="${compare?.referenceIdentifiers}")
+                button.incoming Accept incoming
+                input(th:value="${compare.referenceIdentifiers}")
 
-            .form-row#publication-date
+            .form-row#publication-date(th:classappend="${compare?.publicationDate} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="PublicationDate") Publication date
+                    label(for="publicationDate") Publication date
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.6') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -225,15 +261,18 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button.current Accept current
-                input.date(name="PublicationDate" id="PublicationDate" type="date")
+                button Accept current
+                input.date(type="date" name="publicationDate" id="publicationDate" th:field="*{publicationDate}", th:data-undo="${ff?.publicationDate}")
+              .input-group(th:if="${compare?.publicationDate}")
+                button.incoming Accept incoming
+                input.date(th:value="${compare.publicationDate}")
 
-            .form-row#publication-type
+            .form-row#publication-type(th:classappend="${compare?.publicationType} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="PublicationType") Type
+                    label(for="publicationType") Type
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -245,15 +284,18 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button.current Accept current
-                input(name="PublicationType" id="PublicationType")
+                button Accept current
+                input( name="publicationType" id="publicationType" th:field="*{publicationType}", th:data-undo="${ff?.publicationType}")
+              .input-group(th:if="${compare?.publicationType}")
+                button.incoming Accept incoming
+                input(th:value="${compare.publicationType}")
 
-            .form-row#publication-note
+            .form-row#publication-note(th:classappend="${compare?.publicationNote} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="PublicationNote") Note
+                    label(for="publicationNote") Note
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.2.8') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -265,8 +307,11 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button.current Accept current
-                input(name="PublicationNote" id="PublicationNote")
+                button Accept current
+                input(name="publicationNote" id="publicationNote" th:field="*{publicationNote}", th:data-undo="${ff?.publicationNote}")
+              .input-group(th:if="${compare?.publicationNote}")
+                button.incoming Accept incoming
+                input(th:value="${compare.publicationNote}")
           .button-container
             button.bordered-red.small.push-right.delete-reference
               | Delete reference
