@@ -36,94 +36,206 @@ section.form-part#additionalProperties
       .part
         h4 Byte Sequences
         .part
-          .form-row
-            .tooltip-container
-              .label
-                label(for="SelectByteOrder") Select file format byte order
-                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.4.1.1') tabindex='0')
-                  .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-            select(id="SelectByteOrder")
-              option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
-          .form-row
-            .tooltip-container
-              .label
-                label(for="CompressionType") Compression Type
-                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.4.1.2') tabindex='0')
-                  .i-wrapper
-                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-            input(name="CompressionType" id="CompressionType")
-        h4.border Stakeholders and specification
-        .part
-          .form-row
-            .from-external-only
+          .form-row(th:classappend="${compare?.byteOrder} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(ff?.byteOrder) ? 'New content' : 'Edited content'}") New content
+            .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="Developer") Developer
+                  label(for="byteOrder") Select file format byte order
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.4.1.1') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button.current Accept current
+              select(id="byteOrder", th:field="*{byteOrder}")
+                option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+            .input-group
+              button.incoming Accept incoming
+              select(th:if="${compare?.byteOrder}")
+                option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+
+          .form-row(th:classappend="${compare?.compressionType} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(ff?.compressionType) ? 'New content' : 'Edited content'}") New content
+            .tooltipPlusAction
+              .tooltip-container
+                .label
+                  label(for="compressionType") Compression Type
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.4.1.2') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-              input(name="Developer" id="Developer")
-          .form-row
-            .from-internal-only
-              .add-actor
-                div
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button Accept current
+              input(name="compressionType" id="compressionType" th:field="*{compressionType}", th:data-undo="${ff?.compressionType}")
+            .input-group(th:if="${compare?.compressionType}")
+              button.incoming Accept incoming
+              input(th:value="${compare.compressionType}")
+
+        h4.border Stakeholders and specification
+        .part
+          div
+            //- Developer
+            .add-actor
+              .form-row(th:classappend="${compare?.developer} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.developer) ? 'New content' : 'Edited content'}") New content
+                .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label(for="Developer") Developer
+                      label(for="developer") Developer
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.4.2.1') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                  input(name="Developer" id="Developer")
-                p or
-                button.black.small
-                  | Add institutional actor
-          .from-internal-only
-              .add-actor
-                .form-row
-                  .tooltip-container
-                    .label
-                      label(for="Support") Support
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.2') tabindex='0')
-                        .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                  input(name="Support" id="Support")
-                p or
-                button.black.small
-                  | Add institutional actor
-              .form-row
-                .tooltip-container
-                  .label
-                    label(for="FormatIPR") Format IPR
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.3') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="FormatIPR" id="FormatIPR")
-              .form-row
-                .tooltip-container
-                  .label
-                    label(for="Document") Document
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.4') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Document" id="Document")
-              .form-row
-                .tooltip-container
-                  .label
-                    label(for="ReleaseDate") Release date
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.5') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input.date(name="ReleaseDate" id="ReleaseDate" type="date")
+                  .action-monitoring
+                    .review-type
+                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                      p Require reviewing
+                    .review-type
+                      i.fa-solid.fa-square-check
+                      p Reviewed
+                .input-group
+                  button Accept current
+                  input(name="developer" id="developer" th:field="*{developer}", th:data-undo="${ff?.developer}")
+                .input-group(th:if="${compare?.developer}")
+                  button.incoming Accept incoming
+                  input(th:value="${compare.developer}")
+              p.from-internal-only or
+              button.black.small.from-internal-only
+                | Add institutional actor
+
+          div
+            .from-internal-only
+                //- Support
+                .add-actor
+                  .form-row(th:classappend="${compare?.support} ? 'before-review' : ''")
+                    p.inputType(th:text="${#strings.isEmpty(ff?.developer) ? 'New content' : 'Edited content'}") New content
+                    .tooltipPlusAction
+                      .tooltip-container
+                        .label
+                          label(for="support") Support
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.2') tabindex='0')
+                            .i-wrapper
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                      .action-monitoring
+                        .review-type
+                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                          p Require reviewing
+                        .review-type
+                          i.fa-solid.fa-square-check
+                          p Reviewed
+                    .input-group
+                      button Accept current
+                      input(name="support" id="support" th:field="*{support}", th:data-undo="${ff?.support}")
+                    .input-group(th:if="${compare?.support}")
+                      button.incoming Accept incoming
+                      input(th:value="${compare.support}")
+                  p or
+                  button.black.small
+                    | Add institutional actor
+                //- Format IPR
+                .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(ff?.formatIPR) ? 'New content' : 'Edited content'}") New content
+                  .tooltipPlusAction
+                    .tooltip-container
+                      .label
+                        label(for="formatIPR") Format IPR
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.3') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    .action-monitoring
+                      .review-type
+                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                        p Require reviewing
+                      .review-type
+                        i.fa-solid.fa-square-check
+                        p Reviewed
+                  .input-group
+                    button Accept current
+                    input(name="formatIPR" id="formatIPR" th:field="*{formatIPR}", th:data-undo="${ff?.formatIPR}")
+                  .input-group(th:if="${compare?.formatIPR}")
+                    button.incoming Accept incoming
+                    input(th:value="${compare.formatIPR}")
+                //- Document
+                .form-row(th:classappend="${compare?.document} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(ff?.document) ? 'New content' : 'Edited content'}") New content
+                  .tooltipPlusAction
+                    .tooltip-container
+                      .label
+                        label(for="document") Document
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.4') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    .action-monitoring
+                      .review-type
+                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                        p Require reviewing
+                      .review-type
+                        i.fa-solid.fa-square-check
+                        p Reviewed
+                  .input-group
+                    button Accept current
+                    input(name="document" id="document" th:field="*{document}", th:data-undo="${ff?.document}")
+                  .input-group(th:if="${compare?.document}")
+                    button.incoming Accept incoming
+                    input(th:value="${compare.document}")
+                //- Release date
+                .form-row(th:classappend="${compare?.releaseDate} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(ff?.releaseDate) ? 'New content' : 'Edited content'}") New content
+                  .tooltipPlusAction
+                    .tooltip-container
+                      .label
+                        label(for="releaseDate") Release date
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.5') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    .action-monitoring
+                      .review-type
+                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                        p Require reviewing
+                      .review-type
+                        i.fa-solid.fa-square-check
+                        p Reviewed
+                  .input-group
+                    button Accept current
+                    input.date(name="releaseDate" id="releaseDate" th:field="*{releaseDate}", th:data-undo="${ff?.releaseDate}" type="date")
+                  .input-group(th:if="${compare?.releaseDate}")
+                    button.incoming Accept incoming
+                    input.date(th:value="${compare.releaseDate}" type="date")
         .from-internal-only
           h4.border Technical enviroment 
           .part
-            .form-row
-              div
+            //- Technical enviroment
+            .form-row(th:classappend="${compare?.technicalEnviroment} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(ff?.technicalEnviroment) ? 'New content' : 'Edited content'}") New content
+              .tooltipPlusAction
                 .tooltip-container
                   .label
                     label(for="technicalEnviroment") Technical enviroment 
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.3.1') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="technicalEnviroment" id="technicalEnviroment")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="technicalEnviroment" id="technicalEnviroment" th:field="*{technicalEnviroment}", th:data-undo="${ff?.technicalEnviroment}")
+              .input-group(th:if="${compare?.technicalEnviroment}")
+                button.incoming Accept incoming
+                input(th:value="${compare.technicalEnviroment}")
