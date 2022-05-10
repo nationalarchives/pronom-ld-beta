@@ -250,6 +250,7 @@ public class RDFUtil {
             public static final String IndirectOffsetLocation = uri + "IndirectOffsetLocation";
             public static final String IndirectOffsetLength = uri + "IndirectOffsetLength";
             // Byte Sequence Positions
+            public static final String BSPType = PRONOM.uri + "PositionType";
             public static final String BSPuri = PRONOM.uri + "id/ByteSequencePosition/";
             public static final String AbsoluteFromBOF = BSPuri + "1";
             public static final String AbsoluteFromEOF = BSPuri + "2";
