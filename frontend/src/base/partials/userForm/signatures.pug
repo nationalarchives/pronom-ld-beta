@@ -51,31 +51,39 @@ section.form-part#signatures
                   | Delete path
               .form-row(th:classappend="${compare?.path} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.path) ? 'New content' : 'Edited content'}") New content
-                .tooltip-container
-                  .label
-                    label.from-external-only(for="path") Path
-                    label.from-internal-only(for="path") Path (required)
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.7') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                .tooltipPlusAction
+                  .tooltip-container
+                    .label
+                      label.from-external-only(for="path") Path
+                      label.from-internal-only(for="path") Path (required)
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.7') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  .action-monitoring
+                    .review-type
+                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                      p Require reviewing
+                    .review-type
+                      i.fa-solid.fa-square-check
+                      p Reviewed
                 .input-group
                   button Accept current
                   input(name="path" id="path" th:field="*{path}", th:data-undo="${ff?.path}")
                 .input-group(th:if="${compare?.path}")
                   button.incoming Accept incoming
-                  input.medium-short(th:value="${compare.path}")
+                  input(th:value="${compare.path}")
               .byte-sequence-list
                 .list
                 .button-container
                   button.black.small.add-byte-sequence.push-right
                     | Add byte sequence
+
             //- byte sequence
             .row-group-inner2.byte-sequence
               .info
                 h6 Byte sequence
                 button.bordered-red.small.delete-byte-sequence
                   | Delete byte sequence
-
               .form-row#binary-value(th:classappend="${compare?.binaryValue} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.binaryValue) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
@@ -95,7 +103,10 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="binaryValue" id="binaryValue")
+                  input(name="binaryValue" id="binaryValue" th:field="*{binaryValue}", th:data-undo="${ff?.binaryValue}")
+                .input-group(th:if="${compare?.binaryValue}")
+                  button.incoming Accept incoming
+                  input(th:value="${compare.binaryValue}")
 
               .form-row#position-type(th:classappend="${compare?.positionType} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.positionType) ? 'New content' : 'Edited content'}") Edited content
@@ -119,7 +130,6 @@ section.form-part#signatures
                   select(id="positionType" name="positionType" , th:field="*{positionType}", th:data-undo="${ff?.positionType}")
                     option(value='0') option1
                     option(value='1') option2
-                  input.medium-short(name="positionType" id="positionType", th:field="*{positionType}", th:data-undo="${ff?.positionType}")
                 .input-group(th:if="${compare?.positionType}")
                   button.incoming Accept incoming
                   select(th:value="${compare.positionType}")
@@ -145,14 +155,18 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input.short(name="minOffset" id="minOffset")
-              .form-row#max-offset
-                p.inputType Edited content
+                  input.short(name="minOffset" id="minOffset" th:field="*{minOffset}", th:data-undo="${ff?.minOffset}")
+                .input-group(th:if="${compare?.minOffset}")
+                  button.incoming Accept incoming
+                  input.short(th:value="${compare.minOffset}")
+                  
+              .form-row#max-offset(th:classappend="${compare?.minOffset} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.minOffset) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label.from-external-only(for="MaxOffset") Max offset
-                      label.from-internal-only(for="MaxOffset") Max offset (required)
+                      label.from-external-only(for="maxOffset") Max offset
+                      label.from-internal-only(for="maxOffset") Max offset (required)
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.6') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -165,7 +179,11 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input.short(name="MaxOffset" id="MaxOffset")
+                  input.short(name="maxOffset" id="maxOffset" th:field="*{maxOffset}", th:data-undo="${ff?.maxOffset}")
+                .input-group(th:if="${compare?.maxOffset}")
+                  button.incoming Accept incoming
+                  input.short(th:value="${compare.maxOffset}")
+
             //- signature
             fieldset.signature.collapse-content-container
               legend.sr-only Fill up information about signature
@@ -179,44 +197,66 @@ section.form-part#signatures
                   button.bordered-red.small.delete-signature
                     | Delete signature
                 .collapse-content
-                  .form-row
-                    .tooltip-container
-                      .label
-                        label.from-external-only(for="SignatureName") Signature name
-                        label.from-internal-only(for="SignatureName") Signature name (required)
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="SignatureName" id="SignatureName")
-                  //- TODO confirm if GF is no longer required
-                  //- .form-row.checkbox-container
-                    input(name="Documentation" id="Documentation" type="checkbox")
-                    .tooltip-container
-                      .label
-                        label(for="Documentation") Generic Flag
-                        span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                  h5 Byte Sequences
-                  .part
-                    .form-row
+
+                  .form-row(th:classappend="${compare?.signatureName} ? 'before-review' : ''")
+                    p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                    .tooltipPlusAction
                       .tooltip-container
                         .label
-                          label.from-external-only(for="endianess") Select endianess
-                          label.from-internal-only(for="endianess") Select endianess (required)
-                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
+                          label.from-external-only(for="signatureName") Signature name
+                          label.from-internal-only(for="signatureName") Signature name (required)
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
                             .i-wrapper
                               i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      select(id="endianess")
-                        option(value='0') option1
-                        option(value='1') option2
-                    .form-row#signature-description
-                      p.inputType Edited content
+                      .action-monitoring
+                        .review-type
+                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                          p Require reviewing
+                        .review-type
+                          i.fa-solid.fa-square-check
+                          p Reviewed
+                    .input-group
+                      button Accept current
+                      input(name="signatureName" id="signatureName" th:field="*{signatureName}", th:data-undo="${ff?.signatureName}")
+                    .input-group(th:if="${compare?.signatureName}")
+                      button.incoming Accept incoming
+                      input(th:value="${compare.signatureName}")
+                  
+                  h5 Byte Sequences
+                  .part
+                    .form-row(th:classappend="${compare?.endianess} ? 'before-review' : ''")
+                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
                       .tooltipPlusAction
                         .tooltip-container
                           .label
-                            label.from-external-only(for="SignatureDescription") Description
-                            label.from-internal-only(for="SignatureDescription") Description (required)
+                            label.from-external-only(for="endianess") Select endianess
+                            label.from-internal-only(for="endianess") Select endianess (required)
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button.current Accept current
+                        select(id="endianess", th:field="*{endianess}")
+                          option(th:each="fio : ${endianess}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                      .input-group
+                        button.incoming Accept incoming
+                        select(th:if="${compare?.endianess}")
+                          option(th:each="fio : ${endianess}", th:value="${compare.endianess}", th:text="${fio.label}") option 1
+
+                    .form-row#signature-description(th:classappend="${compare?.signatureDescription} ? 'before-review' : ''")
+                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="signatureDescription") Description
+                            label.from-internal-only(for="signatureDescription") Description (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.2') tabindex='0')
                               .i-wrapper
                                 i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -229,13 +269,17 @@ section.form-part#signatures
                             p Reviewed
                       .input-group
                         button Accept current
-                        textarea(cols="30", rows="6" name="SignatureDescription" id="SignatureDescription")
+                        textarea(cols="30", rows="6" name="signatureDescription" id="signatureDescription" th:field="*{signatureDescription}", th:data-undo="${ff?.signatureDescription}")
+                      .input-group(th:if="${compare?.signatureDescription}")
+                        button.incoming Accept incoming
+                        textarea(cols="30", rows="6" th:value="${compare.signatureDescription}")
                     //- byte sequence
                     .byte-sequence-list
                       .list
                       .button-container
                         button.black.small.add-byte-sequence.push-right
                           | Add byte sequence
+
             //- container-signature
             fieldset.container-signature.collapse-content-container
               legend.sr-only Fill up information about signature
@@ -249,47 +293,84 @@ section.form-part#signatures
                   button.bordered-red.small.delete-container-signature
                     | Delete container signature
                 .collapse-content
-                  .form-row
-                    .tooltip-container
-                      .label
-                        label.from-external-only(for="SignatureName") Signature name
-                        label.from-internal-only(for="SignatureName") Signature name (required)
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="SignatureName" id="SignatureName")
-                  //- .form-row.checkbox-container
-                    input(name="GenericFlag" id="GenericFlag" type="checkbox")
-                    .tooltip-container
-                      .label
-                        label(for="GenericFlag") Generic Flag
-                        span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                  h5.border Byte Sequences
-                  .part
-                    fieldset
-                      legend.sr-only Select endianess
-                      div
-                        .tooltip-container
-                          .label
-                            label.from-external-only(for="endianess") Select endianess
-                            label.from-internal-only(for="endianess") Select endianess (required)
-                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
-                              .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                        select(id="endianess")
-                          option(value='0') option1
-                          option(value='1') option2
-                    .form-row
+                  .form-row(th:classappend="${compare?.containerSignatureName} ? 'before-review' : ''")
+                    p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                    .tooltipPlusAction
                       .tooltip-container
                         .label
-                            label.from-external-only(for="SignatureDescription") Description
-                            label.from-internal-only(for="SignatureDescription") Description (required)
+                          label.from-external-only(for="containerSignatureName") Signature name
+                          label.from-internal-only(for="containerSignatureName") Signature name (required)
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.3.1') tabindex='0')
+                            .i-wrapper
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                      .action-monitoring
+                        .review-type
+                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                          p Require reviewing
+                        .review-type
+                          i.fa-solid.fa-square-check
+                          p Reviewed
+                    .input-group
+                      button Accept current
+                      input(name="containerSignatureName" id="containerSignatureName" th:field="*{containerSignatureName}", th:data-undo="${ff?.containerSignatureName}")
+                    .input-group(th:if="${compare?.containerSignatureName}")
+                      button.incoming Accept incoming
+                      input(th:value="${compare.containerSignatureName}")
+
+                  h5.border Byte Sequences
+                  .part
+                    .form-row(th:classappend="${compare?.endianess} ? 'before-review' : ''")
+                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      .tooltipPlusAction
+                        fieldset
+                          legend.sr-only Select endianess
+                          div
+                            .tooltip-container
+                              .label
+                                label.from-external-only(for="endianess") Select endianess
+                                label.from-internal-only(for="endianess") Select endianess (required)
+                                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.1') tabindex='0')
+                                  .i-wrapper
+                                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button.current Accept current
+                        select(id="endianess", th:field="*{endianess}")
+                          option(th:each="fio : ${endianess}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                      .input-group
+                        button.incoming Accept incoming
+                        select(th:if="${compare?.endianess}")
+                          option(th:each="fio : ${endianess}", th:value="${compare.endianess}", th:text="${fio.label}") option 1
+
+                    .form-row(th:classappend="${compare?.signatureDescription} ? 'before-review' : ''")
+                      p.inputType(text="${#strings.isEmpty(ff?.FIELD) ? 'New content' : 'Edited content'}") Edited content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label.from-external-only(for="signatureDescription") Description
+                            label.from-internal-only(for="signatureDescription") Description (required)
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.2') tabindex='0')
                               .i-wrapper
                                 i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      textarea(cols="30", rows="6" name="FileFormatDescription" id="FileFormatDescription")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        textarea(cols="30", rows="6" name="signatureDescription" id="signatureDescription" th:field="*{signatureDescription}", th:data-undo="${ff?.signatureDescription}")
+                      .input-group(th:if="${compare?.signatureDescription}")
+                        button.incoming Accept incoming
+                        textarea(cols="30", rows="6"  th:value="${compare.signatureDescription}")
                     h5.border Container signature
                     .paths-list-container
                       .paths-list
