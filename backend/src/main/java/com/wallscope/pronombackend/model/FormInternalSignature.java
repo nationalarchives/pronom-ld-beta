@@ -11,6 +11,7 @@ public class FormInternalSignature {
     private Boolean genericFlag;
     private String provenance;
     private String fileFormat;
+    private String byteOrder;
     private List<FormByteSequence> byteSequences;
 
     public FormInternalSignature() {
@@ -72,6 +73,14 @@ public class FormInternalSignature {
         this.byteSequences = byteSequences;
     }
 
+    public String getByteOrder() {
+        return byteOrder;
+    }
+
+    public void setByteOrder(String byteOrder) {
+        this.byteOrder = byteOrder;
+    }
+
     @Override
     public String toString() {
         return "FormInternalSignature{" +
@@ -81,6 +90,7 @@ public class FormInternalSignature {
                 ", genericFlag=" + genericFlag +
                 ", provenance='" + provenance + '\'' +
                 ", fileFormat='" + fileFormat + '\'' +
+                ", byteOrder='" + byteOrder + '\'' +
                 ", byteSequences=" + byteSequences +
                 '}';
     }
@@ -93,6 +103,7 @@ public class FormInternalSignature {
         fis.setGenericFlag(is.isGeneric());
         fis.setProvenance(is.getProvenance());
         // fileFormat field is set at the parent
+        // TODO: add byteOrder in the RDF model
         fis.setByteSequences(is.getByteSequences().stream().map(bs -> {
             FormByteSequence fbs = FormByteSequence.convert(bs);
             fbs.setSignature(is.getID());
