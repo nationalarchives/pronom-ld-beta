@@ -49,15 +49,21 @@ section.form-part#signatures
               .button-container 
                 button.bordered-red.small.push-right.delete-path
                   | Delete path
-              .form-row
+              .form-row(th:classappend="${compare?.path} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.path) ? 'New content' : 'Edited content'}") New content
                 .tooltip-container
                   .label
-                    label.from-external-only(for="Path") Path
-                    label.from-internal-only(for="Path") Path (required)
+                    label.from-external-only(for="path") Path
+                    label.from-internal-only(for="path") Path (required)
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Path" id="Path")
+                .input-group
+                  button Accept current
+                  input(name="path" id="path" th:field="*{path}", th:data-undo="${ff?.path}")
+                .input-group(th:if="${compare?.path}")
+                  button.incoming Accept incoming
+                  input.medium-short(th:value="${compare.path}")
               .byte-sequence-list
                 .list
                 .button-container
@@ -69,13 +75,14 @@ section.form-part#signatures
                 h6 Byte sequence
                 button.bordered-red.small.delete-byte-sequence
                   | Delete byte sequence
-              .form-row#binary-value
-                p.inputType Edited content
+
+              .form-row#binary-value(th:classappend="${compare?.binaryValue} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.binaryValue) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label.from-external-only(for="BinaryValue") Binary value
-                      label.from-internal-only(for="BinaryValue") Binary value (required)
+                      label.from-external-only(for="binaryValue") Binary value
+                      label.from-internal-only(for="binaryValue") Binary value (required)
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.3') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -88,14 +95,15 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="BinaryValue" id="BinaryValue")
-              .form-row#position-type
-                p.inputType Edited content
+                  input(name="binaryValue" id="binaryValue")
+
+              .form-row#position-type(th:classappend="${compare?.positionType} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.positionType) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label.from-external-only(for="PositionType") Position type
-                      label.from-internal-only(for="PositionType") Position type (required)
+                      label.from-external-only(for="positionType") Position type
+                      label.from-internal-only(for="positionType") Position type (required)
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.4') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -107,17 +115,24 @@ section.form-part#signatures
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
-                  select(id="PositionType")
+                  button.current Accept current
+                  select(id="positionType" name="positionType" , th:field="*{positionType}", th:data-undo="${ff?.positionType}")
                     option(value='0') option1
                     option(value='1') option2
-              .form-row#min-offset
-                p.inputType Edited content
+                  input.medium-short(name="positionType" id="positionType", th:field="*{positionType}", th:data-undo="${ff?.positionType}")
+                .input-group(th:if="${compare?.positionType}")
+                  button.incoming Accept incoming
+                  select(th:value="${compare.positionType}")
+                    option(value='0') option1
+                    option(value='1') option2
+
+              .form-row#min-offset(th:classappend="${compare?.minOffset} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.minOffset) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label.from-external-only(for="MinOffset") Min offset
-                      label.from-internal-only(for="MinOffset") Min offset (required)
+                      label.from-external-only(for="minOffset") Min offset
+                      label.from-internal-only(for="minOffset") Min offset (required)
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.4.5') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -130,7 +145,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input.short(name="MinOffset" id="MinOffset")
+                  input.short(name="minOffset" id="minOffset")
               .form-row#max-offset
                 p.inputType Edited content
                 .tooltipPlusAction
