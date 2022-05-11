@@ -58,6 +58,7 @@ public class SubmissionController {
         model.addAttribute("edit", false);
         FormFileFormat compare = new FormFileFormat();
         model.addAttribute("compare", compare);
+        compare.setVersion("3.2.1");
         // test prepare file format
         FormFileFormat ff = new FormFileFormat();
         model.addAttribute("ff", ff);

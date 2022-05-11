@@ -1,10 +1,15 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.utils.RDFUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
+
 public class FormFileFormat {
+    private String uri;
     private String puid;
     private String name;
     private String description;
@@ -126,6 +131,12 @@ public class FormFileFormat {
         this.hasRelationships = hasRelationships;
     }
 
+    public List<FormFileFormatRelationship> getHasPriorityOver() {
+        return hasRelationships.stream()
+                .filter(r -> r.getRelationshipType().equals(PRONOM.FormatRelationshipType.PriorityOver))
+                .collect(Collectors.toList());
+    }
+
     public FormSubmittedBy getSubmittedBy() {
         return submittedBy;
     }
@@ -176,6 +187,15 @@ public class FormFileFormat {
             fis.setFileFormat(f.getFormattedPuid());
             return fis;
         }).collect(Collectors.toList()));
+        ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toList()));
         return ff;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
