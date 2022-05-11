@@ -754,6 +754,9 @@ main {
   border: none;
   background: none;
   color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   @media only screen and (max-width: 980px) {
     grid-column: 2/3;
   }
