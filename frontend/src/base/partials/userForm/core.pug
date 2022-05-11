@@ -189,7 +189,7 @@ section.form-part#core
               input(name="referenceDocumentation" id="referenceDocumentation" type="checkbox" th:field="*{referenceDocumentation}", th:data-undo="${ff?.referenceDocumentation}")
             .input-group(th:if="${compare?.referenceDocumentation}")
               button.incoming Accept incoming
-              input(th:value="${compare.referenceDocumentation}")
+              input(th:value="${compare.referenceDocumentation}" type="checkbox")
             .tooltipPlusAction
               .tooltip-container
                 .label
