@@ -1,6 +1,7 @@
 package com.wallscope.pronombackend.model;
 
 public class FormFileFormatRelationship {
+    private String uri;
     private String relationshipType;
     private String source;
     private String target;
@@ -49,5 +50,13 @@ public class FormFileFormatRelationship {
                 ", target='" + target + '\'' +
                 ", note='" + note + '\'' +
                 '}';
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

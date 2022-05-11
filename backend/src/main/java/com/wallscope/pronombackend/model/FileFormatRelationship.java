@@ -107,6 +107,16 @@ public class FileFormatRelationship implements RDFWritable {
         return targetName;
     }
 
+    public FormFileFormatRelationship convert() {
+        FormFileFormatRelationship frel = new FormFileFormatRelationship();
+        frel.setUri(uri.getURI());
+        frel.setNote(note);
+        frel.setSource(source.getURI());
+        frel.setTarget(target.getURI());
+        frel.setRelationshipType(relationshipType.getURI());
+        return frel;
+    }
+
     public static class Deserializer implements RDFDeserializer<FileFormatRelationship> {
         @Override
         public Resource getRDFType() {

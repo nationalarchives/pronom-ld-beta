@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FormInternalSignature {
+    private String uri;
     private String name;
     private String note;
     private Instant updated;
@@ -110,5 +111,13 @@ public class FormInternalSignature {
             return fbs;
         }).collect(Collectors.toList()));
         return fis;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
