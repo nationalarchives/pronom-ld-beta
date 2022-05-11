@@ -1,34 +1,32 @@
-fieldset
+fieldset(th:each="p, stat : *{hasRelationships}", th:if="${p.relationshipType eq 'http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipType/7'}")
   legend.sr-only For the current file format, specify others over which it has priority over
   .row-group
     #priority-inner
       p Priority over
       .priority-list
         .priority-group
-
-          //- File format
-          .form-row#priority-file-format(th:classappend="${compare?.priorityFileFormat} ? 'before-review' : ''")
+          .form-row#priority-file-format(th:classappend="${compare?.hasPriorityOver[__${stat.index}__]?.target} ? 'before-review' : ''")
             p.inputType Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="priorityFileFormat") File format
+                  label(th:for="priorityFileFormat") File format
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.1.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               .action-monitoring
-                    .review-type
-                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                      p Require reviewing
-                    .review-type
-                      i.fa-solid.fa-square-check
-                      p Reviewed
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
             .input-group
               button Accept current
-              input(name="priorityFileFormat" id="priorityFileFormat" th:field="*{priorityFileFormat}", th:data-undo="${ff?.priorityFileFormat}")
-            .input-group(th:if="${compare?.priorityFileFormat}")
+              input(th:field="*{hasRelationships[__${stat.index}__].target}", th:id="${'HasRelationship' + stat.index}", th:data-undo="${ff?.hasRelationships[__${stat.index}__]?.target}")
+            .input-group(th:if="${compare?.hasRelationships[__${stat.index}__]?.target}")
               button.incoming Accept incoming
-              input(th:value="${compare.priorityFileFormat}")
+              input(th:value="${compare.hasRelationships[__${stat.index}__].target}")
           button.bordered-red.small.delete-priority-over
             | Delete field
       .button-container

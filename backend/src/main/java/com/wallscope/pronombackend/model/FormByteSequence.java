@@ -3,6 +3,7 @@ package com.wallscope.pronombackend.model;
 import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormByteSequence {
+    private String uri;
     private String signature;
     private String position;
     private Integer offset;
@@ -101,5 +102,13 @@ public class FormByteSequence {
         fbs.setIndirectOffsetLength(bs.getIndirectOffsetLength());
         fbs.setIndirectOffsetLocation(bs.getIndirectOffsetLocation());
         return fbs;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

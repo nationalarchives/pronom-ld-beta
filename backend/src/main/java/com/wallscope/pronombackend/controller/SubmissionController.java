@@ -2,10 +2,7 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
-import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FormFileFormat;
-import com.wallscope.pronombackend.model.FormOption;
-import com.wallscope.pronombackend.utils.RDFUtil;
+import com.wallscope.pronombackend.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,9 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 /*
@@ -57,23 +57,24 @@ public class SubmissionController {
     public String newFormTemplate(Model model) {
         model.addAttribute("edit", false);
         FormFileFormat compare = new FormFileFormat();
-        compare.setVersion("3.2.1");
         model.addAttribute("compare", compare);
-        model.addAttribute("ff", new FormFileFormat());
+        compare.setVersion("3.2.1");
+        // test prepare file format
+        FormFileFormat ff = new FormFileFormat();
+        model.addAttribute("ff", ff);
         setFormOptions(model);
+        logger.debug("Sending FormFileFormat:\n" + ff);
         return "user-form";
     }
 
     @PostMapping("/contribute/form/new")
     public String newFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-
         logger.debug("Received FormFileFormat:\n" + ff);
         return "redirect:/contribute/form";
     }
 
     @PostMapping("/contribute/form/{puidType}/{puid}")
     public String formSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-
         logger.debug("Received FormFileFormat:\n" + ff);
         return "redirect:/contribute/form";
     }
@@ -81,10 +82,13 @@ public class SubmissionController {
     private void setFormOptions(Model model) {
         FormOptionsDAO dao = new FormOptionsDAO();
         Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
-                makeResource(RDFUtil.PRONOM.ByteOrder.type),
-                makeResource(RDFUtil.PRONOM.FormatIdentifierType.type)
+                makeResource(PRONOM.ByteOrder.type),
+                makeResource(PRONOM.FormatIdentifierType.type),
+                makeResource(PRONOM.ByteSequence.BSPType)
         ));
-        model.addAttribute("byteOrderOptions", options.get(RDFUtil.PRONOM.ByteOrder.type));
-        model.addAttribute("formatIdentifierOptions", options.get(RDFUtil.PRONOM.FormatIdentifierType.type));
+        model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
+        model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
+        List<FormOption> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream().sorted(Comparator.comparing(FormOption::getValue)).collect(Collectors.toList());
+        model.addAttribute("positionTypeOptions", sortedPosTypes);
     }
 }

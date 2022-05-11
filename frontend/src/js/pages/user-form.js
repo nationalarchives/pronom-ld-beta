@@ -2,6 +2,8 @@ import '@styles/main.scss'
 import '@styles/user-form.scss'
 import '@js/common.js'
 
+window.$ = $;
+
 const formParts = ['#core', '#signatures', '#priority', '#identifiers', '#relationships', '#additionalProperties', '#yourDetails', '#review']
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#priorityBtn', '#identifiersBtn', '#relationshipsBtn', '#additionalPropertiesBtn', '#yourDetailsBtn', '#reviewBtn']
 const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipSubBtn, #additionalSubBtn']
@@ -179,9 +181,9 @@ const App = () => {
   $('button.incoming').on('click', function (evt) {
     evt.preventDefault();
     const $this = $(this);
-    if($this.hasClass('undo') ) {
+    if ($this.hasClass('undo')) {
       revertChanges($this);
-    } else{
+    } else {
       acceptIncoming($this);
     }
   });
@@ -190,7 +192,7 @@ const App = () => {
     evt.preventDefault();
     const $this = $(this);
     acceptCurrent($this);
-    
+
   });
 
   function acceptCurrent($this) {
@@ -270,11 +272,23 @@ const App = () => {
   // signature
   $('#add-signature').on('click', function (evt) {
     evt.preventDefault();
-    if ($('#select-signature-type').val() == 'signature') {
-      $('.holder .signature:last').clone(true).appendTo('#signature-container');
-    } else {
-      $('.container-signature:last').clone(true).appendTo('#signature-container');
-    }
+    // Clone using array syntax like thymeleaf does: name="internalSignatures[0].name"
+    // name="internalSignatures[0].byteSequences[0].signature"
+    const lastSig = $('#signature-container .signature:last');
+    const name = $(lastSig).find('input:first').attr('name');
+    const lastIndex = /internalSignatures\[(\d+)\]/.exec(name)[1];
+    if (lastIndex === undefined) return;
+    const newIndex = parseInt(lastIndex) + 1;
+    const type = $('#select-signature-type').val() == 'signature' ? 'signature' : 'container-signature';
+    const clone = $(`.holder .${type}:last`).clone(true);
+    clone.find(':input').each(function () {
+      const $this = $(this);
+      // ignore buttons which get caught by :input as well
+      if ($this.is('button')) return;
+      console.log("$this", $this);
+      $this.attr('name', $this.attr('name').replace(/internalSignatures\[\d+\]/, `internalSignatures[${newIndex}]`));
+    });
+    clone.appendTo('#signature-container');
   });
   $('.delete-signature').on('click', function (evt) {
     evt.preventDefault();
@@ -287,8 +301,21 @@ const App = () => {
   // byte sequence
   $('.add-byte-sequence').on('click', function (evt) {
     evt.preventDefault();
-    var $container = $(this).closest('.byte-sequence-list').find('.list');
-    $('.holder .byte-sequence:last').clone(true).appendTo($container);
+    const $container = $(this).closest('.byte-sequence-list').find('.list');
+    const lastSeq = $container.find('.byte-sequence:last');
+    const name = $(lastSeq).find('input:first').attr('name');
+    const lastIndex = /byteSequences\[(\d+)\]/.exec(name)[1];
+    if (lastIndex === undefined) return;
+    const newIndex = parseInt(lastIndex) + 1;
+    const clone = $('.holder .byte-sequence:last').clone(true)
+    clone.find(':input').each(function () {
+      const $this = $(this);
+      // ignore buttons which get caught by :input as well
+      if ($this.is('button')) return;
+      console.log("$this", $this);
+      $this.attr('name', $this.attr('name').replace(/byteSequences\[\d+\]/, `byteSequences[${newIndex}]`));
+    });
+    clone.appendTo($container);
   });
   $('.delete-byte-sequence').on('click', function (evt) {
     evt.preventDefault();
