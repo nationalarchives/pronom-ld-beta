@@ -1916,4 +1916,23 @@ header#header {
 }
 
 
-
+// actor modal - START
+.form-container {
+  margin-top: 30px;
+}
+.button-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+  .push-right {
+    margin-left: auto;
+    width: 200px;
+  }
+}
+.form-inner {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+// actor modal - END

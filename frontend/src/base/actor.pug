@@ -1,0 +1,70 @@
+extends /layouts/modal.pug
+
+block modalHeader
+  div
+    h1 Add actor
+block modalBody
+  .form-container
+    .form-inner
+      form
+        //- Actor name
+        .form-row
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="actorName") Actor name (required)
+                span.tooltip-toggle(aria-label='some text here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          .input-group
+            input(name="actorName" id="actorName")
+        
+        //- Organisation
+        .form-row
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="organisation") Organisation
+                span.tooltip-toggle(aria-label='some text here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          .input-group
+            input(name="organisation" id="organisation")
+
+        //- Contact email
+        .form-row
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="actorEmail") Contact email (required)
+                span.tooltip-toggle(aria-label='some text here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          .input-group
+            input(name="actorEmail" id="actorEmail")
+
+        //- Country
+        .form-row
+          .tooltipPlusAction
+            .tooltip-container
+              .label
+                label(for="country") Country
+                span.tooltip-toggle(aria-label='some text here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          .input-group
+            input(name="country" id="country")
+
+        //- If contributor
+        .form-row
+          .tooltipPlusAction.checkbox-container
+            .input-group
+              input(name="ifContributor" id="ifContributor" type="checkbox")
+            .tooltip-container
+              .label
+                label(for="ifContributor") Actor is contributor
+                span.tooltip-toggle(aria-label='some text here' tabindex='0')
+                  .i-wrapper
+                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        .button-container
+          button.blue.medium.push-rigth Submit
