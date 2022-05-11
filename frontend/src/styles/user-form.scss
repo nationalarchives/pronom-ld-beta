@@ -1249,3 +1249,31 @@ select:focus {
   display: none;
 }
 
+.error-notification {
+  background: #FFC8C8;
+  .error-inner {
+    max-width: 1620px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px 20px 10px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 20px;
+    @media only screen and (max-width: 450px) {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+    h2 {
+      font-size: 1.2em;
+    }
+    ul {
+      li {
+        list-style-type:circle;
+        margin-left: 20px;
+      }
+    }
+  }
+  h2, p {
+    margin: 5px;
+  }
+}
