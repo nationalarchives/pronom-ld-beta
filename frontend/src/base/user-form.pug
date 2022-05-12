@@ -2,7 +2,7 @@ extends /layouts/modal.pug
   
 block modalHeader
   div
-    h1 Add new file fomat
+    h1(th:text="${edit ? 'Edit file format' : 'Add new file format' }") Add new file format
 block modalBody
   .error-notification
     .error-inner
