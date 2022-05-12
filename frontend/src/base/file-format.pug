@@ -46,21 +46,21 @@ block modalBody
     aside(aria-label="Sponsors")
       ul
         li
-          a.active(href="") Overview
+          a(href="#overview") Overview
         li
-          a(href="") References
+          a(href="#references") References
         li
-          a(href="") Signatures
+          a(href="#signatures") Signatures
         li
-          a(href="") More information
+          a(href="#moreInformation") More information
         li
-          a(href="") Compression
+          a(href="#compression") Compression
         li
-          a(href="") Character Encoding
+          a(href="#characterEncoding") Character Encoding
         li
-          a(href="") Properties
+          a(href="#properties") Properties
     .all-tables
-      h2 Overview
+      h2#overview Overview
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -184,7 +184,7 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
-      h2 References
+      h2#references References
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -293,7 +293,7 @@ block modalBody
           div
             p(aria-labeledby="") NOT IMPLEMENTED
 
-      h2 Signatures
+      h2#signatures Signatures
       h3 display signatures
       //- TABLE =========================================================================
       ul.table(th:each=" extSig : ${ff.displaySignatures}")
@@ -402,7 +402,7 @@ block modalBody
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther", th:text="${byteSeq.sequence}") Lorem ipsum
-      h2 More information
+      h2#moreInformation More information
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -488,7 +488,7 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
-      h2 Compression
+      h2#compression Compression
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -621,7 +621,7 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
-      h2 Character encoding
+      h2#characterEncoding Character encoding
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -685,7 +685,7 @@ block modalBody
           div
             p(aria-labeledby="") NOT IMPLEMENTED
 
-      h2 Properties
+      h2#properties Properties
       //- TABLE =========================================================================
       ul.table
         //- ROW
