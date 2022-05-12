@@ -160,7 +160,7 @@ section.form-part#signatures
                   button.accordion
                     .info
                       p Type: Signature
-                      p(th:if="${#strings.isNotEmpty(ff?.formattedPuid)}", th:text="${'PUID: '+ ff?.formattedPuid}") PUID: (some PUID if any)
+                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}") PUID: (some PUID if any)
                     i.fa-solid.fa-chevron-up
                   button.bordered-red.small.delete-signature Delete signature
                 .collapse-content
@@ -382,7 +382,7 @@ section.form-part#signatures
                 button.accordion
                   .info
                     p Type: Signature
-                    p(th:if="${#strings.isNotEmpty(ff?.formattedPuid)}", th:text="${'PUID: '+ ff?.formattedPuid}") PUID: (some PUID if any)
+                    p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}") PUID: (some PUID if any)
                   i.fa-solid.fa-chevron-up
                 button.bordered-red.small.delete-signature Delete signature
               .collapse-content
