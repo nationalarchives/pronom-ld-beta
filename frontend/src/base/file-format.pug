@@ -68,7 +68,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fName Format name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.1') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -78,29 +78,27 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fVersion Version
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fVersion", th:text="${ff.version ?: ''}") 1.0
         //- ROW
-        //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
               p.label-text#fExtension Extension
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '6.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="#fExtension", th:text="${ff.firstExtension ?: ''}") PLACEHOLDER(1.0)
         //- ROW
-        //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
               p.label-text#fMediaType Media Type
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '7.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -110,18 +108,17 @@ block modalBody
           .tooltip-container.row-nested-title
             .label
               p.label-text#fMediaType Identifiers
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           //- TABLE =========================================================================
           ul.table
             //- ROW
-            //- TODO - check toltip - correct code, but no text available
             li.row
               .tooltip-container
                 .label
                   p.label-text#fPUID PUID
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '2.1') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '8.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -131,18 +128,17 @@ block modalBody
               .tooltip-container
                 .label
                   p.label-text#fMIME MIME
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '4.2') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '9.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fMIME") NOT IMPLEMENTED
             //- ROW
-            //- TODO - tooltip not available
             li.row
               .tooltip-container
                 .label
                   p.label-text#fOther Other
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '4.2') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -153,7 +149,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fClassification Classification
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -163,7 +159,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fDescription Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '1.1.3') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -173,7 +169,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fRelatedFileFormats Related file formats
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -183,7 +179,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text#fPriorityOver Priority over
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.1.1') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -196,7 +192,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -208,7 +204,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -217,7 +213,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -231,7 +227,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -241,7 +237,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -251,7 +247,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Author
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.4') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -261,7 +257,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Identifiers
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -271,7 +267,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Publication date
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.6') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -281,7 +277,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Type
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.7') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -291,22 +287,22 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Note
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.8') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
 
       h2 Signatures
-      h3 External signatures
+      h3 display signatures
       //- TABLE =========================================================================
-      ul.table(th:each=" extSig : ${ff.externalSignatures}")
+      ul.table(th:each=" extSig : ${ff.displaySignatures}")
         //- ROW 
         li.row
           .tooltip-container
             .label
               p.label-text Name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.3.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -316,7 +312,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Type
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.3.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -330,7 +326,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.3.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -340,7 +336,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -350,7 +346,7 @@ block modalBody
           .tooltip-container.row-nested-title
             .label
               p.label-text#fMediaType Byte sequence
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           //- TABLE =========================================================================
@@ -360,7 +356,7 @@ block modalBody
               .tooltip-container
                 .label
                   p.label-text#fPUID Position type
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.4') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -370,7 +366,7 @@ block modalBody
               .tooltip-container
                 .label
                   p.label-text#fMIME Min Offset
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -380,7 +376,7 @@ block modalBody
               .tooltip-container
                 .label
                   p.label-text#fOther Max offset
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.6') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -390,17 +386,18 @@ block modalBody
               .tooltip-container
                 .label
                   p.label-text#fOther Byte order
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.4.1.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
                 p(aria-labeledby="#fOther", , th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
             //- ROW
+            //- TODO - tooltip not available
             li.row
               .tooltip-container
                 .label
                   p.label-text#fOther Value
-                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+                  //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
@@ -413,17 +410,18 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Byte order
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
+        //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
               p.label-text Orientation
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -433,17 +431,18 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Family
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") NOT IMPLEMENTED
         //- ROW
+        //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
               p.label-text Released
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -453,7 +452,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Developed by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.4.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -463,17 +462,18 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Supported by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(aria-labeledby="") Lorem ipsum dolor sit amet
         //- ROW
+        //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
               p.label-text Supported until
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -483,7 +483,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Technical enviroment
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.3.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -496,7 +496,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -506,7 +506,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Other names
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -516,7 +516,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Identifier(s)
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -526,7 +526,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Family
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -536,7 +536,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -546,7 +546,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Lossiness
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -556,7 +556,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Released
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -566,7 +566,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Withdrawn
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.6') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -576,7 +576,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Developed by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -586,7 +586,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Supported by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('internal', '5.2.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -596,7 +596,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Documentation
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -606,7 +606,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Rights
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -616,7 +616,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Note
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -629,7 +629,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Encoding name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -639,7 +639,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Encoding text
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -649,7 +649,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Note
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -659,7 +659,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Provenance text
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -669,7 +669,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text PUID TYPE ID
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -679,7 +679,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text PUID value
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -693,7 +693,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Compression Type
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -703,7 +703,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -715,7 +715,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Compression Level
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -725,7 +725,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -737,7 +737,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Image Width
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -747,7 +747,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -759,7 +759,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Image Height
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -769,7 +769,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -781,7 +781,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Color Space
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -791,7 +791,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -803,7 +803,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Sampling Frequency Unit
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -813,7 +813,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -825,7 +825,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text X Sampling Frequency
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -835,7 +835,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -847,7 +847,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Bits Per Sample
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -857,7 +857,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -869,7 +869,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Sample Per Pixel
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -879,7 +879,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -891,7 +891,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Byte Order
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.4.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -901,7 +901,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -913,7 +913,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Comments
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.8') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
@@ -923,7 +923,7 @@ block modalBody
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('external', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div

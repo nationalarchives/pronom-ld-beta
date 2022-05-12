@@ -37,7 +37,7 @@ const reverseMapping = {
     "Identifier": "4.2",
     "Aliases": "4.3",
     "Additional properties": "5",
-    "Select file format byte order": "5.1.1",
+    "Select file format byte order": " ",
     "Compression Type": "5.1.2",
     "Stakeholders and specification": "5.2",
     "Developer": "5.2.1",
@@ -52,7 +52,7 @@ const reverseMapping = {
     "Date ": "6.1",
     "Actor ": "6.2",
     "Action": "6.3",
-    "Priority": "6.4"
+    "Priority": "6.4",
   },
   "external": {
     "Core": "1",
@@ -106,7 +106,7 @@ const reverseMapping = {
     "Comment": "4.5",
     "Recognition": "4.6",
     "Home page": "5",
-    "Download test notes ": "5.1"
+    "Download test notes ": "5.1",
   }
 }
 
@@ -119,7 +119,7 @@ module.exports = {
     "1.1.4": "The format type that most closely resembles the format. Leave blank if none are suitable.",
     "1.2.1": "The name of the documentation, standard or webpage.",
     "1.2.2": "Enter the link to the webpage. Check the link works once in the table.",
-    "1.2.3": "The full name of the documentation",
+    "1.2.3": "Select if reference is a documentation",
     "1.2.4": "Author of the article as it appears on the webpage or the documentation.",
     "1.2.5": "Other identifying features of the file format. For example MIME type or apple resource fork. PRONOM only accepts MIME types from official documentation or from the IANA MIME type list.",
     "1.2.6": "The date of publication on the website or documentation.",
@@ -171,7 +171,7 @@ module.exports = {
     "1.1.4": "The format type that most closely resembles the format. Leave blank if none are suitable.",
     "1.2.1": "The name of the documentation, standard or webpage.",
     "1.2.2": "Enter the link to the webpage. Check the link works once in the table.",
-    "1.2.3": "The full name of the documentation",
+    "1.2.3": "Select if reference is a documentation",
     "1.2.4": "Author of the article as it appears on the webpage or the documentation.",
     "1.2.5": "Other identifying features of the file format. For example MIME type or apple resource fork. PRONOM only accepts MIME types from official documentation or from the IANA MIME type list.",
     "1.2.6": "The date of publication on the website or documentation.",
@@ -249,9 +249,9 @@ module.exports = {
     "3.2.3.1": "For use if a file format has an additional commonly used name.",
     "3.2.3.2": "The version associated (if any) with the alias.",
     "3.3.1": "Used if a file format has a relationship with another. For example version 2.0 could be a subsequent version of 1.0 and a prior version of 3.0.",
-    "3.3.2": "The file format related to the one being entered.",
+    "3.3.2": "The file format related to the one displayed.",
     "3.3.3": "A group of file formats often created by the same software where there are multiple versions and different types of file format all with a similar function. A good example of this is the formats from the Adobe Suite which includes PDF/A, PDF, PDF/X, Adobe Illustrator and PDF Portfolio.",
-    "3.4.1.1": "Optional field if information is available. Big endian and little endian refers to the order in which the bits are written into the byte stream. Often seen in earlier 90s formats, file formats can have both a big and little endian version requiring two signatures or have one signature that is either big endian or little endian.",
+    "3.4.1.1": "Big endian and little endian refers to the order in which the bits are written into the byte stream. Often seen in earlier 90s formats, file formats can have both a big and little endian version requiring two signatures or have one signature that is either big endian or little endian.",
     "3.4.1.2": "Used if the file format has a specific compression type.",
     "3.4.2.1": "Company, organisation or software manufacturer who created the file format.",
     "4.1": "The name of the contact.",
@@ -260,6 +260,10 @@ module.exports = {
     "4.4": "Country",
     "4.5": "Any other comments regarding the submission.",
     "4.6": "We like to credit contributers to the PRONOM database, usually this is by organisation but can also be a personal name.",
-    "5.1": "Download a file showing the work in progress towards the next official release. This includes the file formats added, updated, new signatures and further details"
+    "5.1": "Download a file showing the work in progress towards the next official release. This includes the file formats added, updated, new signatures and further details",
+    "6.1": "A file extension is the suffix at the end of a filename.",
+    "7.1": "The physical form of the archival materials.",
+    "8.1": "The PRONOM Persistent Unique Identifier (PUID) is an extensible scheme for providing persistent, unique and unambiguous identifiers for records in the PRONOM registry.",
+    "9.1": "A media type (also known as a Multipurpose Internet Mail Extensions or MIME type) indicates the nature and format of a document, file, or assortment of bytes. "
   }
 }
