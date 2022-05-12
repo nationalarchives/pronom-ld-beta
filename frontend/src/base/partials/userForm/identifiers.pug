@@ -63,7 +63,7 @@ section.form-part#identifiers
                   option(th:each="fio : ${formatIdentifierType}", th:value="${fio.value}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
-                select(th:if="${compare?.identifierType}")
+                select(th:if="${compare?.identifierType}" id="identifierType")
                   option(th:each="fio : ${formatIdentifierType}", th:value="${compare.identifierType}", th:text="${fio.label}") option 1
 
             //- Identifier
@@ -88,7 +88,7 @@ section.form-part#identifiers
                 input(name="identifier" id="identifier" th:field="*{identifier}", th:data-undo="${ff?.identifier}")
               .input-group(th:if="${compare?.identifier}")
                 button.incoming Accept incoming
-                input(th:value="${compare.identifier}")
+                input(th:value="${compare.identifier}" name="identifier" id="identifier")
             .button-container
               button.bordered-red.small.delete-identifier
                 | Delete identifier
@@ -96,7 +96,7 @@ section.form-part#identifiers
           button.black.small.push-right.add-identifier
             | Add identifier
 
-        h4.border
+        h3.border
           | Aliases
         .part
           #aliases-list.row-group
@@ -124,7 +124,7 @@ section.form-part#identifiers
                   input(name="aliasName" id="aliasName" th:field="*{aliasName}", th:data-undo="${ff?.aliasName}")
                 .input-group(th:if="${compare?.aliasName}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliasName}")
+                  input(th:value="${compare.aliasName}" name="aliasName" id="aliasName")
 
               //- Alias Version
               .form-row(th:classappend="${compare?.aliasVersion} ? 'before-review' : ''")
@@ -148,7 +148,7 @@ section.form-part#identifiers
                   input(name="aliasVersion" id="aliasVersion" th:field="*{aliasVersion}", th:data-undo="${ff?.aliasVersion}")
                 .input-group(th:if="${compare?.aliasVersion}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliasVersion}")
+                  input(th:value="${compare.aliasVersion}" name="aliasVersion" id="aliasVersion")
 
               .button-container
                 button.bordered-red.small.delete-alias

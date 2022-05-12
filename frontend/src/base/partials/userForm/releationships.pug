@@ -62,7 +62,7 @@ section.form-part#relationships
                 option(th:each="fio : ${relationshipTypeOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
             .input-group
               button.incoming Accept incoming
-              select(th:if="${compare?.relationshipType}")
+              select(th:if="${compare?.relationshipType}" id="relationshipType")
                 option(th:each="fio : ${relationshipTypeOptions}", th:value="${compare.relationshipType}", th:text="${fio.label}") option 1
 
           //- Related file format
@@ -87,7 +87,7 @@ section.form-part#relationships
               input(name="relatedFileFormat" id="relatedFileFormat" th:field="*{relatedFileFormat}", th:data-undo="${ff?.relatedFileFormat}")
             .input-group(th:if="${compare?.relatedFileFormat}")
               button.incoming Accept incoming
-              input(th:value="${compare.relatedFileFormat}")
+              input(th:value="${compare.relatedFileFormat}" name="relatedFileFormat" id="relatedFileFormat")
           .button-container
             button.bordered-red.small.delete-relationship
               | Delete relationship
@@ -117,4 +117,4 @@ section.form-part#relationships
           input(name="formatFamilies" id="formatFamilies" th:field="*{formatFamilies}", th:data-undo="${ff?.formatFamilies}")
         .input-group(th:if="${compare?.formatFamilies}")
           button.incoming Accept incoming
-          input(th:value="${compare.formatFamilies}")
+          input(th:value="${compare.formatFamilies}" name="formatFamilies" id="formatFamilies")

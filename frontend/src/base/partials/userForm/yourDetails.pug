@@ -65,18 +65,18 @@ section.form-part#yourDetails
               fieldset
                 legend.sr-only Select if you would like to be recognised for your submission
                 .form-row.checkbox-container
-                  input(type="radio" id="css" name="isAnonymous" value="false" th:field="*{submittedBy.isAnonymous}")
+                  input(type="radio" id="permission" name="isAnonymous" value="false" th:field="*{submittedBy.isAnonymous}")
                   .tooltip-container
                     .label
-                      label(for="Documentation") I give permission for my details to be recorded and displayed on PRONOM
+                      label(for="permission") I give permission for my details to be recorded and displayed on PRONOM
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
-                  input(type="radio" id="css" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
+                  input(type="radio" id="permission" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
                   .tooltip-container
                     .label
-                      label(for="Documentation") Prefer to stay anonymous
+                      label(for="permission") Prefer to stay anonymous
                       span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
