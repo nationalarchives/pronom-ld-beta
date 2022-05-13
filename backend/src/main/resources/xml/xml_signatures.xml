@@ -2,8 +2,8 @@
 <FFSignatureFile th:DateCreated="${#temporals.formatISO(#temporals.createNowForTimeZone('Europe/London'))}" Version="104" xmlns="http://www.nationalarchives.gov.uk/pronom/SignatureFile" xmlns:th="http://www.thymeleaf.org">
     <InternalSignatureCollection><th:block th:each="f : ${formats}" th:if="${f.hasSignature}">
         <InternalSignature th:each="sig : ${f.internalSignatures}" th:ID="${sig.ID}" th:Specificity="${sig.specificity}">
-            <ByteSequence th:each="bs : ${sig.byteSequences}" th:attrappend="Endianness=${bs.byteOrderName != null}?${bs.byteOrderName}" th:Reference="${bs.reference}">
-                <DevFullSequence th:text="${bs.sequence}"/>
+            <ByteSequence th:each="bs : ${sig.byteSequences}" th:attrappend="Endianness=${bs.byteOrderName != null}?${bs.byteOrderName}" th:Reference="${bs.reference}"><th:block th:if="${dev}">
+            <DevFullSequence th:text="${bs.sequence}"/></th:block>
                 <SubSequence th:each="ss : ${bs.subSequences}" MinFragLength="NOT IMPLEMENTED" th:Position="${ss.position}" th:SubSeqMaxOffset="${ss.subSeqMaxOffset}" th:SubSeqMinOffset="${ss.subSeqMinOffset}">
                     <Sequence th:text="${ss.sequence}">49492A00</Sequence><th:block th:each="fr : ${ss.fragments}"><th:block th:switch="${fr.type.name()}">
                     <LeftFragment th:case="'LEFT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</LeftFragment><RightFragment th:case="'RIGHT'" th:MinOffset="${fr.minOffset}" th:MaxOffset="${fr.maxOffset}" th:Position="${fr.position}" th:text="${fr.value}" >FRAG</RightFragment></th:block></th:block>

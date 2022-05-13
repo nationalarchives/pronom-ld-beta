@@ -19,6 +19,10 @@ public class SignatureTest {
         seqs = TestResources.OtherExampleByteSequence.getSubSequences();
         System.out.println(seqs);
         System.out.println("---------------------------------------------------------------");
+        System.out.println("----------------------OFFSET TEST------------------------------");
+        seqs = TestResources.OffsetTestByteSequence.getSubSequences();
+        System.out.println(seqs);
+        System.out.println("---------------------------------------------------------------");
     }
 
 }

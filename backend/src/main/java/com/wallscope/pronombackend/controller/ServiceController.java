@@ -19,5 +19,4 @@ public class ServiceController {
         res.put("status", "available");
         return res;
     }
-
 }
