@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,10 +51,11 @@ public class PUIDController {
     }
 
     @GetMapping(value = {"/signature.xml"}, produces = "text/xml")
-    public String xmlAllSignatureHandler(Model model) {
+    public String xmlAllSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
         FileFormatDAO dao = new FileFormatDAO();
         List<FileFormat> fs = dao.getAll();
         model.addAttribute("formats", fs);
+        model.addAttribute("dev", dev);
         return "xml_signatures";
     }
 
