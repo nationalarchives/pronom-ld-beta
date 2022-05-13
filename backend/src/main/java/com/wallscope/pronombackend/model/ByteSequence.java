@@ -147,13 +147,9 @@ public class ByteSequence implements RDFWritable {
                 '}';
     }
 
-    private static final String fragWildcardsRegex = "\\{(?<offset>[\\d-]+)\\}";
+    private static final String fragOffsetRegex = "\\{(?<offset>[\\d-]+)\\}";
 
     public List<SubSequence> getSubSequences() {
-        //System.out.println();
-        //System.out.println();
-        //System.out.println("Initial Sequence ===");
-        //System.out.println(this.sequence);
         // Split on * because they are wildcards, and we get fragments to each side
         // Before splitting we replace instances of {0-*} with * and -*} with }*
         // This normalises the wildcards in the sequence and makes it easier to handle
@@ -163,17 +159,13 @@ public class ByteSequence implements RDFWritable {
         ArrayList<SubSequence> parsedSubSeqs = new ArrayList<>();
         for (int i = 0; i < parts.length; i++) {
             String ss = parts[i];
-            //System.out.println("Step 1 ===");
-            //System.out.println(ss);
-            //System.out.println("Step 2 ===");
-            // find {5} or {4-7} style offset groups
-            String startMatch = getOffsetMatches("^" + fragWildcardsRegex, ss).stream().findFirst().orElse(null);
-            String clean = ss.replaceAll("^" + fragWildcardsRegex, "");
-            //System.out.println(clean);
-            //System.out.println("START OFFSET: " + startMatch);
-            //System.out.println("Step 3 ===");
-            Integer minOffset = i == 0 ? this.offset : null;
-            Integer maxOffset = null;
+            // find {5} or {4-7} style offset groups at the start of the string
+            // These indicate the overall subsequence offsets
+            String startMatch = getOffsetMatches("^" + fragOffsetRegex, ss).stream().findFirst().orElse(null);
+            String clean = ss.replaceAll("^" + fragOffsetRegex, "");
+
+            int minOffset = i == 0 && this.offset != null ? this.offset : 0;
+            int maxOffset = minOffset;
             if (startMatch != null) {
                 try {
                     if (startMatch.contains("-")) {
@@ -182,22 +174,45 @@ public class ByteSequence implements RDFWritable {
                         maxOffset = Integer.parseInt(sMParts[1]);
                     } else {
                         minOffset = Integer.parseInt(startMatch);
+                        maxOffset = minOffset;
                     }
                     if (isBOFOffset() && i == 0) {
                         this.position = makeResource(PRONOM.ByteSequence.Variable);
                     }
-                } catch (Exception ignored) {
-                    logger.debug("GOT EXCEPTION PARSING OFFSETS: " + ignored);
+                } catch (Exception e) {
+                    logger.debug("GOT EXCEPTION PARSING OFFSETS: " + e);
                 }
             }
-            //System.out.println("PARSED [MIN,MAX] OFFSETS: [" + minOffset + "," + maxOffset + "]");
-            //System.out.println("Step 4 ===");
             // split the sub-sequence into unambiguous parts and find the longest
             List<LongestSubSeqMatches> longestCandidates = processLongestSubSeqMatches(clean);
-            //System.out.println(longestCandidates);
+
             LongestSubSeqMatches longest = longestCandidates.stream().max(Comparator.comparingInt(m -> m.sequence.length())).orElse(null);
             if (longest == null) continue;
-            //System.out.println("LONGEST: " + longest);
+            // Find ?? and replace them with {1} which is essentially the same
+            // unless they are at the start of end of the substring, in which case just remove them
+            clean = clean.replaceAll("(?:^\\?\\?)*(?:\\?\\?$)*","").replaceAll("\\?\\?", "{1}");
+
+            // Check if there's an offset at the end of the longest sequence
+            String longestStartMatch = getOffsetMatches(fragOffsetRegex + "$", longest.sequence).stream().findFirst().orElse(null);
+            clean = clean.replaceAll(fragOffsetRegex + "$", "");
+            if (longestStartMatch != null) {
+                try {
+                    if (longestStartMatch.contains("-")) {
+                        String[] sMParts = longestStartMatch.split("-");
+                        minOffset = Integer.parseInt(sMParts[0]);
+                        maxOffset = Integer.parseInt(sMParts[1]);
+                    } else {
+                        minOffset = Integer.parseInt(longestStartMatch);
+                        maxOffset = minOffset;
+                    }
+                    if (isBOFOffset() && i == 0) {
+                        this.position = makeResource(PRONOM.ByteSequence.Variable);
+                    }
+                } catch (Exception e) {
+                    logger.debug("GOT EXCEPTION PARSING OFFSETS: " + e);
+                }
+            }
+            // Process the fragments to each side of the longest
             List<Fragment> frags = processFragments(clean, longest);
             //System.out.println("GETTING FRAGMENTS: " + frags);
             SubSequence subSeq = new SubSequence(longest.sequence, null, null, frags, null, i + 1, maxOffset, minOffset);
@@ -228,7 +243,9 @@ public class ByteSequence implements RDFWritable {
                     "|(?<longest>[A-F0-9]+)"// Finally, match HEX Byte characters
     ); // The trick here is that whatever is NOT captured by first 4 groups (i.e: surrounded by brackets)
     // will get captured by the last one, which only allows unambiguous sequence characters.
-    // This gives us the longest unambiguous HEX sequence on each sub-sequence.
+    // This gives us a match for each unambiguous HEX sequence on each sub-sequence.
+    // All we have to do is find the longest of them after that.
+
     // Inside the bracket groups, the way it works is by matching the opening bracket and then matching
     // 1 or more characters that are NOT a closing bracket: [^}]+
     // '.*' Can not be used as it will skip brackets in the middle in strings like:
@@ -247,13 +264,13 @@ public class ByteSequence implements RDFWritable {
         return matches;
     }
 
-    private static final Pattern fragmentCaptureRegex = Pattern.compile("(?<group>[^\\{\\}]+(?:\\{[^\\}]+\\})*)");
+    private static final Pattern leftFragmentCaptureRegex = Pattern.compile("(?<group>[^\\{\\}]+(?:\\{[^\\}]+\\})*)");
+    private static final Pattern rightFragmentCaptureRegex = Pattern.compile("(?<group>(?:\\{[^\\}]+\\})*[^\\{\\}]+)");
 
     private List<Fragment> processFragments(String sequence, LongestSubSeqMatches longest) {
         // Get Left part of string taking the sequence string until the longest part.
         String left = sequence.substring(0, longest.start);
-        //System.out.println("LEFT PART: " + left);
-        Matcher lm = fragmentCaptureRegex.matcher(left);
+        Matcher lm = leftFragmentCaptureRegex.matcher(left);
         ArrayList<Fragment> frags = new ArrayList<>();
         Integer positionCounter = 0;
         while (lm.find()) {
@@ -262,8 +279,8 @@ public class ByteSequence implements RDFWritable {
             List<Fragment> fs = fragStringToFragments(match, positionCounter, FragmentType.LEFT);
             if (fs != null && !fs.isEmpty()) {
                 positionCounter = fs.get(fs.size() - 1).position;
+                frags.addAll(fs);
             }
-            frags.addAll(fs);
         }
         Collections.reverse(frags);
         // Reverse the positions in the left fragments because we are supposed to count from right to left
@@ -280,8 +297,7 @@ public class ByteSequence implements RDFWritable {
 
 
         String right = sequence.substring(longest.end);
-        //System.out.println("RIGHT PART: " + right);
-        Matcher rm = fragmentCaptureRegex.matcher(right);
+        Matcher rm = rightFragmentCaptureRegex.matcher(right);
         positionCounter = 0;
         while (rm.find()) {
             String match = rm.group("group");
@@ -289,20 +305,23 @@ public class ByteSequence implements RDFWritable {
             List<Fragment> fs = fragStringToFragments(match, positionCounter, FragmentType.RIGHT);
             if (fs != null && !fs.isEmpty()) {
                 positionCounter = fs.get(fs.size() - 1).position;
+                frags.addAll(fs);
             }
-            frags.addAll(fs);
         }
         return frags;
     }
 
-    private static final Pattern offsetSequenceRegex = Pattern.compile("(?<sequence>[^\\{\\}]+)(?:\\{(?<offset>[^\\}]+)\\})*");
+    private static final String sequencePartRegex = "(?<sequence>[^\\{\\}]+)";
+    private static final String offsetPartRegex = "(?:\\{(?<offset>[^\\}]+)\\})*";
+    private static final Pattern leftOffsetSequenceRegex = Pattern.compile(sequencePartRegex + offsetPartRegex);
+    private static final Pattern rightOffsetSequenceRegex = Pattern.compile(offsetPartRegex + sequencePartRegex);
     private static final Pattern orSeparatorRegex = Pattern.compile("(?<rest>[^\\(]*)\\((?<or>[^\\)]+)\\)");
 
     private List<Fragment> fragStringToFragments(String sequence, Integer index, FragmentType type) {
         ArrayList<Fragment> frags = new ArrayList<>();
-        Integer minOffset = null;
-        Integer maxOffset = null;
-        Matcher mOffset = offsetSequenceRegex.matcher(sequence);
+        Integer minOffset = 0;
+        Integer maxOffset = 0;
+        Matcher mOffset = type == FragmentType.LEFT ? leftOffsetSequenceRegex.matcher(sequence) : rightOffsetSequenceRegex.matcher(sequence);
         // This should always match once, with or without offset, but we early return if not anyway to avoid potential disasters
         if (!mOffset.find()) return null;
         String ofMatch = mOffset.group("offset");
@@ -335,8 +354,10 @@ public class ByteSequence implements RDFWritable {
             }
         }
         // if frags is empty after this it's because there are no ors, so we just add the rest from before the orMatch
+        // We still need to increase the positionCounter as it wasn't increased during the loop
         if (frags.isEmpty() && !rest.isEmpty()) {
-            frags.add(new Fragment(type, rest, maxOffset, minOffset, index));
+            positionCounter++;
+            frags.add(new Fragment(type, rest, maxOffset, minOffset, positionCounter));
         }
         //System.out.println("LAST FRAG: " + frags.get(frags.size() - 1));
         return frags;
