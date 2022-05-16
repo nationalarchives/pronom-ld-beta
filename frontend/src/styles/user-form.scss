@@ -1277,3 +1277,38 @@ select:focus {
     margin: 5px;
   }
 }
+.indicators {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  margin-left: auto;
+  i {
+    margin-top: 5px;
+    display: none;
+  }
+  i.fa-solid.fa-triangle-exclamation {
+    color: orange;
+  }
+  i.fa-solid.fa-square-check {
+    color: green;
+  }
+}
+
+.after {
+  .indicators {
+    i.fa-solid.fa-square-check {
+      display: block;
+    }
+  }
+}
+
+.before {
+  .indicators {
+    i.fa-solid.fa-triangle-exclamation {
+      display: block;
+    }
+    i.fa-solid.fa-square-check {
+      display: none;
+    }
+  }
+}

@@ -10,10 +10,15 @@ const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipS
 
 const App = () => {
 
-  $(document).ready(formSetup);
+  $(document).ready(function() {
+    formSetup(),
+    checkReviewIndicators()
+  });
+
   $(window).on('resize', formSetup);
   let formStep = 0;
   $('.modal-container').removeClass('noJS');
+
 
   function formSetup() {
     $('.form-part').addClass('hide');
@@ -25,13 +30,11 @@ const App = () => {
         if ($(this).closest('.form-section').hasClass("open")) {
           $('.form-section').removeClass('open');
           $(".form-partial-content").addClass('hide');
-          console.log('hide')
         } else {
           $('.form-section').removeClass('open');
           $(".form-partial-content").addClass('hide');
           $(this).closest('.form-section').addClass('open');
           $(".open .form-partial-content").removeClass('hide');
-          console.log('no hide')
         }
       });
     } else {
@@ -58,7 +61,6 @@ const App = () => {
     $('.main-nav li').removeClass("active");
     formStep++;
     $(formParts[formStep]).addClass('show');
-    console.log(formStep)
     if (1 < formStep && formStep < 6) {
       $(formMenuButtons[2]).addClass("active");
     } else {
@@ -239,14 +241,11 @@ const App = () => {
     $this.text('Accept incoming');
   }
 
-
   // cloning form fields
-
 
 
   // priority
   $('.add-priority-over').on('click', function (evt) {
-    console.log('clicked')
     evt.preventDefault();
     $('.priority-group:last').clone(true).appendTo('.priority-list')
   });
@@ -254,7 +253,6 @@ const App = () => {
     evt.preventDefault();
     $(this).closest(".priority-group").remove();
   });
-
 
 
   // reference
@@ -266,7 +264,6 @@ const App = () => {
     evt.preventDefault();
     $(this).closest(".reference-group").remove();
   });
-
 
 
   // signature
@@ -285,7 +282,6 @@ const App = () => {
       const $this = $(this);
       // ignore buttons which get caught by :input as well
       if ($this.is('button')) return;
-      console.log("$this", $this);
       $this.attr('name', $this.attr('name').replace(/internalSignatures\[\d+\]/, `internalSignatures[${newIndex}]`));
     });
     clone.appendTo('#signature-container');
@@ -312,7 +308,6 @@ const App = () => {
       const $this = $(this);
       // ignore buttons which get caught by :input as well
       if ($this.is('button')) return;
-      console.log("$this", $this);
       $this.attr('name', $this.attr('name').replace(/byteSequences\[\d+\]/, `byteSequences[${newIndex}]`));
     });
     clone.appendTo($container);
@@ -364,7 +359,6 @@ const App = () => {
   });
 
 
-
   // aliases
   $('.add-alias').on('click', function (evt) {
     evt.preventDefault();
@@ -374,7 +368,6 @@ const App = () => {
     evt.preventDefault();
     $(this).closest(".alias").remove();
   });
-
 
 
   // relationships
