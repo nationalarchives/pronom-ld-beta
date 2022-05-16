@@ -22,7 +22,7 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="UserName") Name
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.1') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="UserName", id="UserName", th:field="*{submittedBy.name}")
@@ -30,7 +30,7 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="Organisation") Organisation
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.2') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Organisation" id="Organisation" th:field="*{submittedBy.organisation}")
@@ -38,7 +38,7 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="Email") Contact email(required)
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.3') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Email" id="Email" th:field="*{submittedBy.email}")
@@ -46,7 +46,7 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="Country") Country
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 input(name="Country" id="Country" th:field="*{submittedBy.country}")
@@ -55,7 +55,7 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="Comment") Comment
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.5') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 textarea(cols="30", rows="10" name="Comment" id="Comment" th:field="*{submittedBy.comment}")
@@ -69,7 +69,7 @@ section.form-part#yourDetails
                   .tooltip-container
                     .label
                       label(for="permission") I give permission for my details to be recorded and displayed on PRONOM
-                      span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
@@ -77,6 +77,6 @@ section.form-part#yourDetails
                   .tooltip-container
                     .label
                       label(for="permission") Prefer to stay anonymous
-                      span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
