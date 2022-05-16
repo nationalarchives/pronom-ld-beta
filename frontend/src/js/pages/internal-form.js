@@ -5,6 +5,31 @@ import '@styles/internal-form.scss'
 const formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#additionalProperties', '#contributors', '#review']
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
 const App = () => {
+
+  $(document).ready(function() {
+    checkReviewIndicators()
+  });
+
+  // TODO write a function which will enable indicator in the form nav
+  function checkReviewIndicators(){
+
+    if($('.form-row').hasClass('before-review')) {
+      $(".before-review").closest('section').each(function() {
+        var id = this.id;
+        $('#' + id + 'Btn').addClass('before');
+      });   
+    } 
+    
+    if ($('.form-row').hasClass('after-review')) {
+      $(".after-review").closest('section').each(function() {
+        var id = this.id;
+        $('#' + id + 'Btn').addClass('after');
+      });   
+    }
+
+  }
+
+
   // Signal JS is active
   $('.modal-container').removeClass('noJS');
   // Initialise form
