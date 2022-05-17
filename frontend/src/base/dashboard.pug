@@ -15,8 +15,8 @@ block content
           div
             .selector-checkbox
               fieldset
-                legend.sr-only Select or deselect all submissions
-                input(type="checkbox")
+                label.sr-onlY(for="select_all") Select or deselect all submissions
+                input(type="checkbox" id="select_all")
               p Selected (2)
             .buttons
               .dropdown
@@ -37,18 +37,18 @@ block content
           div
             fieldset
               legend.sr-only Filter results by type
-              label(for="sort_by") Type
+              label(for="sort_by_type") Type
               div
-                select(id="sort_by")
+                select(id="sort_by_type")
                   option(value='0') All
                   option(value='1') type 2
                   option(value='2') type 3
                   option(value='2') type 4
             fieldset
               legend.sr-only Filter results by action
-              label(for="sort_by") Action
+              label(for="sort_by_action") Action
               div
-                select(id="sort_by")
+                select(id="sort_by_action")
                   option(value='0') All
                   option(value='1') type 2
                   option(value='2') type 3
@@ -92,8 +92,8 @@ block content
               a(href="")
                 .selector-checkbox
                   fieldset
-                    legend.sr-only Select or deselect submission
-                    input(type="checkbox")
+                    label.sr-only(for="select_submission") Select or deselect submission
+                    input(type="checkbox" id="select_submission")
                 div
                   p.data
                     span Date
@@ -142,8 +142,8 @@ block content
               a(href="")
                 .selector-checkbox
                   fieldset
-                    legend.sr-only Select or deselect submission
-                    input(type="checkbox")
+                    label.sr-only(for="select_submission") Select or deselect submission
+                    input(type="checkbox" id="select_submission")
                 div
                   p.data
                     span Date
@@ -192,8 +192,8 @@ block content
               a(href="")
                 .selector-checkbox
                   fieldset
-                    legend.sr-only Select or deselect submission
-                    input(type="checkbox")
+                    label.sr-only(for="select_submission") Select or deselect submission
+                    input(type="checkbox" id="select_submission")
                 div
                   p.data
                     span Date
@@ -259,8 +259,8 @@ block content
                 a(href="")
                   .selector-checkbox
                     fieldset
-                      legend.sr-only Select or deselect submission
-                      input(type="checkbox")
+                      label.sr-only(for="select_submission") Select or deselect submission
+                      input(type="checkbox" id="select_submission")
                   div
                     p.data
                       span Date
@@ -309,8 +309,8 @@ block content
                 a(href="")
                   .selector-checkbox
                     fieldset
-                      legend.sr-only Select or deselect submission
-                      input(type="checkbox")
+                      label.sr-only(for="select_submission") Select or deselect submission
+                      input(type="checkbox" id="select_submission")
                   div
                     p.data
                       span Date
@@ -359,8 +359,8 @@ block content
                 a(href="")
                   .selector-checkbox
                     fieldset
-                      legend.sr-only Select or deselect submission
-                      input(type="checkbox")
+                      label.sr-only(for="select_submission") Select or deselect submission
+                      input(type="checkbox" id="select_submission")
                   div
                     p.data
                       span Date
@@ -417,6 +417,7 @@ block content
                   input.check#currentPlan(type='radio' name='plan' value='currentPlan' checked="true") 
                   label.stretch(for='currentPlan') Current release plan
                 .selected
+                  label.sr-only(for='otherPlan') Check if releasing to other release plan than current
                   input.check#otherPlan(type='radio' name='plan' value='otherPlan')
                   label(for='selectRelease') Other
                   fieldset
