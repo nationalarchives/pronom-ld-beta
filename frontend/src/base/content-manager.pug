@@ -24,7 +24,13 @@ block content
         div(th:each="region : ${regions}")
           form(th:action="@{/content-manager/} + ${region}", method="post")
             .form-group
-              label(th:text="${@templateUtils.humaniseRegion(region)}") Index: title
-              textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}")
+              label(th:text="${@templateUtils.humaniseRegion(region)}" for="home-content1") Index: title
+              textarea(name="content", cols="80", rows="10", th:text="${contentMap.get(region)}" id="home-content1")
               button.small.bordered-blue(type="submit") Save
+      #search-content
+        div
+          p search content
+      #about-content
+        div
+          p about content
       
