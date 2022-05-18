@@ -84,4 +84,28 @@ public class TestResources {
             null,
             null
     );
+
+    public static ByteSequence OffsetTestByteSequence = new ByteSequence(makeResource(PRONOM.uri + "id/ByteSequence/738"),
+            makeResource(PRONOM.uri + "id/InternalSignature/596"),
+            makeResource(PRONOM.uri + "id/ByteSequencePosition/1"),
+            "Absolute from BOF",
+            0,
+            "(73|2073)6F6C696420*6661636574206E6F726D616C20{0-200}6F75746572206C6F6F70{0-20}76657274657820",
+            null,
+            null,
+            null,
+            null
+    );
+
+    public static ByteSequence FurtherOffsetTestBS = new ByteSequence(makeResource(PRONOM.uri + "id/ByteSequence/689"),
+            makeResource(PRONOM.uri + "id/InternalSignature/558"),
+            makeResource(PRONOM.uri + "id/ByteSequencePosition/1"),
+            "Absolute from BOF",
+            0,
+            "00??0000{8}0A00[!00]{487}(0000|0001){2}010000000100{512-4608}03{3}FFFFFFFFFFFFFFFF{2}FFFF{2}0F0F",
+            null,
+            null,
+            null,
+            null
+    );
 }
