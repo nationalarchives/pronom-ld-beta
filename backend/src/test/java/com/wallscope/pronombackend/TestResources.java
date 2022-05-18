@@ -96,4 +96,16 @@ public class TestResources {
             null,
             null
     );
+
+    public static ByteSequence FurtherOffsetTestBS = new ByteSequence(makeResource(PRONOM.uri + "id/ByteSequence/689"),
+            makeResource(PRONOM.uri + "id/InternalSignature/558"),
+            makeResource(PRONOM.uri + "id/ByteSequencePosition/1"),
+            "Absolute from BOF",
+            0,
+            "00??0000{8}0A00[!00]{487}(0000|0001){2}010000000100{512-4608}03{3}FFFFFFFFFFFFFFFF{2}FFFF{2}0F0F",
+            null,
+            null,
+            null,
+            null
+    );
 }
