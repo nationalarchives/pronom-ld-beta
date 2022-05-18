@@ -3,10 +3,15 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const AssetConfigWebpackPlugin = require('asset-config-webpack-plugin');
+const tooltips = require('./tooltips');
 require("babel-polyfill");
 const fs = require('fs');
 const buildPath = path.resolve(__dirname, 'dist');
 const SRC = path.resolve(__dirname, 'src');
+
+const getTooltip = (type,id) => {
+  return tooltips[type][id];
+}
 
 const HTMLFiles = fs.readdirSync(SRC + '/base').filter(file => file.includes('.pug')).map(file => {
   const [name, ext] = file.split('.');
@@ -19,6 +24,7 @@ const HTMLFiles = fs.readdirSync(SRC + '/base').filter(file => file.includes('.p
     name,
     filename: `${name}.html`,
     template: SRC + '/base/' + file,
+    getTooltip,
     inject: true,
     chunks,
     minify: {
@@ -49,7 +55,9 @@ module.exports = {
         test: /\.pug$/,
         exclude: [/node_modules/],
         include: path.join(__dirname, 'src', 'base'),
-        use: ['pug-loader']
+        use: [{
+          loader: 'pug-loader',
+        }]
       },
       {
         test: /\.js$/,

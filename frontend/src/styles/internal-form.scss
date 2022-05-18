@@ -12,7 +12,7 @@
 }
 .action-container {
   display: grid;
-  grid-template-columns: 100px 300px 1fr 150px;
+  grid-template-columns: 140px 300px 1fr 150px;
   grid-column-gap: 20px;
   align-items: flex-end;
   @media only screen and (max-width: 1500px) {
@@ -28,3 +28,35 @@
     }
   }
 }
+.form-part {
+  
+  &.hide {
+    height: 0;
+    width: 0;
+    position: absolute;
+    overflow: hidden;
+  }
+  &.show {
+    height: auto;
+    width: auto;
+    position: inherit;
+    overflow:visible;
+  }
+}
+
+.contributors-list {
+  .action-container {
+    &:nth-child(1) {
+      .delete-record {
+        display: none;
+      }
+    }
+    .date {
+      height: 35px;
+    }
+    .delete-record {
+      margin-bottom: 10px;
+    }
+  }
+}
+

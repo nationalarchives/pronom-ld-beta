@@ -1,7 +1,6 @@
 package com.wallscope.pronombackend.dao;
 
 import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FileFormatDeserializer;
 import com.wallscope.pronombackend.model.PUID;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.wallscope.pronombackend.dao.InternalSignatureDAO.SIGNATURE_SUB_QUERY;
@@ -34,6 +34,8 @@ public class FileFormatDAO {
                  ?puidType rdfs:label ?puidTypeName .
                	 
                  # Non-required fields
+                 OPTIONAL { ?f ff:FormatIdentifier ?formatIdentifier . }#END OPTIONAL
+                 
                  OPTIONAL { ?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType . }#END OPTIONAL
                  OPTIONAL { ?f ff:Classification ?classification .
                     ?classification rdfs:label ?classificationName .
@@ -46,10 +48,23 @@ public class FileFormatDAO {
                	 }#END OPTIONAL
                	 OPTIONAL { ?f ff:Development.Actor ?devActor . }#END OPTIONAL
                  OPTIONAL { ?f ff:Support.Actor ?supportActor . }#END OPTIONAL
+                 
+                 OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
+                   ?fRel pr:fileFormatRelationship.FileFormatRelationshipType ?fRelType ;
+                     pr:fileFormatRelationship.Source ?fRelSource ;
+                     pr:fileFormatRelationship.Target ?fRelTarget ;
+                     .
+                     OPTIONAL { ?fRel pr:fileFormatRelationship.Note ?fRelNote . }#END OPTIONAL
+                     
+                     ?fRelSource rdfs:label ?fRelSourceName .
+                     ?fRelTarget rdfs:label ?fRelTargetName .
+                    
+                   ?fRelType pr:formatRelationshipType.TypeName ?fRelTypeName ;
+                     pr:formatRelationshipType.InverseTypeName ?fRelInverseTypeName .
+                 }#END OPTIONAL
             """;
     public static final String FILE_FORMAT_QUERY = PREFIXES + """
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
-            prefix pt: <http://www.nationalarchives.gov.uk/PRONOM/puidType.>
             CONSTRUCT {
             """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
              } WHERE {
@@ -64,7 +79,7 @@ public class FileFormatDAO {
 
     public FileFormat getFileFormatByPuid(String puid, String puidType) {
         logger.debug("fetching file format by PUID: " + puidType + "/" + puid);
-        FileFormatDeserializer deserializer = new FileFormatDeserializer();
+        FileFormat.Deserializer deserializer = new FileFormat.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("puid", makeLiteral(puid, XSDDatatype.XSDinteger));
         params.put("puidTypeName", makeLiteral(puidType));
@@ -84,5 +99,15 @@ public class FileFormatDAO {
         Integer puid = puidNode.asLiteral().getInt();
         String puidType = mu.getOneObjectOrNull(null, makeProp(RDFS.label)).asLiteral().getString();
         return new PUID(puid, puidType.trim());
+    }
+
+    public List<FileFormat> getAll() {
+        logger.debug("fetching all file formats");
+        Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY);
+        ModelUtil mu = new ModelUtil(m);
+        logger.debug("building file format objects");
+        List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
+        logger.debug("file formats built");
+        return fs;
     }
 }

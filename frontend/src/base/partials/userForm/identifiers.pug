@@ -27,66 +27,132 @@ section.form-part#identifiers
       .form-header-main
         h2 Identifiers
         .nav
-          button.bordered-blue.medium.left
+          button.bordered-blue.medium.left.prev
             i.fa-solid.fa-angles-left
             | Prev
-          button.bordered-blue.medium.right
+          button.bordered-blue.medium.right.next
             | Next
             i.fa-solid.fa-angles-right
   .form-partial-content
     .part
       fieldset
         legend.sr-only Provide identifiers and aliases
-        #identifiers-list
-          .row-group
-            .form-row
-              .tooltip-container
-                .label
-                  label(for="IdentifierType") Identifier type
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              select(id="IdentifierType")
-                option(value='0') option1
-                option(value='1') option2
-            .form-row
-              .tooltip-container
-                .label
-                  label(for="Identifier") Identifier
-                  span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                    .i-wrapper
-                      i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-              input(name="Identifier" id="Identifier")
+        #identifiers-list.row-group
+          .identifier
+
+            //- Identifier type
+            .form-row#identifier-type(th:classappend="${compare?.identifierType} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(ff?.identifierType) ? 'New content' : 'Edited content'}") Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="identifierType") Identifier type
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.1') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button.current Accept current
+                select(id="identifierType", th:field="*{identifierType}")
+                  option(th:each="fio : ${formatIdentifierType}", th:value="${fio.value}", th:text="${fio.label}") option 1
+              .input-group
+                button.incoming Accept incoming
+                select(th:if="${compare?.identifierType}" id="identifierType")
+                  option(th:each="fio : ${formatIdentifierType}", th:value="${compare.identifierType}", th:text="${fio.label}") option 1
+
+            //- Identifier
+            .form-row#identifier(th:classappend="${compare?.identifier} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(ff?.identifier) ? 'New content' : 'Edited content'}") Edited content
+              .tooltipPlusAction
+                .tooltip-container
+                  .label
+                    label(for="identifier") Identifier
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.2') tabindex='0')
+                      .i-wrapper
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                .action-monitoring
+                  .review-type
+                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                    p Require reviewing
+                  .review-type
+                    i.fa-solid.fa-square-check
+                    p Reviewed
+              .input-group
+                button Accept current
+                input(name="identifier" id="identifier" th:field="*{identifier}", th:data-undo="${ff?.identifier}")
+              .input-group(th:if="${compare?.identifier}")
+                button.incoming Accept incoming
+                input(th:value="${compare.identifier}" name="identifier" id="identifier")
             .button-container
-              button.bordered-red.small
+              button.bordered-red.small.delete-identifier
                 | Delete identifier
         .button-container
-          button.black.small.push-right
+          button.black.small.push-right.add-identifier
             | Add identifier
-        h4.border
+
+        h3.border
           | Aliases
         .part
-          #aliases-list
-            .row-group
-              .form-row
-                .tooltip-container
-                  .label
-                    label(for="AliasName") Name
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="AliasName" id="AliasName")
-              .form-row
-                .tooltip-container
-                  .label
-                    label(for="AliasVersion") Version
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="AliasVersion" id="AliasVersion")
+          #aliases-list.row-group
+            .alias
+
+              //- Alias Name
+              .form-row(th:classappend="${compare?.aliasName} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.aliasName) ? 'New content' : 'Edited content'}") Edited content
+                .tooltipPlusAction
+                  .tooltip-container
+                    .label
+                      label(for="aliasName") Name
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.3.1') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  .action-monitoring
+                    .review-type
+                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                      p Require reviewing
+                    .review-type
+                      i.fa-solid.fa-square-check
+                      p Reviewed
+                .input-group
+                  button Accept current
+                  input(name="aliasName" id="aliasName" th:field="*{aliasName}", th:data-undo="${ff?.aliasName}")
+                .input-group(th:if="${compare?.aliasName}")
+                  button.incoming Accept incoming
+                  input(th:value="${compare.aliasName}" name="aliasName" id="aliasName")
+
+              //- Alias Version
+              .form-row(th:classappend="${compare?.aliasVersion} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.aliasVersion) ? 'New content' : 'Edited content'}") Edited content
+                .tooltipPlusAction
+                  .tooltip-container
+                    .label
+                      label(for="aliasVersion") Version
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.3.2') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  .action-monitoring
+                    .review-type
+                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                      p Require reviewing
+                    .review-type
+                      i.fa-solid.fa-square-check
+                      p Reviewed
+                .input-group
+                  button Accept current
+                  input(name="aliasVersion" id="aliasVersion" th:field="*{aliasVersion}", th:data-undo="${ff?.aliasVersion}")
+                .input-group(th:if="${compare?.aliasVersion}")
+                  button.incoming Accept incoming
+                  input(th:value="${compare.aliasVersion}" name="aliasVersion" id="aliasVersion")
+
               .button-container
-                button.bordered-red.small
-                  | Delete identifier
+                button.bordered-red.small.delete-alias
+                  | Delete alias
           .button-container
-            button.black.small.push-right
+            button.black.small.push-right.add-alias
               | Add alias

@@ -1,6 +1,6 @@
 #scrollToTop
-  button(onclick="topFunction()")
-    i.fa-solid.fa-chevron-up
+  button(onclick="topFunction()" aria-label="Scroll to the page top")
+    i.fa-solid.fa-chevron-up(aria-hidden="true")
 script.
   var mybutton = document.getElementById("scrollToTop");
 
@@ -16,10 +16,8 @@ script.
   function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    console.log('clicked')
   }
   function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    console.log('clicked')
   }

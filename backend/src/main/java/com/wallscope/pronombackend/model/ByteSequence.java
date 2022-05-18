@@ -1,15 +1,25 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.utils.ModelUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class ByteSequence implements RDFWritable {
+    Logger logger = LoggerFactory.getLogger(ByteSequence.class);
     private final Resource uri;
     private final Resource signature;
-    private final Resource position;
+    private Resource position;
     private final String positionName;
     private final Integer offset;
     private final String sequence;
@@ -67,6 +77,39 @@ public class ByteSequence implements RDFWritable {
         return maxOffset;
     }
 
+    public String getReference() {
+        if (position == null) return null;
+        return switch (position.getURI()) {
+            case PRONOM.ByteSequence.AbsoluteFromBOF, PRONOM.ByteSequence.IndirectFromBOF -> "BOFoffset";
+            case PRONOM.ByteSequence.AbsoluteFromEOF, PRONOM.ByteSequence.IndirectFromEOF -> "EOFoffset";
+            case PRONOM.ByteSequence.Variable -> "Variable";
+            default -> null;
+        };
+    }
+
+    public boolean isBOFOffset() {
+        return switch (position.getURI()) {
+            case PRONOM.ByteSequence.AbsoluteFromBOF, PRONOM.ByteSequence.IndirectFromBOF -> true;
+            default -> false;
+        };
+    }
+
+    public boolean isEOFOffset() {
+        return switch (position.getURI()) {
+            case PRONOM.ByteSequence.AbsoluteFromEOF, PRONOM.ByteSequence.IndirectFromEOF -> true;
+            default -> false;
+        };
+    }
+
+    public String getByteOrderName() {
+        if (byteOrder == null) return null;
+        return switch (byteOrder.getURI()) {
+            case PRONOM.ByteOrder.littleEndian -> "Little-endian";
+            case PRONOM.ByteOrder.bigEndian -> "Big-endian";
+            default -> null;
+        };
+    }
+
     @Override
     public Resource getURI() {
         return uri;
@@ -85,5 +128,468 @@ public class ByteSequence implements RDFWritable {
         m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLocation), makeLiteral(indirectOffsetLocation));
         m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLength), makeLiteral(indirectOffsetLength));
         return m;
+    }
+
+    @Override
+    public String toString() {
+        return "ByteSequence{" +
+                "uri=" + uri +
+                ", signature=" + signature +
+                ", position=" + position +
+                ", positionName='" + positionName + '\'' +
+                ", offset=" + offset +
+                ", sequence='" + sequence + '\'' +
+                ", byteOrder=" + byteOrder +
+                ", maxOffset=" + maxOffset +
+                ", indirectOffsetLocation=" + indirectOffsetLocation +
+                ", indirectOffsetLength=" + indirectOffsetLength +
+                '}';
+    }
+
+    private static final String fragOffsetRegex = "\\{(?<offset>[\\d-]+)\\}";
+
+    public List<SubSequence> getSubSequences() {
+        // Split on * because they are wildcards, and we get fragments to each side
+        // Before splitting we replace instances of {0-*} with * and -*} with }*
+        // This normalises the wildcards in the sequence and makes it easier to handle
+        // offsets and wildcards
+        String normalised = sequence.replaceAll("\\{0-\\*\\}", "*").replaceAll("-\\*\\}", "}*");
+        String[] parts = normalised.split("\\*");
+        ArrayList<SubSequence> parsedSubSeqs = new ArrayList<>();
+        for (int i = 0; i < parts.length; i++) {
+            String ss = parts[i];
+            // find {5} or {4-7} style offset groups at the start of the string
+            // These indicate the overall subsequence offsets
+            String startMatch = getOffsetMatches("^" + fragOffsetRegex, ss).stream().findFirst().orElse(null);
+            String clean = ss.replaceAll("^" + fragOffsetRegex, "");
+
+            Integer subSeqMinOffset = i == 0 && this.offset != null ? this.offset : 0;
+            Integer subSeqMaxOffset = i == 0 && this.maxOffset != null ? this.maxOffset + subSeqMinOffset : 0;
+            if (startMatch != null) {
+                Integer[] offsets = processOffsets(startMatch);
+                subSeqMinOffset = offsets[0];
+                subSeqMaxOffset = offsets[1];
+                if (isBOFOffset() && i == 0) {
+                    this.position = makeResource(PRONOM.ByteSequence.Variable);
+                }
+            }
+
+            // Find ?? and replace them with {1} which is essentially the same
+            clean = clean.replaceAll("(?:^\\?\\?)*(?:\\?\\?$)*", "").replaceAll("\\?\\?", "{1}");
+            // Process the clean sub sequence
+            SubSequence subSeq = processSubSequence(clean, subSeqMinOffset, subSeqMaxOffset, i + 1);
+            parsedSubSeqs.add(subSeq);
+        }
+
+        return parsedSubSeqs;
+    }
+
+    private List<String> getOffsetMatches(String needle, String haystack) {
+        Pattern p = Pattern.compile(needle);
+        Matcher m = p.matcher(haystack);
+        ArrayList<String> matches = new ArrayList<>();
+        while (m.find()) {
+            if (m.groupCount() > 0) {
+                matches.add(m.group(1));
+            }
+        }
+        return matches;
+    }
+
+    public static final Pattern sequencePartsRegex = Pattern.compile(
+            "(?<r>\\([^\\)]+\\))" + //    Match (...) groups
+                    "|(?<c>\\{[^\\}]+\\})" + //    Match {...} groups
+                    "|(?<s>\\[[^\\]]+\\])" + //    Match [...] groups
+                    "|(?<a>[A-F0-9]+)");// Finally, match HEX Byte characters
+
+    // The trick here is that whatever is NOT captured by first 3 groups (i.e: surrounded by brackets)
+    // will get captured by the last one, which only allows unambiguous sequence characters.
+    // This gives us a match for each unambiguous HEX sequence on each sub-sequence.
+    // All we have to do is find the longest of them after that.
+
+    // Inside the bracket groups, the way it works is by matching the opening bracket and then matching
+    // 1 or more characters that are NOT a closing bracket: [^}]+
+    // '.*' Can not be used as it will skip brackets in the middle in strings like:
+    // {5}080287F12D{4-8}
+
+    public SubSequence processSubSequence(String sequence, int subSeqMinOffset, Integer subSeqMaxOffset, int subSeqPos) {
+        Matcher m = sequencePartsRegex.matcher(sequence);
+        ArrayList<SubSeqMatch> matches = new ArrayList<>();
+        while (m.find()) {
+            SubSeqMatch match = processMatch(m);
+            if (match != null) matches.add(match);
+        }
+
+        // Accumulate to find the longest unambiguous subseq and its index
+        int longestIdx = 0;
+        if (matches.size() < 1) return null;
+        SubSeqMatch longest = null;
+        for (int i = 0; i < matches.size(); i++) {
+            SubSeqMatch lc = matches.get(i);
+            if (lc.type.equals(SubSeqMatch.MatchType.ALPHA) && (longest == null || lc.sequence.length() > longest.sequence.length())) {
+                longestIdx = i;
+                longest = matches.get(i);
+            }
+        }
+        // Initialise sequence
+        String seq = null;
+        // Create fragments from the matches
+        // Split into left and right to make it easier to flip the left side positions when we're done
+        ArrayList<Fragment> rFrags = new ArrayList<>();
+        ArrayList<Fragment> lFrags = new ArrayList<>();
+        int positionCounter = 1;
+        for (int i = 0; i < matches.size(); i++) {
+            SubSeqMatch fc = matches.get(i);
+            // if we're at the longest idx, store the sequence
+            if (i == longestIdx) {
+                seq = fc.sequence;
+                // Also reset the position counter
+                positionCounter = 1;
+                continue;
+            }
+            FragmentType ft = FragmentType.LEFT;
+            int offsetIdx = i + 1;
+            ArrayList<Fragment> frags = lFrags;
+            // check if we're on the right instead and adjust the variables accordingly
+            if (i > longestIdx) {
+                ft = FragmentType.RIGHT;
+                offsetIdx = i - 1;
+                frags = rFrags;
+            }
+
+            // Act on the different types of
+            switch (fc.type) {
+                // round brackets, create a list of fragments with the same position for each of the or'ed byte sequences
+                case ROUND -> {
+                    processRounds(fc.sequence, ft, positionCounter, offsetIdx, frags, matches);
+                    positionCounter++;
+                }
+                // Alphanumeric and Square brackets groups are treated the same way.
+                // We take the sequence and append any alpha or square groups that might follow.
+                // There's a few cases when one of these groups didn't get processed by the previous group:
+                // - When this is the first element
+                // - When it appears right after the longest unambiguous fragment
+                // - When it wasn't processed by the previous (it follows a curly or round group)
+                // If it falls under this category, we process it as an alpha group
+                // Otherwise we skip
+                case ALPHA, SQUARE -> {
+                    List<SubSeqMatch.MatchType> ts = List.of(SubSeqMatch.MatchType.ALPHA, SubSeqMatch.MatchType.SQUARE);
+                    boolean isFirst = i == 0;
+                    boolean isAfterLongest = i == longestIdx + 1;
+                    boolean processedByPrevious = !isFirst && ts.contains(matches.get(i - 1).type);
+                    if (isFirst || isAfterLongest || !processedByPrevious) {
+                        processAlpha(fc.sequence, ft, positionCounter, offsetIdx, i, frags, matches);
+                        positionCounter++;
+                    }
+                }
+                // Curlys are processed by the sequence before or after them so here we do nothing
+                case CURLY -> {
+                }
+            }
+        }
+
+        // Reverse the positions in the left fragments because we are supposed to count from right to left
+        Collections.reverse(lFrags);
+        positionCounter = 0;
+        Integer lastPosition = 1;
+        for (Fragment f : lFrags) {
+            Integer initialPosition = f.position;
+            if (!initialPosition.equals(lastPosition) || positionCounter == 0) {
+                positionCounter++;
+            }
+            f.setPosition(positionCounter);
+            lastPosition = initialPosition;
+        }
+        lFrags.addAll(rFrags);
+        Integer fraglen = calcMinFragLength();
+        return new SubSequence(seq, null, null, lFrags, fraglen, subSeqPos, subSeqMinOffset, subSeqMaxOffset);
+    }
+
+    private Integer[] processOffsets(String seq) {
+        String clean = seq.replaceAll("[{}]", "");
+        Integer[] offsets = {0, 0};
+        if (clean.contains("-")) {
+            String[] sMParts = clean.split("-");
+            offsets[0] = Integer.parseInt(sMParts[0]);
+            offsets[1] = Integer.parseInt(sMParts[1]);
+        } else {
+            offsets[0] = Integer.parseInt(clean);
+            offsets[1] = null;
+        }
+        return offsets;
+    }
+
+    private void processRounds(String sequence, FragmentType ft, int position, int offsetIdx, ArrayList<Fragment> frags, ArrayList<SubSeqMatch> matches) {
+        String clean = sequence.replaceAll("[()]", "");
+        String[] parts = clean.split("\\|");
+        Integer[] offsets = {0, 0};
+        if (offsetIdx >= 0 && offsetIdx < matches.size() && matches.get(offsetIdx).type.equals(SubSeqMatch.MatchType.CURLY)) {
+            offsets = processOffsets(matches.get(offsetIdx).sequence);
+            // in fragments when there is no maxOffset, maxOffset = minOffset
+            if (offsets[1] == null) {
+                offsets[1] = offsets[0];
+            }
+        }
+        for (String p : parts) {
+            frags.add(new Fragment(ft, p, offsets[0], offsets[1], position));
+        }
+    }
+
+    private void processAlpha(String sequence, FragmentType ft, int position, int offsetIdx, int currentIdx, ArrayList<Fragment> frags, ArrayList<SubSeqMatch> matches) {
+        // concatenate all the squares or alpha groups after this one
+        StringBuilder seq = new StringBuilder(sequence);
+        int nextIdx = currentIdx + 1;
+        // check if there's a next one
+        SubSeqMatch nextMatch = matches.size() > nextIdx ? matches.get(nextIdx) : null;
+        List<SubSeqMatch.MatchType> ts = List.of(SubSeqMatch.MatchType.SQUARE, SubSeqMatch.MatchType.ALPHA);
+        while (nextMatch != null && ts.contains(nextMatch.type)) {
+            // for left fragments concatenating squares shifts the index of a possible offset
+            if (ft == FragmentType.LEFT) {
+                offsetIdx++;
+            }
+            seq.append(nextMatch.sequence);
+            nextIdx++;
+            nextMatch = matches.size() > nextIdx ? matches.get(nextIdx) : null;
+        }
+
+        Integer[] offsets = {0, 0};
+        if (offsetIdx >= 0 && offsetIdx < matches.size() && matches.get(offsetIdx).type.equals(SubSeqMatch.MatchType.CURLY)) {
+            offsets = processOffsets(matches.get(offsetIdx).sequence);
+            // in fragments when there is no maxOffset, maxOffset = minOffset
+            if (offsets[1] == null) {
+                offsets[1] = offsets[0];
+            }
+        }
+        frags.add(new Fragment(ft, seq.toString(), offsets[0], offsets[1], position));
+    }
+
+    private SubSeqMatch processMatch(Matcher m) {
+        List<String> matchTypes = List.of("r", "c", "s", "a");
+        for (String t : matchTypes) {
+            String temp = m.group(t);
+            if (temp != null && !temp.isBlank()) {
+                SubSeqMatch.MatchType et = switch (t) {
+                    case "r" -> SubSeqMatch.MatchType.ROUND;
+                    case "c" -> SubSeqMatch.MatchType.CURLY;
+                    case "s" -> SubSeqMatch.MatchType.SQUARE;
+                    case "a" -> SubSeqMatch.MatchType.ALPHA;
+                    default -> throw new IllegalStateException();
+                };
+                return new SubSeqMatch(temp, m.start(t), m.end(t), et);
+            }
+        }
+        return null;
+    }
+
+    private static class SubSeqMatch {
+        private enum MatchType {ROUND, CURLY, SQUARE, ALPHA}
+
+        private final int start;
+        private final int end;
+        private final String sequence;
+        private final MatchType type;
+
+        private SubSeqMatch(String sequence, int start, int end, MatchType type) {
+            this.start = start;
+            this.end = end;
+            this.sequence = sequence;
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return "SubSeqMatch{" +
+                    "start=" + start +
+                    ", end=" + end +
+                    ", sequence='" + sequence + '\'' +
+                    ", type=" + type +
+                    '}';
+        }
+    }
+
+    private Integer calcMinFragLength() {
+        Integer fraglen = 0;
+        return fraglen;
+    }
+
+    public static class SubSequence {
+        private final String sequence;
+        private final Integer defaultShift;
+        private final List<Shift> shifts;
+        private final List<Fragment> fragments;
+        private final Integer minFragLength;
+        private final Integer position;
+        private final Integer subSeqMaxOffset;
+        private final Integer subSeqMinOffset;
+
+        public SubSequence(String sequence, Integer defaultShift, List<Shift> shifts, List<Fragment> fragments, Integer minFragLength, Integer position, Integer subSeqMinOffset, Integer subSeqMaxOffset) {
+            this.sequence = sequence;
+            this.defaultShift = defaultShift;
+            this.shifts = shifts;
+            this.fragments = fragments;
+            this.minFragLength = minFragLength;
+            this.position = position;
+            this.subSeqMaxOffset = subSeqMaxOffset;
+            this.subSeqMinOffset = subSeqMinOffset;
+        }
+
+        public String getSequence() {
+            return sequence;
+        }
+
+        public Integer getDefaultShift() {
+            return defaultShift;
+        }
+
+        public List<Shift> getShifts() {
+            return shifts;
+        }
+
+        public List<Fragment> getFragments() {
+            return fragments;
+        }
+
+        public Integer getMinFragLength() {
+            return minFragLength;
+        }
+
+        public Integer getPosition() {
+            return position;
+        }
+
+        public Integer getSubSeqMaxOffset() {
+            return subSeqMaxOffset;
+        }
+
+        public Integer getSubSeqMinOffset() {
+            return subSeqMinOffset;
+        }
+
+        @Override
+        public String toString() {
+            return "SubSequence{" +
+                    "sequence='" + sequence + '\'' +
+                    ", defaultShift=" + defaultShift +
+                    ", shifts=" + shifts +
+                    ", minFragLength=" + minFragLength +
+                    ", position=" + position +
+                    ", subSeqMaxOffset=" + subSeqMaxOffset +
+                    ", subSeqMinOffset=" + subSeqMinOffset +
+                    ", fragments=" + fragments +
+                    '}';
+        }
+    }
+
+    public static class Shift {
+        private final String byteVal;
+        private final String value;
+
+        public Shift(String byteVal, String value) {
+            this.byteVal = byteVal;
+            this.value = value;
+        }
+
+        public String getByteVal() {
+            return byteVal;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "Shift{" +
+                    "byteVal='" + byteVal + '\'' +
+                    ", value='" + value + '\'' +
+                    '}';
+        }
+    }
+
+    public enum FragmentType {LEFT, RIGHT}
+
+    public static class Fragment {
+        private final FragmentType type;
+        private final String value;
+        private Integer maxOffset;
+        private Integer minOffset;
+        private Integer position;
+
+        public Fragment(FragmentType type, String value, Integer minOffset, Integer maxOffset, Integer position) {
+
+            this.type = type;
+            this.value = value;
+            this.maxOffset = maxOffset;
+            this.minOffset = minOffset;
+            this.position = position;
+        }
+
+        public FragmentType getType() {
+            return type;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public Integer getMaxOffset() {
+            return maxOffset;
+        }
+
+        public void setMaxOffset(Integer maxOffset) {
+            this.maxOffset = maxOffset;
+        }
+
+        public Integer getMinOffset() {
+            return minOffset;
+        }
+
+        public void setMinOffset(Integer minOffset) {
+            this.minOffset = minOffset;
+        }
+
+        public Integer getPosition() {
+            return position;
+        }
+
+        public void setPosition(Integer p) {
+            position = p;
+        }
+
+        @Override
+        public String toString() {
+            return "Fragment{" +
+                    "type=" + type +
+                    ", value='" + value + '\'' +
+                    ", maxOffset=" + maxOffset +
+                    ", minOffset=" + minOffset +
+                    ", position=" + position +
+                    '}';
+        }
+    }
+
+    public static class Deserializer implements RDFDeserializer<ByteSequence> {
+        @Override
+        public Resource getRDFType() {
+            return makeResource(PRONOM.ByteSequence.type);
+        }
+
+        @Override
+        public ByteSequence fromModel(Resource uri, Model model) {
+            ModelUtil mu = new ModelUtil(model);
+            // Required
+            Resource signature = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.InternalSignature)).asResource();
+            String sequence = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequence)).asLiteral().getString();
+            Resource position = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequencePosition)).asResource();
+            String positionName = mu.getOneObjectOrNull(position, makeProp(RDFS.label)).asLiteral().getString();
+            // Optionals
+            Integer offset = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.Offset)));
+            Resource byteOrder = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteOrder)));
+            Integer maxOffset = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.MaxOffset)));
+            Integer indirectOffsetLocation = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLocation)));
+            Integer indirectOffsetLength = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLocation)));
+
+            return new ByteSequence(uri, signature, position, positionName, offset, sequence, byteOrder, maxOffset, indirectOffsetLocation, indirectOffsetLength);
+        }
     }
 }

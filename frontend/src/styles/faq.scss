@@ -27,6 +27,9 @@
         background: #dbdbdb63;
         padding: 10px 15px;
         margin: 0;
+        &.hide {
+          display: none;
+        }
       }
       &.unfold {
         p {
@@ -96,5 +99,18 @@
     i {
       margin-left: 10px;
     }
+  }
+}
+.noJS {
+  .faq-search {
+    #closeAllFAQ, #openAllFAQ {
+      display: none;
+    }
+  }
+  #faq ul li p.hide {
+    display: block;
+  }
+  #faq ul button i {
+    display: none;
   }
 }

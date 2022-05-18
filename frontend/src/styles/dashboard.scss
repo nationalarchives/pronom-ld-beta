@@ -1,0 +1,15 @@
+.page-container {
+  max-width: unset !important;
+  min-width: 1600px;
+  padding: 0 30px;
+  padding-top: 80px;
+}
+.menu-pronom {
+  min-height: auto;
+}
+.collapsed{
+  button i {
+    transform: rotate(180deg);
+  }
+  border-bottom: 3px solid #cacaca;
+}

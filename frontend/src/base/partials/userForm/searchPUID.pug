@@ -1,0 +1,21 @@
+fieldset
+  legend.sr-only To edit an existing file format first search for it's PUID
+  #find-PUID
+    p Provide the PUID of the file format you wish to edit
+    .tooltipPlusAction
+      .tooltip-container
+        .label
+          label(for="PUID_search") PUID
+          span.tooltip-toggle(aria-label='Some explanation comes here')
+            .i-wrapper
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+    .search-puid-input
+      input(type="search" id="PUID_search" placeholder="Search for PUID...")
+      button.black(type="submit")
+        | Find
+        i.fa-solid.fa-chevron-right(aria-hidden="true")
+    .explanation
+      p. 
+        Not sure about the PUID? Please use search to find file format you wish to edit and copy the PUID.
+        You can also edit file format directly from it's page using 'Propose update' button
+      a.bordered-black(href="/search") Search PRONOM

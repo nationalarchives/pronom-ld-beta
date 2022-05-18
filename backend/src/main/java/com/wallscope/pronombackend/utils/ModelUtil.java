@@ -14,9 +14,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.utils.RDFUtil.RDF;
+import static com.wallscope.pronombackend.utils.RDFUtil.makeProp;
+
 public class ModelUtil {
     Logger logger = LoggerFactory.getLogger(ModelUtil.class);
-    private Model m;
+    private final Model m;
 
     public ModelUtil(Model m) {
         this.m = m;
@@ -37,7 +40,7 @@ public class ModelUtil {
         try {
             return this.m.listObjectsOfProperty(s, p).nextNode();
         } catch (NoSuchElementException e) {
-            logger.debug("getOneObjectOrNull: returning null for (" + s.getURI() + "," + p.getURI() + ")");
+            logger.trace("getOneObjectOrNull: returning null for (" + s.getURI() + "," + p.getURI() + ")");
             return null;
         }
     }
@@ -50,16 +53,20 @@ public class ModelUtil {
         return this.m.listObjectsOfProperty(s, p).toList();
     }
 
-    public List<Resource> getSubjects() {
+    public List<Resource> getAllSubjects() {
         return this.m.listSubjects().toList();
     }
 
-    public List<Resource> getSubjects(Resource type) {
-        return this.m.listSubjectsWithProperty(RDFUtil.makeProp(RDFUtil.RDF.type), type).toList();
+    public List<Resource> getAllSubjects(Resource s) {
+        return this.m.listSubjectsWithProperty(makeProp(RDF.type), s).toList();
     }
 
-    public List<Resource> getSubjects(Property prop, Resource type) {
-        return this.m.listSubjectsWithProperty(prop, type).toList();
+    public List<Resource> getAllSubjects(Property p, Resource s) {
+        return this.m.listSubjectsWithProperty(p, s).toList();
+    }
+
+    public List<Statement> list(Resource s, Property p, RDFNode o) {
+        return m.listStatements(s, p, o).toList();
     }
 
     public Model extractModel(Resource s, Property p, RDFNode o) {
@@ -70,9 +77,21 @@ public class ModelUtil {
     }
 
     public <T extends RDFWritable> List<T> buildAllFromModel(RDFDeserializer<T> deserializer) {
-        return this.getSubjects(RDFUtil.makeProp(RDFUtil.RDF.type), deserializer.getRDFType()).stream()
-                .map((s) -> deserializer.fromModel(s, m)).collect(Collectors.toList());
+        return buildFromModel(deserializer, this.getAllSubjects(makeProp(RDF.type), deserializer.getRDFType()));
 
+    }
+
+    public <T extends RDFWritable> List<T> buildAllFromModelParallel(RDFDeserializer<T> deserializer) {
+        return buildFromModelParallel(deserializer, this.getAllSubjects(makeProp(RDF.type), deserializer.getRDFType()));
+
+    }
+
+    public <T extends RDFWritable> List<T> buildFromModel(RDFDeserializer<T> deserializer, List<Resource> subjects) {
+        return subjects.stream().map((s) -> deserializer.fromModel(s, m)).collect(Collectors.toList());
+    }
+
+    public <T extends RDFWritable> List<T> buildFromModelParallel(RDFDeserializer<T> deserializer, List<Resource> subjects) {
+        return subjects.parallelStream().map((s) -> deserializer.fromModel(s, m)).collect(Collectors.toList());
     }
 
     @Override

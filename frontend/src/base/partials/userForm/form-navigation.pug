@@ -11,18 +11,27 @@ aside
             .line &nbsp;
             .round &nbsp;
             span Core
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
       li#signaturesBtn
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Signature
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
       li#priorityBtn.from-external-only
         button.segment.nested
           .top-button
             .line &nbsp;
             .round &nbsp;
             span More information
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
         ul.side-menu
           li#prioritySubBtn
             button Priority
@@ -32,36 +41,51 @@ aside
             button Relationship
           li#additionalSubBtn
             button Additional properties
-      li#identifiersBtn.from-internal-only
-        button.segment
-          .top-button
-            .line &nbsp;
-            .round &nbsp;
-            span Relationships
       li#relationshipsBtn.from-internal-only
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
+            span Relationships
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
+      li#identifiersBtn.from-internal-only
+        button.segment
+          .top-button
+            .line &nbsp;
+            .round &nbsp;
             span Identifiers
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
       li#additionalPropertiesBtn.from-internal-only
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Additional properties
-      li#contributorBtn.from-internal-only
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
+      li#contributorsBtn.from-internal-only
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Contributor
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
       li#yourDetailsBtn.from-external-only
         button.segment
           .top-button
             .line &nbsp;
             .round &nbsp;
             span Your details
+            .indicators
+              i.fa-solid.fa-triangle-exclamation
+              i.fa-solid.fa-square-check
       li#reviewBtn
         button.segment
           .top-button
@@ -74,5 +98,5 @@ script.
   function showFormSection(formPart){
     var currentFormSection = formPart;
     console.log(currentFormSection);
-    return var currentFormSection
+    return currentFormSection
   }

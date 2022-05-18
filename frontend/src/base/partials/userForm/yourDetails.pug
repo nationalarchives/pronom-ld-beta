@@ -22,61 +22,61 @@ section.form-part#yourDetails
                 .tooltip-container
                   .label
                     label(for="UserName") Name
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.1') tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="UserName" id="UserName")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                input(name="UserName", id="UserName", th:field="*{submittedBy.name}")
               .form-row
                 .tooltip-container
                   .label
                     label(for="Organisation") Organisation
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.2') tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="Organisation" id="Organisation")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                input(name="Organisation" id="Organisation" th:field="*{submittedBy.organisation}")
               .form-row
                 .tooltip-container
                   .label
                     label(for="Email") Contact email(required)
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.3') tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="Email" id="Email")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                input(name="Email" id="Email" th:field="*{submittedBy.email}")
               .form-row
                 .tooltip-container
                   .label
                     label(for="Country") Country
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.4') tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                input(name="Country" id="Country")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                input(name="Country" id="Country" th:field="*{submittedBy.country}")
             div
               .form-row
                 .tooltip-container
                   .label
                     label(for="Comment") Comment
-                    span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.5') tabindex='0')
                       .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
-                textarea(cols="30", rows="10" name="Comment" id="Comment")
+                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                textarea(cols="30", rows="10" name="Comment" id="Comment" th:field="*{submittedBy.comment}")
           #recognition
             h3 Recognition (required)
             div
               fieldset
                 legend.sr-only Select if you would like to be recognised for your submission
                 .form-row.checkbox-container
-                  input(type="radio" id="css" name="fav_language" value="")
+                  input(type="radio" id="permission" name="isAnonymous" value="false" th:field="*{submittedBy.isAnonymous}")
                   .tooltip-container
                     .label
-                      label(for="Documentation") I give permission for my details to be recorded and displayed on PRONOM
-                      span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                      label(for="permission") I give permission for my details to be recorded and displayed on PRONOM
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
-                  input(type="radio" id="css" name="fav_language" value="")
+                  input(type="radio" id="permission" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
                   .tooltip-container
                     .label
-                      label(for="Documentation") Prefer to stay anonymous
-                      span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+                      label(for="permission") Prefer to stay anonymous
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
                         .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")

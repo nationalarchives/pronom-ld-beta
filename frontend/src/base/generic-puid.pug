@@ -10,10 +10,31 @@ block modalHeader
       p Last updated: 12/06/2000
 block modalHeaderAdditionals
   div.audit-trail
-    button.bordered-blue.medium
-      i.fa-regular.fa-clock
-      | Audit trail
-      i.fa-solid.fa-angle-down
+    .dropdown.audit
+      button.medium.bordered-blue
+        i.fa-regular.fa-clock
+        | Audit trail
+        i.fa-solid.fa-angle-down
+      .dropdown-content
+        ul
+          li
+            p 12/04/2022
+            p Some texte cones here texte cones here texte cones here texte cones here
+          li
+            p 03/04/2022
+            p Some texte cones here
+          li
+            p 01/04/2022
+            p Some texte cones here
+          li
+            p 12/04/2022
+            p Some texte cones here texte cones here texte cones here texte cones here
+          li
+            p 03/04/2022
+            p Some texte cones here
+          li
+            p 01/04/2022
+            p Some texte cones here
   include ./partials/savingOptions.pug
 block modalBody
   .archived
@@ -31,7 +52,7 @@ block modalBody
           p.label-text#fName Organisation name
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vOrganisationName") Lorem ipsum dolor sit amet
     //- ROW
@@ -41,7 +62,7 @@ block modalBody
           p.label-text#vName Name
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vName") Some name
     //- ROW
@@ -51,7 +72,7 @@ block modalBody
           p.label-text#vAddress Address
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vAddress") Some address
     //- ROW
@@ -61,7 +82,7 @@ block modalBody
           p.label-text#vAddressCountry Address country
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vAddressCountry") Lorem ipsum
     //- ROW
@@ -71,7 +92,7 @@ block modalBody
           p.label-text#vTelephone Telephone
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vTelephone") Lorem ipsum
     //- ROW
@@ -81,7 +102,7 @@ block modalBody
           p.label-text#vSupportWebsite Support website
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vSupportWebsite") Lorem ipsum
     //- ROW
@@ -91,7 +112,7 @@ block modalBody
           p.label-text#vCompanyWebsite Company website
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vCompanyWebsite") Lorem ipsum
     //- ROW
@@ -101,7 +122,7 @@ block modalBody
           p.label-text#vContact Contact
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vContact") Lorem ipsum
     //- ROW
@@ -111,7 +132,7 @@ block modalBody
           p.label-text#vSource Source
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vSource") Lorem ipsum
     //- ROW
@@ -121,7 +142,7 @@ block modalBody
           p.label-text#vSourceDate Source date
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vSourceDate") Lorem ipsum
     //- ROW
@@ -131,7 +152,7 @@ block modalBody
           p.label-text#vSourceDescription Source description
           span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
             .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" title="information icon")
+              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
         p(aria-labeledby="#vSourceDescription") Lorem ipsum
     

@@ -6,7 +6,7 @@
       column-gap: 60px;
       @media only screen and (max-width: 700px) {
         grid-template-columns: 1fr;
-        row-gap: 30px;
+        row-gap: 20px;
       }
       h2 {
         grid-column: 1/3;

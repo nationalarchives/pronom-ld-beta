@@ -1,7 +1,9 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.>
 @prefix fileFormat: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/file_formats>
  	rr:logicalTable [ rr:sqlQuery """
@@ -46,6 +48,8 @@
           ,[format_support].[support_id] as support_id
         -- format_relationships fields - predicate: fileFormat.In.FileFormatRelationship, type: FileFormatRelationship
           ,[format_relationships].[relationship_id] as relationship_id
+        -- search helper, concat puid_type and puid to create a skos:notation field for search
+          ,CONCAT(TRIM([puid_type].puid_type),'/',[file_formats].puid_value) as full_puid
 
       FROM [PRONOM6].[dbo].[file_formats]
       LEFT JOIN [PRONOM6].[dbo].[format_byte_order_link] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_byte_order_link].file_format_id
@@ -59,6 +63,7 @@
       LEFT JOIN [PRONOM6].[dbo].[format_documentation] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_documentation].file_format_id
       LEFT JOIN [PRONOM6].[dbo].[format_support] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_support].file_format_id
       LEFT JOIN [PRONOM6].[dbo].[format_relationships] ON [PRONOM6].[dbo].[file_formats].file_format_id = [PRONOM6].[dbo].[format_relationships].source_id
+      LEFT JOIN [PRONOM6].[dbo].[puid_type] ON [PRONOM6].[dbo].[file_formats].puid_type_id = [PRONOM6].[dbo].[puid_type].puid_type_id
 """
  	];
 
@@ -169,5 +174,18 @@
     rr:predicateObjectMap [
         rr:predicate fileFormat:In.FileFormatRelationship;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationship/{relationship_id}" ];
+    ];
+    # Add global Puid indicator to simplify search query
+    rr:predicateObjectMap [
+        rr:predicate global:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate global:PuidTypeId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate skos:notation;
+        rr:objectMap [ rr:column "full_puid" ];
     ];
  	.

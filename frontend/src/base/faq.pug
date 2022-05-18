@@ -3,132 +3,49 @@ extends /layouts/mainLayout.pug
 block vars
   - var currentURL = "/faq"
   - var breadcrumbs = {'Home':"/", "FAQ": "/faq"}
+  - var category1List= [ {title: 'some title', text: 'some text'}, {title: 'some title', text: 'some text'}, {title: 'some title', text: 'some text'},]
+  - var category2List= [ {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'category 2 some title', text: 'category 2 some text'}, {title: 'some title', text: 'some text'},]
 
 block pageTitle
-  h1(th:text="${@templateUtils.md('index_title')}") FAQ
+  h1.hidden-title(th:utext="${@templateUtils.md('faq_accessibility_title')}") FAQ
 
 block content
   .unique-page-content#faq
     .faq-search
       .search-input
-        form(aria-label="Search for term")
+        form(aria-label="Search for term", method="GET", action="/search")
           fieldset
             legend.sr-only Enter search term
             div
-              input(type="search" id="pronom_search" placeholder="Search for term...")
+              label.sr-only(for="pronom_search") Search PRONOM
+              input(type="search", id="pronom_search", name="q", placeholder="Search for term...")
               button.click-search(type="submit")
                 i.fa-solid.fa-magnifying-glass(aria-hidden="true")
                 | Search
       .buttons
-        button.bordered-blue.medium
+        button.bordered-blue.medium#openAllFAQ
           span Open all
           i.fa-solid.fa-chevron-down(aria-hidden="true")
-        button.bordered-blue.medium
+        button.bordered-blue.medium#closeAllFAQ
           span Collapse all
           i.fa-solid.fa-chevron-up(aria-hidden="true")
-    h3#faq1 Category 1
-    ul
-      li.unfold
-        button(aria-expanded="false" id="cat1btn1" aria-controls="cat1sec1")
-          span How can I upload my files?
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p.hide(id="cat1sec1" role="region" aria-labeledby="cat1btn1").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat1btn2" aria-controls="cat1sec2")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat1sec2" role="region" aria-labeledby="cat1btn2").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat1btn3" aria-controls="cat1sec3")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat1sec3" role="region" aria-labeledby="cat1btn3").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-    h3#faq2 Category 2
-    ul
-      li
-        button(aria-expanded="false" id="cat2btn1" aria-controls="cat2sec1")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec1" role="region" aria-labeledby="cat2btn1").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat2btn2" aria-controls="cat2sec2")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec2" role="region" aria-labeledby="cat2btn2").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat2btn3" aria-controls="cat2sec3")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat2sec3" role="region" aria-labeledby="cat2btn3").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-    h3#faq3 Category 3
-    ul
-      li
-        button(aria-expanded="false" id="cat3btn1" aria-controls="cat3sec1")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat3sec1" role="region" aria-labeledby="cat3btn1").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat3btn2" aria-controls="cat3sec2")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat3sec2" role="region" aria-labeledby="cat3btn2").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat3btn3" aria-controls="cat3sec3")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat3sec3" role="region" aria-labeledby="cat3btn3").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
-      li
-        button(aria-expanded="false" id="cat3btn4" aria-controls="cat3sec4")
-          span Next subject
-          i.fa-solid.fa-chevron-up(aria-hidden="true")
-        p(id="cat3sec4" role="region" aria-labeledby="cat3btn4").
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-          culpa qui officia deserunt mollit anim id est laborum.
+
+    th:block(th:each="cat, catI : ${@templateUtils.parseFAQ('faq_main')}")
+      h2(th:text="${cat.title}") Category 1
+      ul.faq-questions 
+        li(th:each="item, itemI : ${cat.items}")
+          button.closed(aria-expanded="false" th:id="|cat-${catI.index}-item-${itemI.index}|" th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )
+            span(th:text="${item.title}") some title
+            i.fa-solid.fa-chevron-up(aria-hidden="true")
+          p.hide(th:id="|cat-${catI.index}-item-${itemI.index}|" role="region" th:aria-labeledby="|cat-${catI.index}-item-${itemI.index}|", th:utext="${@templateUtils.mdString(item.text)}") some text
+    
+    //- Kept here for debugging multiple categories when developing without a backend.
+    //- Uncomment to have another category
+    //- h3#faq2 Category 2
+    //- ul.faq-questions
+    //-   for item, index in category2List
+    //-     li
+    //-       button.closed(aria-expanded="false" id=( (Object.keys({category2List})[0]) + index) aria-controls=( (Object.keys({category2List})[0]) + index) )
+    //-         span= item.title
+    //-         i.fa-solid.fa-chevron-up(aria-hidden="true")
+    //-       p.hide(id=( (Object.keys({category2List})[0]) +  index + 'text') role="region" aria-labeledby=( (Object.keys({category2List})[0]) + index))= item.text

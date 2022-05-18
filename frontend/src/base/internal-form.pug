@@ -5,7 +5,16 @@ block modalHeader
     h1
       | Add new file fomat
 block modalBody
-  .form-content#user-form
+  .error-notification
+    .error-inner
+      div
+        h2 Erorr
+      div
+        p Please check fields:
+        ul
+          li File format name
+          li File format version
+  .form-content#internal-form
     include ./partials/userForm/form-navigation.pug
     main
       include ./partials/userForm/core.pug

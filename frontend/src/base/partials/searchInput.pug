@@ -1,58 +1,53 @@
-seation.search-input-container
+section.search-input-container
   .search-input
-    form(aria-label="Search for file format, software or vendor")
-      fieldset
-        legend.sr-only Enter search file format name, PUID or keywords
-        div
-          input(type="search" id="pronom_search" placeholder="Search for file format, software or vendor...")
-          button(type="submit")
-            i.fa-solid.fa-magnifying-glass(aria-hidden="true")
-            | Search
+    fieldset(aria-label="Search for file format, software or vendor")
+      legend.sr-only Enter search file format name, PUID or keywords
+      div
+        label.sr-only(for="pronom_search") Search Pronom
+        input(type="search", id="pronom_search", name="q", th:value="${q ?: ''}", placeholder="Search for file format, software or vendor...")
+        button(type="submit")
+          i.fa-solid.fa-magnifying-glass(aria-hidden="true")
+          | Search
   .filters(aria-label="Filters")
-    h4 Filters
+    h3 Filters
     fieldset
       legend.sr-only Select filter
       div.selected
-        input#extension(type='checkbox' name='format' value='' checked="true") 
-        label(for='extension') File format extension
+        input#extension(type='checkbox' name='f_name' th:value="${f_name ?: 'true'}" th:checked="${f_name ?: 'true'}")
+        label(for='extension') File format name
       div
-        input#name(type='checkbox' name='format' value='')
-        label(for='name') File format name
+        input#name(type='checkbox' name='f_ext' th:value="${ ?: 'true'}" th:checked="${f_ext ?: 'true'}")
+        label(for='name') File format extension
       div
-        input#type(type='checkbox' name='format' value='')
-        label(for='type') File format name
+        input#type(type='checkbox' name='f_desc' th:value="${f_desc ?: 'true'}" th:checked="${f_desc ?: 'true'}")
+        label(for='type') File format description
       div
-        input#signature(type='checkbox' name='format' value='')
-        label(for='signature') Signature
-      div
-        input#puid(type='checkbox' name='format' value='')
+        input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
         label(for='puid') PUID
 
-section.search-output
-  h4 Results
-    span (32)
+section.search-output(th:if="${results != null and !results.empty}")
+  h3 Results
+    span(th:text="'('+${totalResults}+')'")
   .additionals
     .manage-results
       .result-counts
-        form(aria-label="Set number of result per page")
-          fieldset
-            label(for="results_per_page") Show
-            legend.sr-only Change number of results per page
-            div
-              input(id="results_per_page" class="small" maxlength="2" type="number" min="5" max="99" value="5")
+        fieldset(aria-label="Set number of result per page")
+          label(for="results_per_page") Show
+          legend.sr-only Change number of results per page
+          div
+            input(id="results_per_page", class="small", maxlength="2", type="number", min="5", max="99", th:value="${pageSize}")
       .sort-by
-        form(aria-label="Sort search results by selected measure")
-          fieldset
-            legend.sr-only Sort search results by selected measure
-            label(for="sort_by") Sort by
-            div
-              select(id="sort_by")
-                option(value='0') revelance
-                option(value='1') type
-                option(value='2') name
-                option(value='2') PUID
+        fieldset(aria-label="Sort search results by selected measure")
+          legend.sr-only Sort search results by selected measure
+          label(for="sort_by") Sort by
+          div
+            select(id="sort_by", name="sort", th:value="${sort}")
+              option(th:selected="${sort eq 'relevance'}", value='relevance') relevance
+              option(th:selected="${sort eq 'type'}", value='type') type
+              option(th:selected="${sort eq 'name'}", value='name') name
+              option(th:selected="${sort eq 'puid'}", value='puid') PUID
     .save-options
-      label Save as
+      label(for="save_as") Save as
       .button-list
         button.xsmall.bordered-blue
           | XML
@@ -61,7 +56,7 @@ section.search-output
         .dropdown-group
           button.xsmall.bordered-blue
             | RDF
-          select(id="sort_by")
+          select(id="save_as")
             option(value='0') TTL
             option(value='1') NT
             option(value='2') RDF/XML
@@ -74,108 +69,72 @@ section.search-output
         h4 Description
         h4.extended Status
         h4.extended Maintain
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
-                | fmt/412
-              p.data
-                span Version
-                | 1.0
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
-                | fmt/412
-              p.data
-                span Version
-                | 1.0
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
-      li
-        a(href="")
-          div
-            p.data.type
-              span Type
-              | File format
-            h5.data.name
-              span Name
-              | Portable Network Graphics
-            div.basic
-              p.data
-                span PUID
-                | fmt/412
-              p.data
-                span Version
-                | Lorem ipsum dolor sit amet
-              p.data
-                span Extension
-                | png
-            p.data.desc
-              span Description
-              | fmt/412
-            p.data.extend.status
-              span Status
-              | Released
-            .extend.buttons
-              button.xsmall.bordered-blue View
-              button.xsmall.bordered-blue Clone
-              button.xsmall.bordered-red Delete
+      ul
+        th:block(th:each="r : ${results}")
+          li
+            a(th:href="@{/id/{target}(target=${r.idUri})}")
+              div
+                p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
+                  span Type
+                  | File format
+                h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
+                  span Name
+                  | Portable Network Graphics
+                div.basic
+                  p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
+                    span PUID
+                    | fmt/412
+                p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
+                  span Description
+                  | fmt/412
+                p.data.extend.status
+                  span Status
+                  | Released
+                .extend.buttons
+                  button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
+                  button.xsmall.bordered-blue Clone
+                  button.xsmall.bordered-red Delete
+        //- Example with multiple basic data properties
+        //- Uncomment to test while running the frontend with no backend
+        //- li
+        //-   a(href="")
+        //-     div
+        //-       p.data.type
+        //-         span Type
+        //-         | File format
+        //-       h5.data.name
+        //-         span Name
+        //-         | Portable Network Graphics
+        //-       div.basic
+        //-         p.data
+        //-           span Version
+        //-           | 3.0.0
+        //-         p.data
+        //-           span PUID
+        //-           | fmt/412
+        //-         p.data
+        //-           span Last Updated
+        //-           | 2015-08-03T00:00:00
+        //-         p.data
+        //-           span File Extension(s)
+        //-           | png
+        //-       p.data.desc
+        //-         span Description
+        //-         | Portable Network Graphics (PNG) was designed for the lossless, portable, compressed storage of raster images.  PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. PNG is designed to work in online viewing applications, so it is fully streamable.  It can store gamma and chromaticity.  PNG also detects file corruption.
+        //-       p.data.extend.status
+        //-         span Status
+        //-         | Released
+        //-       .extend.buttons
+        //-         button.xsmall.bordered-blue View
+        //-         button.xsmall.bordered-blue Clone
+        //-         button.xsmall.bordered-red Delete
+
+
     .pagination
       ul
-        li.controls
-          a(href="")
-            | Previous
-        li.active
-          a(href="")
-            | 1
-        li
-          a(href="")
-            | 2
-        li
-          a(href="")
-            | 3
-        li.controls
-          a(href="")
-            | Next
-      
+        th:block(th:each="p : ${pages}")
+          li(th:class="${p.text eq 'Next' || p.text eq 'Previous' ? 'controls' : ''}",
+            th:classappend="${p.active ? 'active' : ''}")
+            a(th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}", 
+              th:href="${urlBuilder.replaceQueryParam('offset', p.offset).toUriString()}",
+              th:text="${p.text}") #

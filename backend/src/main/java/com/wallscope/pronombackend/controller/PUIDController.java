@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.model.FileFormat;
+import com.wallscope.pronombackend.model.InternalSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,9 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * This controller handles all calls to pages where the content does not depend on fetching data from the database
@@ -30,8 +35,36 @@ public class PUIDController {
         if (f == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
-        model.addAttribute("fileFormat", f);
+        logger.debug("File format: " + f);
+        model.addAttribute("ff", f);
         return "file-format";
+    }
+
+    @GetMapping(value = {"/fmt/{puid}.xml", "/x-fmt/{puid}.xml"}, produces = "text/xml")
+    public String xmlSingleSignatureHandler(Model model, HttpServletRequest request, @PathVariable(required = false) String puid) {
+        String[] parts = request.getRequestURI().split("/");
+        String puidType = parts[parts.length - 2];
+        FileFormatDAO dao = new FileFormatDAO();
+        FileFormat f = dao.getFileFormatByPuid(puid, puidType);
+        if (f == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
+        }
+        model.addAttribute("formats", List.of(f));
+        return "xml_signatures";
+    }
+
+    @GetMapping(value = {"/signature.xml"}, produces = "text/xml")
+    public String xmlAllSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
+        FileFormatDAO dao = new FileFormatDAO();
+        List<FileFormat> fs = dao.getAll();
+        List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
+                .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
+                .collect(Collectors.toList());
+        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+        model.addAttribute("formats", fs);
+        model.addAttribute("signatures", signatures);
+        model.addAttribute("dev", dev);
+        return "xml_signatures";
     }
 
     @GetMapping(value = {"/chr/{puid}", "/x-chr/{puid}", "/sfw/{puid}", "/x-sfw/{puid}", "/cmp/{puid}", "/x-cmp/{puid}"})

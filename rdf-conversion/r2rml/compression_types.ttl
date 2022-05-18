@@ -1,7 +1,9 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+@prefix global: <http://www.nationalarchives.gov.uk/PRONOM/global.>
 @prefix compressionType: <http://www.nationalarchives.gov.uk/PRONOM/compressionType.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/compression_types>
  	rr:logicalTable [ rr:sqlQuery """
@@ -29,9 +31,12 @@
          ,[format_compression_types].[file_format_id] as file_format_id
        -- compression_developers fields - predicate: compressionType.Development.Actor, type: Actor
          ,[compression_developers].[developer_id] as developer_id
+       -- search helper, concat puid_type and puid to create a skos:notation field for search
+         ,CONCAT(TRIM([puid_type].puid_type),'/',[compression_types].puid_value) as full_puid
     FROM [PRONOM6].[dbo].[compression_types]
     LEFT JOIN [PRONOM6].[dbo].[format_compression_types] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[format_compression_types].compression_id
     LEFT JOIN [PRONOM6].[dbo].[compression_developers] ON [PRONOM6].[dbo].[compression_types].compression_id = [PRONOM6].[dbo].[compression_developers].compression_id
+    LEFT JOIN [PRONOM6].[dbo].[puid_type] ON [PRONOM6].[dbo].[compression_types].puid_type_id = [PRONOM6].[dbo].[puid_type].puid_type_id
 
  	"""
  	];
@@ -89,7 +94,7 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate compressionType:PuidTypeId;
-        rr:objectMap [ rr:column "puid_type_id" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate compressionType:Puid;
@@ -102,6 +107,19 @@
     rr:predicateObjectMap [
         rr:predicate compressionType:Development.Actor;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
+    ];
+    # Add global Puid indicator to simplify search query
+    rr:predicateObjectMap [
+        rr:predicate global:Puid;
+        rr:objectMap [ rr:column "puid_value" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate global:PuidTypeId;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/PuidType/{puid_type_id}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate skos:notation;
+        rr:objectMap [ rr:column "full_puid" ];
     ];
  	.
 
