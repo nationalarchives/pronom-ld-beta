@@ -4,6 +4,7 @@
 /build
 /src/main/resources/templates/
 /src/main/resources/static/
+/src/test/resources/
 /md/
 *.iml
 *.ipr
