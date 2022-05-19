@@ -138,17 +138,17 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fMIME") NOT IMPLEMENTED
+                p(aria-labeledby="#fMIME", th:text="${ff.MIMEType?.name}") NOT IMPLEMENTED
             //- ROW
-            li.row
+            li.row(th:each="otherId : ${ff.otherIdentifiers}")
               .tooltip-container
                 .label
-                  p.label-text#fOther Other
+                  p.label-text#fOther(th:text="${otherId?.typeName}") Other
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fOther") NOT IMPLEMENTED
+                p(aria-labeledby="#fOther", th:text="${otherId?.name}") NOT IMPLEMENTED
           //- ROW
           //- TODO - tooltip not available
         li.row
@@ -312,7 +312,7 @@ block modalBody
       h2#signatures Signatures
       h3 display signatures
       //- TABLE =========================================================================
-      ul.table(th:each=" extSig : ${ff.displaySignatures}")
+      ul.table(th:each=" extSig : ${ff.externalSignatures}")
         //- ROW 
         li.row
           .tooltip-container
