@@ -60,3 +60,42 @@
   }
 }
 
+aside {
+  @media only screen and (max-width: 1200px) {
+    display: block !important;
+  }
+}
+
+.largeScreen {
+  display: block;
+
+  @media only screen and (max-width: 1200px) {
+    display: block;
+  }
+}
+
+.smallScreen {
+  display: none;
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.form-content {
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: auto 1fr;
+  }
+  main {
+    border-left: none;
+  }
+}
+
+main {
+  @media only screen and (max-width: 1200px) {
+    padding: 20px;
+  }
+}
+.modal-container {
+  min-width: 1600px;
+}

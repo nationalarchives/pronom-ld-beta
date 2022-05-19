@@ -28,10 +28,9 @@ const App = () => {
     }
 
   }
-
-
   // Signal JS is active
   $('.modal-container').removeClass('noJS');
+  $('.modal-container').assClsss('minWidth');
   // Initialise form
   let formStep = 0
   $('.form-part').addClass('hide');
