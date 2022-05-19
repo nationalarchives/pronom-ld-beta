@@ -162,11 +162,11 @@ public class FileFormat implements RDFWritable {
                 .collect(Collectors.toList());
     }
 
-    public FormatIdentifier getMIMEType() {
+    public String getMIMETypeList() {
         return formatIdentifiers.stream()
                 .filter(id -> id.getType().getURI().equals(PRONOM.FormatIdentifierType.MIME))
-                .findFirst()
-                .orElse(null);
+                .map(FormatIdentifier::getName)
+                .collect(Collectors.joining(", "));
     }
 
     public List<FormatIdentifier> getOtherIdentifiers() {
