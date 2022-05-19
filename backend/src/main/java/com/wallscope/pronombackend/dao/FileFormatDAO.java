@@ -62,6 +62,11 @@ public class FileFormatDAO {
                    ?fRelType pr:formatRelationshipType.TypeName ?fRelTypeName ;
                      pr:formatRelationshipType.InverseTypeName ?fRelInverseTypeName .
                  }#END OPTIONAL
+                 
+                 OPTIONAL{ ?fId a pr:FormatIdentifier ; pr:formatIdentifier.FileFormat ?f .
+                   ?fId rdfs:label ?fIdName ; pr:formatIdentifier.FormatIdentifierType ?fIdType .
+                   ?fIdType rdfs:label ?fIdTypeName .
+                 }#END OPTIONAL
             """;
     public static final String FILE_FORMAT_QUERY = PREFIXES + """
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>

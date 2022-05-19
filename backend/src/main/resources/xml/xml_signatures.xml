@@ -12,7 +12,7 @@
         </InternalSignature></th:block>
     </InternalSignatureCollection>
     <FileFormatCollection>
-        <FileFormat th:each="f : ${formats}" th:ID="${f.ID}" th:MIMEType="${formattedMimeType}" th:Name="${f.name}" th:PUID="${f.formattedPuid}" th:Version="${f.version}"><th:block th:each="sig : ${f.internalSignatures}">
+        <FileFormat th:each="f : ${formats}" th:ID="${f.ID}" th:MIMEType="${f.MIMEType?.name}" th:Name="${f.name}" th:PUID="${f.formattedPuid}" th:Version="${f.version}"><th:block th:each="sig : ${f.internalSignatures}">
             <InternalSignatureID th:text="${sig.ID}">415</InternalSignatureID></th:block><th:block th:each="ext : ${f.externalSignatures}">
             <Extension th:text="${ext.name}">mcw</Extension></th:block><th:block th:each="prRel : ${f.hasPriorityOver}">
             <HasPriorityOverFileFormatID th:text="${prRel.targetID}">221</HasPriorityOverFileFormatID></th:block>

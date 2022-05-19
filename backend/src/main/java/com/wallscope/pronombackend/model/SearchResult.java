@@ -165,6 +165,20 @@ public class SearchResult implements RDFWritable {
         return number;
     }
 
+    @Override
+    public String toString() {
+        return "SearchResult{" +
+                "uri=" + uri +
+                ", type=" + type +
+                ", score=" + score +
+                ", match='" + match + '\'' +
+                ", fields=" + fields +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", properties=" + properties +
+                '}';
+    }
+
     public static class Deserializer implements RDFDeserializer<SearchResult> {
         private final List<String> excludeProps = List.of(RDF.type, RDFS.label, RDFS.comment);
 
