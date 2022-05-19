@@ -9,3 +9,5 @@
 *.iml
 *.ipr
 *.iws
+# XML test diff output
+xmltest.txt
