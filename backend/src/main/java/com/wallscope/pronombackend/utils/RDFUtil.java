@@ -251,26 +251,37 @@ public class RDFUtil {
             public static final String IndirectOffsetLength = uri + "IndirectOffsetLength";
             // Byte Sequence Positions
             public static final String BSPType = PRONOM.uri + "PositionType";
-            public static final String BSPuri = PRONOM.uri + "id/ByteSequencePosition/";
-            public static final String AbsoluteFromBOF = BSPuri + "1";
-            public static final String AbsoluteFromEOF = BSPuri + "2";
-            public static final String Variable = BSPuri + "3";
-            public static final String IndirectFromBOF = BSPuri + "4";
-            public static final String IndirectFromEOF = BSPuri + "5";
+            public static final String BSPid = PRONOM.uri + "id/ByteSequencePosition/";
+            public static final String AbsoluteFromBOF = BSPid + "1";
+            public static final String AbsoluteFromEOF = BSPid + "2";
+            public static final String Variable = BSPid + "3";
+            public static final String IndirectFromBOF = BSPid + "4";
+            public static final String IndirectFromEOF = BSPid + "5";
         }
 
         // ByteOrder Instances
         public static class ByteOrder {
-            public static final String uri = PRONOM.uri + "id/ByteOrder/";
+            public static final String id = PRONOM.uri + "id/ByteOrder/";
             public static final String type = PRONOM.uri + "ByteOrder";
-            public static final String littleEndian = uri + "littleEndian";
-            public static final String bigEndian = uri + "bigEndian";
+            public static final String littleEndian = id + "littleEndian";
+            public static final String bigEndian = id + "bigEndian";
+        }
+
+        // FormatIdentifier
+        public static class FormatIdentifier {
+            public static final String id = PRONOM.uri + "id/FormatIdentifier/";
+            public static final String type = PRONOM.uri + "FormatIdentifier";
+            public static final String uri = PRONOM.uri + "formatIdentifier.";
+            public static final String FileFormat = uri + "FileFormat";
+            public static final String FormatIdentifierType = uri + "FormatIdentifierType";
         }
 
         // FormatIdentifierType
         public static class FormatIdentifierType {
-            public static final String uri = PRONOM.uri + "id/FormatIdentifierType/";
+            public static final String id = PRONOM.uri + "id/FormatIdentifierType/";
             public static final String type = PRONOM.uri + "FormatIdentifierType";
+            public static final String uri = PRONOM.uri + "formatIdentifierType.";
+            public static final String MIME = id + "3";
         }
 
         // Actor sub

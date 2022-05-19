@@ -30,6 +30,7 @@ public class FileFormat implements RDFWritable {
     private final List<Classification> classifications;
     private final List<InternalSignature> internalSignatures;
     private final List<ExternalSignature> externalSignatures;
+    private final List<FormatIdentifier> formatIdentifiers;
     private final List<Actor> developmentActors;
     private final List<Actor> supportActors;
     private final List<FileFormatRelationship> hasRelationships;
@@ -48,7 +49,7 @@ public class FileFormat implements RDFWritable {
             List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
-            List<Actor> developmentActors,
+            List<FormatIdentifier> formatIdentifiers, List<Actor> developmentActors,
             List<Actor> supportActors,
             List<FileFormatRelationship> hasRelationships) {
         this.uri = uri;
@@ -64,6 +65,7 @@ public class FileFormat implements RDFWritable {
         this.classifications = classifications;
         this.internalSignatures = internalSignatures;
         this.externalSignatures = externalSignatures;
+        this.formatIdentifiers = formatIdentifiers;
         this.developmentActors = developmentActors;
         this.supportActors = supportActors;
         this.hasRelationships = hasRelationships;
@@ -142,6 +144,10 @@ public class FileFormat implements RDFWritable {
         return hasRelationships;
     }
 
+    public List<FormatIdentifier> getFormatIdentifiers() {
+        return formatIdentifiers;
+    }
+
     public boolean getHasSignature() {
         return !(internalSignatures.isEmpty() && externalSignatures.isEmpty());
     }
@@ -153,6 +159,19 @@ public class FileFormat implements RDFWritable {
     public List<FileFormatRelationship> getHasPriorityOver() {
         return hasRelationships.stream()
                 .filter(r -> r.getRelationshipType().getURI().equals(PRONOM.FormatRelationshipType.PriorityOver))
+                .collect(Collectors.toList());
+    }
+
+    public FormatIdentifier getMIMEType() {
+        return formatIdentifiers.stream()
+                .filter(id -> id.getType().getURI().equals(PRONOM.FormatIdentifierType.MIME))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<FormatIdentifier> getOtherIdentifiers() {
+        return formatIdentifiers.stream()
+                .filter(id -> !id.getType().getURI().equals(PRONOM.FormatIdentifierType.MIME))
                 .collect(Collectors.toList());
     }
 
@@ -201,6 +220,7 @@ public class FileFormat implements RDFWritable {
                 ", classifications=" + classifications +
                 ", internalSignatures=" + internalSignatures +
                 ", externalSignatures=" + externalSignatures +
+                ", formatIdentifiers=" + formatIdentifiers +
                 ", developmentActors=" + developmentActors +
                 ", supportActors=" + supportActors +
                 ", hasRelationships=" + hasRelationships +
@@ -251,6 +271,9 @@ public class FileFormat implements RDFWritable {
             // ExternalSignature
             List<Resource> extSigSubjects = mu.getAllSubjects(makeProp(PRONOM.ExternalSignature.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ExternalSignature> externalSignatures = mu.buildFromModel(new ExternalSignature.Deserializer(), extSigSubjects);
+            // FormatIdentifier
+            List<Resource> fIdSubjects = mu.getAllSubjects(makeProp(PRONOM.FormatIdentifier.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<FormatIdentifier> formatIdentifiers = mu.buildFromModel(new FormatIdentifier.Deserializer(), fIdSubjects);
             // FileFormatRelationship
             List<Resource> relationshipSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<FileFormatRelationship> hasRelationships = mu.buildFromModel(new FileFormatRelationship.Deserializer(), relationshipSubjects);
@@ -270,6 +293,7 @@ public class FileFormat implements RDFWritable {
                     classifications,
                     internalSignatures,
                     externalSignatures,
+                    formatIdentifiers,
                     developmentActors,
                     supportActors,
                     hasRelationships);
