@@ -7,9 +7,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -300,8 +298,11 @@ public class ByteSequence implements RDFWritable {
             f.setPosition(positionCounter);
             lastPosition = initialPosition;
         }
-        lFrags.addAll(rFrags);
-        Integer fraglen = calcMinFragLength();
+        // The relevant fragments for calculating minFragLength depends on if we're counting form the BOF or EOF
+        // if we count from the beginning of file (BOF) we take the left fragments, otherwise the right ones.
+        List<Fragment> relevantFrags = this.isBOFOffset() ? lFrags : rFrags;
+        Integer fraglen = calcMinFragLength(relevantFrags);
+        lFrags.addAll(rFrags); // from this point onwards lFrags has all fragments, not just left
         return new SubSequence(seq, null, null, lFrags, fraglen, subSeqPos, subSeqMinOffset, subSeqMaxOffset);
     }
 
@@ -407,8 +408,35 @@ public class ByteSequence implements RDFWritable {
         }
     }
 
-    private Integer calcMinFragLength() {
-        Integer fraglen = 0;
+    private static final Pattern squareBracketGroupsRegex = Pattern.compile("\\[\\d+:\\d+\\]");
+
+    private Integer calcMinFragLength(List<Fragment> frags) {
+        int fraglen = 0;
+        for (int i = 0; i < frags.size(); i++) {
+            Fragment current = frags.get(i);
+            // check if the following fragments have the same position (happens with OR'ed bytes)
+            // if they do, find the smallest
+            int nextIdx = i + 1;
+            while (nextIdx < frags.size() && frags.get(nextIdx).position.equals(current.position)) {
+                if (frags.get(nextIdx).value.length() < current.value.length()) {
+                    current = frags.get(nextIdx);
+                }
+                // update i in order to skip the already processed fragments when we get to the end of the outer loop
+                i = nextIdx;
+                nextIdx++;
+            }
+            // Add the size of the fragment and its minOffset to the frag length
+            // We have to check the value string for bytes in [] since
+            // inside the square brackets there will be pairs of bytes on each side of the :
+            // we basically replace square bracket groups with the smallest of the sides (this does not assume both sides will be equal in length)
+            String clean = squareBracketGroupsRegex.matcher(current.value).replaceAll(match ->{
+               String noBrackets = match.group().replaceAll("[\\[\\]]", "");
+                return Arrays.stream(noBrackets.split(":")).min(Comparator.comparingInt(String::length)).orElse("");
+            });
+            // the size in bytes is the string length / 2 because every byte is 2 characters
+            int byteSize = clean.length() / 2;
+            fraglen += byteSize + current.minOffset;
+        }
         return fraglen;
     }
 

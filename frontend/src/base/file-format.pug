@@ -138,7 +138,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fMIME", th:text="${ff.MIMEType?.name}") NOT IMPLEMENTED
+                p(aria-labeledby="#fMIME", th:text="${ff.MIMETypeList}") NOT IMPLEMENTED
             //- ROW
             li.row(th:each="otherId : ${ff.otherIdentifiers}")
               .tooltip-container
