@@ -69,31 +69,32 @@ section.search-output(th:if="${results != null and !results.empty}")
         h4 Description
         h4.extended Status
         h4.extended Maintain
-      ul
-        th:block(th:each="r : ${results}")
-          li
-            a(th:href="@{/id/{target}(target=${r.idUri})}")
-              div
-                p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
-                  span Type
-                  | File format
-                h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
-                  span Name
-                  | Portable Network Graphics
-                div.basic
-                  p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
-                    span PUID
+      li.results-container
+        ul.results
+          th:block(th:each="r : ${results}")
+            li
+              a(th:href="@{/id/{target}(target=${r.idUri})}")
+                div
+                  p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
+                    span Type
+                    | File format
+                  h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
+                    span Name
+                    | Portable Network Graphics
+                  div.basic
+                    p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
+                      span PUID
+                      | fmt/412
+                  p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
+                    span Description
                     | fmt/412
-                p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
-                  span Description
-                  | fmt/412
-                p.data.extend.status
-                  span Status
-                  | Released
-                .extend.buttons
-                  button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
-                  button.xsmall.bordered-blue Clone
-                  button.xsmall.bordered-red Delete
+                  p.data.extend.status
+                    span Status
+                    | Released
+                  .extend.buttons
+                    button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
+                    button.xsmall.bordered-blue Clone
+                    button.xsmall.bordered-red Delete
         //- Example with multiple basic data properties
         //- Uncomment to test while running the frontend with no backend
         //- li

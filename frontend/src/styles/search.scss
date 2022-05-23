@@ -277,6 +277,9 @@
       &:hover {
         background: #ccdbea;
       }
+      &.results-container {
+        border: none;
+      }
       &.column-names {
         display: grid;
         grid-template-columns: 95px 0.8fr 1fr 1fr;
