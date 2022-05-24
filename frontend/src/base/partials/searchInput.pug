@@ -10,18 +10,18 @@ section.search-input-container
           | Search
   .filters(aria-label="Filters")
     h3 Filters
-    fieldset
+    fieldset#filters
       legend.sr-only Select filter
-      div.selected
+      div.each-filter
         input#extension(type='checkbox' name='f_name' th:value="${f_name ?: 'true'}" th:checked="${f_name ?: 'true'}")
         label(for='extension') File format name
-      div
+      div.each-filter
         input#name(type='checkbox' name='f_ext' th:value="${ ?: 'true'}" th:checked="${f_ext ?: 'true'}")
         label(for='name') File format extension
-      div
+      div.each-filter
         input#type(type='checkbox' name='f_desc' th:value="${f_desc ?: 'true'}" th:checked="${f_desc ?: 'true'}")
         label(for='type') File format description
-      div
+      div.each-filter
         input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
         label(for='puid') PUID
 
