@@ -10,6 +10,14 @@ const App = () => {
   $('.page-container').removeClass('noJS');
   $('#header').removeClass('noJS');
   test()
+
+  $('#filters input:checkbox').change(function(){
+    if($(this).is(":checked")) {
+        $(this).closest('.each-filter').addClass("selected");
+    } else {
+      $(this).closest('.each-filter').removeClass("selected");
+    }
+  });
 }
 
 App()
