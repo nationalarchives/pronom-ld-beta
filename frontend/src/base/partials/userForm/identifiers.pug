@@ -35,14 +35,14 @@ section.form-part#identifiers
             i.fa-solid.fa-angles-right
   .form-partial-content
     .part
-      fieldset
+      fieldset(th:each="i, stat : *{identifiers}")
         legend.sr-only Provide identifiers and aliases
         #identifiers-list.row-group
           .identifier
 
             //- Identifier type
-            .form-row#identifier-type(th:classappend="${compare?.identifierType} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.identifierType) ? 'New content' : 'Edited content'}") Edited content
+            .form-row#identifier-type(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.type} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(ff?.identifiers?.get(__${stat.index}__)?.type) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -59,12 +59,12 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button.current Accept current
-                select(id="identifierType", th:field="*{identifierType}")
-                  option(th:each="fio : ${formatIdentifierType}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                select(id="identifierType", th:field="*{identifiers?.get(__${stat.index}__)?.type}")
+                  option(th:each="fio : ${formatIdentifierOption}", th:value="${fio.value}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
-                select(th:if="${compare?.identifierType}" id="identifierType")
-                  option(th:each="fio : ${formatIdentifierType}", th:value="${compare.identifierType}", th:text="${fio.label}") option 1
+                select(th:if="${compare?.identifiers?.get(__${stat.index}__)?.type}" id="identifierType")
+                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
 
             //- Identifier
             .form-row#identifier(th:classappend="${compare?.identifier} ? 'before-review' : ''")
@@ -85,10 +85,10 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button Accept current
-                input(name="identifier" id="identifier" th:field="*{identifier}", th:data-undo="${ff?.identifier}")
-              .input-group(th:if="${compare?.identifier}")
+                input(id="identifier" th:field="*{identifiers?.get(__${stat.index}__)?.name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
+              .input-group(th:if="${compare?.identifiers?.get(__${stat.index}__)?.name}")
                 button.incoming Accept incoming
-                input(th:value="${compare.identifier}" name="identifier" id="identifier")
+                input(th:value="${compare.identifiers?.get(__${stat.index}__)?.name}")
             .button-container
               button.bordered-red.small.delete-identifier
                 | Delete identifier
@@ -96,6 +96,7 @@ section.form-part#identifiers
           button.black.small.push-right.add-identifier
             | Add identifier
 
+      fieldset(th:each="a, stat : *{aliases}")
         h3.border
           | Aliases
         .part
@@ -103,8 +104,8 @@ section.form-part#identifiers
             .alias
 
               //- Alias Name
-              .form-row(th:classappend="${compare?.aliasName} ? 'before-review' : ''")
-                p.inputType(th:text="${#strings.isEmpty(ff?.aliasName) ? 'New content' : 'Edited content'}") Edited content
+              .form-row(th:classappend="${compare?.aliases?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.aliases?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
@@ -121,14 +122,14 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="aliasName" id="aliasName" th:field="*{aliasName}", th:data-undo="${ff?.aliasName}")
+                  input(id="aliasName" th:field="*{aliases?.get(__${stat.index}__)?.name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
                 .input-group(th:if="${compare?.aliasName}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliasName}" name="aliasName" id="aliasName")
+                  input(th:value="${compare.aliases?.get(__${stat.index}__)?.name}")
 
               //- Alias Version
-              .form-row(th:classappend="${compare?.aliasVersion} ? 'before-review' : ''")
-                p.inputType(th:text="${#strings.isEmpty(ff?.aliasVersion) ? 'New content' : 'Edited content'}") Edited content
+              .form-row(th:classappend="${compare?.aliases?.get(__${stat.index}__)?.version} ? 'before-review' : ''")
+                p.inputType(th:text="${#strings.isEmpty(ff?.aliases?.get(__${stat.index}__)?.version) ? 'New content' : 'Edited content'}") Edited content
                 .tooltipPlusAction
                   .tooltip-container
                     .label
@@ -145,10 +146,10 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="aliasVersion" id="aliasVersion" th:field="*{aliasVersion}", th:data-undo="${ff?.aliasVersion}")
-                .input-group(th:if="${compare?.aliasVersion}")
+                  input(id="aliasVersion" th:field="*{aliases?.get(__${stat.index}__)?.version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
+                .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.version}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliasVersion}" name="aliasVersion" id="aliasVersion")
+                  input(th:value="${compare.aliases?.get(__${stat.index}__)?.version}")
 
               .button-container
                 button.bordered-red.small.delete-alias

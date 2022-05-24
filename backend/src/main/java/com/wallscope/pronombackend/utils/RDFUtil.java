@@ -209,6 +209,11 @@ public class RDFUtil {
             public static final String PriorityOver = PRONOM.uri + "id/FileFormatRelationshipType/7";
         }
 
+        public static class FileFormatFamily {
+            public static final String type = PRONOM.uri + "FileFormatFamily";
+            public static final String uri = PRONOM.uri + "fileFormatFamily.";
+        }
+
         // PuidType sub
         public static class PuidType {
             public static final String type = PRONOM.uri + "PuidType";
@@ -265,6 +270,12 @@ public class RDFUtil {
             public static final String type = PRONOM.uri + "ByteOrder";
             public static final String littleEndian = id + "littleEndian";
             public static final String bigEndian = id + "bigEndian";
+        }
+
+        public static class CompressionType {
+            public static final String id = PRONOM.uri + "id/CompressionType/";
+            public static final String type = PRONOM.uri + "CompressionType";
+            public static final String uri = PRONOM.uri + "compressionType.";
         }
 
         // FormatIdentifier
