@@ -23,7 +23,7 @@ fieldset(th:each="p, stat : *{hasPriorityOver}")
                   p Reviewed
             .input-group
               button Accept current
-              input#priorityFileFormat(th:field="*{hasPriorityOver?.get(__${stat.index}__).target}", th:id="${'HasRelationship' + stat.index}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input#priorityFileFormat(th:field="*{hasPriorityOver[__${stat.index}__].target}", th:id="${'HasRelationship' + stat.index}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
             .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
               input#priorityFileFormat(th:value="${compare.hasPriorityOver?.get(__${stat.index}__).target}")

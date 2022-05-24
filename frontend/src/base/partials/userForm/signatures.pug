@@ -436,7 +436,7 @@ section.form-part#signatures
                         p Reviewed
                   .input-group
                     button Accept current    
-                    input(th:field="*{internalSignatures?.get(__${stat.index}__).name}", th:id="${'SignatureName' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.name}")
+                    input(th:field="*{internalSignatures[__${stat.index}__].name}", th:id="${'SignatureName' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.name}")
                   .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.name}")
                     button.incoming Accept incoming
                     input(th:value="${compare.internalSignatures?.get(__${stat.index}__).name}")
@@ -461,7 +461,7 @@ section.form-part#signatures
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    select(th:field="*{internalSignatures?.get(__${stat.index}__).byteOrder}", th:id="${'SignatureByteOrder' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.byteOrder}")
+                    select(th:field="*{internalSignatures[__${stat.index}__].byteOrder}", th:id="${'SignatureByteOrder' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.byteOrder}")
                       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
 
                   //- Description
@@ -484,14 +484,14 @@ section.form-part#signatures
                           p Reviewed
                     .input-group
                       button Accept current
-                      textarea(cols="30", rows="6" th:field="*{internalSignatures?.get(__${stat.index}__).note}", th:id="${'SignatureNote' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.note}")
+                      textarea(cols="30", rows="6" th:field="*{internalSignatures[__${stat.index}__].note}", th:id="${'SignatureNote' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.note}")
                     .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.note}")
                       button.incoming Accept incoming
                       textarea(cols="30", rows="6" th:value="${compare.internalSignatures?.get(__${stat.index}__).note}")
                   //- byte sequence
                   .byte-sequence-list
                     .list
-                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures?.get(__${stat.index}__).byteSequences}")
+                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures.get(__${stat.index}__).byteSequences}")
                         .info
                           h6 Byte sequence
                           button.bordered-red.small.delete-byte-sequence
@@ -517,7 +517,7 @@ section.form-part#signatures
                                 p Reviewed
                           .input-group
                             button Accept current
-                            input(th:field="*{internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
+                            input(?.get(__${stat.index}__)="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.sequence}")
                             button.incoming Accept incoming
                             input(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].sequence}")
@@ -542,7 +542,7 @@ section.form-part#signatures
                                 p Reviewed
                           .input-group
                             button Accept current
-                            select(th:field="*{internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
+                            select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
                           .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.position}")
                             button.incoming Accept incoming
@@ -569,7 +569,7 @@ section.form-part#signatures
                                 p Reviewed
                           .input-group
                             button Accept current
-                            input.short(th:field="*{internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
+                            input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset}")
                             button.incoming Accept incoming
                             input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].offset}")
@@ -594,7 +594,7 @@ section.form-part#signatures
                                 p Reviewed
                           .input-group
                             button Accept current
-                            input.short(th:field="*{internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
+                            input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.maxOffset}")
                             button.incoming Accept incoming
                             input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].maxOffset}")

@@ -201,7 +201,7 @@ public class RDFUtil {
         }
 
         public static class FormatRelationshipType {
-            public static final String type = PRONOM.uri + "FormatRelationshipType";
+            public static final String type = PRONOM.uri + "FileFormatRelationshipType";
             public static final String uri = PRONOM.uri + "formatRelationshipType.";
             public static final String TypeName = uri + "TypeName";
             public static final String InverseTypeName = uri + "InverseTypeName";
