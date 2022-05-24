@@ -67,7 +67,7 @@ section.form-part#identifiers
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
 
             //- Identifier
-            .form-row#identifier(th:classappend="${compare?.identifier} ? 'before-review' : ''")
+            .form-row#identifier(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(ff?.identifiers?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container

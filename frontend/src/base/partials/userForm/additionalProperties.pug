@@ -96,7 +96,7 @@ section.form-part#additionalProperties
             .add-actor
               fieldset(th:each="dev, stat : *{developmentActors}")
                 //- Developer
-                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)} ? 'before-review' : ''")
+                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)?.uri} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.developmentActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
                   .tooltipPlusAction
                     .tooltip-container
