@@ -2,7 +2,9 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
-import com.wallscope.pronombackend.model.*;
+import com.wallscope.pronombackend.model.FileFormat;
+import com.wallscope.pronombackend.model.FormFileFormat;
+import com.wallscope.pronombackend.model.FormOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -84,11 +86,17 @@ public class SubmissionController {
         Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
                 makeResource(PRONOM.ByteOrder.type),
                 makeResource(PRONOM.FormatIdentifierType.type),
-                makeResource(PRONOM.ByteSequence.BSPType)
+                makeResource(PRONOM.ByteSequence.BSPType),
+                makeResource(PRONOM.FormatRelationshipType.type),
+                makeResource(PRONOM.FileFormatFamily.type),
+                makeResource(PRONOM.CompressionType.type)
         ));
         model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
         model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
         List<FormOption> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream().sorted(Comparator.comparing(FormOption::getValue)).collect(Collectors.toList());
         model.addAttribute("positionTypeOptions", sortedPosTypes);
+        model.addAttribute("relationshipTypeOptions", options.get(PRONOM.FormatRelationshipType.type));
+        model.addAttribute("formatFamilyOptions", options.get(PRONOM.FileFormatFamily.type));
+        model.addAttribute("compressionTypeOptions", options.get(PRONOM.CompressionType.type));
     }
 }

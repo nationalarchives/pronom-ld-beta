@@ -58,7 +58,7 @@ section.form-part#additionalProperties
               button.current Accept current
               select(id="byteOrder", th:field="*{byteOrder}")
                 option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
-            .input-group
+            .input-group(th:if="${compare?.byteOrder}")
               button.incoming Accept incoming
               select(id="byteOrder" th:if="${compare?.byteOrder}")
                 option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
@@ -81,169 +81,173 @@ section.form-part#additionalProperties
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
-              input(name="compressionType" id="compressionType" th:field="*{compressionType}", th:data-undo="${ff?.compressionType}")
+              button.current Accept current
+              select(id="compressionType", th:field="*{compressionType}")
+                option(th:each="ct : ${compressionTypeOptions}", th:value="${ct.value}", th:text="${ct.label}") option 1
             .input-group(th:if="${compare?.compressionType}")
               button.incoming Accept incoming
-              input(th:value="${compare.compressionType}" name="compressionType" id="compressionType")
+              select(th:if="${compare?.compressionType}")
+                option(th:each="ct : ${compressionTypeOptions}", th:value="${ct.value}", th:text="${ct.label}") option 1
 
         h4.border Stakeholders and specification
         .part
           div
             
             .add-actor
-              //- Developer
-              .form-row(th:classappend="${compare?.developer} ? 'before-review' : ''")
-                p.inputType(th:text="${#strings.isEmpty(ff?.developer) ? 'New content' : 'Edited content'}") New content
-                .tooltipPlusAction
-                  .tooltip-container
-                    .label
-                      label(for="developer") Developer
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
-                        .i-wrapper
-                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                  .action-monitoring
-                    .review-type
-                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                      p Require reviewing
-                    .review-type
-                      i.fa-solid.fa-square-check
-                      p Reviewed
-                .input-group
-                  button Accept current
-                  input(name="developer" id="developer" th:field="*{developer}", th:data-undo="${ff?.developer}")
-                .input-group(th:if="${compare?.developer}")
-                  button.incoming Accept incoming
-                  input(th:value="${compare.developer}" name="developer" id="developer")
-              p.from-internal-only or
-              button.black.small.from-internal-only
-                | Add institutional actor
+              fieldset(th:each="dev, stat : *{developmentActors}")
+                //- Developer
+                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(ff?.developmentActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
+                  .tooltipPlusAction
+                    .tooltip-container
+                      .label
+                        label(for="developmentActors") Developer
+                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
+                          .i-wrapper
+                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    .action-monitoring
+                      .review-type
+                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                        p Require reviewing
+                      .review-type
+                        i.fa-solid.fa-square-check
+                        p Reviewed
+                  .input-group
+                    button Accept current
+                    input(id="developmentActors" th:field="*{developmentActors?.get(__${stat.index}__)?.uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
+                  .input-group(th:if="${compare?.developmentActors?.get(__${stat.index}__)?.uri}")
+                    button.incoming Accept incoming
+                    input(th:value="${compare.developmentActors?.get(__${stat.index}__)?.uri}")
+                p.from-internal-only or
+                button.black.small.from-internal-only
+                  | Add institutional actor
 
           div
             .from-internal-only
                 .add-actor
-                  //- Support
-                  .form-row(th:classappend="${compare?.support} ? 'before-review' : ''")
-                    p.inputType(th:text="${#strings.isEmpty(ff?.support) ? 'New content' : 'Edited content'}") New content
-                    .tooltipPlusAction
-                      .tooltip-container
-                        .label
-                          label(for="support") Support
-                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.2') tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      .action-monitoring
-                        .review-type
-                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                          p Require reviewing
-                        .review-type
-                          i.fa-solid.fa-square-check
-                          p Reviewed
-                    .input-group
-                      button Accept current
-                      input(name="support" id="support" th:field="*{support}", th:data-undo="${ff?.support}")
-                    .input-group(th:if="${compare?.support}")
-                      button.incoming Accept incoming
-                      input(th:value="${compare.support}" name="support" id="support")
-                  p or
-                  button.black.small
-                    | Add institutional actor
+                  fieldset(th:each="dev, stat : *{supportActors}")
+                    //- Support
+                    .form-row(th:classappend="${compare?.supportActors?.get(__${stat.index}__)} ? 'before-review' : ''")
+                      p.inputType(th:text="${#strings.isEmpty(ff?.supportActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
+                      .tooltipPlusAction
+                        .tooltip-container
+                          .label
+                            label(for="supportActors") Support
+                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
+                              .i-wrapper
+                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                        .action-monitoring
+                          .review-type
+                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                            p Require reviewing
+                          .review-type
+                            i.fa-solid.fa-square-check
+                            p Reviewed
+                      .input-group
+                        button Accept current
+                        input(id="supportActors" th:field="*{supportActors?.get(__${stat.index}__)?.uri}", th:data-undo="${ff?.supportActors?.get(__${stat.index}__)?.uri}")
+                      .input-group(th:if="${compare?.supportActors?.get(__${stat.index}__)?.uri}")
+                        button.incoming Accept incoming
+                        input(th:value="${compare.supportActors?.get(__${stat.index}__)?.uri}")
+                    p.from-internal-only or
+                    button.black.small.from-internal-only
+                      | Add institutional actor
 
-                //- Format IPR
-                .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")
-                  p.inputType(th:text="${#strings.isEmpty(ff?.formatIPR) ? 'New content' : 'Edited content'}") New content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="formatIPR") Format IPR
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.3') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="formatIPR" id="formatIPR" th:field="*{formatIPR}", th:data-undo="${ff?.formatIPR}")
-                  .input-group(th:if="${compare?.formatIPR}")
-                    button.incoming Accept incoming
-                    input(th:value="${compare.formatIPR}" name="formatIPR" id="formatIPR")
+        //-         //- Format IPR
+        //-         .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")
+        //-           p.inputType(th:text="${#strings.isEmpty(ff?.formatIPR) ? 'New content' : 'Edited content'}") New content
+        //-           .tooltipPlusAction
+        //-             .tooltip-container
+        //-               .label
+        //-                 label(for="formatIPR") Format IPR
+        //-                 span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.3') tabindex='0')
+        //-                   .i-wrapper
+        //-                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        //-             .action-monitoring
+        //-               .review-type
+        //-                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+        //-                 p Require reviewing
+        //-               .review-type
+        //-                 i.fa-solid.fa-square-check
+        //-                 p Reviewed
+        //-           .input-group
+        //-             button Accept current
+        //-             input(name="formatIPR" id="formatIPR" th:field="*{formatIPR}", th:data-undo="${ff?.formatIPR}")
+        //-           .input-group(th:if="${compare?.formatIPR}")
+        //-             button.incoming Accept incoming
+        //-             input(th:value="${compare.formatIPR}" name="formatIPR" id="formatIPR")
 
-                //- Document
-                .form-row(th:classappend="${compare?.document} ? 'before-review' : ''")
-                  p.inputType(th:text="${#strings.isEmpty(ff?.document) ? 'New content' : 'Edited content'}") New content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="document") Document
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.4') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input(name="document" id="document" th:field="*{document}", th:data-undo="${ff?.document}")
-                  .input-group(th:if="${compare?.document}")
-                    button.incoming Accept incoming
-                    input(th:value="${compare.document}" name="document" id="document")
+        //-         //- Document
+        //-         .form-row(th:classappend="${compare?.document} ? 'before-review' : ''")
+        //-           p.inputType(th:text="${#strings.isEmpty(ff?.document) ? 'New content' : 'Edited content'}") New content
+        //-           .tooltipPlusAction
+        //-             .tooltip-container
+        //-               .label
+        //-                 label(for="document") Document
+        //-                 span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.4') tabindex='0')
+        //-                   .i-wrapper
+        //-                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        //-             .action-monitoring
+        //-               .review-type
+        //-                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+        //-                 p Require reviewing
+        //-               .review-type
+        //-                 i.fa-solid.fa-square-check
+        //-                 p Reviewed
+        //-           .input-group
+        //-             button Accept current
+        //-             input(name="document" id="document" th:field="*{document}", th:data-undo="${ff?.document}")
+        //-           .input-group(th:if="${compare?.document}")
+        //-             button.incoming Accept incoming
+        //-             input(th:value="${compare.document}" name="document" id="document")
 
-                //- Release date
-                .form-row(th:classappend="${compare?.releaseDate} ? 'before-review' : ''")
-                  p.inputType(th:text="${#strings.isEmpty(ff?.releaseDate) ? 'New content' : 'Edited content'}") New content
-                  .tooltipPlusAction
-                    .tooltip-container
-                      .label
-                        label(for="releaseDate") Release date
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.5') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    .action-monitoring
-                      .review-type
-                        i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        p Require reviewing
-                      .review-type
-                        i.fa-solid.fa-square-check
-                        p Reviewed
-                  .input-group
-                    button Accept current
-                    input.date(name="releaseDate" id="releaseDate" th:field="*{releaseDate}", th:data-undo="${ff?.releaseDate}" type="date")
-                  .input-group(th:if="${compare?.releaseDate}")
-                    button.incoming Accept incoming
-                    input.date(th:value="${compare.releaseDate}" type="date" name="releaseDate" id="releaseDate")
-        .from-internal-only
-          h4.border Technical enviroment 
-          .part
+        //-         //- Release date
+        //-         .form-row(th:classappend="${compare?.releaseDate} ? 'before-review' : ''")
+        //-           p.inputType(th:text="${#strings.isEmpty(ff?.releaseDate) ? 'New content' : 'Edited content'}") New content
+        //-           .tooltipPlusAction
+        //-             .tooltip-container
+        //-               .label
+        //-                 label(for="releaseDate") Release date
+        //-                 span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.5') tabindex='0')
+        //-                   .i-wrapper
+        //-                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        //-             .action-monitoring
+        //-               .review-type
+        //-                 i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+        //-                 p Require reviewing
+        //-               .review-type
+        //-                 i.fa-solid.fa-square-check
+        //-                 p Reviewed
+        //-           .input-group
+        //-             button Accept current
+        //-             input.date(name="releaseDate" id="releaseDate" th:field="*{releaseDate}", th:data-undo="${ff?.releaseDate}" type="date")
+        //-           .input-group(th:if="${compare?.releaseDate}")
+        //-             button.incoming Accept incoming
+        //-             input.date(th:value="${compare.releaseDate}" type="date" name="releaseDate" id="releaseDate")
+        //- .from-internal-only
+        //-   h4.border Technical enviroment 
+        //-   .part
 
-            //- Technical enviroment
-            .form-row(th:classappend="${compare?.technicalEnviroment} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.technicalEnviroment) ? 'New content' : 'Edited content'}") New content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="technicalEnviroment") Technical enviroment 
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.3.1') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Accept current
-                input(name="technicalEnviroment" id="technicalEnviroment" th:field="*{technicalEnviroment}", th:data-undo="${ff?.technicalEnviroment}")
-              .input-group(th:if="${compare?.technicalEnviroment}")
-                button.incoming Accept incoming
-                input(th:value="${compare.technicalEnviroment}" name="technicalEnviroment" id="technicalEnviroment")
+        //-     //- Technical enviroment
+        //-     .form-row(th:classappend="${compare?.technicalEnviroment} ? 'before-review' : ''")
+        //-       p.inputType(th:text="${#strings.isEmpty(ff?.technicalEnviroment) ? 'New content' : 'Edited content'}") New content
+        //-       .tooltipPlusAction
+        //-         .tooltip-container
+        //-           .label
+        //-             label(for="technicalEnviroment") Technical enviroment 
+        //-             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.3.1') tabindex='0')
+        //-               .i-wrapper
+        //-                 i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        //-         .action-monitoring
+        //-           .review-type
+        //-             i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+        //-             p Require reviewing
+        //-           .review-type
+        //-             i.fa-solid.fa-square-check
+        //-             p Reviewed
+        //-       .input-group
+        //-         button Accept current
+        //-         input(name="technicalEnviroment" id="technicalEnviroment" th:field="*{technicalEnviroment}", th:data-undo="${ff?.technicalEnviroment}")
+        //-       .input-group(th:if="${compare?.technicalEnviroment}")
+        //-         button.incoming Accept incoming
+        //-         input(th:value="${compare.technicalEnviroment}" name="technicalEnviroment" id="technicalEnviroment")

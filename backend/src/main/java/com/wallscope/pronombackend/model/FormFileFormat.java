@@ -1,12 +1,8 @@
 package com.wallscope.pronombackend.model;
 
-import com.wallscope.pronombackend.utils.RDFUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FormFileFormat {
     private String uri;
@@ -17,11 +13,17 @@ public class FormFileFormat {
     private Boolean binaryFlag;
     private Boolean withdrawnFlag;
     private String formatType;
+    private String byteOrder;
+    private String compressionType;
+    private List<FormAlias> aliases;
+    private List<FormFormatIdentifier> identifiers;
+    private List<String> formatFamilies;
     private List<String> classifications;
     private List<FormInternalSignature> internalSignatures;
     private List<FormExternalSignature> externalSignatures;
     private List<FormActor> developmentActors;
     private List<FormActor> supportActors;
+    private List<FormFileFormatRelationship> hasPriorityOver;
     private List<FormFileFormatRelationship> hasRelationships;
     private FormSubmittedBy submittedBy;
 
@@ -29,9 +31,12 @@ public class FormFileFormat {
         // We must initialise the nested fields otherwise we get null pointer exceptions in the template rendering
         internalSignatures = new ArrayList<>();
         externalSignatures = new ArrayList<>();
+        aliases = new ArrayList<>();
+        identifiers = new ArrayList<>();
         developmentActors = new ArrayList<>();
         supportActors = new ArrayList<>();
         hasRelationships = new ArrayList<>();
+        hasPriorityOver = new ArrayList<>();
         submittedBy = new FormSubmittedBy();
     }
 
@@ -131,12 +136,6 @@ public class FormFileFormat {
         this.hasRelationships = hasRelationships;
     }
 
-    public List<FormFileFormatRelationship> getHasPriorityOver() {
-        return hasRelationships.stream()
-                .filter(r -> r.getRelationshipType().equals(PRONOM.FormatRelationshipType.PriorityOver))
-                .collect(Collectors.toList());
-    }
-
     public FormSubmittedBy getSubmittedBy() {
         return submittedBy;
     }
@@ -153,21 +152,84 @@ public class FormFileFormat {
         this.formatType = formatType;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public List<FormFormatIdentifier> getIdentifiers() {
+        return identifiers;
+    }
+
+    public void setIdentifiers(List<FormFormatIdentifier> identifiers) {
+        this.identifiers = identifiers;
+    }
+
+    public List<FormAlias> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(List<FormAlias> aliases) {
+        this.aliases = aliases;
+    }
+
+    public List<FormFileFormatRelationship> getHasPriorityOver() {
+        return hasPriorityOver;
+    }
+
+    public void setHasPriorityOver(List<FormFileFormatRelationship> hasPriorityOver) {
+        this.hasPriorityOver = hasPriorityOver;
+    }
+
+    public List<String> getFormatFamilies() {
+        return formatFamilies;
+    }
+
+    public void setFormatFamilies(List<String> formatFamilies) {
+        this.formatFamilies = formatFamilies;
+    }
+
+    public String getByteOrder() {
+        return byteOrder;
+    }
+
+    public void setByteOrder(String byteOrder) {
+        this.byteOrder = byteOrder;
+    }
+
+    public String getCompressionType() {
+        return compressionType;
+    }
+
+    public void setCompressionType(String compressionType) {
+        this.compressionType = compressionType;
+    }
+
     @Override
     public String toString() {
         return "FormFileFormat{" +
-                "puid='" + puid + '\'' +
+                "uri='" + uri + '\'' +
+                ", puid='" + puid + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
                 ", formatType='" + formatType + '\'' +
+                ", byteOrder='" + byteOrder + '\'' +
+                ", compressionType='" + compressionType + '\'' +
+                ", aliases=" + aliases +
+                ", identifiers=" + identifiers +
+                ", formatFamilies=" + formatFamilies +
                 ", classifications=" + classifications +
                 ", internalSignatures=" + internalSignatures +
                 ", externalSignatures=" + externalSignatures +
                 ", developmentActors=" + developmentActors +
                 ", supportActors=" + supportActors +
+                ", hasPriorityOver=" + hasPriorityOver +
                 ", hasRelationships=" + hasRelationships +
                 ", submittedBy=" + submittedBy +
                 '}';
@@ -191,11 +253,4 @@ public class FormFileFormat {
         return ff;
     }
 
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
 }

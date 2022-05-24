@@ -1,12 +1,12 @@
-fieldset(th:each="p, stat : *{hasRelationships}", th:if="${p.relationshipType eq 'http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatRelationshipType/7'}")
+fieldset(th:each="p, stat : *{hasPriorityOver}")
   legend.sr-only For the current file format, specify others over which it has priority over
   .row-group
     #priority-inner
       p Priority over
       .priority-list
         .priority-group
-          .form-row#priority-file-format(th:classappend="${compare?.hasPriorityOver[__${stat.index}__]?.target} ? 'before-review' : ''")
-            p.inputType Edited content
+          .form-row#priority-file-format(th:classappend="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(p?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
                 .label
@@ -23,10 +23,10 @@ fieldset(th:each="p, stat : *{hasRelationships}", th:if="${p.relationshipType eq
                   p Reviewed
             .input-group
               button Accept current
-              input#priorityFileFormat(th:field="*{hasRelationships[__${stat.index}__].target}", th:id="${'HasRelationship' + stat.index}", th:data-undo="${ff?.hasRelationships[__${stat.index}__]?.target}")
-            .input-group(th:if="${compare?.hasRelationships[__${stat.index}__]?.target}")
+              input#priorityFileFormat(th:field="*{hasPriorityOver?.get(__${stat.index}__).target}", th:id="${'HasRelationship' + stat.index}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+            .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input#priorityFileFormat(th:value="${compare.hasRelationships[__${stat.index}__].target}")
+              input#priorityFileFormat(th:value="${compare.hasPriorityOver?.get(__${stat.index}__).target}")
           button.bordered-red.small.delete-priority-over
             | Delete field
       .button-container

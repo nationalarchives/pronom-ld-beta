@@ -116,11 +116,11 @@ public class FileFormat implements RDFWritable {
         return version;
     }
 
-    public boolean isBinaryFlag() {
+    public Boolean isBinaryFlag() {
         return binaryFlag;
     }
 
-    public boolean isWithdrawnFlag() {
+    public Boolean isWithdrawnFlag() {
         return withdrawnFlag;
     }
 
