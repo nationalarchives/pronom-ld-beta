@@ -25,117 +25,124 @@ section.search-input-container
         input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
         label(for='puid') PUID
 
-section.search-output(th:if="${results != null and !results.empty}")
-  h3 Results
+section.search-output
+  h3 
+    | Showing&nbsp;
     span(th:text="'('+${totalResults}+')'")
-  .additionals
-    .manage-results
-      .result-counts
-        fieldset(aria-label="Set number of result per page")
-          label(for="results_per_page") Show
-          legend.sr-only Change number of results per page
-          div
-            input(id="results_per_page", class="small", maxlength="2", type="number", min="5", max="99", th:value="${pageSize}")
-      .sort-by
-        fieldset(aria-label="Sort search results by selected measure")
-          legend.sr-only Sort search results by selected measure
-          label(for="sort_by") Sort by
-          div
-            select(id="sort_by", name="sort", th:value="${sort}")
-              option(th:selected="${sort eq 'relevance'}", value='relevance') relevance
-              option(th:selected="${sort eq 'type'}", value='type') type
-              option(th:selected="${sort eq 'name'}", value='name') name
-              option(th:selected="${sort eq 'puid'}", value='puid') PUID
-    .save-options
-      label(for="save_as") Save as
-      .button-list
-        button.xsmall.bordered-blue
-          | XML
-        button.xsmall.bordered-blue
-          | CSV
-        .dropdown-group
-          button.xsmall.bordered-blue
-            | RDF
-          select(id="save_as")
-            option(value='0') TTL
-            option(value='1') NT
-            option(value='2') RDF/XML
-  .all-results
-    ul
-      li.column-names
-        h4 Type
-        h4 Name
-        h4 Basic information
-        h4 Description
-        h4.extended Status
-        h4.extended Maintain
-      li.results-container
-        ul.results
-          th:block(th:each="r : ${results}")
-            li
-              a(th:href="@{/id/{target}(target=${r.idUri})}")
-                div
-                  p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
-                    span Type
-                    | File format
-                  h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
-                    span Name
-                    | Portable Network Graphics
-                  div.basic
-                    p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
-                      span PUID
-                      | fmt/412
-                  p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
-                    span Description
-                    | fmt/412
-                  p.data.extend.status
-                    span Status
-                    | Released
-                  .extend.buttons
-                    button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
-                    button.xsmall.bordered-blue Clone
-                    button.xsmall.bordered-red Delete
-        //- Example with multiple basic data properties
-        //- Uncomment to test while running the frontend with no backend
-        //- li
-        //-   a(href="")
-        //-     div
-        //-       p.data.type
-        //-         span Type
-        //-         | File format
-        //-       h5.data.name
-        //-         span Name
-        //-         | Portable Network Graphics
-        //-       div.basic
-        //-         p.data
-        //-           span Version
-        //-           | 3.0.0
-        //-         p.data
-        //-           span PUID
-        //-           | fmt/412
-        //-         p.data
-        //-           span Last Updated
-        //-           | 2015-08-03T00:00:00
-        //-         p.data
-        //-           span File Extension(s)
-        //-           | png
-        //-       p.data.desc
-        //-         span Description
-        //-         | Portable Network Graphics (PNG) was designed for the lossless, portable, compressed storage of raster images.  PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. PNG is designed to work in online viewing applications, so it is fully streamable.  It can store gamma and chromaticity.  PNG also detects file corruption.
-        //-       p.data.extend.status
-        //-         span Status
-        //-         | Released
-        //-       .extend.buttons
-        //-         button.xsmall.bordered-blue View
-        //-         button.xsmall.bordered-blue Clone
-        //-         button.xsmall.bordered-red Delete
+    |  results
+  .results-manager
+    //- TODO uncomment when ready
+    //- div(th:if="${results = null and results.empty}")
+      include ../partials/noResults.pug
+    div(th:if="${results != null and !results.empty}")
+      .additionals
+        .manage-results
+          .result-counts
+            fieldset(aria-label="Set number of result per page")
+              label(for="results_per_page") Show
+              legend.sr-only Change number of results per page
+              div
+                input(id="results_per_page", class="small", maxlength="2", type="number", min="5", max="99", th:value="${pageSize}")
+          .sort-by
+            fieldset(aria-label="Sort search results by selected measure")
+              legend.sr-only Sort search results by selected measure
+              label(for="sort_by") Sort by
+              div
+                select(id="sort_by", name="sort", th:value="${sort}")
+                  option(th:selected="${sort eq 'relevance'}", value='relevance') relevance
+                  option(th:selected="${sort eq 'type'}", value='type') type
+                  option(th:selected="${sort eq 'name'}", value='name') name
+                  option(th:selected="${sort eq 'puid'}", value='puid') PUID
+        .save-options
+          label(for="save_as") Save as
+          .button-list
+            button.xsmall.bordered-blue
+              | XML
+            button.xsmall.bordered-blue
+              | CSV
+            .dropdown-group
+              button.xsmall.bordered-blue
+                | RDF
+              select(id="save_as")
+                option(value='0') TTL
+                option(value='1') NT
+                option(value='2') RDF/XML
+      .all-results
+        ul
+          li.column-names
+            h4 Type
+            h4 Name
+            h4 Basic information
+            h4 Description
+            h4.extended Status
+            h4.extended Maintain
+          li.results-container
+            ul.results
+              th:block(th:each="r : ${results}")
+                li
+                  a(th:href="@{/id/{target}(target=${r.idUri})}")
+                    div
+                      p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
+                        span Type
+                        | File format
+                      h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")
+                        span Name
+                        | Portable Network Graphics
+                      div.basic
+                        p.data(th:each="i : ${r.HTMLProperties}", th:utext="'<span>'+${i.key}+'</span>'+${i.value}")
+                          span PUID
+                          | fmt/412
+                      p.data.desc(th:utext="'<span>Description</span>'+${r.HTMLDescription}")
+                        span Description
+                        | fmt/412
+                      p.data.extend.status
+                        span Status
+                        | Released
+                      .extend.buttons
+                        button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
+                        button.xsmall.bordered-blue Clone
+                        button.xsmall.bordered-red Delete
+            //- Example with multiple basic data properties
+            //- Uncomment to test while running the frontend with no backend
+            //- li
+            //-   a(href="")
+            //-     div
+            //-       p.data.type
+            //-         span Type
+            //-         | File format
+            //-       h5.data.name
+            //-         span Name
+            //-         | Portable Network Graphics
+            //-       div.basic
+            //-         p.data
+            //-           span Version
+            //-           | 3.0.0
+            //-         p.data
+            //-           span PUID
+            //-           | fmt/412
+            //-         p.data
+            //-           span Last Updated
+            //-           | 2015-08-03T00:00:00
+            //-         p.data
+            //-           span File Extension(s)
+            //-           | png
+            //-       p.data.desc
+            //-         span Description
+            //-         | Portable Network Graphics (PNG) was designed for the lossless, portable, compressed storage of raster images.  PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. PNG is designed to work in online viewing applications, so it is fully streamable.  It can store gamma and chromaticity.  PNG also detects file corruption.
+            //-       p.data.extend.status
+            //-         span Status
+            //-         | Released
+            //-       .extend.buttons
+            //-         button.xsmall.bordered-blue View
+            //-         button.xsmall.bordered-blue Clone
+            //-         button.xsmall.bordered-red Delete
 
 
-    .pagination
-      ul
-        th:block(th:each="p : ${pages}")
-          li(th:class="${p.text eq 'Next' || p.text eq 'Previous' ? 'controls' : ''}",
-            th:classappend="${p.active ? 'active' : ''}")
-            a(th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}", 
-              th:href="${urlBuilder.replaceQueryParam('offset', p.offset).toUriString()}",
-              th:text="${p.text}") #
+        .pagination
+          ul
+            th:block(th:each="p : ${pages}")
+              li(th:class="${p.text eq 'Next' || p.text eq 'Previous' ? 'controls' : ''}",
+                th:classappend="${p.active ? 'active' : ''}")
+                a(th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}", 
+                  th:href="${urlBuilder.replaceQueryParam('offset', p.offset).toUriString()}",
+                  th:text="${p.text}") #
