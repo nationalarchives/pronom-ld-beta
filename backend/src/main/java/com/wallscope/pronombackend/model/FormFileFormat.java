@@ -1,6 +1,5 @@
 package com.wallscope.pronombackend.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,14 +28,14 @@ public class FormFileFormat {
 
     public FormFileFormat() {
         // We must initialise the nested fields otherwise we get null pointer exceptions in the template rendering
-        internalSignatures = new ArrayList<>();
-        externalSignatures = new ArrayList<>();
-        aliases = new ArrayList<>();
-        identifiers = new ArrayList<>();
-        developmentActors = new ArrayList<>();
-        supportActors = new ArrayList<>();
-        hasRelationships = new ArrayList<>();
-        hasPriorityOver = new ArrayList<>();
+        internalSignatures = List.of(new FormInternalSignature());
+        externalSignatures = List.of(new FormExternalSignature());
+        aliases = List.of(new FormAlias());
+        identifiers = List.of(new FormFormatIdentifier());
+        developmentActors = List.of(new FormActor());
+        supportActors = List.of(new FormActor());
+        hasRelationships = List.of(new FormFileFormatRelationship());
+        hasPriorityOver = List.of(new FormFileFormatRelationship());
         submittedBy = new FormSubmittedBy();
     }
 

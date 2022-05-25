@@ -96,7 +96,7 @@ section.form-part#additionalProperties
             .add-actor
               fieldset(th:each="dev, stat : *{developmentActors}")
                 //- Developer
-                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)} ? 'before-review' : ''")
+                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)?.uri} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.developmentActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
                   .tooltipPlusAction
                     .tooltip-container
@@ -114,7 +114,7 @@ section.form-part#additionalProperties
                         p Reviewed
                   .input-group
                     button Accept current
-                    input(id="developmentActors" th:field="*{developmentActors?.get(__${stat.index}__)?.uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
+                    input(id="developmentActors" th:field="*{developmentActors[__${stat.index}__].uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
                   .input-group(th:if="${compare?.developmentActors?.get(__${stat.index}__)?.uri}")
                     button.incoming Accept incoming
                     input(th:value="${compare.developmentActors?.get(__${stat.index}__)?.uri}")
@@ -145,7 +145,7 @@ section.form-part#additionalProperties
                             p Reviewed
                       .input-group
                         button Accept current
-                        input(id="supportActors" th:field="*{supportActors?.get(__${stat.index}__)?.uri}", th:data-undo="${ff?.supportActors?.get(__${stat.index}__)?.uri}")
+                        input(id="supportActors" th:field="*{supportActors[__${stat.index}__].uri}", th:data-undo="${ff?.supportActors?.get(__${stat.index}__)?.uri}")
                       .input-group(th:if="${compare?.supportActors?.get(__${stat.index}__)?.uri}")
                         button.incoming Accept incoming
                         input(th:value="${compare.supportActors?.get(__${stat.index}__)?.uri}")

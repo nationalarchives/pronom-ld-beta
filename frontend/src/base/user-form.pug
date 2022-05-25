@@ -4,7 +4,7 @@ block modalHeader
   div
     h1(th:text="${edit ? 'Edit file format' : 'Add new file format' }") Add new file format
 block modalBody
-  .error-notification
+  .error-notification(th:if="${errors}")
     .error-inner
       div
         h2 Erorr

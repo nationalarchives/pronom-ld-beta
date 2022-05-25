@@ -58,7 +58,7 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button.current Accept current
-              select(id="relationshipType", th:field="*{hasRelationships?.get(__${stat.index}__).relationshipType")
+              select(id="relationshipType", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
                 option(th:each="rto : ${relationshipTypeOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
               button.incoming Accept incoming
@@ -84,7 +84,7 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button Accept current
-              input(name="target" id="target" th:field="*{hasRelationships?.get(__${stat.index}__).target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(name="target" id="target" th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
               input(th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
@@ -115,7 +115,7 @@ section.form-part#relationships
                 p Reviewed
           .input-group
             button.current Accept current
-            select(id="formatFamilies", th:field="*{formatFamilies?.get(__${stat.index}__)")
+            select(id="formatFamilies", th:field="*{formatFamilies[__${stat.index}__]")
               option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.value}", th:text="${ffo.label}") option 1
           .input-group(th:if="${compare?.formatFamilies?.get(__${stat.index}__)}")
             button.incoming Accept incoming

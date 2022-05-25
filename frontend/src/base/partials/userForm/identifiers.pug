@@ -59,16 +59,16 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button.current Accept current
-                select(id="identifierType", th:field="*{identifiers?.get(__${stat.index}__)?.type}")
-                  option(th:each="fio : ${formatIdentifierOption}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                select(id="identifierType", th:field="*{identifiers[__${stat.index}__]?.type}")
+                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
                 select(th:if="${compare?.identifiers?.get(__${stat.index}__)?.type}" id="identifierType")
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
 
             //- Identifier
-            .form-row#identifier(th:classappend="${compare?.identifier} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.identifier) ? 'New content' : 'Edited content'}") Edited content
+            .form-row#identifier(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(ff?.identifiers?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -85,7 +85,7 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button Accept current
-                input(id="identifier" th:field="*{identifiers?.get(__${stat.index}__)?.name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
+                input(id="identifier" th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
               .input-group(th:if="${compare?.identifiers?.get(__${stat.index}__)?.name}")
                 button.incoming Accept incoming
                 input(th:value="${compare.identifiers?.get(__${stat.index}__)?.name}")
@@ -122,8 +122,8 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(id="aliasName" th:field="*{aliases?.get(__${stat.index}__)?.name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
-                .input-group(th:if="${compare?.aliasName}")
+                  input(id="aliasName" th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
+                .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.name}")
                   button.incoming Accept incoming
                   input(th:value="${compare.aliases?.get(__${stat.index}__)?.name}")
 
@@ -146,7 +146,7 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(id="aliasVersion" th:field="*{aliases?.get(__${stat.index}__)?.version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
+                  input(id="aliasVersion" th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.version}")
                   button.incoming Accept incoming
                   input(th:value="${compare.aliases?.get(__${stat.index}__)?.version}")
