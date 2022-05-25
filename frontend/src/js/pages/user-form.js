@@ -380,6 +380,15 @@ const App = () => {
     $(this).closest(".relationship").remove();
   });
 
+  // display documentation fields
+  $('.documentation input:checkbox').change(function(){
+    if($(this).is(":checked")) {
+      $(this).closest('.reference-group').addClass("open-additional");
+    } else {
+      $(this).closest('.reference-group').removeClass("open-additional");
+    }
+  });
+
 }
 
 App()

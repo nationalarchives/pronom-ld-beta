@@ -633,6 +633,14 @@ fieldset {
         display: none;
       }
     }
+    .additional-fields {
+      display: none;
+    }
+    &.open-additional {
+      .additional-fields {
+        display: block;
+      }
+    }
   }
 }
 

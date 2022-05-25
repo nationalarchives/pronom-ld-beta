@@ -129,7 +129,7 @@ section.form-part#core
           include ./priority-over.pug
 
     h3.border References
-    //- .part
+    .part
       fieldset.references
         .row-group.inline.reference-group
 
@@ -182,7 +182,7 @@ section.form-part#core
               input(th:value="${compare.referenceLinkURL}" name="referenceLinkURL" id="referenceLinkURL")
 
           //- Documentation
-          .form-row#reference-documentation.checkbox-container(th:classappend="${compare?.referenceDocumentation} ? 'before-review' : ''")
+          .form-row#reference-documentation.checkbox-container.documentation(th:classappend="${compare?.referenceDocumentation} ? 'before-review' : ''")
             p.inputType(text="${#strings.isEmpty(ff?.referenceDocumentation) ? 'New content' : 'Edited content'}") Edited content
             .input-group
               button Accept current
