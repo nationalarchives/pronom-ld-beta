@@ -21,13 +21,13 @@ section#internal-pronom-nav
             ul.sub-menu-pronom
               li
                 // INFO for blue color add class="active"
-                a.active
+                a(href="#contributions-wrapper")
                   | Contributions
               li
-                a
+                a(href="#release-plan-wrapper")
                   | Release plan
               li
-                a(href='')
+                a(href='#maintenance-history-wrapper')
                   | Contributions maintenance history
           li(class={selected: currentUrl === '/internal-search'})
             a.top-link(class={active: currentUrl === '/internal-search'} href='/internal-search')
