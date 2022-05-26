@@ -49,7 +49,7 @@ section.form-part#core
             input(th:value="${compare.name}" name="Name" id="FileFormatName" )
 
         //- File format version
-        .form-row#version(th:classappend="${compare?.version} ? 'before-review' : ''")
+        .form-row#version-container(th:classappend="${compare?.version} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.version) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             .tooltip-container

@@ -1,9 +1,10 @@
-- var currentUrl = '/'
+block vars
+  - var currentUrl = '/dashboard'
 
 section#internal-pronom-nav
   .container
     #pronom-nav-header
-      a#page-title(href='/')
+      a#page-title(href='/dashboard')
         | PRONOM
         span Editorial Environment
       button#pronom-nav-mobile-collapse(type='button')
@@ -13,7 +14,7 @@ section#internal-pronom-nav
       nav
         ul.menu-pronom.side-padding.hide
           // INFO to display sub-menu add class="selected" to <li>
-          li(class={selected: currentUrl === '/'})
+          li(class={selected: currentUrl === '/dashboard'})
             // INFO for blue color add class="active"
             a.top-link(class={active: currentUrl === '/dashboard'} href='/dashboard')
               | Dashboard
@@ -28,11 +29,11 @@ section#internal-pronom-nav
               li
                 a(href='')
                   | Contributions maintenance history
-          li(class={selected: currentUrl === '/internalSearch'})
-            a.top-link(class={active: currentUrl === '/internalSearch'} href='/internal-search')
+          li(class={selected: currentUrl === '/internal-search'})
+            a.top-link(class={active: currentUrl === '/internal-search'} href='/internal-search')
               | Search PRONOM
-          li(class={selected: currentUrl === '/contentManager'})
-            a.top-link(class={active: currentUrl === '/contentManager'} href='/content-manager')
+          li(class={selected: currentUrl === '/content-manager'})
+            a.top-link(class={active: currentUrl === '/content-manager'} href='/content-manager')
               | Edit website content
     #internal-actions.hide
       h2 Actions
