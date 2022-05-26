@@ -189,7 +189,7 @@ The following table maps the applicaiton endpoint to their respective templates 
 | 6. Contact                        | /contact                  | contact.html          | Contact page |
 | | | | |
 | 7. Contribute to Pronom           | /contribute               | contribute.html       | Contribution information |
-| 7. Make a submission              | /contribute/form          | form-choice.html      | Page where user chooses to start a new form or clone from existing PUID |
+| 7. Make a contribution              | /contribute/form          | form-choice.html      | Page where user chooses to start a new form or clone from existing PUID |
 | 7.1 New format                    | /contribute/form/new      | user-form.html        | External user form page (new format) |
 | 7.2 Edit/clone format             | /contribute/form/{PUID}   | user-form.html        | External user form page (clone existing) |
 | | | | |
