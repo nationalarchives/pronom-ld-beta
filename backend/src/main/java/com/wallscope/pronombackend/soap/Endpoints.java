@@ -1,4 +1,4 @@
-package com.wallscope.pronombackend;
+package com.wallscope.pronombackend.soap;
 
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 @Endpoint
-public class EndpointSOAP {
+public class Endpoints {
 
     private static final String NAMESPACE_URI = "http://pronom.nationalarchives.gov.uk";
 
