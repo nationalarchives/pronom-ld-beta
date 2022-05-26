@@ -18,12 +18,48 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'build/generated-sources/jaxb'
+        }
+    }
+}
+
+task genJaxb {
+    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+    ext.schema = "src/main/resources/pronom.wsdl"
+
+    outputs.dir sourcesDir
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+
+            xjc(destdir: sourcesDir, schema: schema) {
+                arg(value: "-wsdl")
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+        }
+    }
+}
+
+compileJava.dependsOn genJaxb
+
+configurations {
+    jaxb
+}
+
 dependencies {
     // Spring deps
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services:2.6.7'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testImplementation 'org.springframework.security:spring-security-test:5.6.3'
@@ -48,6 +84,11 @@ dependencies {
     implementation(group: "org.apache.jena", name: "jena-arq", version: "4.3.2")
     // https://mvnrepository.com/artifact/org.apache.jena/jena-rdfconnection
     implementation(group: "org.apache.jena", name: "jena-rdfconnection", version: "4.3.2")
+
+    // SOAP deps
+    implementation 'wsdl4j:wsdl4j'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+    jaxb("org.glassfish.jaxb:jaxb-xjc")
 }
 
 tasks.named('test') {
