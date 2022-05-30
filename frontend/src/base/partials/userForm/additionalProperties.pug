@@ -101,7 +101,7 @@ section.form-part#additionalProperties
                   .tooltipPlusAction
                     .tooltip-container
                       .label
-                        label(for="developmentActors") Developer
+                        label(th:for="${'developmentActors' + stat.index}") Developer
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -114,7 +114,7 @@ section.form-part#additionalProperties
                         p Reviewed
                   .input-group
                     button Accept current
-                    input(id="developmentActors" th:field="*{developmentActors[__${stat.index}__].uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
+                    input(th:id="${'developmentActors' + stat.index}" th:field="*{developmentActors[__${stat.index}__].uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
                   .input-group(th:if="${compare?.developmentActors?.get(__${stat.index}__)?.uri}")
                     button.incoming Accept incoming
                     input(th:value="${compare.developmentActors?.get(__${stat.index}__)?.uri}")

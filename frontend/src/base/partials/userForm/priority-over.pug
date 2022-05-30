@@ -10,7 +10,7 @@ fieldset(th:each="p, stat : *{hasPriorityOver}")
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(th:for="priorityFileFormat") File format
+                  label(th:for="${'HasRelationship' + stat.index}") File format
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.1.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
