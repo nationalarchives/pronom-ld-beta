@@ -86,7 +86,7 @@ public class SearchController {
         if (totalResults > limitVal * current) pages.add(new PaginationHelper("Next", offsetVal + limitVal, false));
         model.addAttribute("pages", pages);
 
-        logger.debug("SERVING SEARCH RESULTS: " + results);
+        logger.trace("SERVING SEARCH RESULTS: " + results);
 
         // set the search and filter parameters as set by the user before rendering the template
         model.addAttribute("q", q);

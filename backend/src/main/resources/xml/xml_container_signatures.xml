@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContainerSignatureMapping schemaVersion="1.0" signatureVersion="27" xmlns:th="http://www.thymeleaf.org">
+    <ContainerSignatures><th:block th:each="contSig : ${containerSignatures}">
+        <ContainerSignature th:Id="${contSig.ID}" th:ContainerType="${contSig.containerTypeName}">
+            <Description th:text="${contSig.name}">Microsoft Word 6.0/95 OLE2</Description>
+            <Files><th:block th:each="file: ${contSig.files}">
+                <File>
+                    <Path th:text="${file.path}">CompObj</Path>
+                    <BinarySignatures th:unless="${#lists.isEmpty(file.byteSequences)}">
+                        <InternalSignatureCollection>
+                            <InternalSignature th:ID="${contSig.ID}">
+                                <ByteSequence th:each="bs : ${file.byteSequences}" th:Endianness="${bs.byteOrderName}" th:Reference="${bs.reference}">
+                                    <SubSequence th:SubSeqMaxOffset="${bs.maxOffset}" th:SubSeqMinOffset="${bs.offset}">
+                                        <Sequence th:utext="${@templateUtils.customEscape(bs.sequence)}">49492A00</Sequence>
+                                    </SubSequence>
+                                </ByteSequence>
+                            </InternalSignature>
+                        </InternalSignatureCollection>
+                    </BinarySignatures>
+                </File></th:block>
+            </Files>
+        </ContainerSignature></th:block>
+    </ContainerSignatures>
+    <FileFormatMappings><th:block th:each="f : ${formats}">
+        <FileFormatMapping th:each="cSig : ${f.containerSignatures}" th:signatureId="${cSig.ID}" th:Puid="${f.formattedPuid}"/>
+    </th:block></FileFormatMappings>
+    <TriggerPuids><th:block th:each="ct : ${containerTypes}">
+        <TriggerPuid th:each="f : ${ct.fileFormats}" th:ContainerType="${ct.name}" th:Puid="${f.formattedPuid}"/>
+    </th:block></TriggerPuids>
+</ContainerSignatureMapping>

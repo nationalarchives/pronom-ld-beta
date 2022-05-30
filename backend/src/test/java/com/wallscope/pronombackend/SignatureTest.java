@@ -44,6 +44,10 @@ public class SignatureTest {
         seqs = TestResources.FurtherOffsetTestBS.getSubSequences();
         System.out.println(seqs);
         System.out.println("---------------------------------------------------------------");
+        System.out.println("--------------------EOF OFFSET TEST----------------------------");
+        seqs = TestResources.EOFExample.getSubSequences();
+        System.out.println(seqs);
+        System.out.println("---------------------------------------------------------------");
     }
 //    @LocalServerPort
 //    private int port;

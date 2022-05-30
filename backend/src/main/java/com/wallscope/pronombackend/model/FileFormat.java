@@ -30,6 +30,7 @@ public class FileFormat implements RDFWritable {
     private final List<Classification> classifications;
     private final List<InternalSignature> internalSignatures;
     private final List<ExternalSignature> externalSignatures;
+    private final List<ContainerSignature> containerSignatures;
     private final List<FormatIdentifier> formatIdentifiers;
     private final List<Actor> developmentActors;
     private final List<Actor> supportActors;
@@ -49,7 +50,9 @@ public class FileFormat implements RDFWritable {
             List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
-            List<FormatIdentifier> formatIdentifiers, List<Actor> developmentActors,
+            List<ContainerSignature> containerSignatures,
+            List<FormatIdentifier> formatIdentifiers,
+            List<Actor> developmentActors,
             List<Actor> supportActors,
             List<FileFormatRelationship> hasRelationships) {
         this.uri = uri;
@@ -65,6 +68,7 @@ public class FileFormat implements RDFWritable {
         this.classifications = classifications;
         this.internalSignatures = internalSignatures;
         this.externalSignatures = externalSignatures;
+        this.containerSignatures = containerSignatures;
         this.formatIdentifiers = formatIdentifiers;
         this.developmentActors = developmentActors;
         this.supportActors = supportActors;
@@ -94,10 +98,6 @@ public class FileFormat implements RDFWritable {
 
     public String getFormattedPuid() {
         return puidTypeName + "/" + puid;
-    }
-
-    public String getFormattedMimeType() {
-        return "MIME/type";
     }
 
     public String getName() {
@@ -140,6 +140,10 @@ public class FileFormat implements RDFWritable {
         return externalSignatures;
     }
 
+    public List<ContainerSignature> getContainerSignatures() {
+        return containerSignatures;
+    }
+
     public List<FileFormatRelationship> getHasRelationships() {
         return hasRelationships;
     }
@@ -149,7 +153,7 @@ public class FileFormat implements RDFWritable {
     }
 
     public boolean getHasSignature() {
-        return !(internalSignatures.isEmpty() && externalSignatures.isEmpty());
+        return !(internalSignatures.isEmpty() && externalSignatures.isEmpty() && containerSignatures.isEmpty());
     }
 
     public String getFirstExtension() {
@@ -220,6 +224,7 @@ public class FileFormat implements RDFWritable {
                 ", classifications=" + classifications +
                 ", internalSignatures=" + internalSignatures +
                 ", externalSignatures=" + externalSignatures +
+                ", containerSignatures=" + containerSignatures +
                 ", formatIdentifiers=" + formatIdentifiers +
                 ", developmentActors=" + developmentActors +
                 ", supportActors=" + supportActors +
@@ -271,6 +276,9 @@ public class FileFormat implements RDFWritable {
             // ExternalSignature
             List<Resource> extSigSubjects = mu.getAllSubjects(makeProp(PRONOM.ExternalSignature.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ExternalSignature> externalSignatures = mu.buildFromModel(new ExternalSignature.Deserializer(), extSigSubjects);
+            // ContainerSignature
+            List<Resource> contSigSubjects = mu.getAllSubjects(makeProp(PRONOM.ContainerSignature.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<ContainerSignature> containerSignatures = mu.buildFromModel(new ContainerSignature.Deserializer(), contSigSubjects);
             // FormatIdentifier
             List<Resource> fIdSubjects = mu.getAllSubjects(makeProp(PRONOM.FormatIdentifier.FileFormat), uri).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<FormatIdentifier> formatIdentifiers = mu.buildFromModel(new FormatIdentifier.Deserializer(), fIdSubjects);
@@ -293,6 +301,7 @@ public class FileFormat implements RDFWritable {
                     classifications,
                     internalSignatures,
                     externalSignatures,
+                    containerSignatures,
                     formatIdentifiers,
                     developmentActors,
                     supportActors,

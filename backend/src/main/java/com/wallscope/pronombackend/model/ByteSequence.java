@@ -99,6 +99,11 @@ public class ByteSequence implements RDFWritable {
         };
     }
 
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
+    }
+
     public String getByteOrderName() {
         if (byteOrder == null) return null;
         return switch (byteOrder.getURI()) {
@@ -158,8 +163,10 @@ public class ByteSequence implements RDFWritable {
             String ss = parts[i];
             // find {5} or {4-7} style offset groups at the start of the string
             // These indicate the overall subsequence offsets
-            String startMatch = getOffsetMatches("^" + fragOffsetRegex, ss).stream().findFirst().orElse(null);
-            String clean = ss.replaceAll("^" + fragOffsetRegex, "");
+            // if the sequence is relative to EOF we check at the end of the string instead
+            String offsetPattern = isEOFOffset() ? fragOffsetRegex + "$" : "^" + fragOffsetRegex;
+            String startMatch = getOffsetMatches(offsetPattern, ss).stream().findFirst().orElse(null);
+            String clean = ss.replaceAll(offsetPattern, "");
 
             Integer subSeqMinOffset = i == 0 && this.offset != null ? this.offset : 0;
             Integer subSeqMaxOffset = i == 0 && this.maxOffset != null ? this.maxOffset + subSeqMinOffset : 0;
@@ -218,13 +225,18 @@ public class ByteSequence implements RDFWritable {
             if (match != null) matches.add(match);
         }
 
+        // If the offset is relative to EOF we reverse the order of the matches (this emulates processing from right to left)
+        if (isEOFOffset()) {
+            Collections.reverse(matches);
+        }
+
         // Accumulate to find the longest unambiguous subseq and its index
         int longestIdx = 0;
         if (matches.size() < 1) return null;
         SubSeqMatch longest = null;
         for (int i = 0; i < matches.size(); i++) {
             SubSeqMatch lc = matches.get(i);
-            if (lc.type.equals(SubSeqMatch.MatchType.ALPHA) && (longest == null || lc.sequence.length() > longest.sequence.length())) {
+            if (lc.type.equals(SubSeqMatch.MatchType.ALPHA) && (longest == null || lc.sequence.length() >= longest.sequence.length())) {
                 longestIdx = i;
                 longest = matches.get(i);
             }
@@ -245,13 +257,13 @@ public class ByteSequence implements RDFWritable {
                 positionCounter = 1;
                 continue;
             }
-            FragmentType ft = FragmentType.LEFT;
-            int offsetIdx = i + 1;
+            FragmentType ft = isEOFOffset() ? FragmentType.RIGHT : FragmentType.LEFT;
+            int offsetIdx = isEOFOffset() ? i - 1 : i + 1;
             ArrayList<Fragment> frags = lFrags;
             // check if we're on the right instead and adjust the variables accordingly
             if (i > longestIdx) {
-                ft = FragmentType.RIGHT;
-                offsetIdx = i - 1;
+                ft = isEOFOffset() ? FragmentType.LEFT : FragmentType.RIGHT;
+                offsetIdx = isEOFOffset() ? i + 1 : i - 1;
                 frags = rFrags;
             }
 
@@ -276,7 +288,7 @@ public class ByteSequence implements RDFWritable {
                     boolean isAfterLongest = i == longestIdx + 1;
                     boolean processedByPrevious = !isFirst && ts.contains(matches.get(i - 1).type);
                     if (isFirst || isAfterLongest || !processedByPrevious) {
-                        processAlpha(fc.sequence, ft, positionCounter, offsetIdx, i, frags, matches);
+                        processAlpha(fc.sequence, ft, positionCounter, offsetIdx, i, frags, matches, longestIdx);
                         positionCounter++;
                     }
                 }
@@ -300,8 +312,9 @@ public class ByteSequence implements RDFWritable {
         }
         // The relevant fragments for calculating minFragLength depends on if we're counting form the BOF or EOF
         // if we count from the beginning of file (BOF) we take the left fragments, otherwise the right ones.
-        List<Fragment> relevantFrags = this.isBOFOffset() ? lFrags : rFrags;
-        Integer fraglen = calcMinFragLength(relevantFrags);
+        // but because we reverse the sequence at the start, here we can always pass the so-called "left" fragments
+        // even if in reality they appear to the right of the sequence
+        Integer fraglen = calcMinFragLength(lFrags);
         lFrags.addAll(rFrags); // from this point onwards lFrags has all fragments, not just left
         return new SubSequence(seq, null, null, lFrags, fraglen, subSeqPos, subSeqMinOffset, subSeqMaxOffset);
     }
@@ -336,12 +349,12 @@ public class ByteSequence implements RDFWritable {
         }
     }
 
-    private void processAlpha(String sequence, FragmentType ft, int position, int offsetIdx, int currentIdx, ArrayList<Fragment> frags, ArrayList<SubSeqMatch> matches) {
+    private void processAlpha(String sequence, FragmentType ft, int position, int offsetIdx, int currentIdx, ArrayList<Fragment> frags, ArrayList<SubSeqMatch> matches, int longestIdx) {
         // concatenate all the squares or alpha groups after this one
         StringBuilder seq = new StringBuilder(sequence);
         int nextIdx = currentIdx + 1;
-        // check if there's a next one
-        SubSeqMatch nextMatch = matches.size() > nextIdx ? matches.get(nextIdx) : null;
+        // check if there's a next one and it is before the longest subsequence
+        SubSeqMatch nextMatch = matches.size() > nextIdx && nextIdx < longestIdx ? matches.get(nextIdx) : null;
         List<SubSeqMatch.MatchType> ts = List.of(SubSeqMatch.MatchType.SQUARE, SubSeqMatch.MatchType.ALPHA);
         while (nextMatch != null && ts.contains(nextMatch.type)) {
             // for left fragments concatenating squares shifts the index of a possible offset
@@ -429,8 +442,8 @@ public class ByteSequence implements RDFWritable {
             // We have to check the value string for bytes in [] since
             // inside the square brackets there will be pairs of bytes on each side of the :
             // we basically replace square bracket groups with the smallest of the sides (this does not assume both sides will be equal in length)
-            String clean = squareBracketGroupsRegex.matcher(current.value).replaceAll(match ->{
-               String noBrackets = match.group().replaceAll("[\\[\\]]", "");
+            String clean = squareBracketGroupsRegex.matcher(current.value).replaceAll(match -> {
+                String noBrackets = match.group().replaceAll("[\\[\\]]", "");
                 return Arrays.stream(noBrackets.split(":")).min(Comparator.comparingInt(String::length)).orElse("");
             });
             // the size in bytes is the string length / 2 because every byte is 2 characters
@@ -605,12 +618,18 @@ public class ByteSequence implements RDFWritable {
         @Override
         public ByteSequence fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
-            // Required
-            Resource signature = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.InternalSignature)).asResource();
-            String sequence = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequence)).asLiteral().getString();
-            Resource position = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequencePosition)).asResource();
-            String positionName = mu.getOneObjectOrNull(position, makeProp(RDFS.label)).asLiteral().getString();
+            // Required (at least one)
+            Resource signature = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.InternalSignature)));
+            if (signature == null) {
+                signature = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ContainerFile)));
+            }
             // Optionals
+            String sequence = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequence)));
+            Resource position = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteSequencePosition)));
+            String positionName = null;
+            if (position != null) {
+                positionName = safelyGetStringOrNull(mu.getOneObjectOrNull(position, makeProp(RDFS.label)));
+            }
             Integer offset = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.Offset)));
             Resource byteOrder = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.ByteOrder)));
             Integer maxOffset = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ByteSequence.MaxOffset)));

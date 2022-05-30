@@ -4,6 +4,7 @@ import com.wallscope.pronombackend.utils.ModelUtil;
 import org.apache.jena.rdf.model.*;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,7 +124,9 @@ public class InternalSignature implements RDFWritable {
             String provenance = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.Provenance)));
             Resource fileFormat = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.FileFormat)).asResource();
             List<Resource> byteSeqSubjects = mu.getAllObjects(uri, makeProp(PRONOM.InternalSignature.ByteSequence)).stream().map(RDFNode::asResource).collect(Collectors.toList());
-            List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects);
+            List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects)
+                    .stream().sorted(Comparator.comparingInt(bs -> Integer.parseInt(bs.getID()))).collect(Collectors.toList());
+
             return new InternalSignature(uri, name, note, updated, genericFlag, provenance, fileFormat, byteSequences);
         }
     }

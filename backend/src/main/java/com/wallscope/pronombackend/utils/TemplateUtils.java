@@ -71,6 +71,17 @@ public class TemplateUtils {
         }
     }
 
+    // This function is used to customise the escaping for the container-signature output.
+    // This is used because by default quote characters ([",']) are escaped but in the PRONOM
+    // handwritten container signature files they are not escaped.
+    // This should not affect the semantics of the file as quotes are allowed in XML fields
+    public String customEscape(String raw) {
+        if(raw == null) return null;
+        return raw.replaceAll("&", "&amp;") // replace & characters
+                .replaceAll("<", "&lt;")   // replace < characters
+                .replaceAll(">", "&gt;");  // replace > characters
+    }
+
     private static final Pattern catRegex = Pattern.compile("^## ", Pattern.MULTILINE);
     private static final Pattern itemRegex = Pattern.compile("^### ", Pattern.MULTILINE);
 

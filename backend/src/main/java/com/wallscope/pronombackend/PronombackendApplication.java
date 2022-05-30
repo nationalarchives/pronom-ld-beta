@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.util.List;
+
 @SpringBootApplication
 public class PronombackendApplication {
 
@@ -42,9 +44,19 @@ public class PronombackendApplication {
         return templateResolver;
     }
 
+    private static final String usageStmt = "Usage: java -jar /path/to/pronombackend.jar convert-container-signatures /path/to/containerfile.xml /path/to/puidmap.csv /path/to/outFile.ttl";
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(PronombackendApplication.class, args);
+        if (args.length > 0 && args[0].equals("convert-container-signatures")) {
+            if ((args.length > 1 && args[1].equals("-h")) || args.length < 4) {
+                System.out.println(usageStmt);
+                System.exit(0);
+            }
+            CliKt.convert(args[1], args[2], args[3]);
+            System.exit(0);
+        } else {
+            ApplicationContext ctx = SpringApplication.run(PronombackendApplication.class, args);
+        }
     }
 }
 

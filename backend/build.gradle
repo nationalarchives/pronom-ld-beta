@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
 
 java {
@@ -43,13 +44,27 @@ dependencies {
 
     // Jena
     // https://mvnrepository.com/artifact/org.apache.jena/jena-core
-    implementation(group: "org.apache.jena", name: "jena-core", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-core", version: "4.5.0")
     // https://mvnrepository.com/artifact/org.apache.jena/jena-arq
-    implementation(group: "org.apache.jena", name: "jena-arq", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-arq", version: "4.5.0")
     // https://mvnrepository.com/artifact/org.apache.jena/jena-rdfconnection
-    implementation(group: "org.apache.jena", name: "jena-rdfconnection", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-rdfconnection", version: "4.5.0")
+    // https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs
+    implementation(group: "org.apache.jena", name: "apache-jena-libs", version: "4.5.0")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.simpleframework:simple-xml:2.7.1"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
 }

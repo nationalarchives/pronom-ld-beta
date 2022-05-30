@@ -177,6 +177,7 @@ public class RDFUtil {
         public static class FileFormat {
             public static final String type = PRONOM.uri + "FileFormat";
             public static final String uri = PRONOM.uri + "fileFormat.";
+            public static final String id = PRONOM.uri + "id/FileFormat/";
             public static final String LastUpdatedDate = uri + "LastUpdatedDate";
             public static final String Version = uri + "Version";
             public static final String BinaryFlag = uri + "BinaryFlag";
@@ -188,6 +189,7 @@ public class RDFUtil {
             public static final String ExternalSignature = uri + "ExternalSignature";
             public static final String InFileFormatRelationship = uri + "In.FileFormatRelationship";
             public static final String ReleaseDate = uri + "ReleaseDate";
+            public static final String ContainerSignature = uri + "ContainerSignature";
         }
 
         // FileFormatRelationship
@@ -224,6 +226,7 @@ public class RDFUtil {
         public static class InternalSignature {
             public static final String type = PRONOM.uri + "InternalSignature";
             public static final String uri = PRONOM.uri + "internalSignature.";
+            public static final String id = PRONOM.uri + "id/InternalSignature/";
             public static final String Note = uri + "Note";
             public static final String SourceId = uri + "SourceId";
             public static final String SourceDate = uri + "SourceDate";
@@ -238,22 +241,54 @@ public class RDFUtil {
         public static class ExternalSignature {
             public static final String type = PRONOM.uri + "ExternalSignature";
             public static final String uri = PRONOM.uri + "externalSignature.";
+            public static final String id = PRONOM.uri + "id/ExternalSignature/";
             public static final String SignatureType = uri + "SignatureType";
             public static final String FileFormat = uri + "FileFormat";
+        }
+
+        public static class ContainerSignature {
+            public static final String type = PRONOM.uri + "ContainerSignature";
+            public static final String uri = PRONOM.uri + "containerSignature.";
+            public static final String id = PRONOM.uri + "id/ContainerSignature/";
+            public static final String FileFormat = uri + "FileFormat";
+            public static final String ContainerFile = uri + "ContainerFile";
+            public static final String ContainerType = uri + "ContainerType";
+        }
+
+        public static class ContainerType {
+            public static final String type = PRONOM.uri + "ContainerType";
+            public static final String uri = PRONOM.uri + "containerType.";
+            public static final String id = PRONOM.uri + "id/ContainerType/";
+            public static final String FileFormat = uri + "FileFormat";
+            // Instances
+            public static final String ZIP = id + "ZIP";
+            public static final String OLE2 = id + "OLE2";
+        }
+
+        public static class ContainerFile {
+            public static final String type = PRONOM.uri + "ContainerFile";
+            public static final String uri = PRONOM.uri + "containerFile.";
+            public static final String id = PRONOM.uri + "id/ContainerFile/";
+            public static final String ByteSequence = uri + "ByteSequence";
+            public static final String FilePath = uri + "FilePath";
+            public static final String ContainerSignature = uri + "ContainerSignature";
         }
 
         // ByteSequence sub
         public static class ByteSequence {
             public static final String type = PRONOM.uri + "ByteSequence";
             public static final String uri = PRONOM.uri + "byteSequence.";
+            public static final String id = PRONOM.uri + "id/ByteSequence/";
             public static final String ByteSequencePosition = uri + "ByteSequencePosition";
             public static final String Offset = uri + "Offset";
             public static final String ByteSequence = uri + "ByteSequence";
-            public static final String InternalSignature = uri + "InternalSignature";
             public static final String ByteOrder = uri + "ByteOrder";
             public static final String MaxOffset = uri + "MaxOffset";
             public static final String IndirectOffsetLocation = uri + "IndirectOffsetLocation";
             public static final String IndirectOffsetLength = uri + "IndirectOffsetLength";
+            // these two types can contain byte signatures
+            public static final String InternalSignature = uri + "InternalSignature";
+            public static final String ContainerFile = uri + "ContainerFile";
             // Byte Sequence Positions
             public static final String BSPType = PRONOM.uri + "PositionType";
             public static final String BSPid = PRONOM.uri + "id/ByteSequencePosition/";
