@@ -46,7 +46,7 @@ section.form-part#identifiers
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="identifierType") Identifier type
+                    label(th:for="${'identifierType' + stat.index}") Identifier type
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.1') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -59,11 +59,11 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button.current Accept current
-                select(id="identifierType", th:field="*{identifiers[__${stat.index}__]?.type}")
+                select(th:id="${'identifierType' + stat.index}", th:field="*{identifiers[__${stat.index}__]?.type}")
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
-                select(th:if="${compare?.identifiers?.get(__${stat.index}__)?.type}" id="identifierType")
+                select(th:id="${'identifierType' + stat.index}", th:if="${compare?.identifiers?.get(__${stat.index}__)?.type}")
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
 
             //- Identifier
@@ -72,7 +72,7 @@ section.form-part#identifiers
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="identifier") Identifier
+                    label(th:for="${'identifier' + stat.index}") Identifier
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.2') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -85,10 +85,10 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button Accept current
-                input(id="identifier" th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
+                input(th:id="${'identifier' + stat.index}", th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
               .input-group(th:if="${compare?.identifiers?.get(__${stat.index}__)?.name}")
                 button.incoming Accept incoming
-                input(th:value="${compare.identifiers?.get(__${stat.index}__)?.name}")
+                input(th:id="${'identifier' + stat.index}", th:value="${compare.identifiers?.get(__${stat.index}__)?.name}")
             .button-container
               button.bordered-red.small.delete-identifier
                 | Delete identifier
@@ -109,7 +109,7 @@ section.form-part#identifiers
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label(for="aliasName") Name
+                      label(th:for="${'aliasName' + stat.index}") Name
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.3.1') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -122,10 +122,10 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(id="aliasName" th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
+                  input(th:id="${'aliasName' + stat.index}", th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.name}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliases?.get(__${stat.index}__)?.name}")
+                  input(th:id="${'aliasName' + stat.index}", th:value="${compare.aliases?.get(__${stat.index}__)?.name}")
 
               //- Alias Version
               .form-row(th:classappend="${compare?.aliases?.get(__${stat.index}__)?.version} ? 'before-review' : ''")
@@ -133,7 +133,7 @@ section.form-part#identifiers
                 .tooltipPlusAction
                   .tooltip-container
                     .label
-                      label(for="aliasVersion") Version
+                      label(th:for="${'aliasVersion' + stat.index}") Version
                       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.3.2') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -146,10 +146,10 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(id="aliasVersion" th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
+                  input(th:id="${'aliasVersion' + stat.index}", th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.version}")
                   button.incoming Accept incoming
-                  input(th:value="${compare.aliases?.get(__${stat.index}__)?.version}")
+                  input(th:id="${'aliasVersion' + stat.index}", th:value="${compare.aliases?.get(__${stat.index}__)?.version}")
 
               .button-container
                 button.bordered-red.small.delete-alias

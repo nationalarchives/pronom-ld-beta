@@ -45,7 +45,7 @@ section.form-part#relationships
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="relationshipType") Choose relationship type
+                  label(th:for="${'relationshipType' + stat.index}") Choose relationship type
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -58,11 +58,11 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button.current Accept current
-              select(id="relationshipType", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
+              select(th:id="${'relationshipType' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
                 option(th:each="rto : ${relationshipTypeOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
               button.incoming Accept incoming
-              select(id="relationshipType")
+              select(th:id="${'relationshipType' + stat.index}")
                 option(th:each="rto : ${relationshipTypeOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
 
           //- Related file format
@@ -71,7 +71,7 @@ section.form-part#relationships
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="target") Related file format
+                  label(th:for="${'target' + stat.index}") Related file format
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.2') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -84,10 +84,10 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button Accept current
-              input(name="target" id="target" th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(th:id="${'target' + stat.index}" name="target", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input(th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(th:id="${'target' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
           .button-container
             button.bordered-red.small.delete-relationship
               | Delete relationship
@@ -102,7 +102,7 @@ section.form-part#relationships
           .tooltipPlusAction
             .tooltip-container
               .label
-                label(for="formatFamilies") Format families
+                label(th:for="${'formatFamilies' + stat.index}") Format families
                 span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.3') tabindex='0')
                   .i-wrapper
                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -115,9 +115,9 @@ section.form-part#relationships
                 p Reviewed
           .input-group
             button.current Accept current
-            select(id="formatFamilies", th:field="*{formatFamilies[__${stat.index}__]")
+            select(th:id="${'formatFamilies' + stat.index}", th:field="*{formatFamilies[__${stat.index}__]")
               option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.value}", th:text="${ffo.label}") option 1
           .input-group(th:if="${compare?.formatFamilies?.get(__${stat.index}__)}")
             button.incoming Accept incoming
-            select(id="relationshipType")
+            select(th:id="${'formatFamilies' + stat.index}")
               option(th:each="ffo : ${formatFamilyOptions}", th:value="${compare?.formatFamilies?.get(__${stat.index}__)}", th:text="${ffo.label}") option 1
