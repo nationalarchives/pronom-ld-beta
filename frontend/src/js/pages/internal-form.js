@@ -74,7 +74,7 @@ const App = () => {
   $('.add-priority-over').on('click', function(evt) {
     console.log('clicked')
     evt.preventDefault();
-    $('.priority-group:last').clone(true).appendTo('.priority-list')
+    $('.priority-group:last').clone(true).appendTo('.priority-list').find("input").val("").end();
   });
   $('.delete-priority-over').on('click', function(evt) {
     evt.preventDefault();
@@ -86,7 +86,7 @@ const App = () => {
   // reference
   $('#add-reference').on('click', function(evt) {
     evt.preventDefault();
-    $('.reference-group:last').clone(true).appendTo('.references');
+    $('.reference-group:last').clone(true).appendTo('.references').find("input").val("").end();
   });
   $('.delete-reference').on('click', function(evt) {
     evt.preventDefault();
@@ -126,7 +126,7 @@ const App = () => {
   $('.add-path').on('click', function(evt) {
     evt.preventDefault();
     var $container =$(this).closest('.paths-list-container').find('.paths-list');
-    $('.holder .path:last').clone(true).appendTo($container);
+    $('.holder .path:last').clone(true).appendTo($container).find("input").val("").end();
   });
   $('.delete-path').on('click', function(evt) {
     evt.preventDefault();
@@ -157,7 +157,7 @@ const App = () => {
   // identifier
   $('.add-identifier').on('click', function(evt) {
     evt.preventDefault();
-    $('.identifier:last').clone(true).appendTo('#identifiers-list');
+    $('.identifier:last').clone(true).appendTo('#identifiers-list').find("input").val("").end();
   });
   $('.delete-identifier').on('click', function(evt) {
     evt.preventDefault();
@@ -169,7 +169,7 @@ const App = () => {
   // aliases
   $('.add-alias').on('click', function(evt) {
     evt.preventDefault();
-    $('.alias:last').clone(true).appendTo('#aliases-list');
+    $('.alias:last').clone(true).appendTo('#aliases-list').find("input").val("").end();
   });
   $('.delete-alias').on('click', function(evt) {
     evt.preventDefault();
@@ -181,7 +181,7 @@ const App = () => {
   // relationships
   $('.add-relationship').on('click', function(evt) {
     evt.preventDefault();
-    $('.relationship:last').clone(true).appendTo('#relationships-list');
+    $('.relationship:last').clone(true).appendTo('#relationships-list').find("input").val("").end();
   });
   $('.delete-relationship').on('click', function(evt) {
     evt.preventDefault();

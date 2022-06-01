@@ -1248,7 +1248,7 @@ select:focus {
     }
   }
   &.open {
-    i {
+    i.fa-chevron-down {
       transform: rotate(180deg) scaleX(-1);
     }
   }
