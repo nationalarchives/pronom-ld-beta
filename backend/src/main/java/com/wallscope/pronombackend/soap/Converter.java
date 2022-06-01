@@ -70,8 +70,8 @@ public class Converter {
             ByteSequenceType conv = new ByteSequenceType();
             conv.setEndianness(bs.getByteOrderName());
             conv.setReference(bs.getReference());
-            conv.setIndirectOffsetLength(bs.getIndirectOffsetLength().toString());
-            conv.setIndirectOffsetLocation(bs.getIndirectOffsetLocation().toString());
+            if(bs.getIndirectOffsetLength() != null) conv.setIndirectOffsetLength(bs.getIndirectOffsetLength().toString());
+            if(bs.getIndirectOffsetLocation() != null) conv.setIndirectOffsetLocation(bs.getIndirectOffsetLocation().toString());
             List<SubSequenceType> subSeqList = conv.getSubSequence();
             subSeqList.addAll(convertSubSequenceList(bs.getSubSequences()));
             return conv;
@@ -81,11 +81,11 @@ public class Converter {
     private static List<SubSequenceType> convertSubSequenceList(List<ByteSequence.SubSequence> subs) {
         return subs.stream().map(ss -> {
             SubSequenceType conv = new SubSequenceType();
-            conv.setPosition(BigInteger.valueOf(ss.getPosition()));
-            conv.setSubSeqMinOffset(BigInteger.valueOf(ss.getSubSeqMinOffset()));
-            conv.setSubSeqMaxOffset(BigInteger.valueOf(ss.getSubSeqMaxOffset()));
-            conv.setMinFragLength(BigInteger.valueOf(ss.getMinFragLength()));
-            conv.setSequence(ss.getSequence());
+            if(ss.getPosition() != null) conv.setPosition(BigInteger.valueOf(ss.getPosition()));
+            if(ss.getSubSeqMinOffset() != null) conv.setSubSeqMinOffset(BigInteger.valueOf(ss.getSubSeqMinOffset()));
+            if(ss.getSubSeqMaxOffset() != null) conv.setSubSeqMaxOffset(BigInteger.valueOf(ss.getSubSeqMaxOffset()));
+            if(ss.getMinFragLength() != null) conv.setMinFragLength(BigInteger.valueOf(ss.getMinFragLength()));
+            if(ss.getSequence() != null) conv.setSequence(ss.getSequence());
             List<JAXBElement<?>> children = conv.getShiftOrLeftFragmentOrRightFragment();
             List<JAXBElement<FragmentType>> frags = ss.getFragments().stream().map(f -> {
                 FragmentType frag = new FragmentType();
