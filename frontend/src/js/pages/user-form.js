@@ -258,7 +258,7 @@ const App = () => {
   // reference
   $('#add-reference').on('click', function (evt) {
     evt.preventDefault();
-    $('.reference-group:last').clone(true).appendTo('.references');
+    $('.reference-group:last').clone(true).appendTo('.references').find("input").val("").end();
   });
   $('.delete-reference').on('click', function (evt) {
     evt.preventDefault();
@@ -320,7 +320,7 @@ const App = () => {
   $('.add-path').on('click', function (evt) {
     evt.preventDefault();
     var $container = $(this).closest('.paths-list-container').find('.paths-list');
-    $('.holder .path:last').clone(true).appendTo($container);
+    $('.holder .path:last').clone(true).appendTo($container).find("input").val("").end();
   });
   $('.delete-path').on('click', function (evt) {
     evt.preventDefault();
