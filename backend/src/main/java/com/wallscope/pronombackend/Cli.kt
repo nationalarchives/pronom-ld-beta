@@ -103,7 +103,62 @@ class SubSequence {
     @field:Attribute(name = "SubSeqMaxOffset", required = false)
     var maxOffset: Int? = null
 
+    @field:Attribute(name = "MinFragLength", required = false)
+    var minFragLength: Int? = null
+
+    @field:ElementList(inline = true, name = "LeftFragment", required = false)
+    var leftFrags: List<LeftFragment> = ArrayList()
+
     @field:Element(name = "Sequence", required = true)
+    var sequence: String? = null
+
+    @field:ElementList(inline = true, name = "RightFragment", required = false)
+    var rightFrags: List<RightFragment> = ArrayList()
+}
+
+@Root(name = "LeftFragment")
+class LeftFragment {
+    val offsetString: String
+        get() {
+            if (this.minOffset == null || this.minOffset == 0) return ""
+            var str = "{${minOffset}"
+            if (this.maxOffset != null && this.maxOffset != this.minOffset) str += "-${maxOffset}"
+            return "$str}"
+        }
+
+    @field:Attribute(name = "MaxOffset")
+    var maxOffset: Int? = 0
+
+    @field:Attribute(name = "MinOffset")
+    var minOffset: Int? = 0
+
+    @field:Attribute(name = "Position")
+    var position: Int? = 0
+
+    @field:Text
+    var sequence: String? = null
+}
+
+@Root(name = "RightFragment")
+class RightFragment {
+    val offsetString: String
+        get() {
+            if (this.minOffset == null || this.minOffset == 0) return ""
+            var str = "{${minOffset}"
+            if (this.maxOffset != null && this.maxOffset != this.minOffset) str += "-${maxOffset}"
+            return "$str}"
+        }
+
+    @field:Attribute(name = "MaxOffset")
+    var maxOffset: Int? = 0
+
+    @field:Attribute(name = "MinOffset")
+    var minOffset: Int? = 0
+
+    @field:Attribute(name = "Position")
+    var position: Int? = 0
+
+    @field:Text
     var sequence: String? = null
 }
 
@@ -172,10 +227,10 @@ fun convert(xmlFilePath: String, puidMapFilePath: String, outPath: String) {
                 // add FilePath
                 fo.path?.let { add(fileUri.res, URI(PRONOM.ContainerFile.FilePath).prop, it.toRDFLiteral()) }
                 // process each bytesequence
-                fo.binarySignatures?.signatures?.forEach binarySigs@{ sig ->
+                fo.binarySignatures?.signatures?.forEachIndexed binarySigs@{ j, sig ->
                     if (sig.id == null) return@binarySigs
-                    sig.byteSequence.forEach byteSeqs@{ bs ->
-                        val bsUri = URI(PRONOM.ByteSequence.id) + cs.id + ".$i." + sig.id!!
+                    sig.byteSequence.forEachIndexed byteSeqs@{ k, bs ->
+                        val bsUri = URI(PRONOM.ByteSequence.id) + cs.id + ".$i.$j.$k." + sig.id!!
                         add(bsUri.res, URI(RDF.type).prop, URI(PRONOM.ByteSequence.type).res)
                         // return if there's no subsequence objects
                         val subSeq = bs.subSeqs.firstOrNull() ?: return@byteSeqs
@@ -184,9 +239,13 @@ fun convert(xmlFilePath: String, puidMapFilePath: String, outPath: String) {
                         add(bsUri.res, URI(PRONOM.ByteSequence.ContainerFile).prop, fileUri.res)
 
                         // Add the sequence
-                        subSeq.sequence?.let {
-                            add(bsUri.res, URI(PRONOM.ByteSequence.ByteSequence).prop, it.toRDFLiteral())
-                        }
+                        val fullSeq = bs.subSeqs.map { ss ->
+                            val left = ss.leftFrags.map { "${it.sequence}${it.offsetString}" }.joinToString("")
+                            val right = ss.rightFrags.map { "${it.offsetString}${it.sequence}" }.joinToString("")
+                            return@map left + ss.sequence + right
+                        }.joinToString("*")
+                        add(bsUri.res, URI(PRONOM.ByteSequence.ByteSequence).prop, fullSeq.toRDFLiteral())
+
 
                         // transform and add the position
                         // Here we are assuming all positions are Absolute from BOF/EOF

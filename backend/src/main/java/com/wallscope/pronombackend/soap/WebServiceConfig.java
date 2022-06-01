@@ -42,11 +42,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     // Security - any authenticated user can send requests to the SOAP endpoints
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
-                ).csrf().disable()
-                .httpBasic(withDefaults());
+        http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated()).csrf().disable().httpBasic(withDefaults());
         return http.build();
     }
 

@@ -79,7 +79,7 @@ public class ContainerFile implements RDFWritable {
             String path = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerFile.FilePath)));
             List<Resource> byteSeqSubjects = mu.getAllObjects(uri, makeProp(PRONOM.ContainerFile.ByteSequence)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects)
-                    .stream().sorted(Comparator.comparingInt(bs -> Integer.parseInt(bs.getID()))).collect(Collectors.toList());
+                    .stream().sorted(Comparator.comparingInt(bs -> Integer.parseInt(bs.getContainerID()))).collect(Collectors.toList());
 
             return new ContainerFile(uri, signature, path, byteSequences);
         }
