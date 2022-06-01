@@ -108,7 +108,7 @@ public class SearchDAO {
         return processed.replace("#ALLOWED_TYPES#", ALLOWED_TYPES).replace("#SEARCH_FIELDS#", fields.toString());
     }
 
-    public class Filters {
+    public static class Filters {
         public Boolean name;
         public Boolean extension;
         public Boolean description;
