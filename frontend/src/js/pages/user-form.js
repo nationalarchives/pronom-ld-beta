@@ -388,6 +388,15 @@ const App = () => {
       $(this).closest('.reference-group').removeClass("open-additional");
     }
   });
+  // TODO check on windows if issue 18 from Typos doc has been fixed
+  // blocking tooltip to display when select option is visible 
+  $('option').each(function () {
+    if ($(this).css('display') != 'none') {
+      $('.tooltip-toggle:hover:before').css('display', 'none');
+    }else{
+      $('.tooltip-toggle:hover:before').css('display', 'inherit');
+    }
+  });
 
 }
 
