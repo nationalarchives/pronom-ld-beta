@@ -192,6 +192,15 @@ public class RDFUtil {
             public static final String ContainerSignature = uri + "ContainerSignature";
         }
 
+        // TentativeFileFormat sub
+        public static class TentativeFileFormat {
+            public static final String type = PRONOM.uri + "TentativeFileFormat";
+            public static final String uri = PRONOM.uri + "tentativeFileFormat.";
+            public static final String id = PRONOM.uri + "id/TentativeFileFormat/";
+            public static final String Author = uri + "Author";
+            public static final String Source = uri + "Source";
+        }
+
         // FileFormatRelationship
         public static class FileFormatRelationship {
             public static final String type = PRONOM.uri + "FileFormatRelationship";

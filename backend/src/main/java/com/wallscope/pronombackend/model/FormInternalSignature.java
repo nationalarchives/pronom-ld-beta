@@ -1,8 +1,12 @@
 package com.wallscope.pronombackend.model;
 
+import org.apache.jena.rdf.model.Resource;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormInternalSignature {
     private String uri;
@@ -119,5 +123,18 @@ public class FormInternalSignature {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public InternalSignature toObject(Resource formatUri, Instant updated) {
+        Resource uri = makeResource(getUri());
+        return new InternalSignature(uri,
+                getName(),
+                getNote(),
+                updated,
+                getGenericFlag(),
+                getProvenance(),
+                formatUri,
+                byteSequences.stream().map(bs -> bs.toObject(uri)).collect(Collectors.toList())
+        );
     }
 }

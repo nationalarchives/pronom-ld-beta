@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
@@ -12,11 +13,16 @@ public class FormatIdentifier implements RDFWritable {
     private final Resource type;
     private final String typeName;
 
-    public FormatIdentifier(Resource uri, String name, Resource signatureType, String identifierTypeName) {
+    public FormatIdentifier(Resource uri, String name, Resource identifierType, String identifierTypeName) {
         this.uri = uri;
         this.name = name;
-        this.type = signatureType;
+        this.type = identifierType;
         this.typeName = identifierTypeName;
+    }
+
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
     }
 
     public String getName() {
@@ -38,7 +44,11 @@ public class FormatIdentifier implements RDFWritable {
 
     @Override
     public Model toRDF() {
-        return null;
+        Model m = ModelFactory.createDefaultModel();
+        m.add(uri, makeProp(RDF.type), makeResource(PRONOM.FormatIdentifier.type));
+        m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        m.add(uri, makeProp(PRONOM.FormatIdentifier.FormatIdentifierType), type);
+        return m;
     }
 
     @Override
@@ -46,8 +56,8 @@ public class FormatIdentifier implements RDFWritable {
         return "FormatIdentifier{" +
                 "uri=" + uri +
                 ", name='" + name + '\'' +
-                ", identifierType=" + type +
-                ", identifierTypeName='" + typeName + '\'' +
+                ", type=" + type +
+                ", typeName='" + typeName + '\'' +
                 '}';
     }
 

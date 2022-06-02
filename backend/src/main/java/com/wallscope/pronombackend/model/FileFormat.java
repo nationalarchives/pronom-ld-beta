@@ -202,6 +202,45 @@ public class FileFormat implements RDFWritable {
         if (withdrawnFlag != null) {
             m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
         }
+        if (classifications != null) {
+            classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
+        }
+        if (internalSignatures != null) {
+            internalSignatures.forEach(is -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.InternalSignature), is.getURI());
+                m.add(is.toRDF());
+            });
+        }
+        if (externalSignatures != null) {
+            externalSignatures.forEach(es -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.ExternalSignature), es.getURI());
+                m.add(es.toRDF());
+            });
+        }
+        if (containerSignatures != null) {
+            containerSignatures.forEach(cs -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.ContainerSignature), cs.getURI());
+                m.add(cs.toRDF());
+            });
+        }
+        if (formatIdentifiers != null) {
+            formatIdentifiers.forEach(fi -> {
+                m.add(fi.getURI(), makeProp(PRONOM.FormatIdentifier.FileFormat), uri);
+                m.add(fi.toRDF());
+            });
+        }
+//        if (developmentActors != null) {
+//            developmentActors.forEach(x -> m.add(uri, makeProp(), x))
+//        }
+//        if (supportActors != null) {
+//            supportActors.forEach(x -> m.add(uri, makeProp(), x))
+//        }
+        if (hasRelationships != null) {
+            hasRelationships.forEach(rel -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship), rel.getURI());
+                m.add(rel.toRDF());
+            });
+        }
         return m;
     }
 
@@ -264,10 +303,8 @@ public class FileFormat implements RDFWritable {
 
             List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream().map(node -> {
                 Resource res = node.asResource();
-                String[] parts = res.getURI().split("/");
-                String id = parts[parts.length - 1];
                 String label = mu.getOneObjectOrNull(res, makeProp(RDFS.label)).asLiteral().getString();
-                return new Classification(id, label);
+                return new Classification(res, label);
             }).collect(Collectors.toList());
 
             // InternalSignature

@@ -1,11 +1,13 @@
 package com.wallscope.pronombackend.model;
 
+import org.apache.jena.rdf.model.Resource;
+
 public class Classification {
-    private final String id;
+    private final Resource uri;
     private final String name;
 
-    public Classification(String id, String name) {
-        this.id = id;
+    public Classification(Resource uri, String name) {
+        this.uri = uri;
         this.name = name;
     }
 
@@ -14,13 +16,18 @@ public class Classification {
     }
 
     public String getId() {
-        return id;
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
+    }
+
+    public Resource getURI() {
+        return uri;
     }
 
     @Override
     public String toString() {
         return "Classification{" +
-                "id='" + id + '\'' +
+                "uri=" + uri +
                 ", name='" + name + '\'' +
                 '}';
     }

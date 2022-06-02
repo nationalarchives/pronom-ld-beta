@@ -1,7 +1,12 @@
 package com.wallscope.pronombackend.model;
 
+import org.apache.jena.rdf.model.Resource;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormFileFormat {
     private String uri;
@@ -20,6 +25,7 @@ public class FormFileFormat {
     private List<String> classifications;
     private List<FormInternalSignature> internalSignatures;
     private List<FormExternalSignature> externalSignatures;
+    private List<FormContainerSignature> containerSignatures;
     private List<FormActor> developmentActors;
     private List<FormActor> supportActors;
     private List<FormFileFormatRelationship> hasPriorityOver;
@@ -30,6 +36,7 @@ public class FormFileFormat {
         // We must initialise the nested fields otherwise we get null pointer exceptions in the template rendering
         internalSignatures = List.of(new FormInternalSignature());
         externalSignatures = List.of(new FormExternalSignature());
+        containerSignatures = List.of();
         aliases = List.of(new FormAlias());
         identifiers = List.of(new FormFormatIdentifier());
         developmentActors = List.of(new FormActor());
@@ -207,6 +214,37 @@ public class FormFileFormat {
         this.compressionType = compressionType;
     }
 
+    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, List<Classification> classifications) {
+        Resource ffUri = makeResource(uri);
+        return new FileFormat(ffUri,
+                puid,
+                puidType,
+                null,
+                getName(),
+                getDescription(),
+                updated,
+                getVersion(),
+                getBinaryFlag(),
+                getWithdrawnFlag(),
+                classifications,
+                getInternalSignatures().stream().map(is -> is.toObject(ffUri, updated)).collect(Collectors.toList()),
+                getExternalSignatures().stream().map(FormExternalSignature::toObject).collect(Collectors.toList()),
+                getContainerSignatures().stream().map(cs -> cs.toObject(ffUri)).collect(Collectors.toList()),
+                getIdentifiers().stream().map(FormFormatIdentifier::toObject).collect(Collectors.toList()),
+                getDevelopmentActors().stream().map(FormActor::toObject).collect(Collectors.toList()),
+                getSupportActors().stream().map(FormActor::toObject).collect(Collectors.toList()),
+                getHasRelationships().stream().map(FormFileFormatRelationship::toObject).collect(Collectors.toList())
+        );
+    }
+
+    public List<FormContainerSignature> getContainerSignatures() {
+        return containerSignatures;
+    }
+
+    public void setContainerSignatures(List<FormContainerSignature> containerSignatures) {
+        this.containerSignatures = containerSignatures;
+    }
+
     @Override
     public String toString() {
         return "FormFileFormat{" +
@@ -243,13 +281,25 @@ public class FormFileFormat {
         ff.setBinaryFlag(f.isBinaryFlag());
         ff.setWithdrawnFlag(f.isWithdrawnFlag());
         ff.setClassifications(f.getClassifications().stream().map(Classification::getId).collect(Collectors.toList()));
+        // Internal Signatures
         ff.setInternalSignatures(f.getInternalSignatures().stream().map(is -> {
             FormInternalSignature fis = FormInternalSignature.convert(is);
             fis.setFileFormat(f.getFormattedPuid());
             return fis;
         }).collect(Collectors.toList()));
+        // External Signatures
+        ff.setExternalSignatures(f.getExternalSignatures().stream().map(es -> {
+            FormExternalSignature fes = FormExternalSignature.convert(es);
+            fes.setFileFormat(f.getFormattedPuid());
+            return fes;
+        }).collect(Collectors.toList()));
+        // Container Signatures
+        ff.setContainerSignatures(f.getContainerSignatures().stream().map(cs -> {
+            FormContainerSignature fcs = FormContainerSignature.convert(cs);
+            fcs.setFileFormat(f.getFormattedPuid());
+            return fcs;
+        }).collect(Collectors.toList()));
         ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toList()));
         return ff;
     }
-
 }

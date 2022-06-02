@@ -1,5 +1,8 @@
 package com.wallscope.pronombackend.model;
 
+import org.apache.jena.rdf.model.Resource;
+
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormByteSequence {
@@ -110,5 +113,19 @@ public class FormByteSequence {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public ByteSequence toObject(Resource signature) {
+        Resource uri = makeResource(getUri());
+        return new ByteSequence(uri,
+                signature,
+                makeResource(position),
+                null,
+                offset,
+                sequence,
+                makeResource(byteOrder),
+                maxOffset,
+                indirectOffsetLocation,
+                indirectOffsetLength);
     }
 }

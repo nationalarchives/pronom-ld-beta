@@ -2,9 +2,8 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
-import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FormFileFormat;
-import com.wallscope.pronombackend.model.FormOption;
+import com.wallscope.pronombackend.model.*;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
@@ -70,7 +71,27 @@ public class SubmissionController {
 
     @PostMapping("/contribute/form/new")
     public String newFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        logger.debug("Received FormFileFormat:\n" + ff);
+        // For new file formats generate a random UUID
+        ff.setUri(PRONOM.FileFormat.id + UUID.randomUUID());
+        // Convert to a FileFormat object
+        // TODO: Test that this works properly. A good test is converting this object backk to RDF and seeing if the RDF matches what's in the triplestore
+        FileFormatDAO dao = new FileFormatDAO();
+        // TODO: create method in DAO that retrieves context from the triplestore
+        // The context is the data necessary to build the FileFormat option, the parameters passed to the toObject function
+        // puid as an integer, can be parsed from String puid in FormFileFormat
+        // puidType must be string matched to the first part of the String puid
+        // updated can be Instant.now() as this is a new FileFormat
+        // List of Classification Objects which must be string matched to existing triplestore references from the List<String in the FormFileFormat
+        // The following call works but will obviouslt not store the proper values as classificaitons is empty and puid vars are null
+        Integer puid = null;
+        Resource puidType = null;
+        List<Classification> cs = List.of();
+        FileFormat f = ff.toObject(puid, puidType, Instant.now(), cs);
+        // For now we hardcode this, must be hooked into user system when implemented
+        String author = "pronom";
+        // source == null because it's a new file format therefore there is no existing one to compare
+        TentativeFileFormat tff = new TentativeFileFormat(f.getURI(), f, author, null);
+        dao.saveTentativeFormat(tff);
         return "redirect:/contribute/form";
     }
 

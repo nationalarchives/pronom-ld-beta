@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.dao;
 
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.PUID;
+import com.wallscope.pronombackend.model.TentativeFileFormat;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -187,5 +188,10 @@ public class FileFormatDAO {
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
         logger.debug("file formats built for signature generation");
         return fs;
+    }
+
+    public void saveTentativeFormat(TentativeFileFormat tff) {
+        // TODO: implement saving tentative file format to triplestore by pushing the Model
+        Model m = tff.toRDF();
     }
 }

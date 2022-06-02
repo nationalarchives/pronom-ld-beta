@@ -107,7 +107,7 @@ public class ByteSequence implements RDFWritable {
     // In order to avoid clashes with existing byte sequences, the container byte sequence URIs
     // are based on the container signature ID and the byte sequence ID. Here we split it back into just the byte sequence
     // ID so it can be used in the XML template
-    public String getContainerID(){
+    public String getContainerID() {
         String[] parts = uri.getURI().split("\\.");
         return parts[parts.length - 1];
     }

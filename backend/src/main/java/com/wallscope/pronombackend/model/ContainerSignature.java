@@ -124,6 +124,8 @@ public class ContainerSignature implements RDFWritable {
         @Override
         public Model toRDF() {
             Model m = ModelFactory.createDefaultModel();
+            m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+            this.fileFormats.forEach(ff -> m.add(uri, makeProp(PRONOM.ContainerType.FileFormat), ff.getURI()));
             return m;
         }
 
