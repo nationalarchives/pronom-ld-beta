@@ -157,7 +157,6 @@ const App = () => {
     formStep = 2;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
-    $('.main-nav li').removeClass("active");
     $('.side-menu li:nth-child(1)').addClass("active");
   });
   $('#identifiersSubBtn button').on('click', () => {
