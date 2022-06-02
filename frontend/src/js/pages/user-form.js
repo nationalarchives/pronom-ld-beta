@@ -31,7 +31,6 @@ const App = () => {
   });
 
   function formSetup() {
-    
     if ($(window).width() < 1200) {
       $('.form-section .form-part').addClass('show');
       // $(".form-partial-content").addClass('hide');
@@ -127,6 +126,7 @@ const App = () => {
   });
   // Navigation bar
   $('#coreBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 0;
@@ -134,6 +134,7 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
   });
   $('#signaturesBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 1;
@@ -141,41 +142,53 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
   });
   $('#priorityBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 2;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
+    $('.side-menu li:nth-child(1)').addClass("active");
   });
   $('#prioritySubBtn').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 2;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
+    $('.main-nav li').removeClass("active");
+    $('.side-menu li:nth-child(1)').addClass("active");
   });
   $('#identifiersSubBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 3;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
+    $('.side-menu li:nth-child(2)').addClass("active");
   });
   $('#relationshipSubBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 4;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
+    $('.side-menu li:nth-child(3)').addClass("active");
   });
   $('#additionalSubBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 5;
     $(formMenuButtons[2]).addClass("active");
     $(formParts[formStep]).addClass('show');
+    $('.side-menu li:nth-child(4)').addClass("active");
   });
   $('#yourDetailsBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 6;
@@ -183,6 +196,7 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
   });
   $('#reviewBtn button').on('click', () => {
+    $('.side-menu li').removeClass("active");
     $(formParts[formStep]).removeClass('show');
     $('.main-nav li').removeClass("active");
     formStep = 7;
