@@ -25,7 +25,7 @@ section.search-input-container
         input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
         label(for='puid') PUID
 
-section.search-output
+section.search-output(th:if="${results != null and !results.empty}")
   h3 
     | Showing&nbsp;
     span(th:text="'('+${totalResults}+')'")
@@ -34,7 +34,7 @@ section.search-output
     //- TODO uncomment when ready
     //- div(th:if="${results = null and results.empty}")
       include ../partials/noResults.pug
-    div(th:if="${results != null and !results.empty}")
+    div
       .additionals
         .manage-results
           .result-counts
@@ -99,9 +99,9 @@ section.search-output
                         span Status
                         | Released
                       .extend.buttons
-                        button.xsmall.bordered-blue(th:href="@{/{puid}(puid=${r.puid})}") View
-                        button.xsmall.bordered-blue Clone
-                        button.xsmall.bordered-red Delete
+                        button.xsmall.bordered-blue(th:target="${editorial} ? '_blank': null", th:href="@{/id/{target}(target=${r.idUri})}") View
+                        button.xsmall.bordered-blue(th:with="baseUrl=(${editorial} ? '/editorial/form/{target}' : '/contribute/form/{target}')", th:href="@{${baseUrl}(target=${r.puid})}") Clone
+                        button.xsmall.bordered-red(th:if="${editorial}") Delete
             //- Example with multiple basic data properties
             //- Uncomment to test while running the frontend with no backend
             //- li

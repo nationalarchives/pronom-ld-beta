@@ -25,7 +25,7 @@ public class SearchController {
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/search")
-    public String fileFormatHandler(
+    public String searchHandler(
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -46,7 +46,7 @@ public class SearchController {
         if (q == null || q.isBlank()) return "search";
         Integer offsetVal = offset.orElse(0);
         SearchDAO dao = new SearchDAO();
-        SearchDAO.Filters filters = dao.new Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
+        SearchDAO.Filters filters = new SearchDAO.Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
         Integer totalResults = dao.count(q, limitVal, offsetVal, filters);
         List<SearchResult> results = dao.search(q, limitVal, offsetVal, filters, sort.orElse("score"));
         // default is "relevance" which sorts by the score property

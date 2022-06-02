@@ -244,6 +244,9 @@ public class RDFUtil {
             public static final String id = PRONOM.uri + "id/ExternalSignature/";
             public static final String SignatureType = uri + "SignatureType";
             public static final String FileFormat = uri + "FileFormat";
+            public static final String FileExtension = id + "1";
+            public static final String MacOSDataFork = id + "2";
+            public static final String Other = id + "0";
         }
 
         public static class ContainerSignature {

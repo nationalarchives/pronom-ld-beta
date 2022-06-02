@@ -5,18 +5,18 @@
             <Description th:text="${contSig.name}">Microsoft Word 6.0/95 OLE2</Description>
             <Files><th:block th:each="file: ${contSig.files}">
                 <File>
-                    <Path th:text="${file.path}">CompObj</Path>
-                    <BinarySignatures th:unless="${#lists.isEmpty(file.byteSequences)}">
+                    <Path th:text="${file.path}">CompObj</Path><th:block th:unless="${#lists.isEmpty(file.byteSequences)}">
+                    <BinarySignatures>
                         <InternalSignatureCollection>
-                            <InternalSignature th:ID="${contSig.ID}">
-                                <ByteSequence th:each="bs : ${file.byteSequences}" th:Endianness="${bs.byteOrderName}" th:Reference="${bs.reference}">
-                                    <SubSequence th:SubSeqMaxOffset="${bs.maxOffset}" th:SubSeqMinOffset="${bs.offset}">
+                            <InternalSignature th:each="bs : ${file.byteSequences}" th:ID="${bs.containerID}">
+                                <ByteSequence th:Endianness="${bs.byteOrderName}" th:Reference="${bs.reference}">
+                                    <SubSequence th:Position="1" th:SubSeqMaxOffset="${bs.maxOffset}" th:SubSeqMinOffset="${bs.offset}">
                                         <Sequence th:utext="${@templateUtils.customEscape(bs.sequence)}">49492A00</Sequence>
                                     </SubSequence>
                                 </ByteSequence>
                             </InternalSignature>
                         </InternalSignatureCollection>
-                    </BinarySignatures>
+                    </BinarySignatures></th:block>
                 </File></th:block>
             </Files>
         </ContainerSignature></th:block>
