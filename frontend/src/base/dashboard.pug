@@ -14,7 +14,7 @@ block content
         #submissions-contols
           div
             .selector-checkbox
-              fieldset
+              div
                 label.sr-only(for="select_all") Select or deselect all contributions
                 input(type="checkbox" id="select_all")
               p Selected (2)
@@ -53,8 +53,10 @@ block content
                   option(value='1') type 2
                   option(value='2') type 3
                   option(value='2') type 4
+          
           form(aria-label="Search for contributions")
             div
+              label.sr-only(for="pronom_search") Search for contributions
               input(type="search" id="pronom_search" placeholder="Search for contributions ...")
               button.search-button(type="submit")
                 i.fa-solid.fa-magnifying-glass(aria-hidden="true")
@@ -91,7 +93,7 @@ block content
             li.active
               a(href="")
                 .selector-checkbox
-                  fieldset
+                  div
                     label.sr-only(for="select_contribution") Select or deselect contribution
                     input(type="checkbox" id="select_contribution")
                 div
@@ -141,7 +143,7 @@ block content
             li
               a(href="")
                 .selector-checkbox
-                  fieldset
+                  div
                     label.sr-only(for="select_contribution") Select or deselect contribution
                     input(type="checkbox" id="select_contribution")
                 div
@@ -191,7 +193,7 @@ block content
             li
               a(href="")
                 .selector-checkbox
-                  fieldset
+                  div
                     label.sr-only(for="select_contribution") Select or deselect contribution
                     input(type="checkbox" id="select_contribution")
                 div
@@ -258,7 +260,7 @@ block content
               li
                 a(href="")
                   .selector-checkbox
-                    fieldset
+                    div
                       label.sr-only(for="select_contribution") Select or deselect contribution
                       input(type="checkbox" id="select_contribution")
                   div
@@ -308,7 +310,7 @@ block content
               li
                 a(href="")
                   .selector-checkbox
-                    fieldset
+                    div
                       label.sr-only(for="select_contribution") Select or deselect contribution
                       input(type="checkbox" id="select_contribution")
                   div
@@ -358,7 +360,7 @@ block content
               li
                 a(href="")
                   .selector-checkbox
-                    fieldset
+                    div
                       label.sr-only(for="select_contribution") Select or deselect contribution
                       input(type="checkbox" id="select_contribution")
                   div

@@ -4,7 +4,7 @@ block vars
 section#pronom-nav
   .container
     #pronom-nav-header
-      a#page-title(href='/') PRONOM
+      a#page-title(href='/' aria-hidden="true" role="presentation") PRONOM
       button#pronom-nav-mobile-collapse(type='button', onclick="toggleMenuFunction()" title="Toggles Pronom menu")
         | MENU
     nav
@@ -51,7 +51,7 @@ section#pronom-nav
         li(class=(currentURL === "/faq" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/faq'} href='/faq')
             | FAQ
-          ul.sub-menu-pronom
+          //- ul.sub-menu-pronom
             li
               a(href="#faq1" role="presentation")
                 | Category 1

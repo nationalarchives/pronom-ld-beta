@@ -2,7 +2,7 @@ include ../partials/head.pug
 
 .modal-container.noJS
   .modal-header
-    .modal-header-inner
+    .modal-header-inner(role="navigaton")
       .title
         block modalHeader
       .additionals
@@ -11,7 +11,7 @@ include ../partials/head.pug
         i.fa-solid.fa-xmark(aria-hidden="true")
       a.close.forNoJS(a href="/" aria-label="Close modal")
         i.fa-solid.fa-xmark(aria-hidden="true")
-  .modal-body
+  .modal-body(role="main")
     div
       block modalBody
     include ../partials/scrollTop.pug
