@@ -12,20 +12,31 @@ const App = () => {
 
   $(document).ready(function() {
     formSetup(),
-    checkReviewIndicators()
+    checkReviewIndicators();
+    closeAccordions();
+    console.log('lalala')
+    if ($(window).width() < 1200) {
+      $(".form-partial-content").addClass('hide');
+    }
   });
 
   $(window).on('resize', formSetup);
   let formStep = 0;
   $('.modal-container').removeClass('noJS');
 
+  $(window).on("load", function () {
+    if ($(window).width() < 1200) {
+      $(".form-partial-content").addClass('hide');
+    }
+  });
 
   function formSetup() {
-    $('.form-part').addClass('hide');
+    
     if ($(window).width() < 1200) {
       $('.form-section .form-part').addClass('show');
-      $(".form-partial-content").addClass('hide');
+      // $(".form-partial-content").addClass('hide');
       $('.accordion').on('click', function (evt) {
+        console.log(formStep);
         evt.preventDefault();
         if ($(this).closest('.form-section').hasClass("open")) {
           $('.form-section').removeClass('open');
@@ -38,6 +49,7 @@ const App = () => {
         }
       });
     } else {
+      $('.form-part').addClass('hide');
       $(".form-section .form-part").removeClass('show');
       $(".form-section").removeClass('open');
       $(".form-partial-content").removeClass('hide');
