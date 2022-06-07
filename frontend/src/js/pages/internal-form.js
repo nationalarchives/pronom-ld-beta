@@ -26,7 +26,7 @@ const App = () => {
         $('#' + id + 'Btn').addClass('after');
       });   
     }
-
+    
   }
   // Signal JS is active
   $('.modal-container').removeClass('noJS');
