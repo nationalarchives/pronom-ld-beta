@@ -660,7 +660,7 @@ main {
   background: #8BACCB;
   padding: 20px;
   min-height: 250px;
-  width: calc(100vw - 55px);
+  // width: calc(100vw - 55px);
   .social-media-wrapper {
     max-width: 1500px;
     margin-left: auto;
@@ -999,6 +999,7 @@ main {
 }
 // Feedback #feedback START
 .feedback-container {
+  z-index: 9;
   height: 200px;
   position: fixed;
   width: 100%;
@@ -1010,6 +1011,7 @@ main {
     display: none;
   }
   .feedback-inner {
+    background: white;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
