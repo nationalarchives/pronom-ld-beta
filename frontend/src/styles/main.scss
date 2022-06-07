@@ -998,6 +998,26 @@ main {
   }
 }
 // Feedback #feedback START
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-down {
+  0% {
+    display: none;
+  }
+  70%{
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+    
+  }
+}
 .feedback-container {
   z-index: 9;
   height: 200px;
@@ -1007,7 +1027,10 @@ main {
   top: calc(100vh - 200px);
   left: 0;
   box-shadow: -5px -1px 10px 5px #0000002e;
+
+  animation: slide-up .6s cubic-bezier(0.4, 0, 0.2, 1) 500ms backwards;
   &.hide {
+    animation: slide-down .6s cubic-bezier(0.4, 0, 0.2, 1) 5000ms ;
     display: none;
   }
   .feedback-inner {
