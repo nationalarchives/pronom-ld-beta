@@ -56,7 +56,6 @@ const App = () => {
   });
   // clicking on the side menu buttons
   $('.segment').on('click', function() {
-    console.log('segment')
     $( '.main-nav li' ).removeClass( "active" );
     $('.form-part').removeClass('show');
     var currentBtn = ('#' + $(this).closest('li').attr('id'));
@@ -69,8 +68,6 @@ const App = () => {
 
   // cloning form fields
   
-
-
   // priority
   $('.add-priority-over').on('click', function(evt) {
     console.log('clicked')

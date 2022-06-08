@@ -6,7 +6,7 @@ window.$ = $;
 
 const formParts = ['#core', '#signatures', '#priority', '#identifiers', '#relationships', '#additionalProperties', '#yourDetails', '#review']
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#priorityBtn', '#identifiersBtn', '#relationshipsBtn', '#additionalPropertiesBtn', '#yourDetailsBtn', '#reviewBtn']
-const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipSubBtn, #additionalSubBtn']
+const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationshipsSubBtn, #additionalPropertiesSubBtn']
 
 const App = () => {
 
@@ -110,6 +110,36 @@ const App = () => {
 
   });
 
+  // Navigation bar
+
+  // Main menu buttons
+  $('.segment').on('click', function() {
+    $( '.main-nav li' ).removeClass( "active" );
+    $( '.side-menu li' ).removeClass( "active" );
+    $('.form-part').removeClass('show');
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('Btn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    $( currentBtn ).addClass('active');
+    $(formParts[formStep]).addClass('show');
+    console.log(formStep);
+    if(formStep === 2){
+      $('#prioritySubBtn').closest('li').addClass('active');
+    }
+  });
+
+  // Side menu buttons (More information)
+  $('.segment-sub').on('click', function() {
+    $('.form-part').removeClass('show');
+    $( '.side-menu li' ).removeClass( "active" );
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('SubBtn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    console.log(currentBtn);
+    $(formParts[formStep]).addClass('show');
+    $(currentBtn).closest('li').addClass('active');
+  });
+
 
   
   // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
@@ -127,84 +157,7 @@ const App = () => {
     }
     $(formParts[formStep]).addClass('show');
   });
-  // Navigation bar
-  $('#coreBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 0;
-    $(formMenuButtons[0]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-  });
-  $('#signaturesBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 1;
-    $(formMenuButtons[1]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-  });
-  $('#priorityBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 2;
-    $(formMenuButtons[2]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-    $('.side-menu li:nth-child(1)').addClass("active");
-  });
-  $('#prioritySubBtn').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 2;
-    $(formMenuButtons[2]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-    $('.side-menu li:nth-child(1)').addClass("active");
-  });
-  $('#identifiersSubBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 3;
-    $(formMenuButtons[2]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-    $('.side-menu li:nth-child(2)').addClass("active");
-  });
-  $('#relationshipSubBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 4;
-    $(formMenuButtons[2]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-    $('.side-menu li:nth-child(3)').addClass("active");
-  });
-  $('#additionalSubBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 5;
-    $(formMenuButtons[2]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-    $('.side-menu li:nth-child(4)').addClass("active");
-  });
-  $('#yourDetailsBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 6;
-    $(formMenuButtons[6]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-  });
-  $('#reviewBtn button').on('click', () => {
-    $('.side-menu li').removeClass("active");
-    $(formParts[formStep]).removeClass('show');
-    $('.main-nav li').removeClass("active");
-    formStep = 7;
-    $(formMenuButtons[7]).addClass("active");
-    $(formParts[formStep]).addClass('show');
-  });
+
 
   // Incoming buttons functionality
   // When clicked their value is copied to the current input
