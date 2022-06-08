@@ -26,11 +26,11 @@ const App = () => {
         $('#' + id + 'Btn').addClass('after');
       });   
     }
-    
+
   }
   // Signal JS is active
   $('.modal-container').removeClass('noJS');
-  $('.modal-container').assClsss('minWidth');
+  $('.modal-container').addClass('minWidth');
   // Initialise form
   let formStep = 0
   $('.form-part').addClass('hide');
@@ -56,6 +56,7 @@ const App = () => {
   });
   // clicking on the side menu buttons
   $('.segment').on('click', function() {
+    console.log('segment')
     $( '.main-nav li' ).removeClass( "active" );
     $('.form-part').removeClass('show');
     var currentBtn = ('#' + $(this).closest('li').attr('id'));

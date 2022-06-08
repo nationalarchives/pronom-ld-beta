@@ -109,6 +109,9 @@ const App = () => {
     $(formParts[formStep]).addClass('show');
 
   });
+
+
+  
   // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
   $('.prevSkip').on('click', (evt) => {
     evt.preventDefault();
