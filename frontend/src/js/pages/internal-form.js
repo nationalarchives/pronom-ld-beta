@@ -30,7 +30,7 @@ const App = () => {
   }
   // Signal JS is active
   $('.modal-container').removeClass('noJS');
-  $('.modal-container').assClsss('minWidth');
+  $('.modal-container').addClass('minWidth');
   // Initialise form
   let formStep = 0
   $('.form-part').addClass('hide');
@@ -68,8 +68,6 @@ const App = () => {
 
   // cloning form fields
   
-
-
   // priority
   $('.add-priority-over').on('click', function(evt) {
     console.log('clicked')
