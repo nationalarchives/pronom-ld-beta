@@ -94,13 +94,23 @@ const App = () => {
 
 
   // signature
-  $('#add-signature').on('click', function(evt) {
+  $('#add-signature').on('click', function (evt) {
     evt.preventDefault();
-    if($('#select-signature-type').val() == 'signature'){
-      $('.holder .signature:last').clone(true).appendTo('#signature-container');
-    } else {
-      $('.container-signature:last').clone(true).appendTo('#signature-container');
-    }
+    // Clone using array syntax like thymeleaf does: name="internalSignatures[0].name"
+    // name="internalSignatures[0].byteSequences[0].signature"
+    const lastSig = $('#signature-container .signature:last');
+    const name = $(lastSig).find('input:first').attr('name');
+    const lastIndexRg = /internalSignatures\[(\d+)\]/.exec(name);
+    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
+    const type = $('#select-signature-type').val() == 'signature' ? 'signature' : 'container-signature';
+    const clone = $(`.holder .${type}:last`).clone(true);
+    clone.find(':input').each(function () {
+      const $this = $(this);
+      // ignore buttons which get caught by :input as well
+      if ($this.is('button')) return;
+      $this.attr('name', $this.attr('name').replace(/internalSignatures\[\d+\]/, `internalSignatures[${newIndex}]`));
+    });
+    clone.appendTo('#signature-container');
   });
   $('.delete-signature').on('click', function(evt) {
     evt.preventDefault();
@@ -111,10 +121,21 @@ const App = () => {
     $(this).closest(".container-signature").remove();
   });
   // byte sequence
-  $('.add-byte-sequence').on('click', function(evt) {
+  $('.add-byte-sequence').on('click', function (evt) {
     evt.preventDefault();
-    var $container =$(this).closest('.byte-sequence-list').find('.list');
-    $('.holder .byte-sequence:last').clone(true).appendTo($container);
+    const $container = $(this).closest('.byte-sequence-list').find('.list');
+    const lastSeq = $container.find('.byte-sequence:last');
+    const name = $(lastSeq).find('input:first').attr('name');
+    const lastIndexRg = /byteSequences\[(\d+)\]/.exec(name)
+    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
+    const clone = $('.holder .byte-sequence:last').clone(true)
+    clone.find(':input').each(function () {
+      const $this = $(this);
+      // ignore buttons which get caught by :input as well
+      if ($this.is('button')) return;
+      $this.attr('name', $this.attr('name').replace(/byteSequences\[\d+\]/, `byteSequences[${newIndex}]`));
+    });
+    clone.appendTo($container);
   });
   $('.delete-byte-sequence').on('click', function(evt) {
     evt.preventDefault();

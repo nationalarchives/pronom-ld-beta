@@ -254,9 +254,8 @@ const App = () => {
     // name="internalSignatures[0].byteSequences[0].signature"
     const lastSig = $('#signature-container .signature:last');
     const name = $(lastSig).find('input:first').attr('name');
-    const lastIndex = /internalSignatures\[(\d+)\]/.exec(name)[1];
-    if (lastIndex === undefined) return;
-    const newIndex = parseInt(lastIndex) + 1;
+    const lastIndexRg = /internalSignatures\[(\d+)\]/.exec(name);
+    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
     const type = $('#select-signature-type').val() == 'signature' ? 'signature' : 'container-signature';
     const clone = $(`.holder .${type}:last`).clone(true);
     clone.find(':input').each(function () {
@@ -281,9 +280,8 @@ const App = () => {
     const $container = $(this).closest('.byte-sequence-list').find('.list');
     const lastSeq = $container.find('.byte-sequence:last');
     const name = $(lastSeq).find('input:first').attr('name');
-    const lastIndex = /byteSequences\[(\d+)\]/.exec(name)[1];
-    if (lastIndex === undefined) return;
-    const newIndex = parseInt(lastIndex) + 1;
+    const lastIndexRg = /byteSequences\[(\d+)\]/.exec(name)
+    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
     const clone = $('.holder .byte-sequence:last').clone(true)
     clone.find(':input').each(function () {
       const $this = $(this);
