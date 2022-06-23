@@ -15,7 +15,7 @@ block modalBody
           li(th:each="e : ${errors}", th:text="${e}") File format name
   .form-content#internal-form
     include ./partials/userForm/form-navigation.pug
-    main
+    main#main-form-content
       form(action="#", th:action='@{/editorial/contribute/form/new}', method='POST', th:object="${ff}") 
         .form-section
           include ./partials/userForm/core.pug

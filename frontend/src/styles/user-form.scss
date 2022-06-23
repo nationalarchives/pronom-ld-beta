@@ -825,16 +825,10 @@ fieldset {
 .form-part {
   
   &.hide {
-    height: 0;
-    width: 0;
-    position: absolute;
-    overflow: hidden;
+    display: none;
   }
   &.show {
-    height: auto;
-    width: auto;
-    position: inherit;
-    overflow:visible;
+    display: block;
   }
 }
 select {

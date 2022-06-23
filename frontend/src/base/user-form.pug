@@ -17,8 +17,8 @@ block modalBody
     
     include ./partials/userForm/form-navigation.pug
    
-    main
-      form(action="#", th:action="@{/contribute/form/{target}(target=${ff?.puid} ?: 'new')}", method='POST', th:object="${ff}")
+    main#main-form-content
+      form(action="#", th:action="@{/contribute/form/{target}(target=${ff?.puid} ?: 'new')}", method='POST', th:object="${ff}") 
         .form-section
           include ./partials/userForm/core.pug
         .form-section

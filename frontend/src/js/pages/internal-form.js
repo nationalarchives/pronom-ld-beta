@@ -1,6 +1,7 @@
 import '@styles/main.scss'
 import '@styles/user-form.scss'
 import '@styles/internal-form.scss'
+import { css } from 'jquery'
 
 const formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#additionalProperties', '#contributors', '#review']
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']

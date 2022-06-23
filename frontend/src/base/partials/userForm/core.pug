@@ -99,7 +99,7 @@ section.form-part#core
             textarea.medium-short(th:value="${compare.description}" cols="30" rows="10" name="description" id="description")
 
         //- Format type
-        .form-row#format-type(th:classappend="${compare?.formatType} ? 'before-review' : ''")
+        .form-row#format-type-container(th:classappend="${compare?.formatType} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.formatType) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             fieldset

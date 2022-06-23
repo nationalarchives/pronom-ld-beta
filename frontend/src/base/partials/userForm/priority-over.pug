@@ -10,7 +10,7 @@ fieldset(th:each="p, stat : *{hasPriorityOver}")
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(th:for="${'HasRelationship' + stat.index}") File format
+                  label(th:for="${'hasPriorityOver' + stat.index}") File format
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.1.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -23,10 +23,10 @@ fieldset(th:each="p, stat : *{hasPriorityOver}")
                   p Reviewed
             .input-group
               button Accept current
-              input(th:id="${'HasRelationship' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input(th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
             .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input(th:id="${'HasRelationship' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__).target}")
+              input(th:id="${'hasPriorityOver' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__).target}")
           button.bordered-red.small.delete-priority-over
             | Delete field
       .button-container

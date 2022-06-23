@@ -1,9 +1,9 @@
 include ../partials/head.pug
 
-.modal-container.noJS
+.modal-container.noJS(role="dialog" aria-labelledby="dialogTitle")
   .modal-header
-    .modal-header-inner(role="navigaton")
-      .title
+    .modal-header-inner
+      .title#dialogTitle
         block modalHeader
       .additionals
         block modalHeaderAdditionals

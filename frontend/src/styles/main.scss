@@ -350,6 +350,21 @@ ul {
 // Tooltip END
 .sr-only {
   position: absolute;
+  &.skip-to-main-content:focus {
+    position: absolute;
+    padding: 0.3em;
+    top: auto;
+    width: auto;
+    height: auto;
+    outline: #1d70b8 solid 5px;
+    outline-offset: unset;
+    z-index: 999;
+    background-color: #fff;
+    color: #26262a;
+    clip: auto;
+    overflow: auto;
+    margin: 0;
+  }
 }
 fieldset {
   border:none;
