@@ -127,7 +127,7 @@ section.form-part#core
             button.incoming Accept incoming
             select(th:if="${compare?.formatType}" id="formatType" name="formatType")
               option(th:each="fio : ${formatIdentifierOptions}", th:value="${compare.formatType}", th:text="${fio.label}") option 1
-        .from-internal-only
+        .from-internal-only(th:if="${internal}")
           include ./priority-over.pug
 
     h3.border References
