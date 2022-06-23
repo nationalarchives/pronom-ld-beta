@@ -24,6 +24,8 @@ section.form-part#core
         //- 1) each .form-row has unique id with dashes (inside is input with same name and id just cammel case)
         //- 2) if element is to be reviewed add class '.before-review' or 'after-review'
 
+        //- File format URI (hidden field)
+        input(type="hidden", th:field="*{uri}")
         //- File format name
         .form-row#file-format-name(th:classappend="${compare?.name} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.name) ? 'New content' : 'Edited content'}") New content

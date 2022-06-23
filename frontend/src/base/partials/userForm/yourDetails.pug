@@ -15,6 +15,7 @@ section.form-part#yourDetails
           i.fa-solid.fa-angles-right
   .form-partial-content
         fieldset
+          input(type="hidden", th:field="*{submittedBy.uri}")
           legend.sr-only Add your details and any additional comments
           #main-details
             div

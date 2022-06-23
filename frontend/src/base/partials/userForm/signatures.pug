@@ -390,6 +390,7 @@ section.form-part#signatures
           
           //- simple signature templated output:
           fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures} ")
+            input(type="hidden", th:field="*{internalSignatures[__${stat.index}__].uri}")
             legend.sr-only Fill up information about signature
             .row-group
               .top

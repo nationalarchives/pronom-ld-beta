@@ -35,6 +35,7 @@ section.form-part#relationships
             i.fa-solid.fa-angles-right
   .form-partial-content
     fieldset(th:each="rel, stat : *{hasRelationships}")
+      input(type="hidden", th:field="*{hasRelationships[__${stat.index}__].uri}")
       legend.sr-only Provide relationships and format families
       #relationships-list.row-group
         .relationship
