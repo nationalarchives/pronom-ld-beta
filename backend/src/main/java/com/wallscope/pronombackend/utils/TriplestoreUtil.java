@@ -84,4 +84,8 @@ public class TriplestoreUtil {
     public static void selectQuery(String query, Consumer<QuerySolution> f) {
         selectQuery(query, null, f);
     }
+
+    public static void load(Model m) {
+        conn.build().load(GRAPH, m);
+    }
 }

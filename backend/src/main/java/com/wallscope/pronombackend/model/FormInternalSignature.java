@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormInternalSignature {
     private String uri;
@@ -102,6 +103,7 @@ public class FormInternalSignature {
 
     public static FormInternalSignature convert(InternalSignature is) {
         FormInternalSignature fis = new FormInternalSignature();
+        fis.setUri(safelyGetUriOrNull(is.getURI()));
         fis.setName(is.getName());
         fis.setNote(is.getNote());
         fis.setUpdated(is.getUpdated());
@@ -111,7 +113,7 @@ public class FormInternalSignature {
         // TODO: add byteOrder in the RDF model
         fis.setByteSequences(is.getByteSequences().stream().map(bs -> {
             FormByteSequence fbs = FormByteSequence.convert(bs);
-            fbs.setSignature(is.getID());
+            fbs.setSignature(is.getURI().getURI());
             return fbs;
         }).collect(Collectors.toList()));
         return fis;

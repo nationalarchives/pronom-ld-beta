@@ -45,6 +45,15 @@ public class ModelUtil {
         }
     }
 
+    public Resource getOneSubjectOrNull(Property p, RDFNode o) {
+        try {
+            return this.m.listSubjectsWithProperty(p,o).nextResource();
+        } catch (NoSuchElementException e) {
+            logger.trace("getOneSubjectOrNull: returning null for (" + p.getURI() + "," + o.toString() + ")");
+            return null;
+        }
+    }
+
     public Model getModel() {
         return m;
     }

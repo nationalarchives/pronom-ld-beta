@@ -1,13 +1,11 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
-import com.wallscope.pronombackend.utils.RDFUtil;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeProp;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class ExternalSignature implements RDFWritable {
     private final Resource uri;
@@ -40,7 +38,11 @@ public class ExternalSignature implements RDFWritable {
 
     @Override
     public Model toRDF() {
-        return null;
+        Model m = ModelFactory.createDefaultModel();
+        if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        if (signatureType != null)
+            m.add(uri, makeProp(PRONOM.ExternalSignature.SignatureType), makeLiteral(signatureType));
+        return m;
     }
 
     @Override

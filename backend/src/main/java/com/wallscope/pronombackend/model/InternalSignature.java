@@ -20,7 +20,7 @@ public class InternalSignature implements RDFWritable {
     private final Resource fileFormat;
     private final List<ByteSequence> byteSequences;
 
-    public InternalSignature(Resource uri, String name, String note, Instant updated, boolean genericFlag, String provenance, Resource fileFormat, List<ByteSequence> byteSequences) {
+    public InternalSignature(Resource uri, String name, String note, Instant updated, Boolean genericFlag, String provenance, Resource fileFormat, List<ByteSequence> byteSequences) {
         this.uri = uri;
         this.name = name;
         this.note = note;
@@ -78,10 +78,10 @@ public class InternalSignature implements RDFWritable {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.InternalSignature.type));
         m.add(uri, makeProp(RDFS.label), makeLiteral(name));
-        m.add(uri, makeProp(PRONOM.InternalSignature.Note), makeLiteral(note));
         m.add(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate), makeXSDDateTime(updated));
-        m.add(uri, makeProp(PRONOM.InternalSignature.Provenance), makeLiteral(provenance));
-        m.add(uri, makeProp(PRONOM.InternalSignature.GenericFlag), makeLiteral(genericFlag));
+        if (note != null) m.add(uri, makeProp(PRONOM.InternalSignature.Note), makeLiteral(note));
+        if (provenance != null) m.add(uri, makeProp(PRONOM.InternalSignature.Provenance), makeLiteral(provenance));
+        if (genericFlag != null) m.add(uri, makeProp(PRONOM.InternalSignature.GenericFlag), makeLiteral(genericFlag));
         m.add(uri, makeProp(PRONOM.InternalSignature.FileFormat), fileFormat);
         for (ByteSequence b : byteSequences) {
             m.add(uri, makeProp(PRONOM.InternalSignature.ByteSequence), b.getURI());
@@ -118,7 +118,7 @@ public class InternalSignature implements RDFWritable {
             String name = mu.getOneObjectOrNull(uri, makeProp(RDFS.label)).asLiteral().getString();
             Literal updatedLit = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate)).asLiteral();
             Instant updated = parseDate(updatedLit);
-            boolean genericFlag = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.GenericFlag)).asLiteral().getBoolean();
+            Boolean genericFlag = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.GenericFlag)).asLiteral().getBoolean();
             // Optional
             String note = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.Note)));
             String provenance = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.Provenance)));

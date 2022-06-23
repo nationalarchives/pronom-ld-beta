@@ -97,6 +97,7 @@ public class FormByteSequence {
     public static FormByteSequence convert(ByteSequence bs) {
         FormByteSequence fbs = new FormByteSequence();
         // signature is set at the parent
+        fbs.setUri(safelyGetUriOrNull(bs.getURI()));
         fbs.setPosition(safelyGetUriOrNull(bs.getPosition()));
         fbs.setOffset(bs.getOffset());
         fbs.setSequence(bs.getSequence());

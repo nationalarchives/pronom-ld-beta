@@ -130,14 +130,14 @@ public class ByteSequence implements RDFWritable {
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.ByteSequence.type));
-        m.add(uri, makeProp(PRONOM.ByteSequence.ByteSequencePosition), position);
-        m.add(uri, makeProp(PRONOM.ByteSequence.Offset), makeLiteral(offset));
-        m.add(uri, makeProp(PRONOM.ByteSequence.ByteSequence), makeLiteral(sequence));
-        m.add(uri, makeProp(PRONOM.ByteSequence.MaxOffset), makeLiteral(maxOffset));
         m.add(uri, makeProp(PRONOM.ByteSequence.InternalSignature), signature);
-        m.add(uri, makeProp(PRONOM.ByteSequence.ByteOrder), byteOrder);
-        m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLocation), makeLiteral(indirectOffsetLocation));
-        m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLength), makeLiteral(indirectOffsetLength));
+        if (position != null) m.add(uri, makeProp(PRONOM.ByteSequence.ByteSequencePosition), position);
+        if (byteOrder != null) m.add(uri, makeProp(PRONOM.ByteSequence.ByteOrder), byteOrder);
+        if (offset != null) m.add(uri, makeProp(PRONOM.ByteSequence.Offset), makeLiteral(offset));
+        if (sequence != null) m.add(uri, makeProp(PRONOM.ByteSequence.ByteSequence), makeLiteral(sequence));
+        if (maxOffset != null) m.add(uri, makeProp(PRONOM.ByteSequence.MaxOffset), makeLiteral(maxOffset));
+        if (indirectOffsetLocation != null) m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLocation), makeLiteral(indirectOffsetLocation));
+        if (indirectOffsetLength != null) m.add(uri, makeProp(PRONOM.ByteSequence.IndirectOffsetLength), makeLiteral(indirectOffsetLength));
         return m;
     }
 

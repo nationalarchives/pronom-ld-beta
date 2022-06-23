@@ -4,9 +4,10 @@ import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FormFileFormat {
     private String uri;
@@ -245,6 +246,27 @@ public class FormFileFormat {
         this.containerSignatures = containerSignatures;
     }
 
+    public void randomizeURIs() {
+        // Set own URI
+        setUri(PRONOM.FileFormat.id + UUID.randomUUID());
+        if (submittedBy != null) submittedBy.setUri(PRONOM.Submitter.id + UUID.randomUUID());
+        if (internalSignatures != null) internalSignatures.forEach(fis -> {
+            fis.setUri(PRONOM.InternalSignature.id + UUID.randomUUID());
+            if (fis.getByteSequences() != null)
+                fis.getByteSequences().forEach(fbs -> fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID()));
+        });
+        if (containerSignatures != null) containerSignatures.forEach(fcs -> {
+            fcs.setUri(PRONOM.ContainerSignature.id + UUID.randomUUID());
+            if (fcs.getFiles() != null) fcs.getFiles().forEach(fcf -> {
+                fcf.setUri(PRONOM.ContainerFile.id + UUID.randomUUID());
+                if (fcf.getByteSequences() != null)
+                    fcf.getByteSequences().forEach(fbs -> fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID()));
+            });
+        });
+        if (externalSignatures != null)
+            externalSignatures.forEach(fes -> fes.setUri(PRONOM.ExternalSignature.id + UUID.randomUUID()));
+    }
+
     @Override
     public String toString() {
         return "FormFileFormat{" +
@@ -274,6 +296,7 @@ public class FormFileFormat {
 
     public static FormFileFormat convert(FileFormat f) {
         FormFileFormat ff = new FormFileFormat();
+        ff.setUri(safelyGetUriOrNull(f.getURI()));
         ff.setPuid(f.getFormattedPuid());
         ff.setName(f.getName());
         ff.setDescription(f.getDescription());

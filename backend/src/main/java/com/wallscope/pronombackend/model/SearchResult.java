@@ -131,7 +131,7 @@ public class SearchResult implements RDFWritable {
 
     // Returns the last 2 parts of the uri, which allows us to link to the generic /id endpoint which will then redirect accordingly.
     public String getIdUri() {
-        if (this.uri == null || this.uri.getURI().isBlank()) return "";
+        if (this.uri == null || this.uri.getURI() == null || this.uri.getURI().isBlank()) return "";
         String[] parts = this.uri.getURI().split("/");
         String id = parts[parts.length - 1];
         return getStringType() + "/" + id;

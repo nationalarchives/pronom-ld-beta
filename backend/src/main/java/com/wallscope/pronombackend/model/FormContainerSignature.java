@@ -2,15 +2,13 @@ package com.wallscope.pronombackend.model;
 
 import org.apache.jena.rdf.model.Resource;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormContainerSignature {
-    private String id;
+    private String uri;
     private String name;
     private String containerType;
     private String fileFormat;
@@ -43,12 +41,12 @@ public class FormContainerSignature {
         this.files = files;
     }
 
-    public String getId() {
-        return id;
+    public String getUri() {
+        return uri;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getFileFormat() {
@@ -66,19 +64,19 @@ public class FormContainerSignature {
         // fileFormat field is set at the parent
         fcs.setFiles(cs.getFiles().stream().map(f -> {
             FormContainerFile fcf = FormContainerFile.convert(f);
-            fcf.setSignature(cs.getID());
+            fcf.setSignature(cs.getURI().getURI());
             return fcf;
         }).collect(Collectors.toList()));
         return fcs;
     }
 
     public ContainerSignature toObject(Resource formatUri) {
-        Resource uri = makeResource(PRONOM.ContainerSignature.id + getId());
-        return new ContainerSignature(uri,
+        Resource res = makeResource(getUri());
+        return new ContainerSignature(res,
                 getName(),
                 makeResource(getContainerType()),
                 formatUri,
-                files.stream().map(f -> f.toObject(uri)).collect(Collectors.toList())
+                files.stream().map(f -> f.toObject(res)).collect(Collectors.toList())
         );
     }
 }

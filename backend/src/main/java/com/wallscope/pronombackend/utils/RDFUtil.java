@@ -201,6 +201,24 @@ public class RDFUtil {
             public static final String Source = uri + "Source";
         }
 
+        // Submitter sub
+        public static class Submitter {
+            public static final String type = PRONOM.uri + "Submitter";
+            public static final String uri = PRONOM.uri + "submitter.";
+            public static final String id = PRONOM.uri + "id/Submitter/";
+            public static final String Name = uri + "Name";
+            public static final String Organisation = uri + "Organisation";
+            public static final String Email = uri + "Email";
+            public static final String Country = uri + "Country";
+            public static final String Comment = uri + "Comment";
+        }
+
+        public static class Classification {
+            public static final String type = PRONOM.uri + "Classification";
+            public static final String uri = PRONOM.uri + "classification.";
+            public static final String id = PRONOM.uri + "id/Classification/";
+        }
+
         // FileFormatRelationship
         public static class FileFormatRelationship {
             public static final String type = PRONOM.uri + "FileFormatRelationship";

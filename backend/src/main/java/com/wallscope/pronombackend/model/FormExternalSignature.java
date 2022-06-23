@@ -1,12 +1,9 @@
 package com.wallscope.pronombackend.model;
 
-import com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-import org.apache.jena.rdf.model.Resource;
-
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormExternalSignature {
-    private String id;
+    private String uri;
     private String name;
     private String fileFormat;
     private String signatureType;
@@ -30,12 +27,12 @@ public class FormExternalSignature {
         this.signatureType = signatureType;
     }
 
-    public String getId() {
-        return id;
+    public String getUri() {
+        return uri;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getFileFormat() {
@@ -49,7 +46,7 @@ public class FormExternalSignature {
     @Override
     public String toString() {
         return "FormExternalSignature{" +
-                "id='" + id + '\'' +
+                "id='" + uri + '\'' +
                 ", name='" + name + '\'' +
                 ", signatureType='" + signatureType + '\'' +
                 '}';
@@ -59,14 +56,13 @@ public class FormExternalSignature {
         FormExternalSignature fes = new FormExternalSignature();
         fes.setName(es.getName());
         fes.setSignatureType(es.getSignatureType());
-        fes.setId(es.getID());
+        fes.setUri(es.getURI().getURI());
         // fileFormat set at parent
         return fes;
     }
 
     public ExternalSignature toObject() {
-        Resource uri = makeResource(PRONOM.ExternalSignature.id + getId());
-        return new ExternalSignature(uri, getName(), signatureType);
+        return new ExternalSignature(makeResource(getUri()), getName(), getSignatureType());
 
     }
 }

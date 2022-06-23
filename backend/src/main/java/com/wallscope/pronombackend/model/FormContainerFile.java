@@ -9,7 +9,7 @@ import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormContainerFile {
-    private String id;
+    private String uri;
     private String signature;
     private String path;
     private List<FormByteSequence> byteSequences;
@@ -17,12 +17,12 @@ public class FormContainerFile {
     public FormContainerFile() {
     }
 
-    public String getId() {
-        return id;
+    public String getUri() {
+        return uri;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getSignature() {
@@ -51,7 +51,7 @@ public class FormContainerFile {
 
     public static FormContainerFile convert(ContainerFile cf) {
         FormContainerFile fcf = new FormContainerFile();
-        fcf.setId(cf.getID());
+        fcf.setUri(cf.getID());
         fcf.setPath(cf.getPath());
         // signature field is set at the parent
         fcf.setByteSequences(cf.getByteSequences().stream().map(bs -> {
@@ -63,7 +63,7 @@ public class FormContainerFile {
     }
 
     public ContainerFile toObject(Resource signature) {
-        Resource uri = makeResource(PRONOM.ContainerFile.id + getId());
+        Resource uri = makeResource(PRONOM.ContainerFile.id + getUri());
         return new ContainerFile(uri, signature, getPath(), byteSequences.stream().map(bs -> bs.toObject(uri)).collect(Collectors.toList()));
     }
 }
