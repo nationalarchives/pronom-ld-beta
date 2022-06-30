@@ -19,14 +19,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 
-    // Removing ws from urlMappings will cause bugs in the app
+    // SOAP endpoint URL
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
 
-        return new ServletRegistrationBean<>(servlet, "/ws/*");
+        return new ServletRegistrationBean<>(servlet, "/pronom/service.asmx");
     }
 
     @Bean(name = "pronom")
