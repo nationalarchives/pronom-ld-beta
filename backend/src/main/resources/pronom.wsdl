@@ -12,7 +12,7 @@
     <wsdl:types>
 
         <xs:schema
-                elementFormDefault="qualified"
+
                 xmlns:tns="http://www.nationalarchives.gov.uk/pronom/SignatureFile"
                 targetNamespace="http://www.nationalarchives.gov.uk/pronom/SignatureFile">
 
