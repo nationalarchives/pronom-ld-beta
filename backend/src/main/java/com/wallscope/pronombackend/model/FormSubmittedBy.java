@@ -73,8 +73,8 @@ public class FormSubmittedBy {
         this.comment = comment;
     }
 
-    public Submitter toObject() {
-        return new Submitter(makeResource(uri), name, organisation, email, country, comment, isAnonymous);
+    public Contributor toObject(Boolean isInternal) {
+        return new Contributor(makeResource(uri), name, organisation, email, country, comment, isAnonymous, isInternal);
     }
 
     @Override

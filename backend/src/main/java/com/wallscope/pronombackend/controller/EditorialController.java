@@ -2,10 +2,8 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
-import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.FormFileFormat;
-import com.wallscope.pronombackend.model.FormOption;
-import com.wallscope.pronombackend.model.PUID;
+import com.wallscope.pronombackend.dao.SubmissionDAO;
+import com.wallscope.pronombackend.model.*;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
@@ -30,11 +25,6 @@ import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 @Controller
 public class EditorialController {
     Logger logger = LoggerFactory.getLogger(EditorialController.class);
-
-    @GetMapping("/editorial")
-    public String dashboard(Model model, @PathVariable(required = false) String version) {
-        return "dashboard";
-    }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/editorial/search")
@@ -110,6 +100,39 @@ public class EditorialController {
             default:
                 return "index";
         }
+    }
+
+    @PostMapping("/editorial/move-submission")
+    public String moveSubmission(Model model, @RequestParam String uri, @RequestParam String to) {
+        if (!uri.startsWith(PRONOM.Submission.id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission uri: " + uri);
+        }
+        String statusUri = switch (to) {
+            case "Waiting" -> PRONOM.Submission.StatusWaiting;
+            case "NextRelease" -> PRONOM.Submission.StatusNextRelease;
+            case "WIP" -> PRONOM.Submission.StatusWIP;
+            case "Testing" -> PRONOM.Submission.StatusTesting;
+            case "Ready" -> PRONOM.Submission.StatusReady;
+            default -> null;
+        };
+        if (statusUri == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid status: " + to);
+        }
+        SubmissionDAO dao = new SubmissionDAO();
+        dao.moveSubmission(makeResource(uri), makeResource(statusUri));
+        return "redirect:/editorial";
+    }
+
+    @GetMapping("/editorial")
+    public String dashboard(Model model) {
+        SubmissionDAO dao = new SubmissionDAO();
+        List<Submission> subs = dao.getAllSubmissions();
+        Map<String,List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
+        model.addAttribute("submissions", subs);
+        model.addAttribute("submissionMap", subsMap);
+        logger.trace("SUBMISSIONS: " + subs);
+        logger.trace("SUBMISSIONS MAP: " + subsMap);
+        return "dashboard";
     }
 
     private void setFormOptions(Model model) {

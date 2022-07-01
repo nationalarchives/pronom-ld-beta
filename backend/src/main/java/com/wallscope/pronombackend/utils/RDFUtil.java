@@ -138,6 +138,12 @@ public class RDFUtil {
         return safelyGetUriOrNull(r.asResource());
     }
 
+    public static Instant safelyParseDateOrNull(RDFNode n) {
+        Literal lit = safelyGetLiteralOrNull(n);
+        if (lit == null) return null;
+        return parseDate(lit);
+    }
+
     public static class RDF {
         public static final String uri = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
         public static final String type = uri + "type";
@@ -197,20 +203,43 @@ public class RDFUtil {
             public static final String type = PRONOM.uri + "TentativeFileFormat";
             public static final String uri = PRONOM.uri + "tentativeFileFormat.";
             public static final String id = PRONOM.uri + "id/TentativeFileFormat/";
-            public static final String Author = uri + "Author";
-            public static final String Source = uri + "Source";
         }
 
         // Submitter sub
-        public static class Submitter {
-            public static final String type = PRONOM.uri + "Submitter";
-            public static final String uri = PRONOM.uri + "submitter.";
-            public static final String id = PRONOM.uri + "id/Submitter/";
+        public static class Contributor {
+            public static final String type = PRONOM.uri + "Contributor";
+            public static final String uri = PRONOM.uri + "contributor.";
+            public static final String id = PRONOM.uri + "id/Contributor/";
             public static final String Name = uri + "Name";
             public static final String Organisation = uri + "Organisation";
             public static final String Email = uri + "Email";
             public static final String Country = uri + "Country";
             public static final String Comment = uri + "Comment";
+            public static final String Anonymous = uri + "Anonymous";
+            public static final String Internal = uri + "Internal";
+        }
+
+        public static class Submission {
+            public static final String type = PRONOM.uri + "Submission";
+            public static final String uri = PRONOM.uri + "submission.";
+            public static final String id = PRONOM.uri + "id/Submission/";
+            public static final String Reviewer = uri + "Reviewer";
+            public static final String Updated = uri + "Updated";
+            public static final String Created = uri + "Created";
+            public static final String Source = uri + "Source";
+            public static final String FileFormat = uri + "FileFormat";
+            public static final String Contributor = uri + "Contributor";
+            public static final String SubmissionType = uri + "SubmissionType";
+            private static final String typeId = PRONOM.uri + "id/SubmissionType/";
+            public static final String UserSubmission = typeId + "UserSubmission";
+            public static final String InternalSubmission = typeId + "InternalSubmission";
+            public static final String SubmissionStatus = uri + "SubmissionStatus";
+            private static final String statusId = PRONOM.uri + "id/SubmissionStatus/";
+            public static final String StatusWaiting = statusId + "Waiting";
+            public static final String StatusNextRelease = statusId + "NextRelease";
+            public static final String StatusWIP = statusId + "WIP";
+            public static final String StatusTesting = statusId + "Testing";
+            public static final String StatusReady = statusId + "Ready";
         }
 
         public static class Classification {
@@ -384,5 +413,7 @@ public class RDFUtil {
             public static final String Supports = uri + "Supports";
         }
     }
+
+    public static final String WITH_STATEMENT = "\nWITH<" + PRONOM.uri + ">\n";
 
 }

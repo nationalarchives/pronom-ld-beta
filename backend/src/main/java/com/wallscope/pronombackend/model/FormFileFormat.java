@@ -248,8 +248,8 @@ public class FormFileFormat {
 
     public void randomizeURIs() {
         // Set own URI
-        setUri(PRONOM.FileFormat.id + UUID.randomUUID());
-        if (submittedBy != null) submittedBy.setUri(PRONOM.Submitter.id + UUID.randomUUID());
+        setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
+        if (submittedBy != null) submittedBy.setUri(PRONOM.Contributor.id + UUID.randomUUID());
         if (internalSignatures != null) internalSignatures.forEach(fis -> {
             fis.setUri(PRONOM.InternalSignature.id + UUID.randomUUID());
             if (fis.getByteSequences() != null)

@@ -85,6 +85,22 @@ public class TriplestoreUtil {
         selectQuery(query, null, f);
     }
 
+    public static void updateQuery(String query, Map<String, RDFNode> params) {
+        ParameterizedSparqlString q = new ParameterizedSparqlString();
+        q.setCommandText(query);
+        if (params != null) {
+            for (Map.Entry<String, RDFNode> entry : params.entrySet()) {
+                q.setParam(entry.getKey(), entry.getValue());
+            }
+        }
+        logger.debug("sending update: " + q);
+        conn.build().update(q.asUpdate());
+    }
+
+    public static void updateQuery(String query) {
+        updateQuery(query, null);
+    }
+
     public static void load(Model m) {
         conn.build().load(GRAPH, m);
     }

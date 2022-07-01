@@ -3,7 +3,7 @@ package com.wallscope.pronombackend.dao;
 import com.wallscope.pronombackend.model.Classification;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.PUID;
-import com.wallscope.pronombackend.model.TentativeFileFormat;
+import com.wallscope.pronombackend.model.Submission;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -247,9 +247,9 @@ public class FileFormatDAO {
         return fs;
     }
 
-    public void saveTentativeFormat(TentativeFileFormat tff) {
-        logger.debug("saving Tentative File Format: " + tff.getURI());
-        TriplestoreUtil.load(tff.toRDF());
+    public void saveSubmission(Submission sub) {
+        logger.debug("saving Submission: " + sub.getURI());
+        TriplestoreUtil.load(sub.toRDF());
     }
 
     public List<Classification> getClassifications(List<String> ls) {
