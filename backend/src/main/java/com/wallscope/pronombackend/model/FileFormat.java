@@ -190,18 +190,15 @@ public class FileFormat implements RDFWritable {
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.FileFormat.type));
-        m.add(uri, makeProp(PRONOM.FileFormat.Puid), makeLiteral(puid));
-        m.add(uri, makeProp(PRONOM.FileFormat.PuidTypeId), puidType);
-        m.add(uri, makeProp(RDFS.label), makeLiteral(name));
-        m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
-        m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
-        m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
-        if (binaryFlag != null) {
-            m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
-        }
-        if (withdrawnFlag != null) {
-            m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
-        }
+        if (puid != null) m.add(uri, makeProp(PRONOM.FileFormat.Puid), makeLiteral(puid));
+        if (puidType != null) m.add(uri, makeProp(PRONOM.FileFormat.PuidTypeId), puidType);
+        if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        if (description != null) m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
+        if (updated != null) m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
+        if (version != null) m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
+        if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
+        if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
+
         if (classifications != null) {
             classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
         }
@@ -289,14 +286,13 @@ public class FileFormat implements RDFWritable {
 
         public FileFormat fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
-            // Required
-            Integer puid = mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Puid)).asLiteral().getInt();
-            Resource puidType = mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.PuidTypeId)).asResource();
-            String puidTypeName = mu.getOneObjectOrNull(puidType, makeProp(RDFS.label)).asLiteral().getString();
-            String name = mu.getOneObjectOrNull(uri, makeProp(RDFS.label)).asLiteral().getString();
-            String description = mu.getOneObjectOrNull(uri, makeProp(RDFS.comment)).asLiteral().getString();
-            Instant updated = parseDate(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate)).asLiteral());
-            // Optional
+
+            Integer puid = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Puid)));
+            Resource puidType = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.PuidTypeId)));
+            String puidTypeName = safelyGetStringOrNull(mu.getOneObjectOrNull(puidType, makeProp(RDFS.label)));
+            String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
+            String description = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.comment)));
+            Instant updated = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate)).asLiteral());
             String version = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Version)));
             Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
             Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));

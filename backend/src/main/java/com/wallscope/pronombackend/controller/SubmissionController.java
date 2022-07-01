@@ -75,28 +75,38 @@ public class SubmissionController {
         ff.randomizeURIs();
         FileFormatDAO dao = new FileFormatDAO();
         // Extract puid and puidType
-        String[] puidParts = ff.getPuid().split("/");
+        String puidStr = ff.getPuid();
+        if (puidStr == null) {
+            puidStr = "";
+        }
+        String[] puidParts = puidStr.split("/");
         Integer puid = null;
         Resource puidType = null;
-        if (puidParts.length == 2) {
+        if (!puidStr.isBlank() && puidParts.length == 2) {
             puid = Integer.parseInt(puidParts[1]);
             puidType = dao.getURIFromLabel(puidParts[0]);
         }
         List<Classification> cs = dao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(puid, puidType, Instant.now(), cs);
-        // For now we hardcode this, must be hooked into user system when implemented
-        String author = "pronom";
         FormSubmittedBy submitter = ff.getSubmittedBy();
         // source == null because it's a new file format therefore there is no existing one to compare
-        TentativeFileFormat tff = new TentativeFileFormat(f.getURI(), f, author, submitter.toObject(), null);
-        dao.saveTentativeFormat(tff);
+        Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
+                makeResource(PRONOM.Submission.UserSubmission),
+                makeResource(PRONOM.Submission.StatusWaiting),
+                submitter.toObject(false),
+                null,
+                null,
+                new TentativeFileFormat(f.getURI(), f),
+                Instant.now(),
+                null);
+        dao.saveSubmission(sub);
         return "redirect:/contribute/form";
     }
 
     @PostMapping("/contribute/form/{puidType}/{puid}")
     public String formSubmission(Model model, @ModelAttribute FormFileFormat ff, @PathVariable String puidType, @PathVariable String puid) {
-        ff.setUri(PRONOM.FileFormat.id + UUID.randomUUID());
+        ff.setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
         FileFormatDAO dao = new FileFormatDAO();
         // For existing file formats get the current object
         FileFormat existing = dao.getFileFormatByPuid(puid, puidType);
@@ -109,9 +119,17 @@ public class SubmissionController {
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
-        submitter.setUri(PRONOM.Submitter.id + UUID.randomUUID());
-        TentativeFileFormat tff = new TentativeFileFormat(f.getURI(), f, author, submitter.toObject(), existing.getURI());
-        dao.saveTentativeFormat(tff);
+        submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
+        Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
+                makeResource(PRONOM.Submission.UserSubmission),
+                makeResource(PRONOM.Submission.StatusWaiting),
+                submitter.toObject(false),
+                null,
+                existing,
+                new TentativeFileFormat(f.getURI(), f),
+                Instant.now(),
+                null);
+        dao.saveSubmission(sub);
         return "redirect:/contribute/form";
     }
 
