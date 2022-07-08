@@ -3,6 +3,7 @@ package com.wallscope.pronombackend.model;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -265,6 +266,12 @@ public class FormFileFormat {
         });
         if (externalSignatures != null)
             externalSignatures.forEach(fes -> fes.setUri(PRONOM.ExternalSignature.id + UUID.randomUUID()));
+        if (identifiers != null) identifiers.forEach(ffi -> ffi.setUri(PRONOM.FormatIdentifier.id + UUID.randomUUID()));
+        if (hasPriorityOver != null)
+            hasPriorityOver.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
+        if (hasRelationships != null)
+            hasRelationships.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
+        // TODO: Actors
     }
 
     @Override
@@ -294,6 +301,29 @@ public class FormFileFormat {
                 '}';
     }
 
+    public void removeEmpties() {
+        if (classifications != null)
+            classifications = classifications.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());
+        if (internalSignatures != null) internalSignatures = internalSignatures.stream().filter(is -> {
+            is.removeEmpties();
+            return is.isNotEmpty();
+        }).collect(Collectors.toList());
+        if (containerSignatures != null) containerSignatures = containerSignatures.stream().filter(cs -> {
+            cs.removeEmpties();
+            return cs.isNotEmpty();
+        }).collect(Collectors.toList());
+        if (externalSignatures != null)
+            externalSignatures = externalSignatures.stream().filter(FormExternalSignature::isNotEmpty).collect(Collectors.toList());
+        if (hasPriorityOver != null)
+            hasPriorityOver = hasPriorityOver.stream().filter(FormFileFormatRelationship::isNotEmpty).collect(Collectors.toList());
+        if (hasRelationships != null)
+            hasRelationships = hasRelationships.stream().filter(FormFileFormatRelationship::isNotEmpty).collect(Collectors.toList());
+        if (identifiers != null)
+            identifiers = identifiers.stream().filter(FormFormatIdentifier::isNotEmpty).collect(Collectors.toList());
+        if (aliases != null) aliases = aliases.stream().filter(FormAlias::isNotEmpty).collect(Collectors.toList());
+        // TODO: Actors
+    }
+
     public static FormFileFormat convert(FileFormat f) {
         FormFileFormat ff = new FormFileFormat();
         ff.setUri(safelyGetUriOrNull(f.getURI()));
@@ -309,19 +339,19 @@ public class FormFileFormat {
             FormInternalSignature fis = FormInternalSignature.convert(is);
             fis.setFileFormat(f.getFormattedPuid());
             return fis;
-        }).collect(Collectors.toList()));
+        }).sorted(Comparator.comparing(FormInternalSignature::getUri)).collect(Collectors.toList()));
         // External Signatures
         ff.setExternalSignatures(f.getExternalSignatures().stream().map(es -> {
             FormExternalSignature fes = FormExternalSignature.convert(es);
             fes.setFileFormat(f.getFormattedPuid());
             return fes;
-        }).collect(Collectors.toList()));
+        }).sorted(Comparator.comparing(FormExternalSignature::getUri)).collect(Collectors.toList()));
         // Container Signatures
         ff.setContainerSignatures(f.getContainerSignatures().stream().map(cs -> {
             FormContainerSignature fcs = FormContainerSignature.convert(cs);
             fcs.setFileFormat(f.getFormattedPuid());
             return fcs;
-        }).collect(Collectors.toList()));
+        }).sorted(Comparator.comparing(FormContainerSignature::getUri)).collect(Collectors.toList()));
         ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toList()));
         return ff;
     }

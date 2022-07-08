@@ -66,4 +66,15 @@ public class FormContainerFile {
         Resource uri = makeResource(PRONOM.ContainerFile.id + getUri());
         return new ContainerFile(uri, signature, getPath(), byteSequences.stream().map(bs -> bs.toObject(uri)).collect(Collectors.toList()));
     }
+
+    public void removeEmpties() {
+        if (byteSequences != null)
+            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toList());
+    }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && path != null && !path.isBlank()
+                && byteSequences != null && byteSequences.stream().anyMatch(FormByteSequence::isNotEmpty);
+    }
 }

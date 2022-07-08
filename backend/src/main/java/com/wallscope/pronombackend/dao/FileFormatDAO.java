@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.dao.ContainerSignatureDAO.CONTAINER_SIG_SUB_QUERY;
+import static com.wallscope.pronombackend.dao.ContainerSignatureDAO.FORM_CONTAINER_SIG_SUB_QUERY;
+import static com.wallscope.pronombackend.dao.InternalSignatureDAO.FORM_INTERNAL_SIG_SUB_QUERY;
 import static com.wallscope.pronombackend.dao.InternalSignatureDAO.INTERNAL_SIG_SUB_QUERY;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
@@ -55,25 +56,25 @@ public class FileFormatDAO {
               pr:formatRelationshipType.InverseTypeName ?fRelInverseTypeName .
             """;
     public static final String FILE_FORMAT_SUB_QUERY = """
-            ?f a pr:FileFormat ;
-                 rdfs:label ?label ;
-                 rdfs:comment ?comment ;
-                 ff:Puid ?puid ;
-                 ff:PuidTypeId ?puidType ;
-                 ff:LastUpdatedDate ?updated ;
-                 .
+            ?f a pr:FileFormat .
+            ?f rdfs:label ?label .
+            ?f rdfs:comment ?comment .
+            ?f pr:fileFormat.Puid ?puid .
+            ?f pr:fileFormat.PuidTypeId ?puidType .
+            ?f pr:fileFormat.LastUpdatedDate ?updated .
+            
             # Links
             ?puidType rdfs:label ?puidTypeName .
                         
             # Non-required fields
-            OPTIONAL { ?f ff:Classification ?classification .
+            OPTIONAL { ?f pr:fileFormat.Classification ?classification .
                ?classification rdfs:label ?classificationName .
             }#END OPTIONAL
-            OPTIONAL { ?f ff:Version ?version . }#END OPTIONAL
-            OPTIONAL { ?f ff:BinaryFlag ?binaryFlag . }#END OPTIONAL
-            OPTIONAL { ?f ff:WithdrawnFlag ?withdrawn . }#END OPTIONAL
-            OPTIONAL { ?f ff:Development.Actor ?devActor . }#END OPTIONAL
-            OPTIONAL { ?f ff:Support.Actor ?supportActor . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.Version ?version . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.BinaryFlag ?binaryFlag . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.WithdrawnFlag ?withdrawn . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.Development.Actor ?devActor . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.Support.Actor ?supportActor . }#END OPTIONAL
             # Format Identifiers
             OPTIONAL{
                """ + FORMAT_IDENTIFIER_SUB_QUERY + """
@@ -84,25 +85,20 @@ public class FileFormatDAO {
             }#END OPTIONAL
             # Internal Signatures
             OPTIONAL { ?f ff:InternalSignature ?sig .
-               """ + INTERNAL_SIG_SUB_QUERY + """
+               """ + FORM_INTERNAL_SIG_SUB_QUERY + """
             }#END OPTIONAL
                              
             # Container Signatures
             OPTIONAL { ?f ff:ContainerSignature ?contSig .
-               """ + CONTAINER_SIG_SUB_QUERY + """
+               """ + FORM_CONTAINER_SIG_SUB_QUERY + """
             }#END OPTIONAL
                            	 
-            # Byte Sequences
-            OPTIONAL {
-               """ + BYTE_SEQUENCE_SUB_QUERY + """
-            }#END OPTIONAL
                         
             OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
                """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
             }#END OPTIONAL
             """;
     public static final String FILE_FORMAT_QUERY = PREFIXES + """
-            prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             CONSTRUCT {
             """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
              } WHERE {
@@ -111,7 +107,6 @@ public class FileFormatDAO {
             """;
 
     public static final String SIG_GEN_QUERY = PREFIXES + """
-            prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             CONSTRUCT {
               """ + trimOptionals(INTERNAL_SIG_SUB_QUERY) + """
                         
@@ -205,6 +200,17 @@ public class FileFormatDAO {
         return deserializer.fromModel(subject.nextResource(), m);
     }
 
+    public FileFormat getFileFormatByURI(Resource uri) {
+        logger.debug("fetching file format by URI: " + uri);
+        FileFormat.Deserializer deserializer = new FileFormat.Deserializer();
+        Map<String, RDFNode> params = new HashMap<>();
+        params.put("f", uri);
+        Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY, params);
+        ResIterator subject = m.listSubjectsWithProperty(makeProp(RDF.type), deserializer.getRDFType());
+        if (subject == null || !subject.hasNext()) return null;
+        return deserializer.fromModel(subject.nextResource(), m);
+    }
+
     public PUID getPuidForURI(Resource uri) {
         Map<String, RDFNode> params = new HashMap<>();
         params.put("f", uri);
@@ -245,11 +251,6 @@ public class FileFormatDAO {
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
         logger.debug("file formats built for signature generation");
         return fs;
-    }
-
-    public void saveSubmission(Submission sub) {
-        logger.debug("saving Submission: " + sub.getURI());
-        TriplestoreUtil.load(sub.toRDF());
     }
 
     public List<Classification> getClassifications(List<String> ls) {

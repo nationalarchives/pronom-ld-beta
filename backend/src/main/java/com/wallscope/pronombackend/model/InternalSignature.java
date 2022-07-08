@@ -1,10 +1,12 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,12 +79,12 @@ public class InternalSignature implements RDFWritable {
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.InternalSignature.type));
-        m.add(uri, makeProp(RDFS.label), makeLiteral(name));
-        m.add(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate), makeXSDDateTime(updated));
+        if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        if (updated != null) m.add(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate), makeXSDDateTime(updated));
         if (note != null) m.add(uri, makeProp(PRONOM.InternalSignature.Note), makeLiteral(note));
         if (provenance != null) m.add(uri, makeProp(PRONOM.InternalSignature.Provenance), makeLiteral(provenance));
         if (genericFlag != null) m.add(uri, makeProp(PRONOM.InternalSignature.GenericFlag), makeLiteral(genericFlag));
-        m.add(uri, makeProp(PRONOM.InternalSignature.FileFormat), fileFormat);
+        if (fileFormat != null) m.add(uri, makeProp(PRONOM.InternalSignature.FileFormat), fileFormat);
         for (ByteSequence b : byteSequences) {
             m.add(uri, makeProp(PRONOM.InternalSignature.ByteSequence), b.getURI());
             m.add(b.toRDF());
@@ -115,17 +117,15 @@ public class InternalSignature implements RDFWritable {
         public InternalSignature fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
             // Required
-            String name = mu.getOneObjectOrNull(uri, makeProp(RDFS.label)).asLiteral().getString();
-            Literal updatedLit = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate)).asLiteral();
-            Instant updated = parseDate(updatedLit);
-            Boolean genericFlag = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.GenericFlag)).asLiteral().getBoolean();
-            // Optional
+            String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
+            Instant updated = safelyParseDateOrNull(safelyGetLiteralOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.LastUpdatedDate))));
+            Boolean genericFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.GenericFlag)));
             String note = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.Note)));
             String provenance = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.Provenance)));
-            Resource fileFormat = mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.FileFormat)).asResource();
+            Resource fileFormat = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.InternalSignature.FileFormat)));
+
             List<Resource> byteSeqSubjects = mu.getAllObjects(uri, makeProp(PRONOM.InternalSignature.ByteSequence)).stream().map(RDFNode::asResource).collect(Collectors.toList());
-            List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects)
-                    .stream().sorted(Comparator.comparingInt(bs -> Integer.parseInt(bs.getID()))).collect(Collectors.toList());
+            List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects);
 
             return new InternalSignature(uri, name, note, updated, genericFlag, provenance, fileFormat, byteSequences);
         }

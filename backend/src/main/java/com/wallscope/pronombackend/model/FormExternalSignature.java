@@ -65,4 +65,10 @@ public class FormExternalSignature {
         return new ExternalSignature(makeResource(getUri()), getName(), getSignatureType());
 
     }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && name != null && !name.isBlank()
+                && signatureType != null && !signatureType.isBlank();
+    }
 }

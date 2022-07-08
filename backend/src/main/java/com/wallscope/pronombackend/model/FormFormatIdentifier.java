@@ -6,19 +6,19 @@ import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormFormatIdentifier {
-    private String id;
+    private String uri;
     private String name;
     private String type;
 
     public FormFormatIdentifier() {
     }
 
-    public String getId() {
-        return id;
+    public String getUri() {
+        return uri;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getName() {
@@ -41,12 +41,18 @@ public class FormFormatIdentifier {
         FormFormatIdentifier ffi = new FormFormatIdentifier();
         ffi.setName(fi.getName());
         ffi.setType(fi.getType().getURI());
-        ffi.setId(fi.getID());
+        ffi.setUri(fi.getID());
         return ffi;
     }
 
     public FormatIdentifier toObject() {
-        Resource uri = makeResource(PRONOM.FormatIdentifier.id + getId());
+        Resource uri = makeResource(PRONOM.FormatIdentifier.id + getUri());
         return new FormatIdentifier(uri, getName(), makeResource(getType()), null);
+    }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && name != null && !name.isBlank()
+                && type != null && !type.isBlank();
     }
 }

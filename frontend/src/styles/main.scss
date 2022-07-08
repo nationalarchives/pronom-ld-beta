@@ -1538,7 +1538,7 @@ h1.internal-title {
         padding: 5px;
         flex-direction: column;
         justify-content: flex-start;
-        button {
+        a {
           width: 100%;
           margin-bottom: 8px;
           &.option {
@@ -1549,7 +1549,7 @@ h1.internal-title {
       .selector-checkbox {
         display: none;
       }
-      a {
+      > a {
         grid-template-columns: 1fr 1fr;
         @media only screen and (max-width: 1850px) {
           grid-template-columns: 1fr;
@@ -1586,7 +1586,7 @@ h1.internal-title {
       &.active {
         background: #CCDBEA;
       }
-    a {
+    > a {
       display: grid;
       grid-template-columns: 40px 110px 1fr 100px 80px 200px 110px 1fr;
       align-items: center;
@@ -1622,13 +1622,13 @@ h1.internal-title {
     }
   }
   .maintain-buttons {
-    button {
+    a {
       margin-left: 5px;
     }
   }
   &.card {
     .maintain-buttons {
-      button {
+      a {
         margin-left: 0;
       }
     } 

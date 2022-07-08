@@ -3,17 +3,25 @@ package com.wallscope.pronombackend.controller;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
-import com.wallscope.pronombackend.model.*;
+import com.wallscope.pronombackend.model.FormOption;
+import com.wallscope.pronombackend.model.PUID;
+import com.wallscope.pronombackend.model.Submission;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
@@ -47,44 +55,6 @@ public class EditorialController {
         model.addAttribute("editorial", true);
         new SearchController().searchHandler(model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize);
         return "internal-search";
-    }
-
-    @GetMapping("/editorial/form/{puidType}/{puid}")
-    public String formTemplate(Model model, @PathVariable String puidType, @PathVariable String puid) {
-        model.addAttribute("edit", true);
-        FileFormatDAO dao = new FileFormatDAO();
-        FileFormat f = dao.getFileFormatByPuid(puid, puidType);
-        if (f == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
-        }
-        model.addAttribute("ff", FormFileFormat.convert(f));
-        setFormOptions(model);
-        return "user-form";
-    }
-
-    @GetMapping("/editorial/form/new")
-    public String newFormTemplate(Model model) {
-        model.addAttribute("edit", false);
-        FormFileFormat compare = new FormFileFormat();
-        model.addAttribute("compare", compare);
-        // test prepare file format
-        FormFileFormat ff = new FormFileFormat();
-        model.addAttribute("ff", ff);
-        setFormOptions(model);
-        logger.debug("Sending FormFileFormat:\n" + ff);
-        return "user-form";
-    }
-
-    @PostMapping("/editorial/form/new")
-    public String newFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        logger.debug("Received FormFileFormat:\n" + ff);
-        return "redirect: /editorial/form";
-    }
-
-    @PostMapping("/editorial/form/{puidType}/{puid}")
-    public String formSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        logger.debug("Received FormFileFormat:\n" + ff);
-        return "redirect: /editorial/form";
     }
 
     @GetMapping("/editorial/id/{type}/{id}")
@@ -123,11 +93,21 @@ public class EditorialController {
         return "redirect:/editorial";
     }
 
+    @PostMapping("/editorial/delete-submission")
+    public String deleteSubmission(Model model, @RequestParam String uri) {
+        if (!uri.startsWith(PRONOM.Submission.id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission uri: " + uri);
+        }
+        SubmissionDAO dao = new SubmissionDAO();
+        dao.deleteSubmission(makeResource(uri));
+        return "redirect:/editorial";
+    }
+
     @GetMapping("/editorial")
     public String dashboard(Model model) {
         SubmissionDAO dao = new SubmissionDAO();
         List<Submission> subs = dao.getAllSubmissions();
-        Map<String,List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
+        Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
         model.addAttribute("submissions", subs);
         model.addAttribute("submissionMap", subsMap);
         logger.trace("SUBMISSIONS: " + subs);

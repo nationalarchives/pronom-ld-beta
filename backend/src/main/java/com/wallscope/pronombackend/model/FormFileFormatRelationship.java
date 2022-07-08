@@ -78,4 +78,11 @@ public class FormFileFormatRelationship {
                 getNote()
         );
     }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && source != null && !source.isBlank()
+                && target != null && !target.isBlank()
+                && relationshipType != null && !relationshipType.isBlank();
+    }
 }

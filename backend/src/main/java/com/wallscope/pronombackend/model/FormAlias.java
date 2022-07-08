@@ -31,4 +31,10 @@ public class FormAlias {
     public void setVersion(String version) {
         this.version = version;
     }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && name != null && !name.isBlank()
+                && version != null && !version.isBlank();
+    }
 }

@@ -16,7 +16,7 @@ block modalBody
   .form-content#internal-form
     include ./partials/userForm/form-navigation.pug
     main#main-form-content
-      form(action="#", th:action='@{/editorial/contribute/form/new}', method='POST', th:object="${ff}") 
+      form(action="#", th:action="@{/editorial/form/{target}(target=${submissionId} ?: 'new')}", method='POST', th:object="${ff}") 
         .form-section
           include ./partials/userForm/core.pug
         .form-section

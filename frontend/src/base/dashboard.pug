@@ -19,7 +19,7 @@ block content
               div
                 label.sr-only(for="select_all") Select or deselect all contributions
                 input(type="checkbox" id="select_all")
-              p Selected (2)
+              p Selected
             .buttons
               .dropdown
                   button.xsmall.bordered-blue
@@ -99,7 +99,7 @@ block content
                     label.sr-only(for="select_contribution") Select or deselect contribution
                     input(type="checkbox" id="select_contribution")
                 div
-                  p.data(th:utext="'<span>Date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy')}")
+                  p.data(th:utext="'<span>Date</span>'+${#temporals.format(s.created, 'dd/MM/yyyy')}")
                     span Date
                     | 12/05/2021
                 div
@@ -111,23 +111,24 @@ block content
                     span Type
                     | Internal
                 div
-                  p.data(th:utext="'<span>Status</span>'+${s.submissionStatus?.localName}")
+                  p.data(th:utext="'<span>Status</span>'+${s.submissionStatus?.localName ?: '-'}")
                     span Status
                     | Waiting
                 div
-                  p.data(th:utext="'<span>Subject</span>'+${s.format?.name}")
+                  p.data(th:utext="'<span>Subject</span>'+${s.format?.name ?: '-'}")
                     span Subject
                     | File format name
                 div
-                  p.data(th:utext="'<span>Review date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy')}")
+                  p.data(th:utext="'<span>Review date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy') ?: '-'}")
                     span Review date
                     | 12/05/2021
                 div
-                  p.data(th:utext="'<span>Reviewer</span>'+${s.reviewer?.name}")
+                  p.data(th:utext="'<span>Reviewer</span>'+${s.reviewer?.name ?: '-'}")
                     span Reviewer
                     | Ann Rose
               .maintain-buttons
-                button.xsmall.bordered-blue View
+                a(th:href="@{/editorial/form/{target}(target=${s.ID})}")
+                  button.xsmall.bordered-blue View
                 .dropdown
                   button.xsmall.bordered-blue Move to
                     i.fa-solid.fa-chevron-down
@@ -165,7 +166,7 @@ block content
                         label.sr-only(for="select_contribution") Select or deselect contribution
                         input(type="checkbox" id="select_contribution")
                     div
-                      p.data(th:utext="'<span>Date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy')}")
+                      p.data(th:utext="'<span>Date</span>'+${#temporals.format(s.created, 'dd/MM/yyyy')}")
                         span Date
                         | 12/05/2021
                     div
@@ -185,15 +186,16 @@ block content
                         span Subject
                         | File format name
                     div
-                      p.data(th:utext="'<span>Review date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy')}")
+                      p.data(th:utext="'<span>Review date</span>'+${#temporals.format(s.updated, 'dd/MM/yyyy') ?: '-'}")
                         span Review date
                         | 12/05/2021
                     div
-                      p.data(th:utext="'<span>Reviewer</span>'+${s.reviewer?.name}")
+                      p.data(th:utext="'<span>Reviewer</span>'+${s.reviewer?.name ?: '-'}")
                         span Reviewer
                         | Ann Rose
                   .maintain-buttons
-                    button.xsmall.bordered-blue View
+                    a(th:href="@{/editorial/form/{target}(target=${s.ID})}")
+                      button.xsmall.bordered-blue View
                     .dropdown
                       button.xsmall.bordered-blue Move to
                         i.fa-solid.fa-chevron-down

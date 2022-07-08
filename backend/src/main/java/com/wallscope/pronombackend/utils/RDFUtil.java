@@ -21,6 +21,7 @@ public class RDFUtil {
             prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             prefix skos: <http://www.w3.org/2004/02/skos/core#>
             prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
+            prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             """;
 
     public static Resource makeResource(String r) {
@@ -252,6 +253,7 @@ public class RDFUtil {
         public static class FileFormatRelationship {
             public static final String type = PRONOM.uri + "FileFormatRelationship";
             public static final String uri = PRONOM.uri + "fileFormatRelationship.";
+            public static final String id = PRONOM.uri + "id/FileFormatRelationship/";
             public static final String Source = uri + "Source";
             public static final String Target = uri + "Target";
             public static final String FileFormatRelationshipType = uri + "FileFormatRelationshipType";
@@ -261,15 +263,17 @@ public class RDFUtil {
         public static class FormatRelationshipType {
             public static final String type = PRONOM.uri + "FileFormatRelationshipType";
             public static final String uri = PRONOM.uri + "formatRelationshipType.";
+            public static final String id = PRONOM.uri + "id/FileFormatRelationshipType/";
             public static final String TypeName = uri + "TypeName";
             public static final String InverseTypeName = uri + "InverseTypeName";
             // Instances
-            public static final String PriorityOver = PRONOM.uri + "id/FileFormatRelationshipType/7";
+            public static final String PriorityOver = id + "7";
         }
 
         public static class FileFormatFamily {
             public static final String type = PRONOM.uri + "FileFormatFamily";
             public static final String uri = PRONOM.uri + "fileFormatFamily.";
+            public static final String id = PRONOM.uri + "id/FileFormatFamily/";
         }
 
         // PuidType sub

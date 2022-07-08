@@ -13,6 +13,11 @@ import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -94,6 +99,8 @@ public class TriplestoreUtil {
             }
         }
         logger.debug("sending update: " + q);
+        try {
+            Files.write(Paths.get("query.txt"), List.of(q.toString()), StandardCharsets.UTF_8);} catch (IOException e) {logger.debug(e.toString());}
         conn.build().update(q.asUpdate());
     }
 

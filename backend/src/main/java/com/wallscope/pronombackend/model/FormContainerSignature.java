@@ -79,4 +79,18 @@ public class FormContainerSignature {
                 files.stream().map(f -> f.toObject(res)).collect(Collectors.toList())
         );
     }
+
+    public void removeEmpties() {
+        if (files != null) files = files.stream().filter(cf -> {
+            cf.removeEmpties();
+            return cf.isNotEmpty();
+        }).collect(Collectors.toList());
+
+    }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && name != null && !name.isBlank()
+                && files != null && files.stream().anyMatch(FormContainerFile::isNotEmpty);
+    }
 }

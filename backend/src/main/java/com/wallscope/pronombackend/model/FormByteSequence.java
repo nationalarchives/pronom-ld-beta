@@ -1,11 +1,15 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.controller.EditorialController;
 import org.apache.jena.rdf.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormByteSequence {
+    private final Logger logger = LoggerFactory.getLogger(FormByteSequence.class);
     private String uri;
     private String signature;
     private String position;
@@ -128,5 +132,12 @@ public class FormByteSequence {
                 maxOffset,
                 indirectOffsetLocation,
                 indirectOffsetLength);
+    }
+
+    public boolean isNotEmpty() {
+        boolean val = uri != null && !uri.isBlank()
+                && sequence != null && !sequence.isBlank();
+        logger.debug("EMPTY CHECK BYTE SEQUENCE ("+val+"): "+ uri);
+        return val;
     }
 }

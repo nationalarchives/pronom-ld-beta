@@ -58,7 +58,7 @@ section.form-part#signatures
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Path" id="Path")
+                input(id="Path" disabled)
               .byte-sequence-list
                 .list
                 .button-container
@@ -92,7 +92,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(name="BinaryValue" id="BinaryValue")
+                  input(id="BinaryValue", disabled)
 
               //- Position type
               .form-row#position-type
@@ -114,7 +114,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  select(id="PositionType")
+                  select(id="PositionType", disabled)
                     option(value='0') option1
                     option(value='1') option2
 
@@ -138,7 +138,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input.short(name="MinOffset" id="MinOffset")
+                  input.short(name="MinOffset", id="MinOffset", disabled)
 
               //- Max offset
               .form-row#max-offset
@@ -160,7 +160,7 @@ section.form-part#signatures
                       p Reviewed
                 .input-group
                   button Accept current
-                  input.short(name="MaxOffset" id="MaxOffset")
+                  input.short(name="MaxOffset", id="MaxOffset", disabled)
             //- template signature (hidden for copying) =============================================
             fieldset.signature.collapse-content-container
               legend.sr-only Fill up information about signature
@@ -183,7 +183,7 @@ section.form-part#signatures
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.3.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="internalSignatures[0].name", id="signatureName")
+                    input(name="internalSignatures[0].name", id="signatureName", disabled)
 
                   //- Signature note
                   .form-row
@@ -193,22 +193,22 @@ section.form-part#signatures
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.5') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="internalSignatures[0].note", id="signatureNote")
+                    input(name="internalSignatures[0].note", id="signatureNote", disabled)
 
                   h3 Byte Sequences
                   .part
 
-                    //- Select endianess
-                    .form-row
-                      .tooltip-container
-                        .label
-                          label.from-external-only(for="endianess") Select endianess
-                          label.from-internal-only(for="endianess") Select endianess (required)
-                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
-                            .i-wrapper
-                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      select(name="internalSignatures[0].byteOrder", id="endianess")
-                        option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+                    //- //- Select endianess
+                    //- .form-row
+                    //-   .tooltip-container
+                    //-     .label
+                    //-       label.from-external-only(for="endianess") Select endianess
+                    //-       label.from-internal-only(for="endianess") Select endianess (required)
+                    //-       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
+                    //-         .i-wrapper
+                    //-           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    //-   select(name="internalSignatures[0].byteOrder", id="endianess")
+                    //-     option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
 
                     //- Description
                     .form-row#signature-description
@@ -230,7 +230,7 @@ section.form-part#signatures
                             p Reviewed
                       .input-group
                         button Accept current
-                        textarea(cols="30", rows="6", name="internalSignatures[0].note", id="SignatureDescription")
+                        textarea(cols="30", rows="6", name="internalSignatures[0].note", id="SignatureDescription", disabled)
                     //- byte sequence
                     .byte-sequence-list
                       .list
@@ -260,7 +260,7 @@ section.form-part#signatures
                                   p Reviewed
                             .input-group
                               button Accept current
-                              input(name="internalSignatures[0].byteSequences[0].sequence", id="binaryValue")
+                              input(name="internalSignatures[0].byteSequences[0].sequence", id="binaryValue", disabled)
 
                           //- Position type
                           .form-row#position-type
@@ -282,7 +282,7 @@ section.form-part#signatures
                                   p Reviewed
                             .input-group
                               button Accept current
-                              select(name="internalSignatures[0].byteSequences[0].position", id="positionType")
+                              select(name="internalSignatures[0].byteSequences[0].position", id="positionType", disabled)
                                 option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
 
                           //- Min offset
@@ -305,7 +305,7 @@ section.form-part#signatures
                                   p Reviewed
                             .input-group
                               button Accept current
-                              input.short(name="internalSignatures[0].byteSequences[0].offset", id="minOffset")
+                              input.short(name="internalSignatures[0].byteSequences[0].offset", id="minOffset", disabled)
 
                           //- Max offset
                           .form-row#max-offset
@@ -327,7 +327,7 @@ section.form-part#signatures
                                   p Reviewed
                             .input-group
                               button Accept current
-                              input.short(name="internalSignatures[0].byteSequences[0].maxOffset", id="maxOffset")
+                              input.short(name="internalSignatures[0].byteSequences[0].maxOffset", id="maxOffset", disabled)
                       .button-container
                         button.black.small.add-byte-sequence.push-right Add byte sequence
             //- Container-signature (hidden for copying) =============================================
@@ -353,23 +353,23 @@ section.form-part#signatures
                         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.3.1') tabindex='0')
                           .i-wrapper
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="containerSignatureName", id="containerSignatureName")
+                    input(name="containerSignatures[0].name", id="containerSignatureName", disabled)
 
                   h5.border Byte Sequences
                   .part
-                    fieldset
-                      legend.sr-only Select endianess
-                      div
-                        .tooltip-container
-                          .label
-                            label.from-external-only(for="CSendianess") Select endianess
-                            label.from-internal-only(for="CSendianess") Select endianess (required)
-                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
-                              .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                        select(id="CSendianess")
-                          option(value='0') option1
-                          option(value='1') option2
+                    //- fieldset
+                    //-   legend.sr-only Select endianess
+                    //-   div
+                    //-     .tooltip-container
+                    //-       .label
+                    //-         label.from-external-only(for="CSendianess") Select endianess
+                    //-         label.from-internal-only(for="CSendianess") Select endianess (required)
+                    //-         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
+                    //-           .i-wrapper
+                    //-             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    //-     select(id="CSendianess")
+                    //-       option(value='0') option1
+                    //-       option(value='1') option2
 
                     //- Description
                     .form-row
@@ -380,7 +380,7 @@ section.form-part#signatures
                             span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.2') tabindex='0')
                               .i-wrapper
                                 i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                      textarea(cols="30", rows="6", name="signatureDescription", id="signatureDescription")
+                      textarea(cols="30", rows="6", name="containerSignatures[0].description", id="signatureDescription", disabled)
                     h5.border Container signature
                     .paths-list-container
                       .paths-list
@@ -389,7 +389,7 @@ section.form-part#signatures
                           | Add path
           
           //- simple signature templated output:
-          fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures} ")
+          fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures} ", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
             input(type="hidden", th:field="*{internalSignatures[__${stat.index}__].uri}")
             legend.sr-only Fill up information about signature
             .row-group
@@ -403,7 +403,7 @@ section.form-part#signatures
               .collapse-content
 
                 //- Signature name
-                .form-row(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
+                .form-row(th:classappend="${compareSig?.name} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
                   .tooltipPlusAction
                     .tooltip-container
@@ -423,27 +423,27 @@ section.form-part#signatures
                   .input-group
                     button Accept current    
                     input(th:field="*{internalSignatures[__${stat.index}__].name}", th:id="${'SignatureName' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.name}")
-                  .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.name}")
+                  .input-group(th:if="${compareSig?.name}")
                     button.incoming Accept incoming
-                    input(th:value="${compare.internalSignatures?.get(__${stat.index}__).name}", th:id="${'SignatureName' + stat.index}")
+                    input(th:value="${compareSig.name}", th:id="${'SignatureName' + stat.index}")
 
                 h3 Byte Sequences
                 .part
 
-                  //- Select endianess
-                  .form-row(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.byteOrder} ? 'before-review' : ''")
-                    .tooltip-container
-                      .label
-                        label.from-external-only(th:for="${'SignatureByteOrder' + stat.index}") Select endianess
-                        label.from-internal-only(th:for="${'SignatureByteOrder' + stat.index}") Select endianess (required)
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    select(th:field="*{internalSignatures[__${stat.index}__].byteOrder}", th:id="${'SignatureByteOrder' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.byteOrder}")
-                      option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+                  //- //- Select endianess
+                  //- .form-row(th:classappend="${compareSig?.byteOrder} ? 'before-review' : ''")
+                  //-   .tooltip-container
+                  //-     .label
+                  //-       label.from-external-only(th:for="${'SignatureByteOrder' + stat.index}") Select endianess
+                  //-       label.from-internal-only(th:for="${'SignatureByteOrder' + stat.index}") Select endianess (required)
+                  //-       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
+                  //-         .i-wrapper
+                  //-           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  //-   select(th:field="*{internalSignatures[__${stat.index}__].byteOrder}", th:id="${'SignatureByteOrder' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.byteOrder}")
+                  //-     option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
 
                   //- Description
-                  .form-row#signature-description(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.note} ? 'before-review' : ''")
+                  .form-row#signature-description(th:classappend="${compareSig?.note} ? 'before-review' : ''")
                     p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.note) ? 'New content' : 'Edited content'}") Edited content
                     .tooltipPlusAction
                       .tooltip-container
@@ -463,20 +463,20 @@ section.form-part#signatures
                     .input-group
                       button Accept current
                       textarea(cols="30", rows="6" th:field="*{internalSignatures[__${stat.index}__].note}", th:id="${'SignatureNote' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.note}")
-                    .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.note}")
+                    .input-group(th:if="${compareSig?.note}")
                       button.incoming Accept incoming
                       textarea(cols="30", rows="6", th:value="${compare.internalSignatures?.get(__${stat.index}__).note}", th:id="${'SignatureNote' + stat.index}")
                   //- byte sequence
                   .byte-sequence-list
                     .list
-                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures.get(__${stat.index}__).byteSequences}")
+                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures.get(__${stat.index}__).byteSequences}", th:with="compareBSSize=${#lists.size(compareSig?.byteSequences ?: {})}, compareByteSeq=${compareBSSize > statB.index} ? ${compareSig.get(__${statB.index}__)} : null")
                         .info
                           h4 Byte sequence
                           button.bordered-red.small.delete-byte-sequence
                             | Delete byte sequence
                           
                         //- Binary value
-                        .form-row#binary-value(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.sequence} ? 'before-review' : ''")
+                        .form-row#binary-value(th:classappend="${compareByteSeq?.sequence} ? 'before-review' : ''")
                           p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.sequence) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
@@ -496,12 +496,12 @@ section.form-part#signatures
                           .input-group
                             button Accept current
                             input(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.sequence}")
+                          .input-group(th:if="${compareByteSeq?.sequence}")
                             button.incoming Accept incoming
                             input(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
 
                         //- Position type
-                        .form-row#position-type(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.position} ? 'before-review' : ''")
+                        .form-row#position-type(th:classappend="${compareByteSeq?.position} ? 'before-review' : ''")
                           p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.position) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
@@ -522,13 +522,13 @@ section.form-part#signatures
                             button Accept current
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
-                          .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.position}")
+                          .input-group(th:if="${compareByteSeq?.position}")
                             button.incoming Accept incoming
                             select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
 
                         //- Min offset
-                        .form-row#min-offset(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset} ? 'before-review' : ''")
+                        .form-row#min-offset(th:classappend="${compareByteSeq?.offset} ? 'before-review' : ''")
                           p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
@@ -548,12 +548,12 @@ section.form-part#signatures
                           .input-group
                             button Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset}")
+                          .input-group(th:if="${compareByteSeq?.offset}")
                             button.incoming Accept incoming
                             input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
                         
                         //- Max offset
-                        .form-row#max-offset(th:classappend="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset} ? 'before-review' : ''")
+                        .form-row#max-offset(th:classappend="${compareByteSeq?.offset} ? 'before-review' : ''")
                           p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.maxOffset) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
@@ -573,7 +573,7 @@ section.form-part#signatures
                           .input-group
                             button Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compare?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.maxOffset}")
+                          .input-group(th:if="${compareByteSeq?.maxOffset}")
                             button.incoming Accept incoming
                             input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
                     .button-container

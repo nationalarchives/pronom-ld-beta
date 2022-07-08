@@ -35,6 +35,11 @@ public class Submission implements RDFWritable {
         this.updated = updated;
     }
 
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
+    }
+
     @Override
     public Resource getURI() {
         return uri;
@@ -148,7 +153,7 @@ public class Submission implements RDFWritable {
                 source = new FileFormat.Deserializer().fromModel(sourceRes, model);
             }
 
-            Resource ffRes = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Submission.Source)));
+            Resource ffRes = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Submission.FileFormat)));
             FileFormat ff = null;
             if (ffRes != null) {
                 ff = new FileFormat.Deserializer().fromModel(ffRes, model);

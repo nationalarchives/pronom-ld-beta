@@ -263,6 +263,7 @@ const App = () => {
       // ignore buttons which get caught by :input as well
       if ($this.is('button')) return;
       $this.attr('name', $this.attr('name').replace(/internalSignatures\[\d+\]/, `internalSignatures[${newIndex}]`));
+      $this.prop('disabled', false);
     });
     clone.appendTo('#signature-container');
   });
@@ -288,6 +289,7 @@ const App = () => {
       // ignore buttons which get caught by :input as well
       if ($this.is('button')) return;
       $this.attr('name', $this.attr('name').replace(/byteSequences\[\d+\]/, `byteSequences[${newIndex}]`));
+      $this.prop('disabled', false);
     });
     clone.appendTo($container);
   });

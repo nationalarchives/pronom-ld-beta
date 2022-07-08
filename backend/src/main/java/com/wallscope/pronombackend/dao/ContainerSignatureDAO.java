@@ -17,7 +17,8 @@ import static com.wallscope.pronombackend.utils.RDFUtil.trimOptionals;
 public class ContainerSignatureDAO {
     Logger logger = LoggerFactory.getLogger(ContainerSignatureDAO.class);
     public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
-            .replaceAll("\\?byteSeq pr:byteSequence.InternalSignature \\?sig \\.", "");
+            .replaceAll("\\?byteSeq pr:byteSequence.InternalSignature \\?sig \\.", "")
+            .replaceAll("\\?byteSeq", "?contByteSeq");
     public static final String CONTAINER_SIG_SUB_QUERY = """
             ?contSig a pr:ContainerSignature ;
               rdfs:label ?contSigName ;
@@ -29,8 +30,9 @@ public class ContainerSignatureDAO {
             ?contSigFile a pr:ContainerFile .
             OPTIONAL { ?contSigFile pr:containerFile.ContainerSignature ?contSig . }#END OPTIONAL
             OPTIONAL { ?contSigFile pr:containerFile.FilePath ?contSigFileFilePath . }#END OPTIONAL
-            OPTIONAL { ?contSigFile pr:containerFile.ByteSequence ?byteSeq . }#END OPTIONAL
+            OPTIONAL { ?contSigFile pr:containerFile.ByteSequence ?contByteSeq . }#END OPTIONAL
             """;
+    public static final String FORM_CONTAINER_SIG_SUB_QUERY = CONTAINER_SIG_SUB_QUERY.replaceAll("\\?byteSeq","?contByteSeq") + "\n\n" + BYTE_SEQUENCE_SUB_QUERY;
     public static final String CONTAINER_SIG_QUERY = PREFIXES + """
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             CONSTRUCT {

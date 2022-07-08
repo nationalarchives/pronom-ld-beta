@@ -1,8 +1,11 @@
 package com.wallscope.pronombackend.model;
 
 import org.apache.jena.rdf.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +13,7 @@ import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormInternalSignature {
+    private final Logger logger = LoggerFactory.getLogger(FormInternalSignature.class);
     private String uri;
     private String name;
     private String note;
@@ -17,7 +21,6 @@ public class FormInternalSignature {
     private Boolean genericFlag;
     private String provenance;
     private String fileFormat;
-    private String byteOrder;
     private List<FormByteSequence> byteSequences;
 
     public FormInternalSignature() {
@@ -79,14 +82,6 @@ public class FormInternalSignature {
         this.byteSequences = byteSequences;
     }
 
-    public String getByteOrder() {
-        return byteOrder;
-    }
-
-    public void setByteOrder(String byteOrder) {
-        this.byteOrder = byteOrder;
-    }
-
     @Override
     public String toString() {
         return "FormInternalSignature{" +
@@ -96,7 +91,6 @@ public class FormInternalSignature {
                 ", genericFlag=" + genericFlag +
                 ", provenance='" + provenance + '\'' +
                 ", fileFormat='" + fileFormat + '\'' +
-                ", byteOrder='" + byteOrder + '\'' +
                 ", byteSequences=" + byteSequences +
                 '}';
     }
@@ -110,12 +104,11 @@ public class FormInternalSignature {
         fis.setGenericFlag(is.isGeneric());
         fis.setProvenance(is.getProvenance());
         // fileFormat field is set at the parent
-        // TODO: add byteOrder in the RDF model
         fis.setByteSequences(is.getByteSequences().stream().map(bs -> {
             FormByteSequence fbs = FormByteSequence.convert(bs);
             fbs.setSignature(is.getURI().getURI());
             return fbs;
-        }).collect(Collectors.toList()));
+        }).sorted(Comparator.comparing(FormByteSequence::getSequence)).collect(Collectors.toList()));
         return fis;
     }
 
@@ -138,5 +131,19 @@ public class FormInternalSignature {
                 formatUri,
                 byteSequences.stream().map(bs -> bs.toObject(uri)).collect(Collectors.toList())
         );
+    }
+
+    public boolean isNotEmpty() {
+        boolean val = uri != null && !uri.isBlank()
+                && name != null && !name.isBlank()
+                && byteSequences != null && byteSequences.stream().anyMatch(FormByteSequence::isNotEmpty);
+        logger.debug("EMPTY CHECK INTERNAL SIGNATURE (" + val + "): " + uri);
+        return val;
+
+    }
+
+    public void removeEmpties() {
+        if (byteSequences != null)
+            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toList());
     }
 }

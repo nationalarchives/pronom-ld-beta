@@ -36,6 +36,7 @@ section.form-part#identifiers
   .form-partial-content
     .part
       fieldset(th:each="i, stat : *{identifiers}")
+        input(type="hidden", th:field="*{identifiers[__${stat.index}__].uri}")
         legend.sr-only Provide identifiers and aliases
         #identifiers-list.row-group
           .identifier
