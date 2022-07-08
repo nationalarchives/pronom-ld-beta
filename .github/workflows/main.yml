@@ -2,6 +2,9 @@ name: Build and Push Image to AWS ECR
 on:
   push:
     branches: [ github-actions ]
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
