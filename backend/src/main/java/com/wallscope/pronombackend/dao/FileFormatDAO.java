@@ -3,7 +3,6 @@ package com.wallscope.pronombackend.dao;
 import com.wallscope.pronombackend.model.Classification;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.PUID;
-import com.wallscope.pronombackend.model.Submission;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -35,10 +34,6 @@ public class FileFormatDAO {
                 ?f a pr:FileFormat ; rdfs:label ?label ; rdfs:comment ?comment ; ff:Puid ?puid ; ff:PuidTypeId ?puidType ; ff:LastUpdatedDate ?updated .
                 # Links
                 ?puidType rdfs:label ?puidTypeName .
-                # Format Identifiers
-            OPTIONAL{
-               """ + FORMAT_IDENTIFIER_SUB_QUERY + """
-            }#END OPTIONAL
             """;
     public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
             .replaceAll("\\?byteSeq pr:byteSequence.ContainerFile \\?contSigFile \\.", "");
@@ -62,7 +57,7 @@ public class FileFormatDAO {
             ?f pr:fileFormat.Puid ?puid .
             ?f pr:fileFormat.PuidTypeId ?puidType .
             ?f pr:fileFormat.LastUpdatedDate ?updated .
-            
+                        
             # Links
             ?puidType rdfs:label ?puidTypeName .
                         
@@ -109,7 +104,6 @@ public class FileFormatDAO {
     public static final String SIG_GEN_QUERY = PREFIXES + """
             CONSTRUCT {
               """ + trimOptionals(INTERNAL_SIG_SUB_QUERY) + """
-                        
             # Byte Sequences
             """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
             # Link File Format
@@ -120,6 +114,8 @@ public class FileFormatDAO {
             """ + trimOptionals(FORMAT_RELATIONSHIPS_SUB_QUERY) + """
                         
             """ + trimOptionals(EXTERNAL_SIGNATURE_SUB_QUERY) + """
+                        
+            """ + trimOptionals(FORMAT_IDENTIFIER_SUB_QUERY) + """
             } WHERE {
               """ + INTERNAL_SIG_SUB_QUERY + """
             # Byte Sequences
@@ -136,6 +132,10 @@ public class FileFormatDAO {
             # External Signatures
             OPTIONAL {
             """ + EXTERNAL_SIGNATURE_SUB_QUERY + """
+            }#END OPTIONAL
+            # Format Identifiers
+            OPTIONAL{
+               """ + FORMAT_IDENTIFIER_SUB_QUERY + """
             }#END OPTIONAL
             }
             """;
@@ -171,7 +171,7 @@ public class FileFormatDAO {
 
     public Map<Resource, String> getURIsFromLabels(List<String> ls, Resource type) {
         Map<Resource, String> map = new HashMap<>();
-        if(ls == null || ls.isEmpty()) return map;
+        if (ls == null || ls.isEmpty()) return map;
         logger.debug("fetching URIs of type '" + type + "' for labels: " + Strings.join(ls, ','));
         Map<String, RDFNode> params = new HashMap<>();
         if (type != null) {
