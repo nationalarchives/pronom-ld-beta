@@ -127,9 +127,9 @@ block content
                     span Reviewer
                     | Ann Rose
               .maintain-buttons
-                a(th:href="@{/editorial/form/{target}(target=${s.ID})}")
+                a.mb-container(th:href="@{/editorial/form/{target}(target=${s.ID})}")
                   button.xsmall.bordered-blue View
-                .dropdown
+                .dropdown.mb-container
                   button.xsmall.bordered-blue Move to
                     i.fa-solid.fa-chevron-down
                   .dropdown-content
@@ -138,7 +138,7 @@ block content
                         input(type="hidden" name="uri" th:value="${s.URI}")
                         input(type="hidden" name="to" value=val)
                         button.bordered-blue.option(type="submit")=name
-                form(action="/editorial/delete-submission", method="POST")
+                form.mb-container(action="/editorial/delete-submission", method="POST")
                   input(type="hidden", name="uri", th:value="${s.URI}")
                   button.xsmall.bordered-red(type="submit") Delete
 
@@ -194,9 +194,9 @@ block content
                         span Reviewer
                         | Ann Rose
                   .maintain-buttons
-                    a(th:href="@{/editorial/form/{target}(target=${s.ID})}")
+                    a.mb-container(th:href="@{/editorial/form/{target}(target=${s.ID})}")
                       button.xsmall.bordered-blue View
-                    .dropdown
+                    .dropdown.mb-container
                       button.xsmall.bordered-blue Move to
                         i.fa-solid.fa-chevron-down
                       .dropdown-content
@@ -205,7 +205,7 @@ block content
                             input(type="hidden" name="uri" th:value="${s.URI}")
                             input(type="hidden" name="to" value=val)
                             button.bordered-blue.option(type="submit")=name
-                    form(action="/editorial/delete-submission", method="POST")
+                    form.mb-container(action="/editorial/delete-submission", method="POST")
                       input(type="hidden", name="uri", th:value="${s.URI}")
                       button.xsmall.bordered-red(type="submit") Delete
 

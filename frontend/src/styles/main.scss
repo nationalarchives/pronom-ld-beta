@@ -1538,10 +1538,11 @@ h1.internal-title {
         padding: 5px;
         flex-direction: column;
         justify-content: flex-start;
-        a {
+        .mb-container{
           width: 100%;
           margin-bottom: 8px;
-          &.option {
+          button {
+            width: 100%;
             margin-bottom: 0;
           }
         }
@@ -1619,17 +1620,15 @@ h1.internal-title {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-  }
-  .maintain-buttons {
-    a {
-      margin-left: 5px;
+      button {
+        margin-right: 5px;
+      }
     }
   }
   &.card {
     .maintain-buttons {
-      a {
-        margin-left: 0;
+      button {
+        margin-right: 0;
       }
     } 
   } 
