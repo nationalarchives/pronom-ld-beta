@@ -36,7 +36,7 @@ public class ContentController {
 
     private final String mdDir = ApplicationConfig.MARKDOWN_DIR;
 
-    @GetMapping("/content-manager")
+    @GetMapping("/editorial/content")
     public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
         ArrayList<String> regions = new ArrayList<>(getAvailableRegions());
         Collections.sort(regions);
@@ -58,7 +58,7 @@ public class ContentController {
         return "content-manager";
     }
 
-    @RequestMapping(value = "/content-manager/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/editorial/content/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveContent(Model model, @PathVariable(required = true) String region, @RequestParam HashMap<String, String> formData) {
         try {
             if (!getAvailableRegions().contains(region)) {
@@ -72,7 +72,7 @@ public class ContentController {
             FileWriter f2 = new FileWriter(f, false);
             f2.write(content);
             f2.close();
-            return "redirect:/content-manager";
+            return "redirect:/editorial/content";
         } catch (IOException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "something went wrong");

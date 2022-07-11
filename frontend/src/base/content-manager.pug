@@ -1,8 +1,8 @@
 extends /layouts/internalLayout.pug
 
 block vars
-  - var currentUrl = "/content-manager"
-  - var breadcrumbs = {'Home':"/", "Content Manager": "/content-manager"}
+  - var currentUrl = "/editorial/content"
+  - var breadcrumbs = {'Home':"/", "Content Manager": "/editorial/content"}
 
 block pageTitle
   h1.internal-title(th:utext="${@templateUtils.md('content-manager_accessibility-title')}") Edit website content
@@ -14,7 +14,7 @@ block content
     .tab-content
       .tab(th:each="tab : ${contentMap}", th:classappend="${tab.key}", th:with="regionMap=${contentMap.get(tab.key)}")
         div(th:each="region : ${regionMap}")
-          form(th:action="@{/content-manager/} + ${tab.key}+'_'+${region.key}", method="post")
+          form(th:action="@{/editorial/content/} + ${tab.key}+'_'+${region.key}", method="post")
             .form-group
               label(th:text="${@templateUtils.humaniseRegion(region.key)}" th:for="${tab.key}+'_'+${region.key}") Index: title
               textarea(name="content", cols="80", rows="10", th:text="${regionMap.get(region.key)}" th:id="${tab.key}+'_'+${region.key}")
