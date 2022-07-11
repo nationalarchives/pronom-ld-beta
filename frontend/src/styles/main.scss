@@ -40,7 +40,7 @@ button, a {
 }
 .page-container {
   display: grid;
-  min-height: 100vh;
+  // min-height: 100vh;
   padding: 0 90px;
   max-width: 1500px;
   margin-left: auto;
@@ -416,7 +416,7 @@ textarea {
 /* Main START #main =======================================*/
 main {
   border-left: 12px solid #C4DFF8;
-  min-height: 100vh;
+  // min-height: 100vh;
   padding: 60px 0 50px 50px;
   @media only screen and (max-width: 1200px) {
     margin-left: 0 !important;
@@ -1845,6 +1845,9 @@ header#header {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 30px;
+        @media only screen and (max-width: 600px) { 
+          grid-template-columns: 1fr;
+        }
         > div {
           display: flex;
           flex-direction: column;
