@@ -10,10 +10,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +80,8 @@ public class SubmissionDAO {
             WHERE  { ?sub pr:submission.SubmissionStatus ?subStatus }
             """;
     public static final String SUBMISSION_DELETE_SUB_QUERY = SUBMISSION_SUB_QUERY
-            .replaceAll("pr:submission.FileFormat \\?f ;","pr:submission.FileFormat ?f ;  pr:submission.Source ?subSource ;")
+            .replaceAll("pr:submission.FileFormat \\?f ;", "pr:submission.FileFormat ?f ;  pr:submission.Source ?subSource ;")
+            .replaceAll("\\?puidType rdfs:label \\?puidTypeName \\.", "")
             .replaceAll("\\?classification rdfs:label \\?classificationName \\.", "")
             .replaceAll("\\?fIdType rdfs:label \\?fIdTypeName \\.", "")
             .replaceAll("\\?intByteSeqPosition rdfs:label \\?intByteSeqPositionName \\.", "")

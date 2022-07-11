@@ -160,6 +160,7 @@ public class ByteSequence implements RDFWritable {
     private static final String fragOffsetRegex = "\\{(?<offset>[\\d-]+)\\}";
 
     public List<SubSequence> getSubSequences() {
+        if(sequence == null) return Collections.emptyList();
         // Split on * because they are wildcards, and we get fragments to each side
         // Before splitting we replace instances of {0-*} with * and -*} with }*
         // This normalises the wildcards in the sequence and makes it easier to handle

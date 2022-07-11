@@ -99,8 +99,6 @@ public class TriplestoreUtil {
             }
         }
         logger.debug("sending update: " + q);
-        try {
-            Files.write(Paths.get("query.txt"), List.of(q.toString()), StandardCharsets.UTF_8);} catch (IOException e) {logger.debug(e.toString());}
         conn.build().update(q.asUpdate());
     }
 
