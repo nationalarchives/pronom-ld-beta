@@ -40,13 +40,21 @@ public class ContentController {
     public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
         ArrayList<String> regions = new ArrayList<>(getAvailableRegions());
         Collections.sort(regions);
-        HashMap<String, String> contentMap = new HashMap<>();
+        HashMap<String, Map<String, String>> contentMap = new HashMap<>();
         for (String r : regions) {
-            contentMap.put(r, templateUtils.raw(r));
+            String[] parts = r.split("_");
+            if (parts.length != 2) {
+                logger.debug("INVALID REGION NAME, IGNORING: " + r);
+                continue;
+            }
+            if (!contentMap.containsKey(parts[0])) {
+                contentMap.put(parts[0], new HashMap<>());
+            }
+            contentMap.get(parts[0]).put(parts[1], templateUtils.raw(r));
         }
+        logger.trace("CONTENT MAP: "+ contentMap);
         model.addAttribute("contentMap", contentMap);
         // Adding the regions set allows for sorted iteration
-        model.addAttribute("regions", regions);
         return "content-manager";
     }
 
