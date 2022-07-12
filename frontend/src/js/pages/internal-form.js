@@ -1,97 +1,247 @@
 import '@styles/main.scss'
 import '@styles/user-form.scss'
 import '@styles/internal-form.scss'
-import { css } from 'jquery'
+import "jquery-ui/ui/widgets/autocomplete"
+window.$ = $;
 
-const formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#additionalProperties', '#contributors', '#review']
+const formParts = ['#core', '#signatures', '#identifiers', '#additionalProperties', '#contributors', '#review']
 const formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
 const App = () => {
 
-  $(document).ready(function() {
-    checkReviewIndicators()
+  $(document).ready(function () {
+    formSetup();
+    autocompleteSetup();
+    // checkReviewIndicators();
+    // closeAccordions();
+    if ($(window).width() < 1200) {
+      $(".form-partial-content").addClass('hide');
+    }
   });
 
-  // TODO write a function which will enable indicator in the form nav
-  function checkReviewIndicators(){
-
-    if($('.form-row').hasClass('before-review')) {
-      $(".before-review").closest('section').each(function() {
-        var id = this.id;
-        $('#' + id + 'Btn').addClass('before');
-      });   
-    } 
-    
-    if ($('.form-row').hasClass('after-review')) {
-      $(".after-review").closest('section').each(function() {
-        var id = this.id;
-        $('#' + id + 'Btn').addClass('after');
-      });   
-    }
-
-  }
-  // Signal JS is active
+  $(window).on('resize', formSetup);
+  let formStep = 0;
   $('.modal-container').removeClass('noJS');
-  $('.modal-container').addClass('minWidth');
-  // Initialise form
-  let formStep = 0
-  $('.form-part').addClass('hide');
 
-  // active class to the button
-  $(formMenuButtons[formStep]).addClass( "active" );
-  // Show first step
-  $(formParts[formStep]).addClass('show');
-  $('.next').on('click', () => {
+  $(window).on("load", function () {
+    if ($(window).width() < 1200) {
+      $(".form-partial-content").addClass('hide');
+    }
+  });
+
+  function formSetup() {
+    if ($(window).width() < 1200) {
+      $('.form-section .form-part').addClass('show');
+      // $(".form-partial-content").addClass('hide');
+      $('.accordion').on('click', function (evt) {
+        evt.preventDefault();
+        if ($(this).closest('.form-section').hasClass("open")) {
+          $('.form-section').removeClass('open');
+          $(".form-partial-content").addClass('hide');
+        } else {
+          $('.form-section').removeClass('open');
+          $(".form-partial-content").addClass('hide');
+          $(this).closest('.form-section').addClass('open');
+          $(".open .form-partial-content").removeClass('hide');
+        }
+      });
+    } else {
+      $('.form-part').addClass('hide');
+      $(".form-section .form-part").removeClass('show');
+      $(".form-section").removeClass('open');
+      $(".form-partial-content").removeClass('hide');
+      // Initialise form
+      let formStep = 0
+      // active class to the button
+      $(formMenuButtons[formStep]).addClass("active");
+      // Show first step
+      $(formParts[formStep]).addClass('show');
+    }
+  }
+
+  // Signal JS is active
+  $('.page-container').removeClass('noJS');
+  $('#header').removeClass('noJS');
+
+  // Whenever .next is clicked add a step ========= NEXT
+  $('.next').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
-    $( '.main-nav li' ).removeClass( "active" );
+    $('.main-nav li').removeClass("active");
     formStep++;
     $(formParts[formStep]).addClass('show');
-    $(formMenuButtons[formStep]).addClass( "active" );
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $(formMenuButtons[formStep]).addClass("active");
+    }
   });
   // Whenever .prev is clicked return a step ========= PREV
-  $('.prev').on('click', function() {
+  $('.prev').on('click', (evt) => {
+    evt.preventDefault();
     $(formParts[formStep]).removeClass('show');
-    $( '.main-nav li' ).removeClass( "active" );
+    $('.main-nav li').removeClass("active");
     formStep--;
     $(formParts[formStep]).addClass('show');
-    $(formMenuButtons[formStep]).addClass( "active" );
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $(formMenuButtons[formStep]).addClass("active");
+    }
   });
-  // clicking on the side menu buttons
-  $('.segment').on('click', function() {
-    $( '.main-nav li' ).removeClass( "active" );
+  // Whenever skipping 3 steps forwards (only aplied to More intormation in external interface) ========= NEXT + 3
+  $('.nextSkip').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $('.main-nav li').removeClass("active");
+      formStep = 6
+      $(formMenuButtons[formStep]).addClass("active");
+    }
+    $('.main-nav li').removeClass("active");
+    formStep = 6
+    $(formMenuButtons[formStep]).addClass("active");
+    $(formParts[formStep]).addClass('show');
+
+  });
+
+  // Navigation bar
+
+  // Main menu buttons
+  $('.segment').on('click', function () {
+    $('.main-nav li').removeClass("active");
+    $('.side-menu li').removeClass("active");
     $('.form-part').removeClass('show');
     var currentBtn = ('#' + $(this).closest('li').attr('id'));
     var currentFormPart = currentBtn.replace('Btn', '');
     formStep = formParts.indexOf(currentFormPart);
-    $( currentBtn ).addClass('active');
+    $(currentBtn).addClass('active');
+    $(formParts[formStep]).addClass('show');
+    console.log(formStep);
+    if (formStep === 2) {
+      $('#prioritySubBtn').closest('li').addClass('active');
+    }
+  });
+
+  // Side menu buttons (More information)
+  $('.segment-sub').on('click', function () {
+    $('.form-part').removeClass('show');
+    $('.side-menu li').removeClass("active");
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('SubBtn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    console.log(currentBtn);
+    $(formParts[formStep]).addClass('show');
+    $(currentBtn).closest('li').addClass('active');
+  });
+
+
+
+  // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
+  $('.prevSkip').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    if (1 < formStep && formStep < 6) {
+      formStep = 1;
+      $(formMenuButtons[formStep]).addClass("active");
+    } else {
+      $('.main-nav li').removeClass("active");
+      formStep--;
+      $(formMenuButtons[formStep]).addClass("active");
+    }
     $(formParts[formStep]).addClass('show');
   });
 
 
-  // cloning form fields
-  
-  // priority
-  $('.add-priority-over').on('click', function(evt) {
-    console.log('clicked')
+  // Incoming buttons functionality
+  // When clicked their value is copied to the current input
+  $('button.incoming').on('click', function (evt) {
     evt.preventDefault();
-    $('.priority-group:last').clone(true).appendTo('.priority-list').find("input").val("").end();
+    const $this = $(this);
+    if ($this.hasClass('undo')) {
+      revertChanges($this);
+    } else {
+      acceptIncoming($this);
+    }
   });
-  $('.delete-priority-over').on('click', function(evt) {
+
+  $('button.current').on('click', function (evt) {
+    evt.preventDefault();
+    const $this = $(this);
+    acceptCurrent($this);
+
+  });
+
+  function acceptCurrent($this) {
+    // hide the incoming group
+    $this.parent().siblings('.input-group').hide();
+    // mark as reviewed
+    const wrapper = $this.parent().parent();
+    wrapper.removeClass('before-review').addClass('after-review');
+    // hide the current button
+    $this.hide();
+  }
+
+  function acceptIncoming($this) {
+    const input = $this.next(':input');
+    // copy incoming value
+    $this.parent().siblings('.input-group').find(':input').val(input.val());
+    // hide current button
+    $this.parent().siblings('.input-group').find('button.current').hide();
+    // mark as reviewed
+    const wrapper = $this.parent().parent();
+    wrapper.removeClass('before-review').addClass('after-review');
+    // hide incoming input
+    input.hide();
+    // change button text
+    $this.text('Revert changes');
+    $this.addClass('undo');
+  }
+
+  function revertChanges($this) {
+    $this.removeClass('undo');
+    const input = $this.next(':input');
+    // find main input
+    const currentInput = $this.parent().siblings('.input-group').find(':input');
+    // copy undo value to main input
+    currentInput.val(currentInput.attr("data-undo"));
+    // show current button
+    $this.parent().siblings('.input-group').find('button.current').show();
+    // mark as un-reviewed
+    const wrapper = $this.parent().parent();
+    wrapper.removeClass('after-review').addClass('before-review');
+    // hide incoming input
+    input.show();
+    // change button text
+    $this.text('Accept incoming');
+  }
+
+  // cloning form fields
+
+
+  // priority
+  $('.add-priority-over').on('click', function (evt) {
+    evt.preventDefault();
+    $('.priority-group:last').clone().appendTo('.priority-list').find("input").val("").end();
+  });
+  $('.delete-priority-over').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".priority-group").remove();
   });
 
 
-
   // reference
-  $('#add-reference').on('click', function(evt) {
+  $('#add-reference').on('click', function (evt) {
     evt.preventDefault();
     $('.reference-group:last').clone(true).appendTo('.references').find("input").val("").end();
   });
-  $('.delete-reference').on('click', function(evt) {
+  $('.delete-reference').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".reference-group").remove();
   });
-
 
 
   // signature
@@ -114,11 +264,11 @@ const App = () => {
     });
     clone.appendTo('#signature-container');
   });
-  $('.delete-signature').on('click', function(evt) {
+  $('.delete-signature').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".signature").remove();
   });
-  $('.delete-container-signature').on('click', function(evt) {
+  $('.delete-container-signature').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".container-signature").remove();
   });
@@ -140,89 +290,106 @@ const App = () => {
     });
     clone.appendTo($container);
   });
-  $('.delete-byte-sequence').on('click', function(evt) {
+  $('.delete-byte-sequence').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".byte-sequence").remove();
   });
   // path
-  $('.add-path').on('click', function(evt) {
+  $('.add-path').on('click', function (evt) {
     evt.preventDefault();
-    var $container =$(this).closest('.paths-list-container').find('.paths-list');
+    var $container = $(this).closest('.paths-list-container').find('.paths-list');
     $('.holder .path:last').clone(true).appendTo($container).find("input").val("").end();
   });
-  $('.delete-path').on('click', function(evt) {
+  $('.delete-path').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".path").remove();
   });
   // collapse-all
-  $('.collapse-all-signatures').on('click', function(evt) {
+  $('.collapse-all-signatures').on('click', function (evt) {
     evt.preventDefault();
-    $( '.collapse-content-container' ).addClass( "collapse" );
+    $('.collapse-content-container').addClass("collapse");
   });
   // open-all
-  $('.open-all-signatures').on('click', function(evt) {
+  $('.open-all-signatures').on('click', function (evt) {
     evt.preventDefault();
-    $( '.collapse-content-container' ).removeClass( "collapse" );
+    $('.collapse-content-container').removeClass("collapse");
   });
   // open selected
-  $('.accordion').on('click', function(evt) {
+  $('.accordion').on('click', function (evt) {
     evt.preventDefault();
     // $( '.collapse-content-container' ).removeClass( "collapse" );
-    if( $(this).closest(".collapse-content-container").hasClass("collapse")) {
+    if ($(this).closest(".collapse-content-container").hasClass("collapse")) {
       $(this).closest(".collapse-content-container").removeClass("collapse")
-    }else{
+    } else {
       $(this).closest(".collapse-content-container").addClass("collapse")
     }
   });
 
 
   // identifier
-  $('.add-identifier').on('click', function(evt) {
+  $('.add-identifier').on('click', function (evt) {
     evt.preventDefault();
     $('.identifier:last').clone(true).appendTo('#identifiers-list').find("input").val("").end();
   });
-  $('.delete-identifier').on('click', function(evt) {
+  $('.delete-identifier').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".identifier").remove();
   });
 
 
-
   // aliases
-  $('.add-alias').on('click', function(evt) {
+  $('.add-alias').on('click', function (evt) {
     evt.preventDefault();
     $('.alias:last').clone(true).appendTo('#aliases-list').find("input").val("").end();
   });
-  $('.delete-alias').on('click', function(evt) {
+  $('.delete-alias').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".alias").remove();
   });
 
 
-
   // relationships
-  $('.add-relationship').on('click', function(evt) {
+  $('.add-relationship').on('click', function (evt) {
     evt.preventDefault();
     $('.relationship:last').clone(true).appendTo('#relationships-list').find("input").val("").end();
   });
-  $('.delete-relationship').on('click', function(evt) {
+  $('.delete-relationship').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".relationship").remove();
   });
 
-
-  //contributor
-  $('.add-record').on('click', function(evt) {
-    evt.preventDefault();
-    $('.action-container:last').clone(true).appendTo('.contributors-list');
+  // display documentation fields
+  $('.documentation input:checkbox').change(function () {
+    if ($(this).is(":checked")) {
+      $(this).closest('.reference-group').addClass("open-additional");
+    } else {
+      $(this).closest('.reference-group').removeClass("open-additional");
+    }
   });
-  $('.delete-record').on('click', function(evt) {
-    evt.preventDefault();
-    $(this).closest(".action-container").remove();
+  // TODO check on windows if issue 18 from Typos doc has been fixed
+  // blocking tooltip to display when select option is visible 
+  $('option').each(function () {
+    if ($(this).css('display') != 'none') {
+      $('.tooltip-toggle:hover:before').css('display', 'none');
+    } else {
+      $('.tooltip-toggle:hover:before').css('display', 'inherit');
+    }
   });
 
-
-      
+  // Autocomplete setup
+  // Priority over
+  $(document).on('keydown.autocomplete', 'section#priority .input-group input.label', function () {
+    console.log("autocomplete")
+    const options = {
+      source: "/autocomplete/ff",
+      select: function (event, ui) {
+        $(event.target).val(ui.item.label);
+        $(event.target).parent().find('input.value').val(ui.item.value);
+        return false;
+      }
+    }
+    $(this).autocomplete(options);
+  });
 }
 
 App()

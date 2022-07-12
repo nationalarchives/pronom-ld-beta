@@ -8,7 +8,9 @@ public class FormFileFormatRelationship {
     private String uri;
     private String relationshipType;
     private String source;
+    private String sourceName;
     private String target;
+    private String targetName;
     private String note;
 
     public FormFileFormatRelationship() {
@@ -44,6 +46,22 @@ public class FormFileFormatRelationship {
 
     public void setRelationshipType(String relationshipType) {
         this.relationshipType = relationshipType;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
     }
 
     @Override

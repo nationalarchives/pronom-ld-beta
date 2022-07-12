@@ -78,6 +78,10 @@ dependencies {
     // https://search.maven.org/artifact/org.lucee/txtmark/0.16.0/bundle
     implementation 'org.lucee:txtmark:0.16.0'
 
+    // Auto linker
+    // https://github.com/robinst/autolink-java
+    implementation(group:"org.nibor.autolink", name: "autolink", version: "0.10.0")
+
     // Jena
     // https://mvnrepository.com/artifact/org.apache.jena/jena-core
     implementation(group: "org.apache.jena", name: "jena-core", version: "4.5.0")

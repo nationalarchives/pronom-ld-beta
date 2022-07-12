@@ -3,8 +3,13 @@ package com.wallscope.pronombackend.utils;
 import com.github.rjeschke.txtmark.Processor;
 import com.wallscope.pronombackend.config.ApplicationConfig;
 import com.wallscope.pronombackend.model.FAQCategory;
+import org.nibor.autolink.LinkExtractor;
+import org.nibor.autolink.LinkSpan;
+import org.nibor.autolink.LinkType;
+import org.nibor.autolink.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.HtmlUtils;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.File;
@@ -14,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -69,6 +75,31 @@ public class TemplateUtils {
             logger.info("HUMANISER: Failed to transform region name: " + region);
             return "";
         }
+    }
+
+    public String autolinker(String input){
+        LinkExtractor linkExtractor = LinkExtractor.builder()
+                .linkTypes(EnumSet.of(LinkType.URL, LinkType.WWW)) // limit to URLs
+                .build();
+        Iterable<Span> spans = linkExtractor.extractSpans(input);
+
+        StringBuilder sb = new StringBuilder();
+        for (Span span : spans) {
+            String text = input.substring(span.getBeginIndex(), span.getEndIndex());
+            if (span instanceof LinkSpan) {
+                // span is a URL
+                sb.append("<a href=\"");
+
+                sb.append(HtmlUtils.htmlEscape(text));
+                sb.append("\">");
+                sb.append(HtmlUtils.htmlEscape(text));
+                sb.append("</a>");
+            } else {
+                // span is plain text before/after link
+                sb.append(HtmlUtils.htmlEscape(text));
+            }
+        }
+        return sb.toString();
     }
 
     // This function is used to customise the escaping for the container-signature output.

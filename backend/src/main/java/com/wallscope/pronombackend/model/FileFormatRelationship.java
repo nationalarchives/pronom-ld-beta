@@ -101,6 +101,8 @@ public class FileFormatRelationship implements RDFWritable {
                 ", relationshipTypeName='" + relationshipTypeName + '\'' +
                 ", relationshipInverseTypeName='" + relationshipInverseTypeName + '\'' +
                 ", source=" + source +
+                ", sourceName='" + sourceName + '\'' +
+                ", targetName='" + targetName + '\'' +
                 ", target=" + target +
                 ", note='" + note + '\'' +
                 '}';
@@ -119,7 +121,9 @@ public class FileFormatRelationship implements RDFWritable {
         frel.setUri(uri.getURI());
         frel.setNote(note);
         frel.setSource(source.getURI());
+        frel.setSourceName(sourceName);
         frel.setTarget(target.getURI());
+        frel.setTargetName(targetName);
         frel.setRelationshipType(relationshipType.getURI());
         return frel;
     }

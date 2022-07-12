@@ -5,6 +5,7 @@ import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,14 +61,20 @@ public class SearchDAO {
             }
             """;
 
-    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort) {
+    public List<SearchResult> autocomplete(String q, Resource type) {
+        return search(q + "*", 10, 0, new Filters(true, true, true, true), "score", "(<"+type+">)");
+    }
+    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort){
+        return search(q, limit, offset, filters, sort, ALLOWED_TYPES);
+    }
+    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort, String types) {
         logger.debug("fetching search results");
         String sanitised = TriplestoreUtil.sanitiseLiteral(q);
         Map<String, RDFNode> params = new HashMap<>();
         params.put("query", makeLiteral(sanitised));
         params.put("limit", makeLiteral(limit));
         params.put("offset", makeLiteral(offset));
-        Model m = TriplestoreUtil.constructQuery(preprocessQuery(SEARCH_QUERY, filters, sort), params);
+        Model m = TriplestoreUtil.constructQuery(preprocessQuery(SEARCH_QUERY, filters, sort, types), params);
         ModelUtil mu = new ModelUtil(m);
         return mu.buildAllFromModel(new SearchResult.Deserializer());
     }
@@ -85,10 +92,10 @@ public class SearchDAO {
     }
 
     private String preprocessQuery(String q, Filters f) {
-        return preprocessQuery(q, f, null);
+        return preprocessQuery(q, f, null, ALLOWED_TYPES);
     }
 
-    private String preprocessQuery(String q, Filters f, String sort) {
+    private String preprocessQuery(String q, Filters f, String sort, String types) {
         StringBuilder fields = new StringBuilder();
         if (f.name) fields.append(" (rdfs:label)");
         if (f.description) fields.append(" (rdfs:comment)");
@@ -96,16 +103,19 @@ public class SearchDAO {
         if (f.puid) fields.append(" (skos:hiddenLabel)");
         fields.append(" ");
         String processed = q;
-        if (sort != null) {
-            String order = switch (sort) {
-                case "name" -> "ORDER BY ?label";
-                case "type" -> "ORDER BY ?type";
-                case "puid" -> "ORDER BY COALESCE(xsd:integer(?puid), 9999999)";
-                default -> "ORDER BY DESC(?sc)";
-            };
-            processed = processed.replace("#ORDER#", order);
+        String nullSafeSort = sort;
+        if (sort == null) {
+            nullSafeSort = "";
         }
-        return processed.replace("#ALLOWED_TYPES#", ALLOWED_TYPES).replace("#SEARCH_FIELDS#", fields.toString());
+        String order = switch (nullSafeSort) {
+            case "name" -> "ORDER BY ?label";
+            case "type" -> "ORDER BY ?type";
+            case "puid" -> "ORDER BY COALESCE(xsd:integer(?puid), 9999999)";
+            default -> "ORDER BY DESC(?sc)";
+        };
+        processed = processed.replace("#ORDER#", order);
+
+        return processed.replace("#ALLOWED_TYPES#", types).replace("#SEARCH_FIELDS#", fields.toString());
     }
 
     public static class Filters {

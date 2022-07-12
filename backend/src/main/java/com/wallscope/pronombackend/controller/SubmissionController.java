@@ -106,7 +106,7 @@ public class SubmissionController {
         if (existing == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puidType + "/" + puid);
         }
-        // For now we hardcode this, must be hooked into user system when implemented
+
         List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), cs);
@@ -160,7 +160,8 @@ public class SubmissionController {
         if (sub == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Submission with id: " + submission);
         }
-        Contributor reviewer = new Contributor(makeResource("<mailto:test-user@pronom.com>"),
+        FileFormatDAO ffDao = new FileFormatDAO();
+        Contributor reviewer = new Contributor(makeResource("mailto:test-user@pronom.com"),
                 "Pronom test user",
                 "PRONOM",
                 "test-user@pronom.com",
@@ -168,13 +169,15 @@ public class SubmissionController {
                 "",
                 false,
                 true);
+        List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
+        FileFormat old = sub.getFormat();
         Submission newSub = new Submission(sub.getURI(),
                 makeResource(PRONOM.Submission.InternalSubmission),
                 sub.getSubmissionStatus(),
                 sub.getSubmitter(),
                 reviewer,
                 sub.getSource(),
-                sub.getFormat(),
+                new TentativeFileFormat(old.getURI(),ff.toObject(old.getPuid(),old.getPuidType(), Instant.now(),cs)),
                 sub.getCreated(),
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());

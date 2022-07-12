@@ -169,7 +169,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.description}") audio
+            p( th:utext="${@templateUtils.autolinker(ff.description)}") audio
         //- ROW
         li.row
           .tooltip-container

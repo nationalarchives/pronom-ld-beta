@@ -1,6 +1,7 @@
 import '@styles/main.scss'
 import '@styles/user-form.scss'
 import '@js/common.js'
+import "jquery-ui/ui/widgets/autocomplete"
 
 window.$ = $;
 
@@ -11,10 +12,9 @@ const formSubMenuButtons = ['#prioritySubBtn, #identifiersSubBtn, #relationships
 const App = () => {
 
   $(document).ready(function() {
-    formSetup(),
-    checkReviewIndicators();
-    closeAccordions();
-    console.log('lalala')
+    formSetup();
+    // checkReviewIndicators();
+    // closeAccordions();
     if ($(window).width() < 1200) {
       $(".form-partial-content").addClass('hide');
     }
@@ -35,7 +35,6 @@ const App = () => {
       $('.form-section .form-part').addClass('show');
       // $(".form-partial-content").addClass('hide');
       $('.accordion').on('click', function (evt) {
-        console.log(formStep);
         evt.preventDefault();
         if ($(this).closest('.form-section').hasClass("open")) {
           $('.form-section').removeClass('open');
@@ -377,6 +376,21 @@ const App = () => {
     }else{
       $('.tooltip-toggle:hover:before').css('display', 'inherit');
     }
+  });
+
+  // Autocomplete setup
+  // Priority over
+  $(document).on('keydown.autocomplete', 'section#priority .input-group input.label', function () {
+    console.log("autocomplete")
+    const options = {
+      source: "/autocomplete/ff",
+      select: function (event, ui) {
+        $(event.target).val(ui.item.label);
+        $(event.target).parent().find('input.value').val(ui.item.value);
+        return false;
+      }
+    }
+    $(this).autocomplete(options);
   });
 
 }

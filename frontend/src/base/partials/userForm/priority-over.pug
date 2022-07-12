@@ -23,10 +23,13 @@ fieldset(th:each="p, stat : *{hasPriorityOver}")
                   p Reviewed
             .input-group
               button Accept current
-              input(th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].source}", th:value="${ff?.Uri}")
+              input.value(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input.label(th:id="${'hasPriorityOverName' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].targetName}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.targetName}")
             .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input(th:id="${'hasPriorityOver' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__).target}")
+              input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input(th:id="${'hasPriorityOverName' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__)?.targetName}")
           button.bordered-red.small.delete-priority-over
             | Delete field
       .button-container
