@@ -1986,3 +1986,21 @@ header#header {
   margin-right: auto;
 }
 // actor modal - END
+
+
+// form autocomplete START
+ul#ui-id-1 {
+  background: white;
+  box-shadow: 3px 3px 6px #211b1ba8;
+  padding: 5px 8px;
+  width: fit-content !important;
+}
+li.ui-menu-item {
+  cursor: pointer;
+  transition: 0.2s;
+}
+li.ui-menu-item:hover {
+  background: #0f528d;
+  color: white;
+}
+// form autocomplete END
