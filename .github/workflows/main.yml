@@ -4,7 +4,7 @@ on:
     branches: [ github-actions ]
 permissions:
   id-token: write
-  contents: read    # This is required for actions/checkout
+  contents: write    # This is required for actions/checkout, and tagging
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
