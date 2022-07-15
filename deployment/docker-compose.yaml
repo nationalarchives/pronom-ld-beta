@@ -3,7 +3,7 @@ version: '3'
 services:
   # Backend app
   pronom-backend:
-    image: ***REMOVED***.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
+    image: ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
     ports:
       - "8080:80"
     environment:
@@ -19,7 +19,7 @@ services:
   
   # Triplestore
   triplestore:
-    image: ***REMOVED***.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:0.0.1
+    image: ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:0.0.1
     user: "9008:0"
     ports:
       - "8030:3030"
@@ -36,7 +36,7 @@ services:
   # $ cd rdf-conversion
   # $ docker-compose -f ../deployment/docker-compose.yaml up container-signature-converter
   container-signature-converter:
-    image: ***REMOVED***.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
+    image: ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
     command: java -jar /pronombackend.jar convert-container-signatures /data/container-signatures.xml /data/puids.csv /out/container_signatures.ttl
     volumes:
       - ${PWD}/data/puid-lookup.csv:/data/puids.csv
