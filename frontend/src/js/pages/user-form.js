@@ -50,7 +50,6 @@ const App = () => {
     }
   });
 
-
   // path
   $('.add-path').on('click', function (evt) {
     evt.preventDefault();

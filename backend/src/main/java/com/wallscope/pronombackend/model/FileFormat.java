@@ -49,7 +49,9 @@ public class FileFormat implements RDFWritable {
             String version,
             Boolean binaryFlag,
             Boolean withdrawnFlag,
-            Resource byteOrder, List<Reference> references, List<Classification> classifications,
+            Resource byteOrder, 
+            List<Reference> references, 
+            List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
             List<ContainerSignature> containerSignatures,
@@ -207,7 +209,6 @@ public class FileFormat implements RDFWritable {
         if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
         if (byteOrder != null) m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), byteOrder);
-
 
         if (classifications != null) {
             classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));

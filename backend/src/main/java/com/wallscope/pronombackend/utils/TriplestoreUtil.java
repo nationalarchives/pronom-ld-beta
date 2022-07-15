@@ -73,6 +73,7 @@ public class TriplestoreUtil {
         String out = input.replaceAll("\"", "\\\\\\\"")
                 .replaceAll("/","\\\\/");
         logger.debug("SANITISING, in=[" + input + "], out=[" + out + "]");
+
         return out;
     }
 

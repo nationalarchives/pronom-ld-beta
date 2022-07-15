@@ -1,6 +1,5 @@
 // import { common } from '@js/common'
 import '@js/common.js'
-
 // import '@styles/main.scss'
 import '@styles/search.scss'
 import { autocomplete } from '../lib/jqueryUtils';
@@ -9,7 +8,6 @@ const App = () => {
   // Signal JS is active
   $('.page-container').removeClass('noJS');
   $('#header').removeClass('noJS');
-
   $('#filters input:checkbox').change(function(){
     if($(this).is(":checked")) {
         $(this).closest('.each-filter').addClass("selected");
