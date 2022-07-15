@@ -228,7 +228,7 @@ public class FormFileFormat {
                 getVersion(),
                 getBinaryFlag(),
                 getWithdrawnFlag(),
-                classifications,
+                byteOrder, references, classifications,
                 getInternalSignatures().stream().map(is -> is.toObject(ffUri, updated)).collect(Collectors.toList()),
                 getExternalSignatures().stream().map(FormExternalSignature::toObject).collect(Collectors.toList()),
                 getContainerSignatures().stream().map(cs -> cs.toObject(ffUri)).collect(Collectors.toList()),

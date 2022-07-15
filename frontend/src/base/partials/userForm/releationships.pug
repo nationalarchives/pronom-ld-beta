@@ -67,7 +67,7 @@ section.form-part#relationships
                 option(th:each="rto : ${relationshipTypeOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
 
           //- Related file format
-          .form-row(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+          .form-row.rel-ff(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.hasRelationships?.get(__${stat.index}__)?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -85,10 +85,13 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button Accept current
-              input(th:id="${'target' + stat.index}" name="target", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(type="hidden", th:id="${'sourceUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].source}", th:value="${ff?.Uri}")
+              input.value(type="hidden", th:id="${'targetUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
+              input.label(th:id="${'hasRelationshipsName' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].targetName}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.targetName}")
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input(th:id="${'target' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(type="hidden", th:id="${'targetUri' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(th:id="${'hasRelationshipsName' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.targetName}")
           .button-container
             button.bordered-red.small.delete-relationship
               | Delete relationship

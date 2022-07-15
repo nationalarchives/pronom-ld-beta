@@ -27,6 +27,8 @@ public class FileFormat implements RDFWritable {
     private final String version;
     private final Boolean binaryFlag;
     private final Boolean withdrawnFlag;
+    private final Resource byteOrder;
+    private final List<Reference> references;
     private final List<Classification> classifications;
     private final List<InternalSignature> internalSignatures;
     private final List<ExternalSignature> externalSignatures;
@@ -47,7 +49,7 @@ public class FileFormat implements RDFWritable {
             String version,
             Boolean binaryFlag,
             Boolean withdrawnFlag,
-            List<Classification> classifications,
+            Resource byteOrder, List<Reference> references, List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
             List<ContainerSignature> containerSignatures,
@@ -65,6 +67,8 @@ public class FileFormat implements RDFWritable {
         this.version = version;
         this.binaryFlag = binaryFlag;
         this.withdrawnFlag = withdrawnFlag;
+        this.byteOrder = byteOrder;
+        this.references = references;
         this.classifications = classifications;
         this.internalSignatures = internalSignatures;
         this.externalSignatures = externalSignatures;
@@ -122,6 +126,10 @@ public class FileFormat implements RDFWritable {
 
     public Boolean isWithdrawnFlag() {
         return withdrawnFlag;
+    }
+
+    public Resource getByteOrder() {
+        return byteOrder;
     }
 
     public List<Classification> getClassifications() {
@@ -198,6 +206,8 @@ public class FileFormat implements RDFWritable {
         if (version != null) m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
         if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
+        if (byteOrder != null) m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), byteOrder);
+
 
         if (classifications != null) {
             classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
@@ -296,6 +306,7 @@ public class FileFormat implements RDFWritable {
             String version = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Version)));
             Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
             Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));
+            Resource byteOrder = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.ByteOrder)));
 
             List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream().map(node -> {
                 Resource res = node.asResource();
@@ -303,6 +314,9 @@ public class FileFormat implements RDFWritable {
                 return new Classification(res, label);
             }).collect(Collectors.toList());
 
+            //References
+            List<Resource> refSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Reference)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<Reference> references = mu.buildFromModel(new Reference.Deserializer(), refSubjects);
             // InternalSignature
             List<Resource> intSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<InternalSignature> internalSignatures = mu.buildFromModel(new InternalSignature.Deserializer(), intSigSubjects);
@@ -331,6 +345,8 @@ public class FileFormat implements RDFWritable {
                     version,
                     binaryFlag,
                     withdrawnFlag,
+                    byteOrder,
+                    references,
                     classifications,
                     internalSignatures,
                     externalSignatures,

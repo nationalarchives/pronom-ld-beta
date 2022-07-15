@@ -197,6 +197,20 @@ public class RDFUtil {
             public static final String InFileFormatRelationship = uri + "In.FileFormatRelationship";
             public static final String ReleaseDate = uri + "ReleaseDate";
             public static final String ContainerSignature = uri + "ContainerSignature";
+            public static final String ByteOrder = uri + "ByteOrder";
+            public static final String Reference = uri + "Reference";
+        }
+
+        public static class Reference {
+            public static final String type = PRONOM.uri + "Reference";
+            public static final String uri = PRONOM.uri + "reference.";
+            public static final String id = PRONOM.uri + "id/Reference/";
+            public static final String Link = uri + "Link";
+            public static final String Author = uri + "Author";
+            public static final String PublicationDate = uri + "PublicationDate";
+            public static final String Identifiers = uri + "Identifiers";
+            public static final String ReferenceType = uri + "ReferenceType";
+            public static final String Note = uri + "Note";
         }
 
         // TentativeFileFormat sub

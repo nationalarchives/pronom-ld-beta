@@ -13,16 +13,16 @@ section.search-input-container
     fieldset#filters
       legend.sr-only Select filter
       div.each-filter
-        input#extension(type='checkbox' name='f_name' th:value="${f_name ?: 'true'}" th:checked="${f_name ?: 'true'}")
+        input#extension(type='checkbox' name='f_name' th:value="${f_name}" th:checked="${f_name}")
         label(for='extension') File format name
       div.each-filter
-        input#name(type='checkbox' name='f_ext' th:value="${ ?: 'true'}" th:checked="${f_ext ?: 'true'}")
+        input#name(type='checkbox' name='f_ext' th:value="${f_ext}" th:checked="${f_ext}")
         label(for='name') File format extension
       div.each-filter
-        input#type(type='checkbox' name='f_desc' th:value="${f_desc ?: 'true'}" th:checked="${f_desc ?: 'true'}")
+        input#type(type='checkbox' name='f_desc' th:value="${f_desc}" th:checked="${f_desc}")
         label(for='type') File format description
       div.each-filter
-        input#puid(type='checkbox' name='f_puid' th:value="${f_puid ?: 'true'}" th:checked="${f_puid ?: 'true'}")
+        input#puid(type='checkbox' name='f_puid' th:value="${f_puid}" th:checked="${f_puid}")
         label(for='puid') PUID
 
 section.search-output(th:if="${results != null and !results.empty}")

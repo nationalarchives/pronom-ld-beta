@@ -24,6 +24,17 @@ import static com.wallscope.pronombackend.utils.RDFUtil.*;
 public class FileFormatDAO {
     Logger logger = LoggerFactory.getLogger(FileFormatDAO.class);
     public static final String EXTERNAL_SIGNATURE_SUB_QUERY = "?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType .";
+    public static final String REFERENCES_SUB_QUERY = """
+            ?f pr:fileFormat.Reference ?fReference .
+            ?fReference a pr:Reference ;
+              rdfs:label ?fReferenceLabel ;
+              pr:reference.Link ?fReferenceLink .
+            OPTIONAL{ ?fReference pr:reference.Author ?fReferenceAuthor . }#END OPTIONAL
+            OPTIONAL{ ?fReference pr:reference.Identifiers ?fReferenceIdentifiers . }#END OPTIONAL
+            OPTIONAL{ ?fReference pr:reference.PublicationDate ?fReferenceDate . }#END OPTIONAL
+            OPTIONAL{ ?fReference pr:reference.ReferenceType ?fReferenceType . }#END OPTIONAL
+            OPTIONAL{ ?fReference pr:reference.Note ?fReferenceNote . }#END OPTIONAL
+            """;
     public static final String FORMAT_IDENTIFIER_SUB_QUERY = """
             ?fId a pr:FormatIdentifier ; pr:formatIdentifier.FileFormat ?f .
             ?fId rdfs:label ?fIdName ; pr:formatIdentifier.FormatIdentifierType ?fIdType .
@@ -73,6 +84,10 @@ public class FileFormatDAO {
             # Format Identifiers
             OPTIONAL{
                """ + FORMAT_IDENTIFIER_SUB_QUERY + """
+            }#END OPTIONAL
+            # Format Identifiers
+            OPTIONAL{
+               """ + REFERENCES_SUB_QUERY + """
             }#END OPTIONAL
             # External Signatures
             OPTIONAL {

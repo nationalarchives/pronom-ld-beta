@@ -62,7 +62,7 @@ public class SearchDAO {
             """;
 
     public List<SearchResult> autocomplete(String q, Resource type) {
-        return search(q + "*", 10, 0, new Filters(true, true, true, true), "score", "(<"+type+">)");
+        return search(q, 10, 0, new Filters(true, true, true, true), "score", "(<"+type+">)");
     }
     public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort){
         return search(q, limit, offset, filters, sort, ALLOWED_TYPES);

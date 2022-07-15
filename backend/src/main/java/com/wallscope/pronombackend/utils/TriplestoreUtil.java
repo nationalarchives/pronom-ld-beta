@@ -65,12 +65,14 @@ public class TriplestoreUtil {
         return constructQuery(query, null);
     }
 
-    // All we really need to sanitise for a Literal is quotes.
+    // All we really need to sanitise for a Literal is quotes and forward slashes.
     // As long as we don't allow an attacker to close the quotes early, there's nothing really they can do inside quotes that would change the result of a SPARQL query
+    // Forward slashes are allowed in RDF literals but they break the text index search
     public static String sanitiseLiteral(String input) {
         // I know this looks weird, this explains it: https://stackoverflow.com/a/51057519/2614483
-        String out = input.replaceAll("\"", "\\\\\\\"");
-        logger.trace("SANITISING, in=[" + input + "], out=[" + out + "]");
+        String out = input.replaceAll("\"", "\\\\\\\"")
+                .replaceAll("/","\\\\/");
+        logger.debug("SANITISING, in=[" + input + "], out=[" + out + "]");
         return out;
     }
 

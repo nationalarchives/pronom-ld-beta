@@ -1,15 +1,14 @@
-import { test } from '@js/lib/test'
 // import { common } from '@js/common'
 import '@js/common.js'
 
 // import '@styles/main.scss'
 import '@styles/search.scss'
+import { autocomplete } from '../lib/jqueryUtils';
 
 const App = () => {
   // Signal JS is active
   $('.page-container').removeClass('noJS');
   $('#header').removeClass('noJS');
-  test()
 
   $('#filters input:checkbox').change(function(){
     if($(this).is(":checked")) {
@@ -18,6 +17,10 @@ const App = () => {
       $(this).closest('.each-filter').removeClass("selected");
     }
   });
+
+  // Autocomplete setup
+  // Priority over
+  autocomplete('ff', 'input#pronom_search');
 }
 
 App()
