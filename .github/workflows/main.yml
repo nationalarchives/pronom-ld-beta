@@ -37,4 +37,8 @@ jobs:
           IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
         run: |
           ls
+          cd pronom-terraform-repo
+          ls
+          git tag $IMAGE_TAG
+          git push --tags
 
