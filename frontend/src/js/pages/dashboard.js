@@ -7,6 +7,7 @@ const App = () => {
     // Signal JS is active
     $('.page-container').removeClass('noJS');
     $('#header').removeClass('noJS');
+    $('#pronom-content').addClass('editorial');
 
     $('.collapse-button').on('click', function() {
       if($(this).closest('.collapse-container').hasClass('collapsed')){

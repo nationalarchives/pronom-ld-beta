@@ -5,6 +5,7 @@ const App = () => {
   // Signal JS is active
   $('.page-container').removeClass('noJS');
   $('#header').removeClass('noJS');
+  $('#pronom-content').addClass('editorial');
 
   $('.tab-buttons button').on('click', function() {
     $('.tab-buttons button' ).removeClass( "active" );
