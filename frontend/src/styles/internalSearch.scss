@@ -6,9 +6,6 @@
     display: grid;
     grid-template-columns: 1fr auto;
     grid-gap: 10px;
-    @media only screen and (max-width: 850px) {
-      grid-template-columns: 1fr;
-    }
     >div:nth-child(1) {
       background: #dbdbdb63;
       padding: 15px;
@@ -23,9 +20,6 @@
           grid-template-columns: 1fr 140px;
           grid-gap: 2px;
           width: 100%;
-          @media only screen and (max-width: 850px) {
-            grid-template-columns: 1fr;
-          }
         }
         button {
           background: black;
@@ -37,11 +31,6 @@
           font-size: 1.1em;
           i {
             margin-right: 5px;
-          }
-          @media only screen and (max-width: 850px) {
-            width: 200px;
-            margin-left: auto;
-            height: 40px;
           }
         }
       }
@@ -93,21 +82,11 @@
     form {
       width: 80%;
       margin-left: 10%;
-      @media only screen and (max-width: 980px) {
-        width: 100%;
-        margin-left: 0;
-      }
     }
   }
   .search-output {
     .additionals {
       display: flex;
-      @media only screen and (max-width: 980px) {
-        flex-direction: column;
-        margin-left: 10px;
-        align-items: flex-start;
-        grid-gap: 0;
-      }
       label {
         margin-right: 5px;
         font-family: 'Roboto Mono', monospace;
@@ -117,15 +96,6 @@
         display: flex;
         align-items: center;
         @media only screen and (max-width: 980px) {
-          flex-direction: column;
-          align-items: flex-start;
-          > div {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            border:none;
-            border-top: 2px solid #7070708c;
-            width: 100%;
-          }
         }
         #results_per_page {
           width:38px;
@@ -137,16 +107,10 @@
         }
         .result-counts {
           border-right: 2px solid #7070708c;
-          @media only screen and (max-width: 980px) {
-            border-right: none;
-          }
         }
       }
       .sort-by {
         padding-left: 5px;
-        @media only screen and (max-width: 980px) {
-          padding-left: 0;
-        }
         select {
           display: block;
           width: 100%;
@@ -174,17 +138,6 @@
         margin-left: auto;
         padding-left: 5px;
         align-items: center;
-        @media only screen and (max-width: 980px) {
-          margin-left: 0;
-          margin-bottom: 10px;
-          padding-left: 0;
-          padding-top: 10px;
-          border-top: 2px solid #7070708c;
-          border-left: none;
-        }
-        @media only screen and (max-width: 500px) {
-          display: block;
-        }
         .button-list {
           display: flex;
           button {
@@ -299,13 +252,6 @@
             text-decoration: none;
             grid-gap: 5px;
             color: black;
-            @media only screen and (max-width: 1000px) {
-              grid-template-columns: 1fr 1fr;
-              grid-gap: 10px;
-            }
-            @media only screen and (max-width: 760px) {
-              grid-template-columns: 1fr;
-            }
             .data {
               display: flex;
               flex-direction: column;
@@ -326,14 +272,6 @@
             >p, >div, >h5 {
               border-left: 2px solid lightgray;
               padding-left: 8px;
-              @media only screen and (max-width: 760px) {
-                border-left: none;
-              }
-            >p {
-              @media only screen and (max-width: 760px) {
-                padding-left: 0;
-              }
-            }
             }
             p:first-child {
               border:none;
