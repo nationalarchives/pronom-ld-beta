@@ -36,9 +36,9 @@ jobs:
           REPOSITORY: pronom-backend
           IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
         run: |
-          ls
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f deployment/Dockerfile .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           cd pronom-terraform-repo
-          ls
           git tag $IMAGE_TAG
           git push --tags
 
