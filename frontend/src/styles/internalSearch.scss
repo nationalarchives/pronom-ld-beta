@@ -95,8 +95,6 @@
       .manage-results {
         display: flex;
         align-items: center;
-        @media only screen and (max-width: 980px) {
-        }
         #results_per_page {
           width:38px;
         }
@@ -176,9 +174,6 @@
       background: #dbdbdb63;
       padding: 0 20px 20px 20px;
       margin-top: 5px;
-      @media only screen and (max-width: 980px) {
-        padding: 20px;
-      }
       .pagination {
         margin-top: 40px;
         ul {
@@ -195,9 +190,6 @@
             &.controls {
               width: auto;
               padding: 0 10px;
-              @media only screen and (max-width: 980px) {
-                padding: 0;
-              }
             }
             &.active {
               background: #ccdbea;
@@ -229,9 +221,6 @@
           background: none;
           padding: 10px 5px;
           margin-bottom: 0;
-          @media only screen and (max-width: 980px) {
-            display: none;
-          }
         }
         h4 {
           margin: 0;
@@ -287,15 +276,6 @@
           span {
             position: absolute;
             color: transparent;
-            @media only screen and (max-width: 1000px) {
-              position: relative;
-              color: black;
-            }
-          }
-        }
-        .basic {
-          @media only screen and (max-width: 650px) {
-            grid-template-columns: 1fr;
           }
         }
       }
