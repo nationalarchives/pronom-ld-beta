@@ -908,6 +908,10 @@ main {
 /* Modal - END */
 
 /* Save options #saveoptions - START */
+.editorial .save-options {
+  border-top: none;
+  padding-top: 0;
+}
 .save-options {
   display: flex;
   grid-gap:5px;
