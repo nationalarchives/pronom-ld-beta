@@ -49,8 +49,8 @@ public class FileFormat implements RDFWritable {
             String version,
             Boolean binaryFlag,
             Boolean withdrawnFlag,
-            Resource byteOrder, 
-            List<Reference> references, 
+            Resource byteOrder,
+            List<Reference> references,
             List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
@@ -196,6 +196,10 @@ public class FileFormat implements RDFWritable {
     public List<Actor> getSupportActors() {
         return supportActors;
     }
+    public List<Reference> getReferences() {
+        return references;
+    }
+
 
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
@@ -213,6 +217,14 @@ public class FileFormat implements RDFWritable {
         if (classifications != null) {
             classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
         }
+
+        if (references != null) {
+            references.forEach(r -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.Reference), r.getURI());
+                m.add(r.toRDF());
+            });
+        }
+
         if (internalSignatures != null) {
             internalSignatures.forEach(is -> {
                 m.add(uri, makeProp(PRONOM.FileFormat.InternalSignature), is.getURI());

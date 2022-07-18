@@ -227,6 +227,7 @@ public class SubmissionController {
     private void setFormOptions(Model model) {
         FormOptionsDAO dao = new FormOptionsDAO();
         Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
+                makeResource(PRONOM.Classification.type),
                 makeResource(PRONOM.ByteOrder.type),
                 makeResource(PRONOM.FormatIdentifierType.type),
                 makeResource(PRONOM.ByteSequence.BSPType),
@@ -234,6 +235,7 @@ public class SubmissionController {
                 makeResource(PRONOM.FileFormatFamily.type),
                 makeResource(PRONOM.CompressionType.type)
         ));
+        model.addAttribute("classificationOptions", options.get(PRONOM.Classification.type));
         model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
         model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
         List<FormOption> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream().sorted(Comparator.comparing(FormOption::getValue)).collect(Collectors.toList());

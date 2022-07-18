@@ -6,9 +6,11 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
+// TODO: Rename this to match Document RDF type
 public class Reference implements RDFWritable {
     private final Resource uri;
     private final String name;
@@ -95,6 +97,20 @@ public class Reference implements RDFWritable {
                 ", type=" + type +
                 ", note='" + note + '\'' +
                 '}';
+    }
+
+    public FormReference convert() {
+        FormReference fr = new FormReference();
+        fr.setUri(safelyGetUriOrNull(uri));
+        fr.setName(name);
+        fr.setLink(link);
+        fr.setAuthor(safelyGetUriOrNull(author));
+        fr.setIdentifiers(identifiers);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        fr.setPublicationDate(formatter.format(publicationDate));
+        fr.setType(type);
+        fr.setNote(note);
+        return fr;
     }
 
     public static class Deserializer implements RDFDeserializer<Reference> {

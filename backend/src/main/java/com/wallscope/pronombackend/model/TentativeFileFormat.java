@@ -14,7 +14,7 @@ public class TentativeFileFormat extends FileFormat {
     }
 
     public TentativeFileFormat(Resource uri, FileFormat ff) {
-        this(uri, ff.getPuid(), ff.getPuidType(), ff.getPuidTypeName(), ff.getName(), ff.getDescription(), ff.getUpdated(), ff.getVersion(), ff.isBinaryFlag(), ff.isWithdrawnFlag(), ff.getClassifications(), ff.getInternalSignatures(), ff.getExternalSignatures(), ff.getContainerSignatures(), ff.getFormatIdentifiers(), ff.getDevelopmentActors(), ff.getSupportActors(), ff.getHasRelationships());
+        this(uri, ff.getPuid(), ff.getPuidType(), ff.getPuidTypeName(), ff.getName(), ff.getDescription(), ff.getUpdated(), ff.getVersion(), ff.isBinaryFlag(), ff.isWithdrawnFlag(), ff.getByteOrder(), ff.getReferences(), ff.getClassifications(), ff.getInternalSignatures(), ff.getExternalSignatures(), ff.getContainerSignatures(), ff.getFormatIdentifiers(), ff.getDevelopmentActors(), ff.getSupportActors(), ff.getHasRelationships());
     }
 
     @Override
