@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+      - name: Checkout tools repo
+        uses: actions/checkout@v3
+        with:
+          repository: nationalarchives/pronom-ld-beta-terraform
+          path: pronom-terraform-repo
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -30,6 +35,5 @@ jobs:
           REPOSITORY: pronom-backend
           IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f deployment/Dockerfile .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          ls
 
