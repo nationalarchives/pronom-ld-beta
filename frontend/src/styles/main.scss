@@ -1,5 +1,6 @@
 
-/* Style Menu 
+/* Style Menu Guide (use hash tags to find content quicker)
+
 - Overall page style    / #pagestyle
 - Pronom main menu      / #pronommainmenu
 - Main                  / #main
@@ -14,10 +15,17 @@
 - List                  / #list
 - Modal                 / #modal
 - Feedback              / #feedback
+- Scroll to top button  / #scrolltotop
+
+- Editorial enviroment  / #editorialenviroment
 - TNA Header and Footer / #tnaheaderandfooter
+- dropdown(no select)   / #dropdown
+- form autocomplete     / #formautocomplete
+- actor modal           / #actormodal
+
 */
 
-/* Font Awesome Import */
+// Font Awesome Import
 
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
@@ -26,7 +34,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
 
-/* Overall page style #pagestyle ========================== */
+// Overall page style #pagestyle 
 $active-blue: #0f528d;
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap');
@@ -40,7 +48,6 @@ button, a {
 }
 .page-container {
   display: grid;
-  // min-height: 100vh;
   padding: 0 90px;
   max-width: 1500px;
   margin-left: auto;
@@ -55,9 +62,8 @@ button, a {
 }
 .editorial.page-container {
   display: grid;
-  // min-height: 100vh;
   padding: 0 90px;
-  max-width: 1500px;
+  max-width: unset !important;;
   margin-left: auto;
   margin-right: auto;
   box-shadow: none;
@@ -122,6 +128,29 @@ hr {
 html {
   scroll-behavior: smooth;  
 }
+.sr-only {
+  position: absolute;
+  &.skip-to-main-content:focus {
+    position: absolute;
+    padding: 0.3em;
+    top: auto;
+    width: auto;
+    height: auto;
+    outline: #1d70b8 solid 5px;
+    outline-offset: unset;
+    z-index: 999;
+    background-color: #fff;
+    color: #26262a;
+    clip: auto;
+    overflow: auto;
+    margin: 0;
+  }
+}
+fieldset {
+  border:none;
+  padding: 0;
+}
+
 // Checkbox #checkbox START
 input {
   &.check {
@@ -137,6 +166,8 @@ input {
   }
 }
 // Checkbox END
+
+
 // Select #select START
 select {
   display: block;
@@ -163,6 +194,8 @@ select {
   }
 }
 // Select #select END
+
+
 // Buttons - START #buttons
 button, a{
   font-family: 'Roboto Mono', monospace;
@@ -268,6 +301,8 @@ button, a{
   }
 }
 // Buttons - END
+
+
 // List #list - START
 ul {
   padding-left: 0;
@@ -276,6 +311,8 @@ ul {
   }
 }
 // List END
+
+
 // Tooltip  #tooltip -START
 .tooltip-container{
   .label-text {
@@ -358,29 +395,11 @@ ul {
   }
 }
 // Tooltip END
-.sr-only {
-  position: absolute;
-  &.skip-to-main-content:focus {
-    position: absolute;
-    padding: 0.3em;
-    top: auto;
-    width: auto;
-    height: auto;
-    outline: #1d70b8 solid 5px;
-    outline-offset: unset;
-    z-index: 999;
-    background-color: #fff;
-    color: #26262a;
-    clip: auto;
-    overflow: auto;
-    margin: 0;
-  }
-}
-fieldset {
-  border:none;
-  padding: 0;
-}
-/* Overall page style - END */
+
+// Overall page style - END
+
+
+
 // Input search START 
 input:focus,
 a:focus,
@@ -423,7 +442,7 @@ textarea {
   font-family: 'Open Sans', sans-serif;
 }
 
-/* Main START #main =======================================*/
+// Main START #main =======================================
 main {
   border-left: 12px solid #C4DFF8;
   // min-height: 100vh;
@@ -451,9 +470,9 @@ main {
     }
   }
 }
-/* Main END */
+// Main END 
 
-/* Pronom main menu - START #pronommainmenu ============== */
+// Pronom main menu - START #pronommainmenu ============== 
 
 #pronom-nav {
   width: 230px;
@@ -676,11 +695,10 @@ main {
     }
   }
 }
+// Pronom main menu - END 
 
 
-/* Pronom main menu - END */
-
-/* Breadcrumbs - START #breadcrumbs ==============================*/
+// Breadcrumbs - START #breadcrumbs ==============================
 .breadcrumb-holder{
   ul, li {
     margin: 0;
@@ -716,7 +734,6 @@ main {
   background: #8BACCB;
   padding: 20px;
   min-height: 250px;
-  // width: calc(100vw - 55px);
   .social-media-wrapper {
     max-width: 1500px;
     margin-left: auto;
@@ -791,9 +808,9 @@ main {
     }
   }
 }
-/* Social media - END */
+// Social media - END
 
-/* Modal #modal - START */
+// Modal #modal - START
 .modal-container {
   background: #F3F3F3;
   min-height: 100vh;
@@ -905,9 +922,9 @@ main {
 .modal-body {
   background: #F3F3F3;
 }
-/* Modal - END */
+// Modal - END
 
-/* Save options #saveoptions - START */
+// Save options #saveoptions - START
 .editorial .save-options {
   border-top: none;
   padding-top: 0;
@@ -963,9 +980,9 @@ main {
     }
   }
 }
-/* Save options END */
+// Save options END
 
-/* Table #table START */
+// Table #table START
 .table{
   max-width: 900px;
   margin-left: 10%;
@@ -1039,8 +1056,10 @@ main {
     }
   }
 }
-/* Table END */
-// Scroll to top 
+// Table END
+
+
+// Scroll to top button #scrolltotop - START
 #scrollToTop {
   display: none;
   button {
@@ -1057,7 +1076,10 @@ main {
     }
   }
 }
-// Feedback #feedback START
+// Scroll to top button  - END
+
+
+// Feedback #feedback - START
 @keyframes slide-up {
   0% {
     transform: translateY(100%);
@@ -1145,11 +1167,18 @@ main {
     }
   }
 }
-// Feedback END
+// Feedback - END
 
-// INTERNAL INTERFACE START
 
-/* Pronom main menu - START #pronommainmenu ============== */
+
+
+
+
+
+// EDITORIAL ENVIROMENT #editorialenviroment - START 
+// Please note - editiorial enviroment has a set window width - it's not responsive for small screens
+
+// Pronom main menu - START #pronommainmenu ==============
 .logo {
   max-width: 300px;
 }
@@ -1157,11 +1186,6 @@ main {
   padding-right: 10px;
   width: 250px;
   top: 80px;
-  // @media only screen and (max-width: 1200px) {
-  //   .hide {
-  //     display: none;
-  //   }
-  // }
   #page-title {
     text-decoration: none;
     color:black;
@@ -1175,9 +1199,6 @@ main {
       font-weight: normal;
       margin-top: -10px;
     }
-    // @media only screen and (max-width: 700px) {
-    //   font-size: 1.8em;
-    // }
   }
   .container {
     min-width: 230px;
@@ -1231,9 +1252,6 @@ main {
     &.selected {
       .sub-menu-pronom {
         display: block;
-        // @media only screen and (max-width: 1200px) {
-        //   display: none;
-        // }
       }
     }
   }
@@ -1243,12 +1261,6 @@ main {
       color: $active-blue;
     }
   }
-  // @media only screen and (max-width: 1200px) {
-  //   border-right: none;
-  //   position: sticky;
-  //   top: 0;
-  //   z-index: 9;
-  // }
   #internal-menu {
     nav {
       margin-left: 20px;
@@ -1285,6 +1297,7 @@ main {
   align-items: center;
   min-width: 1600px;
   margin-top: -80px;
+  z-index: 99;
   .dropdown{
     margin-left: auto;
     >button {
@@ -1565,9 +1578,6 @@ h1.internal-title {
     padding: 0 4px 10px 4px;
     li {
       grid-template-columns: 1fr auto;
-      // @media only screen and (max-width: 1150px) {
-      //   grid-template-columns: 1fr;
-      // }
       padding: 10px 5px 5px 10px;
       margin-bottom: 8px;
       .maintain-buttons {
@@ -1669,9 +1679,9 @@ h1.internal-title {
     } 
   } 
 }
+
 // TNA Header and Footer #tnaheaderandfooter START
 // header
-
 header#header {
   background-color: #26262a;
   color: #fff;
@@ -1945,8 +1955,8 @@ header#header {
 }
 // TNA Header and Footer END
 
+// dropdown (not select) #dropdown - START
 .dropdown {
-  // position: relative;
   display: inline-block;
   i {
     margin-left: 10px;
@@ -1962,10 +1972,8 @@ header#header {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    // padding: 12px 16px;
     z-index: 1;
     max-width: 300px;
-    // margin-left: -182px;
   }
   &:hover {
     i {
@@ -2001,8 +2009,10 @@ header#header {
   }
 }
 
+// dropdown - END
 
-// actor modal - START
+
+// actor modal #actormodal - START
 .form-container {
   margin-top: 30px;
 }
@@ -2024,7 +2034,7 @@ header#header {
 // actor modal - END
 
 
-// form autocomplete START
+// form autocomplete #formautocomplete START
 ul#ui-id-1 {
   background: white;
   box-shadow: 3px 3px 6px #211b1ba8;
