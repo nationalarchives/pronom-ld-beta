@@ -27,8 +27,8 @@ public class FileFormat implements RDFWritable {
     private final String version;
     private final Boolean binaryFlag;
     private final Boolean withdrawnFlag;
-    private final Resource byteOrder;
-    private final List<Reference> references;
+    private final List<Resource> byteOrder;
+    private final List<Documentation> references;
     private final List<Classification> classifications;
     private final List<InternalSignature> internalSignatures;
     private final List<ExternalSignature> externalSignatures;
@@ -49,8 +49,8 @@ public class FileFormat implements RDFWritable {
             String version,
             Boolean binaryFlag,
             Boolean withdrawnFlag,
-            Resource byteOrder,
-            List<Reference> references,
+            List<Resource> byteOrder,
+            List<Documentation> references,
             List<Classification> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
@@ -130,7 +130,7 @@ public class FileFormat implements RDFWritable {
         return withdrawnFlag;
     }
 
-    public Resource getByteOrder() {
+    public List<Resource> getByteOrder() {
         return byteOrder;
     }
 
@@ -196,7 +196,8 @@ public class FileFormat implements RDFWritable {
     public List<Actor> getSupportActors() {
         return supportActors;
     }
-    public List<Reference> getReferences() {
+
+    public List<Documentation> getReferences() {
         return references;
     }
 
@@ -212,8 +213,8 @@ public class FileFormat implements RDFWritable {
         if (version != null) m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
         if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
-        if (byteOrder != null) m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), byteOrder);
 
+        if (byteOrder != null) byteOrder.forEach(bo -> m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), bo));
         if (classifications != null) {
             classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
         }
@@ -319,7 +320,6 @@ public class FileFormat implements RDFWritable {
             String version = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Version)));
             Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
             Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));
-            Resource byteOrder = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.ByteOrder)));
 
             List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream().map(node -> {
                 Resource res = node.asResource();
@@ -327,9 +327,11 @@ public class FileFormat implements RDFWritable {
                 return new Classification(res, label);
             }).collect(Collectors.toList());
 
-            //References
+            // ByteOrder
+            List<Resource> byteOrders = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.ByteOrder)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            // Documents
             List<Resource> refSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Reference)).stream().map(RDFNode::asResource).collect(Collectors.toList());
-            List<Reference> references = mu.buildFromModel(new Reference.Deserializer(), refSubjects);
+            List<Documentation> references = mu.buildFromModel(new Documentation.Deserializer(), refSubjects);
             // InternalSignature
             List<Resource> intSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<InternalSignature> internalSignatures = mu.buildFromModel(new InternalSignature.Deserializer(), intSigSubjects);
@@ -358,7 +360,7 @@ public class FileFormat implements RDFWritable {
                     version,
                     binaryFlag,
                     withdrawnFlag,
-                    byteOrder,
+                    byteOrders,
                     references,
                     classifications,
                     internalSignatures,

@@ -108,7 +108,8 @@ const App = () => {
   // relationships
 
   // display documentation fields
-  $('.documentation input:checkbox').change(function () {
+  $('.documentation input:checkbox').change(function (evt) {
+    evt.preventDefault();
     if ($(this).is(":checked")) {
       $(this).closest('.reference-group').addClass("open-additional");
     } else {

@@ -43,10 +43,16 @@ public class SearchController {
         // if no query parameter is specified we early return the template with only the default variables set
         Integer limitVal = pageSize.orElse(10);
         model.addAttribute("pageSize", limitVal);
-        if (q == null || q.isBlank()) return "search";
+        if (q == null || q.isBlank()) {
+            model.addAttribute("f_name", true);
+            model.addAttribute("f_ext", true);
+            model.addAttribute("f_desc", true);
+            model.addAttribute("f_puid", true);
+            return "search";
+        }
         Integer offsetVal = offset.orElse(0);
         SearchDAO dao = new SearchDAO();
-        SearchDAO.Filters filters = new SearchDAO.Filters(f_name.orElse(true), f_ext.orElse(true), f_desc.orElse(true), f_puid.orElse(true));
+        SearchDAO.Filters filters = new SearchDAO.Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
         Integer totalResults = dao.count(q, limitVal, offsetVal, filters);
         List<SearchResult> results = dao.search(q, limitVal, offsetVal, filters, sort.orElse("score"));
         // default is "relevance" which sorts by the score property
@@ -95,7 +101,7 @@ public class SearchController {
         model.addAttribute("f_name", filters.name);
         model.addAttribute("f_ext", filters.extension);
         model.addAttribute("f_desc", filters.description);
-        model.addAttribute("f_puid", filters.extension);
+        model.addAttribute("f_puid", filters.puid);
         model.addAttribute("results", results);
         return "search";
     }

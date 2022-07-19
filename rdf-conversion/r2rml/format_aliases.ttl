@@ -19,10 +19,22 @@
         rr:objectMap [ rr:column "version_text" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate formatAlias:FileFormatId;
-        rr:objectMap [ rr:column "file_format_id" ];
+        rr:predicate formatAlias:FileFormat;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}" ];
  	];
  	.
+
+<#PRONOM6/format_alias_format_link>
+ 	rr:logicalTable <#PRONOM6/format_aliases#view>;
+ 	rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
+ 	];
+ 	rr:predicateObjectMap [
+        rr:predicate pr:fileFormat.Alias;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatAlias/{alias_id}" ];
+ 	];
+ 	.
+
 
  <#PRONOM6/format_aliases#view> rr:sqlQuery """
 SELECT [alias_id]

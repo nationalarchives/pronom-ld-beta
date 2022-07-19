@@ -154,14 +154,14 @@ section.form-part#core
                   p Reviewed
             .input-group
               button Accept current
-              input(th:id="${'ReferenceName' + stat.index}" th:field="*{references[__${stat.index}__].name}", th:data-undo="${ff?.references[__${stat.index}__]?.name}")
+              input(th:id="${'ReferenceName' + stat.index}" th:field="*{references[__${stat.index}__].name}", th:data-undo="${r?.name}")
             .input-group(th:if="${compareRef?.name}")
               button.incoming Accept incoming
               input(th:value="${compareRef.name}" th:id="${'ReferenceName' + stat.index}")
             
           //- Link URL
-          .form-row#reference-link-url(th:classappend="${compareRef?.link} ? 'before-review' : ''")
-            p.inputType(text="${#strings.isEmpty(ff?.referenceLinkURL) ? 'New content' : 'Edited content'}") Edited content
+          .form-row#reference-link-url(th:classappend="${compareRef?.identifiers} ? 'before-review' : ''")
+            p.inputType(text="${#strings.isEmpty(r?.identifiers) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
                 .label
@@ -178,10 +178,10 @@ section.form-part#core
                   p Reviewed
             .input-group
               button Accept current
-              input(th:id="${'ReferenceLink' + stat.index}" th:field="*{references[__${stat.index}__].name}", th:data-undo="${ff?.referenceLinkURL}")
-            .input-group(th:if="${compareRef?.link}")
+              input(th:id="${'ReferenceLink' + stat.index}" th:field="*{references[__${stat.index}__].identifiers}", th:data-undo="${r?.identifiers}")
+            .input-group(th:if="${compareRef?.identifiers}")
               button.incoming Accept incoming
-              input(th:value="${compareRef.link}" th:id="${'ReferenceLink' + stat.index}")
+              input(th:value="${compareRef.identifiers}" th:id="${'ReferenceLink' + stat.index}")
 
           //- Documentation
           .form-row#reference-documentation.checkbox-container.documentation
@@ -198,7 +198,7 @@ section.form-part#core
           .additional-fields
             //- Author
             .form-row#reference-author(th:classappend="${compareRef?.author} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.references[__${stat.index}__]?.author") ? 'New content' : 'Edited content'}") Edited content
+              p.inputType(th:text="${#strings.isEmpty(r?.author) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -215,42 +215,18 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input(th:id="${'ReferenceAuthor' + stat.index}" th:field="*{references[__${stat.index}__].author}", th:data-undo="${ff?.references[__${stat.index}__]?.author}")
+                input(th:id="${'ReferenceAuthor' + stat.index}" th:field="*{references[__${stat.index}__].author}", th:data-undo="${r?.author}")
               .input-group(th:if="${compareRef?.author}")
                 button.incoming Accept incoming
                 input(th:value="${compareRef.author}")
 
-            //- Identifiers
-            .form-row#reference-identifiers(th:classappend="${compareRef?.identifiers} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.references[__${stat.index}__]?.identifiers) ? 'New content' : 'Edited content'}") Edited content
-              .tooltipPlusAction
-                .tooltip-container
-                  .label
-                    label(for="referenceIdentifiers") Identifiers
-                    span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.2.5') tabindex='0')
-                      .i-wrapper
-                        i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                .action-monitoring
-                  .review-type
-                    i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                    p Require reviewing
-                  .review-type
-                    i.fa-solid.fa-square-check
-                    p Reviewed
-              .input-group
-                button Accept current
-                input(name="referenceIdentifiers" id="referenceIdentifiers" th:field="*{referenceIdentifiers}", th:data-undo="${ff?.referenceIdentifiers}")
-              .input-group(th:if="${compare?.referenceIdentifiers}")
-                button.incoming Accept incoming
-                input(th:value="${compare.referenceIdentifiers}" name="referenceIdentifiers" id="referenceIdentifiers")
-
             //- Publication date
-            .form-row#publication-date(th:classappend="${compare?.publicationDate} ? 'before-review' : ''")
-              p.inputType(text="${#strings.isEmpty(ff?.publicationDate) ? 'New content' : 'Edited content'}") Edited content
+            .form-row#publication-date(th:classappend="${compareRef?.publicationDate} ? 'before-review' : ''")
+              p.inputType(text="${#strings.isEmpty(r?.publicationDate) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="publicationDate") Publication date
+                    label(th:for="${'ReferenceDate' + stat.index}") Publication date
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.2.6') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -263,18 +239,18 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input.date(type="date" name="publicationDate" id="publicationDate" th:field="*{publicationDate}", th:data-undo="${ff?.publicationDate}")
-              .input-group(th:if="${compare?.publicationDate}")
+                input.date(type="date" th:id="${'ReferenceDate' + stat.index}", th:field="*{references[__${stat.index}__].publicationDate}", th:data-undo="${r?.publicationDate}")
+              .input-group(th:if="${compareRef?.publicationDate}")
                 button.incoming Accept incoming
-                input.date(type="date" th:value="${compare.publicationDate}" name="publicationDate" id="publicationDate")
+                input.date(type="date" th:value="${compareRef.publicationDate}")
 
             //- Publication Type
-            .form-row#publication-type(th:classappend="${compare?.publicationType} ? 'before-review' : ''")
-              p.inputType(text="${#strings.isEmpty(ff?.publicationType) ? 'New content' : 'Edited content'}") Edited content
+            .form-row#publication-type(th:classappend="${compareRef?.type} ? 'before-review' : ''")
+              p.inputType(text="${#strings.isEmpty(r?.type) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="publicationType") Type
+                    label(th:for="${'ReferenceType' + stat.index}") Type
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.2.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -287,18 +263,18 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input( name="publicationType" id="publicationType" th:field="*{publicationType}", th:data-undo="${ff?.publicationType}")
-              .input-group(th:if="${compare?.publicationType}")
+                input(th:id="${'ReferenceType' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.type}")
+              .input-group(th:if="${compareRef?.type}")
                 button.incoming Accept incoming
-                input(th:value="${compare.publicationType}" name="publicationType" id="publicationType")
+                input(th:value="${compareRef.type}")
 
             //- Publication Note
-            .form-row#publication-note(th:classappend="${compare?.publicationNote} ? 'before-review' : ''")
-              p.inputType(text="${#strings.isEmpty(ff?.publicationNote) ? 'New content' : 'Edited content'}") Edited content
+            .form-row#publication-note(th:classappend="${compareRef?.note} ? 'before-review' : ''")
+              p.inputType(text="${#strings.isEmpty(r?.note) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
-                    label(for="publicationNote") Note
+                    label(th:for="${'ReferenceNote' + stat.index}") Note
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.2.8') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -311,10 +287,10 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input(name="publicationNote" id="publicationNote" th:field="*{publicationNote}", th:data-undo="${ff?.publicationNote}")
-              .input-group(th:if="${compare?.publicationNote}")
+                input(th:id="${'ReferenceNote' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.note}")
+              .input-group(th:if="${compareRef?.note}")
                 button.incoming Accept incoming
-                input(th:value="${compare.publicationNote}" name="publicationNote" id="publicationNote")
+                input(th:value="${compareRef.note}")
           .button-container
             button.bordered-red.small.push-right.delete-reference
               | Delete reference

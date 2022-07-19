@@ -1,34 +1,42 @@
 //- options: success, info, alert, error
 - var feedback = 'success'
 
-.feedback-container#feedback
- .feedback-inner
-    case feedback
-      when 'success'
-        .feedback-box.green
-          div
-            i.fa-solid.fa-circle-check
-            h3 Success
-          p Thank you for your submission. It is now being reviewed by the PRONOM team, who will be in touch with any further developments.
-      when 'info'
-        .feedback-box.blue
-          div
-            i.fa-solid.fa-circle-info
-            h3 Info
-          p Placeholder
-      when 'alert'
-        .feedback-box.yellow
-          div
-            i.fa-solid.fa-triangle-exclamation
-            h3 Alert
-          p Placeholder
-      when 'error'
-        .feedback-box.red
-          div
-            i.fa-solid.fa-circle-xmark
-            h3 Error
-          p Something went wrong. Please try again later or contact PRONOM Team.
+.feedback-container#feedback(th:if="${feedback}")
+  .feedback-inner
+    .feedback-box(th:classappend="${feedback.cssClass}")
+      div
+        i.fa-solid(th:classappend="${feedback.icon}")
+        h3(th:text="${feedback.statusText}") Feedback status
+      p(th:text="${feedback.message}") Feedback message
     button.bordered-black.medium(onclick="closeFeedback()") OK
+    
+    
+    //- case feedback
+    //-   when 'success'
+    //-     .feedback-box.green
+    //-       div
+    //-         i.fa-solid.fa-circle-check
+    //-         h3 Success
+    //-       p Thank you for your submission. It is now being reviewed by the PRONOM team, who will be in touch with any further developments.
+    //-   when 'info'
+    //-     .feedback-box.blue
+    //-       div
+    //-         i.fa-solid.fa-circle-info
+    //-         h3 Info
+    //-       p Placeholder
+    //-   when 'alert'
+    //-     .feedback-box.yellow
+    //-       div
+    //-         i.fa-solid.fa-triangle-exclamation
+    //-         h3 Alert
+    //-       p Placeholder
+    //-   when 'error'
+    //-     .feedback-box.red
+    //-       div
+    //-         i.fa-solid.fa-circle-xmark
+    //-         h3 Error
+    //-       p Something went wrong. Please try again later or contact PRONOM Team.
+    //- button.bordered-black.medium(onclick="closeFeedback()") OK
 
 
 script. 
