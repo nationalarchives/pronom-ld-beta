@@ -9,13 +9,13 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: Checkout tools repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+      - uses: actions/checkout@v3
         with:
           repository: nationalarchives/pronom-ld-beta-terraform
-          ssh-key: ${{ secrets.SSH_DEPLOY_KEY }} # `SSH_DEPLOY_KEY` is a secret that contains your SSH deploy key
           path: pronom-terraform-repo
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
