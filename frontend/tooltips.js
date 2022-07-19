@@ -48,7 +48,8 @@ const reverseMapping = {
     "Contact email": "4.3",
     "Country": "4.4",
     "Comment": "4.5",
-    "Recognition": "4.6",
+    "Recognition": "4.6.1",
+    "Recognition - stay annonymous": "4.6.2",
     "Home page": "5",
     "Download test notes ": "5.1",
     "Developer": "5.2.1",
@@ -82,7 +83,7 @@ module.exports = {
     "1.2.6": "The date of publication on the website or documentation.",
     "1.2.7": "Format of the publication. This could be document or website.",
     "1.2.8": "Any other relevant information.",
-    // "2.1.1": "Select whether a container signature or binary signature is required to identify the format.",
+    "2.1.1": "Select whether a container signature or binary signature is required to identify the format.",
     // "2.1.2": "This is often the same as the file format name plus, if applicable, version, however some file formats may have multiple signatures. The signature name then also indicates the difference e.g. '(Big Endian)', '(Mac)'.",
     // "2.1.3": "We would like to remove this from the form",
     // "2.2.1": "Optional field if information is available. Big endian and little endian refers to the order in which the bits are written into the byte stream. Often seen in earlier 90s formats, file formats can have both a big and little endian version requiring two signatures or have one signature that is either big endian or little endian.",
@@ -115,7 +116,8 @@ module.exports = {
     "4.3": "An email address so we can contact you to ask further questions.",
     "4.4": "Your country",
     "4.5": "Any other comments you wish to make regarding your contribution.",
-    "4.6": "We like to credit contributers to the PRONOM database, usually this is by organisation but can also be your personal name if you prefer. Please state the name by which you'd prefer to be credited.",
+    "4.6.1": "We like to credit contributers to the PRONOM database, usually this is by organisation but can also be your personal name if you prefer. Please state the name by which you'd prefer to be credited. This will mean your name appears in the release notes and as the source associated with the update or file format that you contributed to PRONOM. ",
+    "4.6.2": "If you wish to remain anonymous then we will admit you from the release notes and not credit you as a source in our database.",
     "5.1": "Download a file showing the work in progress towards the next official release. This includes the file formats we have added, updated, new signatures and further details",
     "5.2.2": "Company, organisation or software manufacturer currently supporting the file format.",
     "5.2.3": "Exisitng copyright or property rights associated with the file format.",
@@ -128,7 +130,7 @@ module.exports = {
     "6.2": "The contributor who suggested the change",
     "6.3": "A short summary of what has been changed and any relevant reasoning.",
     // "6.4": "Use if a file format requires priority over another within the database, i.e. if they share similar byte sequences and need additional distinction."
-    
+
   },
   display: {
     "1.1.1": "This is the name of the file format in the specification, or if not known then the name that best describes the format. Each word is capatilised, unless the specification says otherwise e.g. 'exFAT'. If the format has multiple names these may be placed in the alias field.",
@@ -176,7 +178,8 @@ module.exports = {
     "4.3": "An email address to ask further questions.",
     "4.4": "Your Country",
     "4.5": "Any other comments regarding the contribution.",
-    "4.6": "We like to credit contributers to the PRONOM database, usually this is by organisation but can also be a personal name.",
+    "4.6.1": "We like to credit contributers to the PRONOM database, usually this is by organisation but can also be your personal name if you prefer. Please state the name by which you'd prefer to be credited. This will mean your name appears in the release notes and as the source associated with the update or file format that you contributed to PRONOM. ",
+    "4.6.2": "If you wish to remain anonymous then we will admit you from the release notes and not credit you as a source in our database.",
     "5.1": "Download a file showing the work in progress towards the next official release. This includes the file formats added, updated, new signatures and further details",
     "6.1": "A file extension is the suffix at the end of a filename.",
     "7.1": "The physical form of the archival materials.",
