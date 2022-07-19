@@ -9,7 +9,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone the backend repository
+      - name: Git clone the Backend repository
         uses: actions/checkout@v3
       - uses: nationalarchives/tdr-github-actions/.github/actions/run-git-secrets@main
         if: failure()
