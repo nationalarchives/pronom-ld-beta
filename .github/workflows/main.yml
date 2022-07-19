@@ -9,14 +9,22 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone the repository
+      - name: Git clone the backend repository
         uses: actions/checkout@v3
-      - name: Checkout tools repo
+      - uses: nationalarchives/tdr-github-actions/.github/actions/run-git-secrets@main
+        if: failure()
+        with:
+          message: ":warning: Secrets found in repository."
+      - name: Git clone the Terraform repository
         uses: actions/checkout@v3
         with:
           repository: nationalarchives/pronom-ld-beta-terraform
           ssh-key: ${{ secrets.SSH_DEPLOY_KEY }} # `SSH_DEPLOY_KEY` is a secret that contains your SSH deploy key
           path: pronom-terraform-repo
+      - uses: nationalarchives/tdr-github-actions/.github/actions/run-git-secrets@main
+        if: failure()
+        with:
+          message: ":warning: Secrets found in repository."
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,7 +37,7 @@ jobs:
       - name: Automatic Tagging of Releases
         id: increment-git-tag
         run:
-          bash ./build/git_update.sh -v minor
+          bash ./build/git_update.sh -v patch
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
