@@ -73,9 +73,9 @@ button, a {
 }
 .propose-edition {
   max-width: unset !important;
-  min-width: 1600px;
-  padding: 0 30px;
-  padding-top: 80px;
+  // min-width: 1600px;
+  // padding: 0 30px;
+  // padding-top: 80px;
   display: grid !important;
 }
 ul {
@@ -897,6 +897,8 @@ main {
   grid-template-columns: auto auto 1fr;
   grid-gap: 20px;
   align-items: flex-end;
+  max-width: 100vw;
+  overflow: hidden;
   @media only screen and (max-width: 980px) {
     grid-template-columns: 1fr;
   }
