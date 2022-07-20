@@ -1,59 +1,31 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix documentIdentifier: <http://www.nationalarchives.gov.uk/PRONOM/documentIdentifier.>
+@prefix documentation: <http://www.nationalarchives.gov.uk/PRONOM/documentation.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 <#PRONOM6/document_identifiers>
  	rr:logicalTable <#PRONOM6/document_identifiers#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentIdentifier/{identifier_id}";
- 		rr:class pr:DocumentIdentifier;
+         rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Documentation/{document_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:IdentifierTypeId;
-        rr:objectMap [ rr:column "identifier_type_id" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate rdfs:label;
-        rr:objectMap [ rr:column "identifier_text" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:DocumentId;
-        rr:objectMap [ rr:column "document_id" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:Note;
-        rr:objectMap [ rr:column "note_text" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:SourceId;
-        rr:objectMap [ rr:column "source_id" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:SourceDate;
-        rr:objectMap [ rr:column "source_date" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:LastUpdatedDate;
-        rr:objectMap [ rr:column "last_updated_date" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate documentIdentifier:Provenance;
-        rr:objectMap [ rr:column "provenance_text" ];
+        rr:predicate documentation:Identifiers;
+        rr:objectMap [ rr:termType rr:Literal ; rr:template "{identifier_type_text}: {identifier_text}" ];
  	];
  	.
 
  <#PRONOM6/document_identifiers#view> rr:sqlQuery """
-SELECT [identifier_id]
-     ,[identifier_type_id]
-     ,[identifier_text]
-     ,[document_id]
-     ,[note_text]
-     ,[source_id]
-     ,[source_date]
-     ,[last_updated_date]
-     ,[provenance_text]
- FROM [PRONOM6].[dbo].[document_identifiers]
+SELECT TOP (1000) [identifier_id]
+      ,[document_identifier_types].identifier_type_text
+      ,[identifier_text]
+      ,[document_id]
+      ,[note_text]
+      ,[source_id]
+      ,[source_date]
+      ,[last_updated_date]
+      ,[provenance_text]
+  FROM [PRONOM6].[dbo].[document_identifiers]
+  LEFT JOIN [PRONOM6].[dbo].[document_identifier_types] ON [PRONOM6].[dbo].[document_identifiers].[identifier_type_id] = [PRONOM6].[dbo].[document_identifier_types].[identifier_type_id]
 """ .
 

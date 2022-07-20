@@ -201,15 +201,14 @@ public class RDFUtil {
             public static final String Reference = uri + "Reference";
         }
 
-        public static class Reference {
-            public static final String type = PRONOM.uri + "Reference";
-            public static final String uri = PRONOM.uri + "reference.";
-            public static final String id = PRONOM.uri + "id/Reference/";
-            public static final String Link = uri + "Link";
+        public static class Documentation {
+            public static final String type = PRONOM.uri + "Documentation";
+            public static final String uri = PRONOM.uri + "documentation.";
+            public static final String id = PRONOM.uri + "id/Documentation/";
             public static final String Author = uri + "Author";
             public static final String PublicationDate = uri + "PublicationDate";
             public static final String Identifiers = uri + "Identifiers";
-            public static final String ReferenceType = uri + "ReferenceType";
+            public static final String DocumentType = uri + "DocumentType";
             public static final String Note = uri + "Note";
         }
 

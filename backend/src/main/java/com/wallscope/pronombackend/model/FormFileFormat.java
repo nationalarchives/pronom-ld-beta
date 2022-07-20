@@ -33,7 +33,7 @@ public class FormFileFormat {
     private List<FormFileFormatRelationship> hasPriorityOver;
     private List<FormFileFormatRelationship> hasRelationships;
     private FormSubmittedBy submittedBy;
-    private List<FormReference> references;
+    private List<FormDocumentation> references;
 
     public FormFileFormat() {
         // We must initialise the nested fields otherwise we get null pointer exceptions in the template rendering
@@ -47,7 +47,7 @@ public class FormFileFormat {
         hasRelationships = List.of(new FormFileFormatRelationship());
         hasPriorityOver = List.of(new FormFileFormatRelationship());
         submittedBy = new FormSubmittedBy();
-        references = List.of(new FormReference());
+        references = List.of(new FormDocumentation());
     }
 
     public String getPuid() {
@@ -218,11 +218,11 @@ public class FormFileFormat {
         this.compressionType = compressionType;
     }
 
-    public List<FormReference> getReferences() {
+    public List<FormDocumentation> getReferences() {
         return references;
     }
 
-    public void setReferences(List<FormReference> references) {
+    public void setReferences(List<FormDocumentation> references) {
         this.references = references;
     }
 
@@ -238,8 +238,8 @@ public class FormFileFormat {
                 getVersion(),
                 getBinaryFlag(),
                 getWithdrawnFlag(),
-                makeResource(getByteOrder()),
-                getReferences().stream().map(FormReference::toObject).collect(Collectors.toList()),
+                List.of(makeResource(getByteOrder())),
+                getReferences().stream().map(FormDocumentation::toObject).collect(Collectors.toList()),
                 classifications,
                 getInternalSignatures().stream().map(is -> is.toObject(ffUri, updated)).collect(Collectors.toList()),
                 getExternalSignatures().stream().map(FormExternalSignature::toObject).collect(Collectors.toList()),
@@ -283,7 +283,7 @@ public class FormFileFormat {
             hasPriorityOver.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
         if (hasRelationships != null)
             hasRelationships.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
-        if (references != null) references.forEach(fr -> fr.setUri(PRONOM.Reference.id + UUID.randomUUID()));
+        if (references != null) references.forEach(fr -> fr.setUri(PRONOM.Documentation.id + UUID.randomUUID()));
         // TODO: Actors
     }
 
@@ -334,7 +334,7 @@ public class FormFileFormat {
         if (identifiers != null)
             identifiers = identifiers.stream().filter(FormFormatIdentifier::isNotEmpty).collect(Collectors.toList());
         if (aliases != null) aliases = aliases.stream().filter(FormAlias::isNotEmpty).collect(Collectors.toList());
-        if(references != null) references = references.stream().filter(FormReference::isNotEmpty).collect(Collectors.toList());
+        if(references != null) references = references.stream().filter(FormDocumentation::isNotEmpty).collect(Collectors.toList());
         // TODO: Actors
     }
 
@@ -367,7 +367,7 @@ public class FormFileFormat {
             return fcs;
         }).sorted(Comparator.comparing(FormContainerSignature::getUri)).collect(Collectors.toList()));
         ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toList()));
-        ff.setReferences(f.getReferences().stream().map(Reference::convert).collect(Collectors.toList()));
+        ff.setReferences(f.getReferences().stream().map(com.wallscope.pronombackend.model.Documentation::convert).collect(Collectors.toList()));
         return ff;
     }
 }

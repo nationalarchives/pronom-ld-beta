@@ -1,22 +1,24 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.utils.RDFUtil;
+
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
-public class FormReference {
+public class FormDocumentation {
     private String uri;
     private String name;
-    private String link;
     private String author;
     private String identifiers;
     private String publicationDate;
     private String type;
     private String note;
 
-    public FormReference() {
+    public FormDocumentation() {
 
     }
 
@@ -34,14 +36,6 @@ public class FormReference {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 
     public String getAuthor() {
@@ -85,7 +79,7 @@ public class FormReference {
     }
 
     boolean isNotEmpty() {
-        return uri != null && name != null && !name.isBlank() && link != null && !link.isBlank();
+        return uri != null && name != null && !name.isBlank() && identifiers != null && !identifiers.isBlank();
     }
 
     @Override
@@ -93,7 +87,6 @@ public class FormReference {
         return "FormReference{" +
                 "uri='" + uri + '\'' +
                 ", name='" + name + '\'' +
-                ", link='" + link + '\'' +
                 ", author='" + author + '\'' +
                 ", identifiers='" + identifiers + '\'' +
                 ", publicationDate='" + publicationDate + '\'' +
@@ -102,10 +95,18 @@ public class FormReference {
                 '}';
     }
 
-    public Reference toObject() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        TemporalAccessor t = formatter.parse(publicationDate);
-        Instant parsedDate = Instant.from(t);
-        return new Reference(makeResource(uri), name, link, makeResource(author), identifiers, parsedDate, type, note);
+    public Documentation toObject() {
+        Instant parsedDate = parseDate(publicationDate);
+        return new Documentation(makeResource(uri), name, makeResource(author), identifiers, parsedDate, type, note);
+    }
+
+    private Instant parseDate(String str){
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            TemporalAccessor t = formatter.parse(str);
+            return Instant.from(t);
+        }catch(DateTimeParseException e){
+            return null;
+        }
     }
 }

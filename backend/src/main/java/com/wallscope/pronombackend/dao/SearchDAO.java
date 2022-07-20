@@ -19,7 +19,7 @@ import static com.wallscope.pronombackend.utils.RDFUtil.makeLiteral;
 
 public class SearchDAO {
     Logger logger = LoggerFactory.getLogger(SearchDAO.class);
-    public static final String ALLOWED_TYPES = " (pr:FileFormat) (pr:Actor) (pr:InternalSignature) (pr:ExternalSignature) (pr:Software) (pr:Hardware) (pr:Encoding) (pr:CompressionType) ";
+    public static final String ALLOWED_TYPES = " (pr:FileFormat) (pr:Actor) (pr:Software) (pr:Hardware) (pr:Encoding) (pr:CompressionType) ";
     public static final String SUB_SELECT_WHERE = """
             WHERE {
                 VALUES (?field) {
@@ -99,8 +99,8 @@ public class SearchDAO {
         StringBuilder fields = new StringBuilder();
         if (f.name) fields.append(" (rdfs:label)");
         if (f.description) fields.append(" (rdfs:comment)");
-        if (f.extension) fields.append(" (skos:notation)");
-        if (f.puid) fields.append(" (skos:hiddenLabel)");
+        if (f.extension) fields.append(" (skos:hiddenLabel)");
+        if (f.puid) fields.append(" (skos:notation)");
         fields.append(" ");
         String processed = q;
         String nullSafeSort = sort;

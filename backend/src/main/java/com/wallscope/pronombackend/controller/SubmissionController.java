@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -71,7 +73,7 @@ public class SubmissionController {
     }
 
     @PostMapping("/contribute/form/new")
-    public String newFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
+    public RedirectView newFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.randomizeURIs();
         ff.removeEmpties();
@@ -92,19 +94,21 @@ public class SubmissionController {
                 Instant.now(),
                 null);
         subDao.saveSubmission(sub);
-        return "redirect:/contribute/form";
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for new file format created successfully."));
+        return new RedirectView("/contribute/form");
     }
 
     @PostMapping("/contribute/form/{puidType}/{puid}")
-    public String formSubmission(Model model, @ModelAttribute FormFileFormat ff, @PathVariable String puidType, @PathVariable String puid) {
+    public RedirectView formSubmission(Model model, @ModelAttribute FormFileFormat ff, @PathVariable String puidType, @PathVariable String puid, RedirectAttributes redir) {
         ff.setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
         ff.randomizeURIs();
         ff.removeEmpties();
         FileFormatDAO ffDao = new FileFormatDAO();
         // For existing file formats get the current object
         FileFormat existing = ffDao.getFileFormatByPuid(puid, puidType);
+        String fullPuid = puidType + "/" + puid;
         if (existing == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puidType + "/" + puid);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
         }
 
         List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
@@ -123,7 +127,8 @@ public class SubmissionController {
                 Instant.now(),
                 null);
         subDao.saveSubmission(sub);
-        return "redirect:/contribute/form";
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for file format " + fullPuid + " created successfully."));
+        return new RedirectView("/contribute/form");
     }
 
     // Editorial form submissions
@@ -177,7 +182,7 @@ public class SubmissionController {
                 sub.getSubmitter(),
                 reviewer,
                 sub.getSource(),
-                new TentativeFileFormat(old.getURI(),ff.toObject(old.getPuid(),old.getPuidType(), Instant.now(),cs)),
+                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), cs)),
                 sub.getCreated(),
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());
