@@ -29,6 +29,7 @@ section.search-output
   h3 
     | Showing&nbsp;
     span(th:text="'('+${totalResults}+')'")
+      span(th:if="${results = null and results.empty}") 0
     |  results
   .results-manager
 
