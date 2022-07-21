@@ -347,8 +347,8 @@
           }
           > div {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-gap: 10px;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
           }
           >p, >div, >h5 {
             border-left: 2px solid lightgray;
@@ -378,6 +378,9 @@
         }
       }
       .basic {
+        p {
+          border: none !important;
+        }
         @media only screen and (max-width: 650px) {
           grid-template-columns: 1fr;
         }
