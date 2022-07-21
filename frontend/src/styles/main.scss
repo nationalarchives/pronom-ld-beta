@@ -68,7 +68,7 @@ button, a {
 }
 .editorial.page-container {
   display: grid;
-  padding: 0 90px;
+  padding: 0 60px;
   max-width: unset !important;;
   margin-left: auto;
   margin-right: auto;
@@ -1038,6 +1038,9 @@ main {
     a {
       margin:2.5px;
       margin-right: 15px;
+      &.autolink {
+        margin:0;
+      }
     }
   }
   .row-nested {
@@ -1197,7 +1200,7 @@ main {
 }
 #internal-pronom-nav {
   padding-right: 10px;
-  width: 250px;
+  width: 280px;
   top: 80px;
   #page-title {
     text-decoration: none;
@@ -1348,7 +1351,7 @@ main {
 main#internal-main {
   border-left: 10px solid black;
   min-height: 100vh;
-  padding: 30px 50px 50px;
+  padding: 30px 0 50px 30px;
 }
 h1.internal-title {
   display: block !important;
