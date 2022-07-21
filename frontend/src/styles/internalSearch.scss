@@ -201,7 +201,7 @@
         }
       }
     }
-    ul.results {
+    ul {
       padding: 0;
       li {
         border: 2px solid #0f528d;
@@ -310,6 +310,8 @@ h1 {
         background: none;
         border: none;
         list-style-type:circle;
+        background: none !important;
+        border: none !important;
       }
     }
   }
