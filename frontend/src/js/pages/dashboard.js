@@ -8,6 +8,7 @@ const App = () => {
     $('.page-container').removeClass('noJS');
     $('#header').removeClass('noJS');
     $('#pronom-content').addClass('editorial');
+    $('html').addClass('watchWidth');
 
     $('.collapse-button').on('click', function() {
       if($(this).closest('.collapse-container').hasClass('collapsed')){

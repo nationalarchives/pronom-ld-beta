@@ -46,6 +46,12 @@ html, body {
 button, a {
   cursor: pointer;
 }
+@viewport {
+  width: device-width;
+    zoom: 1;
+    min-zoom: 0.5;
+    max-zoom: 3;
+}
 .page-container {
   display: grid;
   padding: 0 90px;
@@ -1181,6 +1187,11 @@ main {
 // Please note - editiorial enviroment has a set window width - it's not responsive for small screens
 
 // Pronom main menu - START #pronommainmenu ==============
+@media only screen and (max-width: 1650px) {
+  html.watchWidth{
+    zoom: 0.85;
+  }
+}
 .logo {
   max-width: 300px;
 }
@@ -1291,7 +1302,7 @@ main {
 }
 #internal-banner {
   position: fixed;
-  width: calc(100vw - 75px);
+  width: calc(100% - 55px);
   padding: 10px 30px;
   display: flex;
   background: black;
