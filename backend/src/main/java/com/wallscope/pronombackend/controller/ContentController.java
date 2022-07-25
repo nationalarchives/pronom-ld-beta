@@ -79,7 +79,7 @@ public class ContentController {
         }
     }
 
-    private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ)\\('(?<region>[a-z_-]+)'\\)");
+    private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ|parseSubmissionSteps)\\('(?<region>[a-z_-]+)'\\)");
 
     private Set<String> getAvailableRegions() {
         try {
