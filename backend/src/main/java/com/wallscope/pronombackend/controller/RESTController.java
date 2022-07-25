@@ -38,8 +38,8 @@ public class RESTController {
         if (!fieldMapping.containsKey(field)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid autocomplete field: " + field);
         }
-        Resource fieldRes = fieldMapping.get(field);
-        List<SearchResult> results = dao.autocomplete(term, fieldRes);
+        Resource fieldType = fieldMapping.get(field);
+        List<SearchResult> results = dao.autocomplete(term, fieldType);
         return results.stream().map(r -> Map.of(
                 "label", r.getName() + (r.getPuid() != null && !r.getPuid().isBlank() ? " (" + r.getPuid() + ")" : ""),
                 "value", r.getURI().getURI()

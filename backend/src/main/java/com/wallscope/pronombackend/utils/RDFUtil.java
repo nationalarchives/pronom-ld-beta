@@ -12,6 +12,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Map;
 
 public class RDFUtil {
     static Logger logger = LoggerFactory.getLogger(RDFUtil.class);
@@ -198,7 +199,9 @@ public class RDFUtil {
             public static final String ReleaseDate = uri + "ReleaseDate";
             public static final String ContainerSignature = uri + "ContainerSignature";
             public static final String ByteOrder = uri + "ByteOrder";
-            public static final String Reference = uri + "Reference";
+            public static final String Documentation = uri + "Documentation";
+            public static final String DevelopedBy = uri + "DevelopedBy.Actor";
+            public static final String SupportedBy = uri + "SupportedBy.Actor";
         }
 
         public static class Documentation {
@@ -408,28 +411,40 @@ public class RDFUtil {
 
         // Actor sub
         public static class Actor {
+            public static final String id = PRONOM.uri + "id/Actor/";
             public static final String type = PRONOM.uri + "Actor";
+            public static final String ActorContributorType = PRONOM.uri + "ActorContributor";
             public static final String uri = PRONOM.uri + "actor.";
-            public static final String JobTitle = uri + "JobTitle";
             public static final String OrganisationName = uri + "OrganisationName";
-            public static final String TypeId = uri + "TypeId";
-            public static final String Telephone = uri + "Telephone";
+            public static final String Email = uri + "Email";
             public static final String Website = uri + "Website";
+            public static final String JobTitle = uri + "JobTitle";
+            public static final String Type = uri + "Type";
+            public static final String Telephone = uri + "Telephone";
             public static final String Country = uri + "Country";
             public static final String Support = uri + "Support";
-            public static final String Email = uri + "Email";
             public static final String SourceId = uri + "SourceId";
             public static final String SourceDate = uri + "SourceDate";
             public static final String LastUpdated = uri + "LastUpdated";
             public static final String Provenance = uri + "Provenance";
             public static final String Address = uri + "Address";
-            public static final String Authors = uri + "Authors";
-            public static final String Develops = uri + "Develops";
-            public static final String Maintains = uri + "Maintains";
-            public static final String Publishes = uri + "Publishes";
-            public static final String Supports = uri + "Supports";
         }
     }
+
+    public static final Map<String, String> labelMap = Map.of(
+            // Byte orders
+            PRONOM.ByteOrder.littleEndian, "Little-Endian",
+            PRONOM.ByteOrder.bigEndian, "Big-Endian",
+            // Submissions status
+            PRONOM.Submission.StatusNextRelease, "Next Release",
+            PRONOM.Submission.StatusReady, "Ready for Release",
+            PRONOM.Submission.StatusWaiting, "Waiting",
+            PRONOM.Submission.StatusWIP, "Work in progress",
+            PRONOM.Submission.StatusTesting, "Testing",
+            // Submission types
+            PRONOM.Submission.InternalSubmission, "Internal Submission",
+            PRONOM.Submission.UserSubmission, "User Submission"
+    );
 
     public static final String WITH_STATEMENT = "\nWITH<" + PRONOM.uri + ">\n";
 

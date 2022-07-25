@@ -284,7 +284,6 @@ public class FormFileFormat {
         if (hasRelationships != null)
             hasRelationships.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
         if (references != null) references.forEach(fr -> fr.setUri(PRONOM.Documentation.id + UUID.randomUUID()));
-        // TODO: Actors
     }
 
     @Override
@@ -334,8 +333,12 @@ public class FormFileFormat {
         if (identifiers != null)
             identifiers = identifiers.stream().filter(FormFormatIdentifier::isNotEmpty).collect(Collectors.toList());
         if (aliases != null) aliases = aliases.stream().filter(FormAlias::isNotEmpty).collect(Collectors.toList());
-        if(references != null) references = references.stream().filter(FormDocumentation::isNotEmpty).collect(Collectors.toList());
-        // TODO: Actors
+        if (references != null)
+            references = references.stream().filter(FormDocumentation::isNotEmpty).collect(Collectors.toList());
+        if (supportActors != null)
+            supportActors = supportActors.stream().filter(a -> a.getUri() != null && !a.getUri().isBlank()).collect(Collectors.toList());
+        if (developmentActors != null)
+            developmentActors = developmentActors.stream().filter(a -> a.getUri() != null && !a.getUri().isBlank()).collect(Collectors.toList());
     }
 
     public static FormFileFormat convert(FileFormat f) {
@@ -367,7 +370,13 @@ public class FormFileFormat {
             return fcs;
         }).sorted(Comparator.comparing(FormContainerSignature::getUri)).collect(Collectors.toList()));
         ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toList()));
-        ff.setReferences(f.getReferences().stream().map(com.wallscope.pronombackend.model.Documentation::convert).collect(Collectors.toList()));
+        ff.setReferences(f.getReferences().stream().map(Documentation::convert).collect(Collectors.toList()));
+        // References should always have one even if empty otherwise the frontend has no source to copy from when clicking "Add reference"
+        if (ff.getReferences().isEmpty()) {
+            ff.setReferences(List.of(new FormDocumentation()));
+        }
+        ff.setDevelopmentActors(f.getDevelopmentActors().stream().map(Actor::convert).collect(Collectors.toList()));
+        ff.setSupportActors(f.getSupportActors().stream().map(Actor::convert).collect(Collectors.toList()));
         return ff;
     }
 }

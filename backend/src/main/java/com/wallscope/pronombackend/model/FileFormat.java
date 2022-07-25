@@ -5,11 +5,13 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -193,8 +195,16 @@ public class FileFormat implements RDFWritable {
         return developmentActors;
     }
 
+    public String getDevelopmentActorsList() {
+        return developmentActors.stream().map(Actor::getDisplayName).collect(Collectors.joining(", "));
+    }
+
     public List<Actor> getSupportActors() {
         return supportActors;
+    }
+
+    public String getSupportActorsList() {
+        return supportActors.stream().map(Actor::getDisplayName).collect(Collectors.joining(", "));
     }
 
     public List<Documentation> getReferences() {
@@ -221,7 +231,7 @@ public class FileFormat implements RDFWritable {
 
         if (references != null) {
             references.forEach(r -> {
-                m.add(uri, makeProp(PRONOM.FileFormat.Reference), r.getURI());
+                m.add(uri, makeProp(PRONOM.FileFormat.Documentation), r.getURI());
                 m.add(r.toRDF());
             });
         }
@@ -250,12 +260,18 @@ public class FileFormat implements RDFWritable {
                 m.add(fi.toRDF());
             });
         }
-//        if (developmentActors != null) {
-//            developmentActors.forEach(x -> m.add(uri, makeProp(), x))
-//        }
-//        if (supportActors != null) {
-//            supportActors.forEach(x -> m.add(uri, makeProp(), x))
-//        }
+        if (developmentActors != null) {
+            developmentActors.forEach(x -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.DevelopedBy), x.getURI());
+                m.add(x.toRDF());
+            });
+        }
+        if (supportActors != null) {
+            supportActors.forEach(x -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.SupportedBy), x.getURI());
+                m.add(x.toRDF());
+            });
+        }
         if (hasRelationships != null) {
             hasRelationships.forEach(rel -> {
                 m.add(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship), rel.getURI());
@@ -300,6 +316,7 @@ public class FileFormat implements RDFWritable {
     }
 
     public static class Deserializer implements RDFDeserializer<FileFormat> {
+        Logger logger = LoggerFactory.getLogger(FileFormat.Deserializer.class);
 
         public Deserializer() {
         }
@@ -330,7 +347,7 @@ public class FileFormat implements RDFWritable {
             // ByteOrder
             List<Resource> byteOrders = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.ByteOrder)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             // Documents
-            List<Resource> refSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Reference)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<Resource> refSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Documentation)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<Documentation> references = mu.buildFromModel(new Documentation.Deserializer(), refSubjects);
             // InternalSignature
             List<Resource> intSigSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InternalSignature)).stream().map(RDFNode::asResource).collect(Collectors.toList());
@@ -347,9 +364,12 @@ public class FileFormat implements RDFWritable {
             // FileFormatRelationship
             List<Resource> relationshipSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.InFileFormatRelationship)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<FileFormatRelationship> hasRelationships = mu.buildFromModel(new FileFormatRelationship.Deserializer(), relationshipSubjects);
-            // TODO: Create actors connection
-            List<Actor> developmentActors = Collections.emptyList();
-            List<Actor> supportActors = Collections.emptyList();
+            // Development Actors
+            List<Resource> devActSubs = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.DevelopedBy)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<Actor> developmentActors = mu.buildFromModel(new Actor.Deserializer(), devActSubs);
+            // Support Actors
+            List<Resource> supActSubs = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.SupportedBy)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<Actor> supportActors = mu.buildFromModel(new Actor.Deserializer(), supActSubs);
             return new FileFormat(uri,
                     puid,
                     puidType,

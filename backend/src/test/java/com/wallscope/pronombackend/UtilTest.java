@@ -1,7 +1,7 @@
 package com.wallscope.pronombackend;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
-import com.wallscope.pronombackend.model.FAQCategory;
+import com.wallscope.pronombackend.model.MarkdownHelpers;
 import com.wallscope.pronombackend.utils.RDFUtil;
 import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.apache.jena.query.Query;
@@ -32,9 +32,17 @@ public class UtilTest {
     @Test
     void parseFAQsWorks() {
         TemplateUtils t = new TemplateUtils();
-        List<FAQCategory> result = t.parseFAQ(t.raw("doesn't_exist"));
+        List<MarkdownHelpers.FAQCategory> result = t.parseFAQ(t.raw("doesn't_exist"));
         assertTrue(result.isEmpty());
-        result = t.parseFAQ(t.raw("faq_main"));
+        result = t.parseFAQ("faq");
+        assertFalse(result.isEmpty());
+        System.out.println(result);
+    }
+
+    @Test
+    void parseSubmissionStepsWorks() {
+        TemplateUtils t = new TemplateUtils();
+        List<MarkdownHelpers.NumberedStep> result = t.parseSubmissionSteps("contribute_how-to-submit-steps");
         assertFalse(result.isEmpty());
         System.out.println(result);
     }

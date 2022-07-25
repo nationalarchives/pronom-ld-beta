@@ -123,6 +123,10 @@ const App = () => {
   autocomplete('ff', 'section#priority .input-group input.label');
   // Has relationships
   autocomplete('ff', 'section#relationships .rel-ff .input-group input.label');
+  // Development actors
+  autocomplete('actor', 'section.form-part#additionalProperties .add-actor.development .input-group input.label');
+  // Support actors
+  autocomplete('actor', 'section.form-part#additionalProperties .add-actor.support .input-group input.label');
 
 }
 

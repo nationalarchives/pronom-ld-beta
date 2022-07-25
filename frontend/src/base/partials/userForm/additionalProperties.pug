@@ -92,12 +92,11 @@ section.form-part#additionalProperties
         h4.border Stakeholders and specification
         .part
           div
-            
-            .add-actor
-              fieldset(th:each="dev, stat : *{developmentActors}")
+            .add-actor.development
+              fieldset(th:each="dev, stat : *{developmentActors}", th:with="compareSize=${#lists.size(compare?.developmentActors ?: {})}, compareDev=${compareSize > stat.index} ? ${compare.developmentActors.get(__${stat.index}__)} : null")
                 //- Developer
-                .form-row(th:classappend="${compare?.developmentActors?.get(__${stat.index}__)?.uri} ? 'before-review' : ''")
-                  p.inputType(th:text="${#strings.isEmpty(ff?.developmentActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
+                .form-row(th:classappend="${compareDev?.uri} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(dev?.uri) ? 'New content' : 'Edited content'}") New content
                   .tooltipPlusAction
                     .tooltip-container
                       .label
@@ -114,44 +113,48 @@ section.form-part#additionalProperties
                         p Reviewed
                   .input-group
                     button Accept current
-                    input(th:id="${'developmentActors' + stat.index}", th:field="*{developmentActors[__${stat.index}__].uri}", th:data-undo="${ff?.developmentActors?.get(__${stat.index}__)?.uri}")
-                  .input-group(th:if="${compare?.developmentActors?.get(__${stat.index}__)?.uri}")
+                    input(type="hidden", th:id="${'developmentActors' + stat.index}", th:field="*{developmentActors[__${stat.index}__].uri}")
+                    input.label(th:id="${'developmentActorsName' + stat.index}", th:field="*{developmentActors[__${stat.index}__].name}", th:data-undo="${dev?.name}")
+                  .input-group(th:if="${compareDev?.uri}")
                     button.incoming Accept incoming
-                    input(th:id="${'developmentActors' + stat.index}", th:value="${compare.developmentActors?.get(__${stat.index}__)?.uri}")
+                    input(type="hidden", th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.uri}")
+                    input(th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.name}")
                 p.from-internal-only or
                 button.black.small.from-internal-only
                   | Add institutional actor
 
           div
             .from-internal-only
-                .add-actor
-                  fieldset(th:each="dev, stat : *{supportActors}")
-                    //- Support
-                    .form-row(th:classappend="${compare?.supportActors?.get(__${stat.index}__)} ? 'before-review' : ''")
-                      p.inputType(th:text="${#strings.isEmpty(ff?.supportActors?.get(__${stat.index}__)?.uri) ? 'New content' : 'Edited content'}") New content
-                      .tooltipPlusAction
-                        .tooltip-container
-                          .label
-                            label(th:for="${'supportActors' + stat.index}") Support
-                            span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
-                              .i-wrapper
-                                i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                        .action-monitoring
-                          .review-type
-                            i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                            p Require reviewing
-                          .review-type
-                            i.fa-solid.fa-square-check
-                            p Reviewed
-                      .input-group
-                        button Accept current
-                        input(th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}", th:data-undo="${ff?.supportActors?.get(__${stat.index}__)?.uri}")
-                      .input-group(th:if="${compare?.supportActors?.get(__${stat.index}__)?.uri}")
-                        button.incoming Accept incoming
-                        input(th:id="${'supportActors' + stat.index}", th:value="${compare.supportActors?.get(__${stat.index}__)?.uri}")
-                    p.from-internal-only or
-                    button.black.small.from-internal-only
-                      | Add institutional actor
+              .add-actor.support
+                fieldset(th:each="sup, stat : *{supportActors}", th:with="compareSize=${#lists.size(compare?.supportActors ?: {})}, compareSup=${compareSize > stat.index} ? ${compare.supportActors.get(__${stat.index}__)} : null")
+                  //- Support
+                  .form-row(th:classappend="${compareSup?.uri} ? 'before-review' : ''")
+                    p.inputType(th:text="${#strings.isEmpty(sup?.uri) ? 'New content' : 'Edited content'}") New content
+                    .tooltipPlusAction
+                      .tooltip-container
+                        .label
+                          label(th:for="${'supportActors' + stat.index}") Support
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.4.2.1') tabindex='0')
+                            .i-wrapper
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                      .action-monitoring
+                        .review-type
+                          i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                          p Require reviewing
+                        .review-type
+                          i.fa-solid.fa-square-check
+                          p Reviewed
+                    .input-group
+                  button Accept current
+                  input(type="hidden", th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}")
+                  input.label(th:id="${'supportActorsName' + stat.index}", th:field="*{supportActors[__${stat.index}__].name}", th:data-undo="${sup?.name}")
+                .input-group(th:if="${compareSup?.uri}")
+                  button.incoming Accept incoming
+                  input(type="hidden", th:id="${'supportActors' + stat.index}", th:value="${compareSup?.uri}")
+                  input(th:id="${'supportActors' + stat.index}", th:value="${compareSup?.name}")
+                  p.from-internal-only or
+                  button.black.small.from-internal-only
+                    | Add institutional actor
 
         //-         //- Format IPR
         //-         .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")

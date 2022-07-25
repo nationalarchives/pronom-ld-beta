@@ -23,17 +23,18 @@ import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FileFormatDAO {
     Logger logger = LoggerFactory.getLogger(FileFormatDAO.class);
+    // TODO: Write Actors part of query
     public static final String EXTERNAL_SIGNATURE_SUB_QUERY = "?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType .";
     public static final String DOCUMENTATION_SUB_QUERY = """
             ?f pr:fileFormat.Documentation ?fDocumentation .
             ?fDocumentation a pr:Documentation ;
               rdfs:label ?fDocumentationLabel ;
-              pr:Documentation.Link ?fDocumentationLink .
-            OPTIONAL{ ?fDocumentation pr:Documentation.Author ?fDocumentationAuthor . }#END OPTIONAL
-            OPTIONAL{ ?fDocumentation pr:Documentation.Identifiers ?fDocumentationIdentifiers . }#END OPTIONAL
-            OPTIONAL{ ?fDocumentation pr:Documentation.PublicationDate ?fDocumentationDate . }#END OPTIONAL
-            OPTIONAL{ ?fDocumentation pr:Documentation.DocumentType ?fDocumentationType . }#END OPTIONAL
-            OPTIONAL{ ?fDocumentation pr:Documentation.Note ?fDocumentationNote . }#END OPTIONAL
+              .
+            OPTIONAL{ ?fDocumentation pr:documentation.Author ?fDocumentationAuthor . }#END OPTIONAL
+            OPTIONAL{ ?fDocumentation pr:documentation.Identifiers ?fDocumentationIdentifiers . }#END OPTIONAL
+            OPTIONAL{ ?fDocumentation pr:documentation.PublicationDate ?fDocumentationDate . }#END OPTIONAL
+            OPTIONAL{ ?fDocumentation pr:documentation.DocumentType ?fDocumentationType . }#END OPTIONAL
+            OPTIONAL{ ?fDocumentation pr:documentation.Note ?fDocumentationNote . }#END OPTIONAL
             """;
     public static final String FORMAT_IDENTIFIER_SUB_QUERY = """
             ?fId a pr:FormatIdentifier ; pr:formatIdentifier.FileFormat ?f .
@@ -79,8 +80,7 @@ public class FileFormatDAO {
             OPTIONAL { ?f pr:fileFormat.Version ?version . }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.BinaryFlag ?binaryFlag . }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.WithdrawnFlag ?withdrawn . }#END OPTIONAL
-            OPTIONAL { ?f pr:fileFormat.Development.Actor ?devActor . }#END OPTIONAL
-            OPTIONAL { ?f pr:fileFormat.Support.Actor ?supportActor . }#END OPTIONAL
+
             # Format Identifiers
             OPTIONAL{
                """ + FORMAT_IDENTIFIER_SUB_QUERY + """
@@ -102,8 +102,18 @@ public class FileFormatDAO {
             OPTIONAL { ?f ff:ContainerSignature ?contSig .
                """ + FORM_CONTAINER_SIG_SUB_QUERY + """
             }#END OPTIONAL
-                           	 
-                        
+            
+            # Development Actors
+            OPTIONAL { ?f pr:fileFormat.DevelopedBy.Actor ?fDevActor .
+            """ + ActorDAO.ACTOR_SUB_QUERY.replaceAll("\\?act", "?fDevActor") + """
+            }#END OPTIONAL
+            
+            # Support Actors
+            OPTIONAL { ?f pr:fileFormat.SupportedBy.Actor ?fSupportActor .
+            """ + ActorDAO.ACTOR_SUB_QUERY.replaceAll("\\?act", "?fSupportActor") + """
+            }#END OPTIONAL
+            
+            # Format Relationships
             OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
                """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
             }#END OPTIONAL

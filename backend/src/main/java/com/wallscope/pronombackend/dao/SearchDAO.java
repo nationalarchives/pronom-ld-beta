@@ -51,13 +51,13 @@ public class SearchDAO {
                 pr:search.Match ?lit ;
                 pr:search.Field ?field ;
             	.
-              ?result a ?type ; rdfs:label ?label ; ?p ?o .
+              ?result a ?type ; rdfs:label ?label .
             }
             WHERE {
               {
               """ + SUB_SELECT_SEARCH + """
               }
-              ?result a ?type ; rdfs:label ?label ; ?p ?o .
+              ?result a ?type ; ?field ?label .
             }
             """;
 

@@ -53,7 +53,7 @@ public class Documentation implements RDFWritable {
             m.add(uri, makeProp(PRONOM.Documentation.PublicationDate), makeXSDDateTime(publicationDate));
         }
         if (type != null) m.add(uri, makeProp(PRONOM.Documentation.DocumentType), makeLiteral(type));
-        if (name != null) m.add(uri, makeProp(PRONOM.Documentation.Note), makeLiteral(name));
+        if (note != null) m.add(uri, makeProp(PRONOM.Documentation.Note), makeLiteral(note));
         return m;
     }
 

@@ -9,7 +9,7 @@
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate pr:fileFormat.Developer;
+        rr:predicate pr:fileFormat.DevelopedBy.Actor;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
     ];
  	.

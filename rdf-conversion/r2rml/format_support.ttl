@@ -6,12 +6,11 @@
 <#PRONOM6/format_support>
  	rr:logicalTable <#PRONOM6/format_support#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatSupport/{file_format_id}";
- 		rr:class pr:FormatSupport;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate formatSupport:SupportId;
-        rr:objectMap [ rr:column "support_id" ];
+        rr:predicate pr:fileFormat.SupportedBy.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{support_id}" ];
     ];
  	.
 

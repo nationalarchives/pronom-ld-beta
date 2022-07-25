@@ -169,7 +169,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:utext="${@templateUtils.autolinker(ff.description)}") audio
+            p(th:utext="${@templateUtils.autolinker(ff.description)}") audio
         //- ROW
         li.row
           .tooltip-container
@@ -195,69 +195,24 @@ block modalBody
       
       h2#references References
       //- TABLE =========================================================================
-      ul.table
+      ul.table(th:if="${#lists.isEmpty(ff?.references ?: {})}")
+        li.row
+          p No references
+      ul.table(th:each="ref : ${ff.references}", th:with="hasLink=${!#strings.isEmpty(ref?.identifiers)}")
         //- ROW
         li.row
           .tooltip-container
             .label
-              p.label-text Link name/title
+              p.label-text Reference name
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED 1
-      
-      
-      
-      //- TABLE =========================================================================
-      ul.table
+            p(th:if="${hasLink}")
+              a(th:href="${ref?.identifiers}", th:text="${ref?.name}") Link
+            p(th:if="${!hasLink}", th:text="${ref?.name}") No Link
         //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED 2.1
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED 2.2
-
-
-
-      h3 Documentation
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.3') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
+        li.row(th:if="${ref.author}")
           .tooltip-container
             .label
               p.label-text Author
@@ -265,29 +220,20 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p
+              a(th:href="${ref?.author}", th:text="${ref?.author}") Author
         //- ROW
-        li.row
+        li.row(th:if="${ref.publicationDate}")
           .tooltip-container
             .label
-              p.label-text Identifiers
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW 
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Publication date
+              p.label-text Publication Date
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.6') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${#temporals.format(ref?.publicationDate, 'dd/MM/yyyy')}") Publication Date
         //- ROW 
-        li.row
+        li.row(th:if="${ref.type}")
           .tooltip-container
             .label
               p.label-text Type
@@ -295,9 +241,9 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${ref?.type}") Type
         //- ROW 
-        li.row
+        li.row(th:if="${ref.note}")
           .tooltip-container
             .label
               p.label-text Note
@@ -305,13 +251,14 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
-
-
+            p(th:text="${ref.note}") Note
 
       h2#signatures Signatures
-      h3 display signatures
+      h3 External signatures
       //- TABLE =========================================================================
+      ul.table(th:if="${#lists.isEmpty(ff?.externalSignatures ?: {})}")
+        li.row
+          p No internal signatures
       ul.table(th:each=" extSig : ${ff.externalSignatures}")
         //- ROW 
         li.row
@@ -338,6 +285,9 @@ block modalBody
 
       h3 Internal signatures
       //- TABLE =========================================================================
+      ul.table(th:if="${#lists.isEmpty(ff?.internalSignatures ?: {})}")
+        li.row
+          p No internal signatures
       ul.table(th:each="intSig : ${ff.internalSignatures}")
         //- ROW
         li.row
@@ -438,7 +388,8 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p
+              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.labelMap(bo)}") NOT IMPLEMENTED
         //- ROW
         //- TODO - tooltip not available
         li.row
@@ -480,7 +431,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${ff?.developmentActorsList}")
         //- ROW
         li.row
           .tooltip-container
@@ -490,7 +441,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p Lorem ipsum dolor sit amet
+            p(th:text="${ff?.supportActorsList}") Support actors
         //- ROW
         //- TODO - tooltip not available
         li.row
