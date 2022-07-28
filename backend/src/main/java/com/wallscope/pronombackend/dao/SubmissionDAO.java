@@ -80,7 +80,7 @@ public class SubmissionDAO {
             WHERE  { ?sub pr:submission.SubmissionStatus ?subStatus }
             """;
     public static final String SUBMISSION_DELETE_SUB_QUERY = SUBMISSION_SUB_QUERY
-            .replaceAll("pr:submission.FileFormat \\?f ;", "pr:submission.FileFormat ?f ;  pr:submission.Source ?subSource ;")
+            .replaceAll("pr:submission\\.FileFormat \\?f ;", "pr:submission.FileFormat ?f ;  pr:submission.Source ?subSource ;")
             .replaceAll("\\?puidType rdfs:label \\?puidTypeName \\.", "")
             .replaceAll("\\?classification rdfs:label \\?classificationName \\.", "")
             .replaceAll("\\?fIdType rdfs:label \\?fIdTypeName \\.", "")

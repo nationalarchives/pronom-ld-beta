@@ -6,20 +6,22 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class Documentation implements RDFWritable {
     private final Resource uri;
     private final String name;
-    private final Resource author;
+    private final Actor author;
     private final String identifiers;
     private final Instant publicationDate;
     private final String type;
     private final String note;
 
-    public Documentation(Resource uri, String name, Resource author, String identifiers, Instant publicationDate, String type, String note) {
+    public Documentation(Resource uri, String name, Actor author, String identifiers, Instant publicationDate, String type, String note) {
         this.uri = uri;
         this.name = name;
         this.author = author;
@@ -47,7 +49,7 @@ public class Documentation implements RDFWritable {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.Documentation.type));
         if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
-        if (author != null) m.add(uri, makeProp(PRONOM.Documentation.Author), author);
+        if (author != null) m.add(uri, makeProp(PRONOM.Documentation.Author), author.getURI());
         if (identifiers != null) m.add(uri, makeProp(PRONOM.Documentation.Identifiers), makeLiteral(identifiers));
         if (publicationDate != null) {
             m.add(uri, makeProp(PRONOM.Documentation.PublicationDate), makeXSDDateTime(publicationDate));
@@ -57,7 +59,7 @@ public class Documentation implements RDFWritable {
         return m;
     }
 
-    public Resource getAuthor() {
+    public Actor getAuthor() {
         return author;
     }
 
@@ -94,9 +96,10 @@ public class Documentation implements RDFWritable {
         FormDocumentation fr = new FormDocumentation();
         fr.setUri(safelyGetUriOrNull(uri));
         fr.setName(name);
-        fr.setAuthor(safelyGetUriOrNull(author));
+        fr.setAuthor(safelyGetUriOrNull(author.getURI()));
+        fr.setAuthorName(author.getDisplayName());
         fr.setIdentifiers(identifiers);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.UK).withZone(ZoneId.systemDefault());
         fr.setPublicationDate(formatter.format(publicationDate));
         fr.setType(type);
         fr.setNote(note);
@@ -114,7 +117,9 @@ public class Documentation implements RDFWritable {
         public Documentation fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
             String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
-            Resource author = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.Author)));
+            Resource authorUri = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.Author)));
+            Actor author = new Actor.Deserializer().fromModel(authorUri, model);
+
             String type = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.DocumentType)));
             Instant publicationDate = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.PublicationDate)));
             String identifiers = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.Identifiers)));

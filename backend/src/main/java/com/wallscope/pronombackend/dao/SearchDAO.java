@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PREFIXES;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeLiteral;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class SearchDAO {
     Logger logger = LoggerFactory.getLogger(SearchDAO.class);
@@ -51,22 +51,28 @@ public class SearchDAO {
                 pr:search.Match ?lit ;
                 pr:search.Field ?field ;
             	.
-              ?result a ?type ; rdfs:label ?label .
+              ?result a ?type ; rdfs:label ?label ; ?p ?o .
             }
             WHERE {
               {
               """ + SUB_SELECT_SEARCH + """
               }
-              ?result a ?type ; ?field ?label .
+              ?result a ?type ; rdfs:label ?label ; ?p ?o .
+              VALUES (?excludes){
+                  #EXCLUDED_PREDICATES#
+              }
+              FILTER(?p != ?excludes)
             }
             """;
 
     public List<SearchResult> autocomplete(String q, Resource type) {
-        return search(q, 10, 0, new Filters(true, true, true, true), "score", "(<"+type+">)");
+        return search(q, 10, 0, new Filters(true, true, true, true), "score", "(<" + type + ">)");
     }
-    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort){
+
+    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort) {
         return search(q, limit, offset, filters, sort, ALLOWED_TYPES);
     }
+
     public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort, String types) {
         logger.debug("fetching search results");
         String sanitised = TriplestoreUtil.sanitiseLiteral(q);
@@ -102,7 +108,6 @@ public class SearchDAO {
         if (f.extension) fields.append(" (skos:hiddenLabel)");
         if (f.puid) fields.append(" (skos:notation)");
         fields.append(" ");
-        String processed = q;
         String nullSafeSort = sort;
         if (sort == null) {
             nullSafeSort = "";
@@ -113,9 +118,16 @@ public class SearchDAO {
             case "puid" -> "ORDER BY COALESCE(xsd:integer(?puid), 9999999)";
             default -> "ORDER BY DESC(?sc)";
         };
-        processed = processed.replace("#ORDER#", order);
+        // exclude extra properties that would bloat the messages and slow down the queries
+        String excludes = SearchResult.Deserializer.excludeProps.stream()
+                .filter(ex -> !List.of(RDF.type, RDFS.label, RDFS.comment).contains(ex))
+                .map(ex -> "(<" + ex + ">)")
+                .collect(Collectors.joining(" "));
 
-        return processed.replace("#ALLOWED_TYPES#", types).replace("#SEARCH_FIELDS#", fields.toString());
+        return q.replace("#EXCLUDED_PREDICATES#", excludes)
+                .replace("#ORDER#", order)
+                .replace("#ALLOWED_TYPES#", types)
+                .replace("#SEARCH_FIELDS#", fields.toString());
     }
 
     public static class Filters {

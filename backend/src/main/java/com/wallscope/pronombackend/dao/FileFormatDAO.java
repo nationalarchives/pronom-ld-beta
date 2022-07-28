@@ -30,7 +30,10 @@ public class FileFormatDAO {
             ?fDocumentation a pr:Documentation ;
               rdfs:label ?fDocumentationLabel ;
               .
-            OPTIONAL{ ?fDocumentation pr:documentation.Author ?fDocumentationAuthor . }#END OPTIONAL
+            OPTIONAL{ ?fDocumentation pr:documentation.Author ?fDocumentationAuthor .
+              OPTIONAL { ?fDocumentationAuthor rdfs:label ?fDocumentationAuthorLabel . }#END OPTIONAL
+              OPTIONAL { ?fDocumentationAuthor pr:actor.OrganisationName ?fDocumentationAuthorOrgName . }#END OPTIONAL
+            }#END OPTIONAL
             OPTIONAL{ ?fDocumentation pr:documentation.Identifiers ?fDocumentationIdentifiers . }#END OPTIONAL
             OPTIONAL{ ?fDocumentation pr:documentation.PublicationDate ?fDocumentationDate . }#END OPTIONAL
             OPTIONAL{ ?fDocumentation pr:documentation.DocumentType ?fDocumentationType . }#END OPTIONAL

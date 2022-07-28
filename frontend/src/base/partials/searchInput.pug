@@ -25,17 +25,15 @@ section.search-input-container
         input#puid(type='checkbox' name='f_puid' th:value="${f_puid}" th:checked="${f_puid}")
         label(for='puid') PUID
 
-section.search-output
-  h3 
-    | Showing&nbsp;
-    span(th:text="'('+${totalResults}+')'")
-      span(th:if="${results = null and results.empty}") 0
-    |  results
+section.search-output(th:with="isEmpty=${#lists.isEmpty(results)}")
+  h3(th:unless="${results == null}") Showing&nbsp;
+    span(th:if="${isEmpty}") 0 results
+    span(th:unless="${isEmpty}", th:text="'('+${totalResults}+')'")
   .results-manager
 
-    div(th:if="${results = null and results.empty}")
+    div(th:if="${results != null and isEmpty}")
       include ../partials/noResults.pug
-    div(th:if="${results != null and !results.empty}")
+    div(th:unless="${isEmpty}")
       .additionals
         .manage-results
           .result-counts
@@ -83,7 +81,7 @@ section.search-output
                 li
                   a(th:href="@{/id/{target}(target=${r.idUri})}")
                     div
-                      p.data.type(th:utext="'<span>Type</span>'+${r.stringType}")
+                      p.data.type(th:utext="'<span>Type</span>'+${@templateUtils.getLabel(r.type)}")
                         span Type
                         | File format
                       h5.data.name(th:utext="'<span>Name</span>'+${r.HTMLName}")

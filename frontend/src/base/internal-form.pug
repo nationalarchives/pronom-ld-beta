@@ -5,6 +5,9 @@ block modalHeader
     h1
       | Add new file fomat
 block modalBody
+  .add-actor-modal
+    .overlay
+      include ./partials/actorInner.pug
   .error-notification(th:if="${errors}")
     .error-inner
       div
@@ -16,7 +19,7 @@ block modalBody
   .form-content#internal-form
     include ./partials/userForm/form-navigation.pug
     main#main-form-content
-      form(action="#", th:action="@{/editorial/form/{target}(target=${submissionId} ?: 'new')}", method='POST', th:object="${ff}") 
+      form(th:action="@{/editorial/form/{target}(target=${submissionId} ?: 'new')}", method='POST', th:object="${ff}") 
         .form-section
           include ./partials/userForm/core.pug
         .form-section

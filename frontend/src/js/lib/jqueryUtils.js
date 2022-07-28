@@ -1,7 +1,6 @@
 import "jquery-ui/ui/widgets/autocomplete"
 
 export function autocomplete(field, selector) {
-  console.log('autocomplete: ' + selector);
   $(document).on('keydown.autocomplete', selector, function () {
     const options = {
       source: `/autocomplete/${field}`,
@@ -139,9 +138,8 @@ export function setupReferenceMultifield() {
     const clone = last.clone(true)
     clone.find(':input').each(function () {
       const $this = $(this);
-      // ignore buttons which get caught by :input as well
-      if ($this.is('button')) return;
-      $this.val('');
+      // ignore buttons and checkboxes which get caught by :input as well
+      if ($this.is('button') || $this.is(':checkbox')) return;
       $this.attr('name', $this.attr('name').replace(/reference\[\d+\]/, `reference[${newIndex}]`));
       $this.prop('disabled', false);
     });
@@ -151,6 +149,16 @@ export function setupReferenceMultifield() {
     evt.preventDefault();
     $(this).closest(".reference-group").remove();
   });
+
+  $('.documentation input:checkbox').change(function (evt) {
+    evt.preventDefault();
+    if ($(this).is(":checked")) {
+      $(this).closest('.reference-group').addClass("open-additional");
+    } else {
+      $(this).closest('.reference-group').removeClass("open-additional");
+    }
+  });
+  $('.documentation input:checkbox').trigger('change');
 }
 
 export function setupFormNavigation(){
@@ -211,7 +219,6 @@ export function setupFormNavigation(){
     formStep = formParts.indexOf(currentFormPart);
     $(currentBtn).addClass('active');
     $(formParts[formStep]).addClass('show');
-    console.log(formStep);
     if (formStep === 2) {
       $('#prioritySubBtn').closest('li').addClass('active');
     }
@@ -224,7 +231,6 @@ export function setupFormNavigation(){
     var currentBtn = ('#' + $(this).closest('li').attr('id'));
     var currentFormPart = currentBtn.replace('SubBtn', '');
     formStep = formParts.indexOf(currentFormPart);
-    console.log(currentBtn);
     $(formParts[formStep]).addClass('show');
     $(currentBtn).closest('li').addClass('active');
   });
@@ -246,6 +252,41 @@ export function setupFormNavigation(){
     }
     $(formParts[formStep]).addClass('show');
   });
+}
+
+export function setupAddActorModal(){
+  $('.add-actor-button').on('click', function (evt) {
+    evt.preventDefault();
+    $('.add-actor-modal').show();
+    $('.add-actor-modal .close').show();
+  });
+
+  $('.add-actor-modal .overlay').on('click', function(evt){
+    evt.preventDefault();
+    $('.add-actor-modal').hide();
+  });
+
+  $('.add-actor-modal .close').on('click', function(evt){
+    evt.preventDefault();
+    $('.add-actor-modal').hide();
+  });
+
+  $(".add-actor-modal form").on("submit", function (evt) {
+    evt.preventDefault();
+    const $form = $(this)
+    const dataString = $form.serialize();
+     
+    $.ajax({
+      type: "POST",
+      url: $form.prop('action'),
+      data: dataString,
+      success: function () {
+        $('.add-actor-modal').hide();
+        $form.trigger('reset');
+      }
+    });
+ 
+});
 }
 
 export function setupForm() {

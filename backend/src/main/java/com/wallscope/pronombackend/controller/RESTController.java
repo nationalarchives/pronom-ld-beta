@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 /*
  * This controller handles all calls to pages where the content does not depend on fetching data from the database
@@ -40,9 +39,13 @@ public class RESTController {
         }
         Resource fieldType = fieldMapping.get(field);
         List<SearchResult> results = dao.autocomplete(term, fieldType);
-        return results.stream().map(r -> Map.of(
-                "label", r.getName() + (r.getPuid() != null && !r.getPuid().isBlank() ? " (" + r.getPuid() + ")" : ""),
-                "value", r.getURI().getURI()
-        )).collect(Collectors.toList());
+        return results.stream().map(r -> {
+            String label = r.getName() + (r.getPuid() != null && !r.getPuid().isBlank() ? " (" + r.getPuid() + ")" : "");
+            if (fieldType.getURI().equals(PRONOM.Actor.type)) {
+                String hiddenLabelStr = safelyGetStringOrDefault(r.getProperties().getOrDefault(SKOS.hiddenLabel, null), "");
+                label = !hiddenLabelStr.isEmpty() ? label + " | " + hiddenLabelStr : label;
+            }
+            return Map.of("label", label, "value", r.getURI().getURI());
+        }).collect(Collectors.toList());
     }
 }

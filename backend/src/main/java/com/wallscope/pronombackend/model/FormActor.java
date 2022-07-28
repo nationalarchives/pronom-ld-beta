@@ -14,6 +14,12 @@ public class FormActor {
     public FormActor() {
     }
 
+    public String getID() {
+        if(uri == null) return null;
+        String[] parts = uri.split("/");
+        return parts[parts.length - 1];
+    }
+
     public String getUri() {
         return uri;
     }
@@ -72,5 +78,10 @@ public class FormActor {
 
     public String getWebsite() {
         return website;
+    }
+
+    public boolean isEmpty() {
+        return uri != null && !uri.isBlank()
+                && name != null && !name.isBlank();
     }
 }

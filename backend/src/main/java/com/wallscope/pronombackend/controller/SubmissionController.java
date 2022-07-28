@@ -18,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -134,7 +136,10 @@ public class SubmissionController {
     // Editorial form submissions
 
     @GetMapping("/editorial/form/{submission}")
-    public String editorialSubmissionForm(Model model, @PathVariable String submission) {
+    public String editorialSubmissionForm(Model model, @PathVariable String submission, HttpServletResponse response) {
+        // set empty actor for the add-actor functionality
+        model.addAttribute("actor", new FormActor());
+        model.addAttribute("editorial", true);
         model.addAttribute("edit", true);
         SubmissionDAO subDao = new SubmissionDAO();
         Resource submissionUri = makeResource(PRONOM.Submission.id + submission);
@@ -191,8 +196,11 @@ public class SubmissionController {
     }
 
     @GetMapping("/editorial/form/{puidType}/{puid}")
-    public String editorialFormTemplate(Model model, @PathVariable String puidType, @PathVariable String puid) {
+    public String editorialFormTemplate(Model model, @PathVariable String puidType, @PathVariable String puid, HttpServletResponse response) {
+        // set empty actor for the add-actor functionality
+        model.addAttribute("actor", new FormActor());
         model.addAttribute("edit", true);
+        model.addAttribute("editorial", true);
         FileFormatDAO dao = new FileFormatDAO();
         FileFormat f = dao.getFileFormatByPuid(puid, puidType);
         if (f == null) {
@@ -210,7 +218,10 @@ public class SubmissionController {
     }
 
     @GetMapping("/editorial/form/new")
-    public String editorialNewFormTemplate(Model model) {
+    public String editorialNewFormTemplate(Model model, HttpServletResponse response) {
+        // set empty actor for the add-actor functionality
+        model.addAttribute("actor", new FormActor());
+        model.addAttribute("editorial", true);
         model.addAttribute("edit", false);
         FormFileFormat compare = new FormFileFormat();
         model.addAttribute("compare", compare);

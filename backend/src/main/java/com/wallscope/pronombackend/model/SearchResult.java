@@ -180,7 +180,18 @@ public class SearchResult implements RDFWritable {
     }
 
     public static class Deserializer implements RDFDeserializer<SearchResult> {
-        private final List<String> excludeProps = List.of(RDF.type, RDFS.label, RDFS.comment);
+        public static final List<String> excludeProps = List.of(
+                RDF.type,
+                RDFS.label,
+                RDFS.comment,
+                PRONOM.Actor.DevelopsFileFormat,
+                PRONOM.Actor.SupportsFileFormat,
+                PRONOM.Actor.SupportWebsite,
+                PRONOM.Actor.AuthorsDocument,
+                PRONOM.Actor.DevelopsCompressionType,
+                PRONOM.Actor.MaintainsSoftware,
+                PRONOM.Actor.PublishesDocument
+        );
 
         @Override
         public Resource getRDFType() {

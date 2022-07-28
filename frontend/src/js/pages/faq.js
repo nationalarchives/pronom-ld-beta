@@ -1,5 +1,3 @@
-import { test } from '@js/lib/test'
-
 import '@styles/main.scss'
 import '@styles/faq.scss'
 
@@ -13,9 +11,7 @@ const App = () => {
   $('.faq-questions button').on('click', function() {
     var selectedButton = this.id;
     var selectedP = this.id + 'text';
-    console.log(selectedButton)
     if($( "#" + selectedButton ).hasClass( "closed" )){
-      console.log('class closed detected')
       // manage button
       // change aria-expanded for accessibility
       $('#'+selectedButton).attr("aria-expanded","true");

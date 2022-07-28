@@ -10,9 +10,12 @@
   SELECT
       -- ACTORS BASIC FIELDS
          [actors].[actor_id]
-        ,[actors].[name_text]
         ,[actors].[job_title_text]
-        ,[actors].[organisation_name_text]
+      -- The following lines make sure that:
+      -- 1. The name_text column is the main name of the actor
+      -- 2. There are no cases where the name_text and the organisational_name are the same
+        ,COALESCE([actors].[name_text],[actors].[organisation_name_text]) as name_text
+        ,COALESCE(CASE WHEN (name_text = NULL) THEN [organisation_name_text] ELSE NULL END, CASE WHEN (name_text != organisation_name_text) THEN [organisation_name_text] ELSE NULL END) as [organisation_name_text]
         ,[actors].[actor_type_id]
         ,[actors].[telephone_text]
         ,[actors].[website_text]

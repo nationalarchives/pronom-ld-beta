@@ -1,5 +1,3 @@
-import { test } from '@js/lib/test'
-
 import '@styles/main.scss'
 import '@styles/dashboard.scss'
 
@@ -18,7 +16,6 @@ const App = () => {
       }else{
         $(this).closest('.collapse-container').addClass('collapsed');
         $('.collapsed .collapse-content').css('display','none');
-        console.log('clicked')
       }
     });
     // feedback message

@@ -1,11 +1,13 @@
 package com.wallscope.pronombackend.model;
 
-import com.wallscope.pronombackend.utils.RDFUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Locale;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
@@ -13,7 +15,9 @@ public class FormDocumentation {
     private String uri;
     private String name;
     private String author;
+    private String authorName;
     private String identifiers;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private String publicationDate;
     private String type;
     private String note;
@@ -78,8 +82,23 @@ public class FormDocumentation {
         this.note = note;
     }
 
+    public boolean getIsDocumentation() {
+        return (author != null && !author.isBlank())
+                || (publicationDate != null && !publicationDate.isBlank())
+                || (type != null && !type.isBlank())
+                || (note != null && !note.isBlank());
+    }
+
     boolean isNotEmpty() {
         return uri != null && name != null && !name.isBlank() && identifiers != null && !identifiers.isBlank();
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     @Override
@@ -97,15 +116,15 @@ public class FormDocumentation {
 
     public Documentation toObject() {
         Instant parsedDate = parseDate(publicationDate);
-        return new Documentation(makeResource(uri), name, makeResource(author), identifiers, parsedDate, type, note);
+        return new Documentation(makeResource(uri), name, new Actor(makeResource(author), null, null, null, null, null, null), identifiers, parsedDate, type, note);
     }
 
-    private Instant parseDate(String str){
-        try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Instant parseDate(String str) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.UK).withZone(ZoneId.systemDefault());
             TemporalAccessor t = formatter.parse(str);
             return Instant.from(t);
-        }catch(DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return null;
         }
     }

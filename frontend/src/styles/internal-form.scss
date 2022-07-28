@@ -60,6 +60,27 @@
   }
 }
 
+.add-actor-modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  .form-container {
+    background-color: #ffffff;
+    margin-top: 100px;
+    padding: 30px;
+    .close{
+      display: none;
+    }
+  }
+}
+
+.add-actor.noJS {
+  display: none;
+}
+
+
 aside {
   @media only screen and (max-width: 1200px) {
     display: block !important;

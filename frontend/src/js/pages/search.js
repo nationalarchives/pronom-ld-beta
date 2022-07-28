@@ -15,6 +15,9 @@ const App = () => {
       $(this).closest('.each-filter').removeClass("selected");
     }
   });
+  $('.sort-by select').change(function(){
+    $('.search-input button').trigger('click');
+  });
 
   // Autocomplete setup
   // Priority over

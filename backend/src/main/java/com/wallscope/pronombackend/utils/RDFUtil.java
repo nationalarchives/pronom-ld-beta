@@ -170,6 +170,7 @@ public class RDFUtil {
         public static class Global {
             public static final String uri = PRONOM.uri + "global.";
             public static final String Puid = uri + "Puid";
+            public static final String PuidTypeId = uri + "PuidTypeId";
         }
 
         // SearchResult sub
@@ -428,22 +429,48 @@ public class RDFUtil {
             public static final String LastUpdated = uri + "LastUpdated";
             public static final String Provenance = uri + "Provenance";
             public static final String Address = uri + "Address";
+            public static final String DevelopsFileFormat = uri + "Develops.FileFormat";
+            public static final String SupportsFileFormat = uri + "Supports.FileFormat";
+            public static final String SupportWebsite = uri + "Support.Website";
+            public static final String AuthorsDocument = uri + "Authors.Document";
+            public static final String DevelopsCompressionType = uri + "Develops.CompressionType";
+            public static final String MaintainsSoftware = uri + "Maintains.Software";
+            public static final String PublishesDocument = uri + "Publishes.Document";
+        }
+
+        // Software sub
+        public static class Software {
+            public static final String type = PRONOM.uri + "Software";
+            public static final String uri = PRONOM.uri + "software.";
+            public static final String id = PRONOM.uri + "id/Software/";
+        }
+
+        // Character Encoding
+        public static class CharacterEncoding {
+            public static final String type = PRONOM.uri + "CharacterEncoding";
+            public static final String uri = PRONOM.uri + "characterEncoding.";
+            public static final String id = PRONOM.uri + "id/CharacterEncoding/";
         }
     }
 
-    public static final Map<String, String> labelMap = Map.of(
+    public static final Map<String, String> labelMap = Map.ofEntries(
             // Byte orders
-            PRONOM.ByteOrder.littleEndian, "Little-Endian",
-            PRONOM.ByteOrder.bigEndian, "Big-Endian",
+            Map.entry(PRONOM.ByteOrder.littleEndian, "Little-Endian"),
+            Map.entry(PRONOM.ByteOrder.bigEndian, "Big-Endian"),
             // Submissions status
-            PRONOM.Submission.StatusNextRelease, "Next Release",
-            PRONOM.Submission.StatusReady, "Ready for Release",
-            PRONOM.Submission.StatusWaiting, "Waiting",
-            PRONOM.Submission.StatusWIP, "Work in progress",
-            PRONOM.Submission.StatusTesting, "Testing",
+            Map.entry(PRONOM.Submission.StatusNextRelease, "Next Release"),
+            Map.entry(PRONOM.Submission.StatusReady, "Ready for Release"),
+            Map.entry(PRONOM.Submission.StatusWaiting, "Waiting"),
+            Map.entry(PRONOM.Submission.StatusWIP, "Work in progress"),
+            Map.entry(PRONOM.Submission.StatusTesting, "Testing"),
             // Submission types
-            PRONOM.Submission.InternalSubmission, "Internal Submission",
-            PRONOM.Submission.UserSubmission, "User Submission"
+            Map.entry(PRONOM.Submission.InternalSubmission, "Internal Submission"),
+            Map.entry(PRONOM.Submission.UserSubmission, "User Submission"),
+            // Search result types
+            Map.entry(PRONOM.FileFormat.type, "File Format"),
+            Map.entry(PRONOM.CompressionType.type, "Compression"),
+            Map.entry(PRONOM.Software.type, "Software"),
+            Map.entry(PRONOM.CharacterEncoding.type, "Character Encoding")
     );
 
     public static final String WITH_STATEMENT = "\nWITH<" + PRONOM.uri + ">\n";

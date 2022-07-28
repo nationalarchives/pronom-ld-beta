@@ -30,6 +30,11 @@ public class Actor implements RDFWritable {
         this.isContributor = isContributor;
     }
 
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
+    }
+
     @Override
     public Resource getURI() {
         return uri;
@@ -39,9 +44,13 @@ public class Actor implements RDFWritable {
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDFUtil.RDF.type), makeResource(RDFUtil.PRONOM.Actor.type));
-        if (isContributor) m.add(uri, makeProp(RDFUtil.RDF.type), makeResource(PRONOM.Actor.ActorContributorType));
+        if (isContributor != null && isContributor)
+            m.add(uri, makeProp(RDFUtil.RDF.type), makeResource(PRONOM.Actor.ActorContributorType));
         if (name != null) m.add(uri, makeProp(RDFUtil.RDFS.label), makeLiteral(name));
-        if (organisation != null) m.add(uri, makeProp(PRONOM.Actor.OrganisationName), makeLiteral(organisation));
+        if (organisation != null) {
+            m.add(uri, makeProp(PRONOM.Actor.OrganisationName), makeLiteral(organisation));
+            m.add(uri, makeProp(SKOS.hiddenLabel), makeLiteral(organisation));
+        }
         if (email != null) m.add(uri, makeProp(PRONOM.Actor.Email), makeLiteral(email));
         if (country != null) m.add(uri, makeProp(PRONOM.Actor.Country), makeLiteral(country));
         if (website != null) m.add(uri, makeProp(PRONOM.Actor.Website), makeLiteral(website));
@@ -84,7 +93,7 @@ public class Actor implements RDFWritable {
 
     public FormActor convert() {
         FormActor fa = new FormActor();
-        fa.setUri(uri.getURI());
+        fa.setUri(safelyGetUriOrNull(uri));
         fa.setName(name);
         fa.setOrganisation(organisation);
         fa.setEmail(email);

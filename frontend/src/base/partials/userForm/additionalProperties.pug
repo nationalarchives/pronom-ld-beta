@@ -120,7 +120,7 @@ section.form-part#additionalProperties
                     input(type="hidden", th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.uri}")
                     input(th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.name}")
                 p.from-internal-only or
-                button.black.small.from-internal-only
+                button.black.small.from-internal-only.add-actor-button.noJS
                   | Add institutional actor
 
           div
@@ -153,7 +153,7 @@ section.form-part#additionalProperties
                   input(type="hidden", th:id="${'supportActors' + stat.index}", th:value="${compareSup?.uri}")
                   input(th:id="${'supportActors' + stat.index}", th:value="${compareSup?.name}")
                   p.from-internal-only or
-                  button.black.small.from-internal-only
+                  button.black.small.from-internal-only.add-actor-button.noJS
                     | Add institutional actor
 
         //-         //- Format IPR

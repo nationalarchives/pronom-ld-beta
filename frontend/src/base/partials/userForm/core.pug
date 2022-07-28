@@ -186,7 +186,7 @@ section.form-part#core
           //- Documentation
           .form-row#reference-documentation.checkbox-container.documentation
             .input-group
-              input(type="checkbox")
+              input(type="checkbox", th:checked="${r?.isDocumentation}")
             .tooltipPlusAction
               .tooltip-container
                 .label
@@ -215,10 +215,15 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input(th:id="${'ReferenceAuthor' + stat.index}" th:field="*{references[__${stat.index}__].author}", th:data-undo="${r?.author}")
+                input.value(type="hidden", th:id="${'ReferenceAuthor' + stat.index}", th:field="*{references[__${stat.index}__].author}", th:data-undo="${r?.author}")
+                input.label(th:id="${'ReferenceAuthorName' + stat.index}", th:field="*{references[__${stat.index}__].authorName}", th:data-undo="${r?.authorName}")
               .input-group(th:if="${compareRef?.author}")
                 button.incoming Accept incoming
-                input(th:value="${compareRef.author}")
+                input(type="hidden", th:id="${'ReferenceAuthor' + stat.index}", th:value="${compareRef?.author}")
+                input(th:id="${'ReferenceAuthorName' + stat.index}", th:value="${compareRef?.authorName}")
+            th:block(th:if="${editorial}")
+              .button-container
+                button.black.medium.push-right.add-actor-button.noJS Add actor
 
             //- Publication date
             .form-row#publication-date(th:classappend="${compareRef?.publicationDate} ? 'before-review' : ''")
@@ -287,10 +292,10 @@ section.form-part#core
                     p Reviewed
               .input-group
                 button Accept current
-                input(th:id="${'ReferenceNote' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.note}")
+                textarea(th:id="${'ReferenceNote' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.note}")
               .input-group(th:if="${compareRef?.note}")
                 button.incoming Accept incoming
-                input(th:value="${compareRef.note}")
+                textarea(th:value="${compareRef.note}")
           .button-container
             button.bordered-red.small.push-right.delete-reference
               | Delete reference

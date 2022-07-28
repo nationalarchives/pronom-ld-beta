@@ -1,27 +1,24 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.dao.ActorDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
-import com.wallscope.pronombackend.dao.FormOptionsDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
-import com.wallscope.pronombackend.model.FormOption;
-import com.wallscope.pronombackend.model.PUID;
-import com.wallscope.pronombackend.model.Submission;
+import com.wallscope.pronombackend.model.*;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
@@ -66,7 +63,7 @@ public class EditorialController {
                 PUID puid = dao.getPuidForURI(uri);
                 return "redirect:/editorial/form/" + puid.type.trim() + "/" + puid.puid;
             case "Actor":
-                return "redirect:/actor/" + id;
+                return "redirect:/editorial/actor/" + id;
             default:
                 return "index";
         }
@@ -115,22 +112,37 @@ public class EditorialController {
         return "dashboard";
     }
 
-    private void setFormOptions(Model model) {
-        FormOptionsDAO dao = new FormOptionsDAO();
-        Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
-                makeResource(PRONOM.ByteOrder.type),
-                makeResource(PRONOM.FormatIdentifierType.type),
-                makeResource(PRONOM.ByteSequence.BSPType),
-                makeResource(PRONOM.FormatRelationshipType.type),
-                makeResource(PRONOM.FileFormatFamily.type),
-                makeResource(PRONOM.CompressionType.type)
-        ));
-        model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
-        model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
-        List<FormOption> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream().sorted(Comparator.comparing(FormOption::getValue)).collect(Collectors.toList());
-        model.addAttribute("positionTypeOptions", sortedPosTypes);
-        model.addAttribute("relationshipTypeOptions", options.get(PRONOM.FormatRelationshipType.type));
-        model.addAttribute("formatFamilyOptions", options.get(PRONOM.FileFormatFamily.type));
-        model.addAttribute("compressionTypeOptions", options.get(PRONOM.CompressionType.type));
+    @GetMapping("/editorial/actor/{id}")
+    public String actorDisplay(Model model, @PathVariable(required = true) String id) {
+        if (id.equals("new")) {
+            model.addAttribute("actor", new FormActor());
+            return "actor";
+        }
+        ActorDAO dao = new ActorDAO();
+        Actor actor = dao.getActorByURI(makeResource(PRONOM.Actor.id + id));
+        if (actor == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Actor with id: " + id);
+        }
+        logger.debug("Actor: " + actor);
+        model.addAttribute("actor", actor.convert());
+        return "actor";
+    }
+
+    @PostMapping("/editorial/actor/{id}")
+    public RedirectView submissionForm(Model model, @PathVariable String id, @ModelAttribute FormActor fa, RedirectAttributes redir) {
+        ActorDAO dao = new ActorDAO();
+        if (id.equals("new")) {
+            fa.setUri(PRONOM.Actor.id + UUID.randomUUID());
+        }
+        if (fa.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field is required");
+        }
+        if (!id.equals("new")) {
+            dao.deleteActor(makeResource(PRONOM.Actor.id + id));
+        }
+        Actor act = fa.toObject();
+        dao.saveActor(act);
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Actor " + act.getDisplayName() + "(id:" + act.getID() + ") saved successfully."));
+        return new RedirectView("/editorial/actor/" + act.getID());
     }
 }

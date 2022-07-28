@@ -11,6 +11,7 @@ import {
   setupRelationshipMultifield,
   setupFormNavigation,
   setupForm,
+  setupReferenceMultifield,
 } from '../lib/jqueryUtils'
 
 window.$ = $;
@@ -36,6 +37,7 @@ const App = () => {
     setupRelationshipMultifield();
     setupByteSeqMultifield();
     setupFormNavigation();
+    setupReferenceMultifield();
     // checkReviewIndicators();
     // closeAccordions();
     if ($(window).width() < 1200) {
@@ -108,14 +110,7 @@ const App = () => {
   // relationships
 
   // display documentation fields
-  $('.documentation input:checkbox').change(function (evt) {
-    evt.preventDefault();
-    if ($(this).is(":checked")) {
-      $(this).closest('.reference-group').addClass("open-additional");
-    } else {
-      $(this).closest('.reference-group').removeClass("open-additional");
-    }
-  });
+  
 
 
   // Autocomplete setup
@@ -123,6 +118,8 @@ const App = () => {
   autocomplete('ff', 'section#priority .input-group input.label');
   // Has relationships
   autocomplete('ff', 'section#relationships .rel-ff .input-group input.label');
+  // Reference author
+  autocomplete('actor', 'section#core #reference-name .input-group input.label');
   // Development actors
   autocomplete('actor', 'section.form-part#additionalProperties .add-actor.development .input-group input.label');
   // Support actors

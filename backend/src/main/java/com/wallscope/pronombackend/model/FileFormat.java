@@ -5,13 +5,11 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -105,6 +103,7 @@ public class FileFormat implements RDFWritable {
     }
 
     public String getFormattedPuid() {
+        if (puid == null || puidTypeName == null) return null;
         return puidTypeName + "/" + puid;
     }
 
@@ -215,8 +214,18 @@ public class FileFormat implements RDFWritable {
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.FileFormat.type));
-        if (puid != null) m.add(uri, makeProp(PRONOM.FileFormat.Puid), makeLiteral(puid));
-        if (puidType != null) m.add(uri, makeProp(PRONOM.FileFormat.PuidTypeId), puidType);
+        if (puid != null) {
+            m.add(uri, makeProp(PRONOM.FileFormat.Puid), makeLiteral(puid));
+            m.add(uri, makeProp(PRONOM.Global.Puid), makeLiteral(puid));
+        }
+        if (puidType != null) {
+            m.add(uri, makeProp(PRONOM.FileFormat.PuidTypeId), puidType);
+            m.add(uri, makeProp(PRONOM.Global.PuidTypeId), puidType);
+        }
+        // enable search by full puid
+        if (getFormattedPuid() != null) {
+            m.add(uri, makeProp(SKOS.notation), getFormattedPuid());
+        }
         if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
         if (description != null) m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
         if (updated != null) m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
@@ -243,10 +252,17 @@ public class FileFormat implements RDFWritable {
             });
         }
         if (externalSignatures != null) {
+            List<String> extensions = new ArrayList<>();
             externalSignatures.forEach(es -> {
                 m.add(uri, makeProp(PRONOM.FileFormat.ExternalSignature), es.getURI());
                 m.add(es.toRDF());
+                if (es.getSignatureType().equals("File extension")) {
+                    extensions.add(es.getName());
+                }
             });
+            if (!extensions.isEmpty()) {
+                m.add(uri, makeProp(SKOS.hiddenLabel), String.join(" ", extensions));
+            }
         }
         if (containerSignatures != null) {
             containerSignatures.forEach(cs -> {
@@ -261,16 +277,10 @@ public class FileFormat implements RDFWritable {
             });
         }
         if (developmentActors != null) {
-            developmentActors.forEach(x -> {
-                m.add(uri, makeProp(PRONOM.FileFormat.DevelopedBy), x.getURI());
-                m.add(x.toRDF());
-            });
+            developmentActors.forEach(x -> m.add(uri, makeProp(PRONOM.FileFormat.DevelopedBy), x.getURI()));
         }
         if (supportActors != null) {
-            supportActors.forEach(x -> {
-                m.add(uri, makeProp(PRONOM.FileFormat.SupportedBy), x.getURI());
-                m.add(x.toRDF());
-            });
+            supportActors.forEach(x -> m.add(uri, makeProp(PRONOM.FileFormat.SupportedBy), x.getURI()));
         }
         if (hasRelationships != null) {
             hasRelationships.forEach(rel -> {
