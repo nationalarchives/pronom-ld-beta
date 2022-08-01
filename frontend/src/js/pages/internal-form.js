@@ -13,6 +13,7 @@ import {
   setupForm,
   setupReferenceMultifield,
   setupAddActorModal,
+  reviewFields,
 } from '../lib/jqueryUtils'
 
 window.$ = $;
@@ -20,6 +21,8 @@ window.formStep = 0;
 
 window.formParts = ['#core', '#signatures', '#identifiers', '#additionalProperties', '#contributors', '#review']
 window.formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
+
+window.reviewFields = reviewFields;
 
 const App = () => {
 
@@ -36,19 +39,14 @@ const App = () => {
     setupByteSeqMultifield();
     setupFormNavigation();
     setupReferenceMultifield();
+    // Internal specific
     setupAddActorModal()
     // checkReviewIndicators();
     // closeAccordions();
     if ($(window).width() < 1200) {
       $(".form-partial-content").addClass('hide');
     }
-  });
-
-
-  $(window).on("load", function () {
-    if ($(window).width() < 1200) {
-      $(".form-partial-content").addClass('hide');
-    }
+    reviewFields();
   });
 
   // path
@@ -108,7 +106,7 @@ const App = () => {
 
   // Autocomplete setup
   // Priority over
-  autocomplete('ff', 'section#priority .input-group input.label');
+  autocomplete('ff', 'fieldset.priority-over .input-group input.label');
   // Has relationships
   autocomplete('ff', 'section#relationships .rel-ff .input-group input.label');
   // Reference author
