@@ -30,6 +30,7 @@ const App = () => {
     // Signal JS is active
     $('.noJS').removeClass('noJS');
     setupForm();
+    $('html').addClass('watchWidth');
     $(window).on('resize', setupForm);
     optionWorkaround();
     setupIncoming();
