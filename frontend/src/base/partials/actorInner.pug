@@ -1,5 +1,9 @@
 .form-container
   .form-inner
+    .modal-title
+      h2 Add actor
+      button.close
+        i.fa-solid.fa-xmark(aria-hidden="true")
     form(action="#", th:action="@{/editorial/actor/{target}(target=${actor?.ID} ?: 'new')}", method='POST', th:object="${actor}") 
       //- Hidden URI field
       input(type="hidden", th:field="*{uri}")
@@ -64,4 +68,4 @@
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       .button-container
         button.blue.medium.push-rigth Submit
-        button.red.medium.push-rigth.close Close
+        
