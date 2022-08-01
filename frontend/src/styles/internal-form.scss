@@ -68,6 +68,7 @@
   display: flex;
   grid-column: 3/4;
   justify-content: center;
+  margin-left: auto;
   i {
     font-size: 40px;
   }
@@ -77,16 +78,19 @@
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: none;
-  height: 80vh;
   position: fixed;
   top:-100px;
+  z-index: 99;
   .form-container {
-    background-color: #ffffff;
+    background-color: #00000073;
     min-height: 100vh;
     margin-top: 100px;
     padding: 30px;
     display: flex;
     align-items: center;
+    @media only screen and (max-width: 1650px) {
+      min-height: 110vh;
+    }
     .close{
       display: none;
     }
@@ -96,12 +100,20 @@
 .add-actor-modal .form-inner {
   max-width: 900px;
   min-width: 600px;
+  background: white;
+  box-shadow: 1px 5px 11px 4px #0000003b;
+  padding: 10px 20px 20px 20px;
 }
 
 .add-actor.noJS {
   display: none;
 }
 
+.modal-title {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #00000029;
+}
 
 aside {
   @media only screen and (max-width: 1200px) {
