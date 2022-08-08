@@ -1193,6 +1193,10 @@ main {
 @media only screen and (max-width: 1650px) {
   html.watchWidth{
     zoom: 0.85;
+    #scrollToTop button {
+      left: 110vw;
+      top: 100vh;
+    }
   }
 }
 .logo {
