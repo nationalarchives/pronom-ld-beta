@@ -13,16 +13,13 @@ import {
   setupForm,
   setupReferenceMultifield,
   setupAddActorModal,
-  reviewFields,
+  setupReviewFields,
 } from '../lib/jqueryUtils'
 
-window.$ = $;
 window.formStep = 0;
 
-window.formParts = ['#core', '#signatures', '#identifiers', '#additionalProperties', '#contributors', '#review']
+window.formParts = ['#core', '#signatures', '#priority', '#identifiers', '#relationships', '#additionalProperties', '#contributors', '#review']
 window.formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
-
-window.reviewFields = reviewFields;
 
 const App = () => {
 
@@ -47,7 +44,7 @@ const App = () => {
     if ($(window).width() < 1200) {
       $(".form-partial-content").addClass('hide');
     }
-    reviewFields();
+    setupReviewFields();
   });
 
   // path

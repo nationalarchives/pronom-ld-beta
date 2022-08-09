@@ -39,12 +39,16 @@ section#internal-pronom-nav
       h2 Actions
       .buttons
         div
-          button.bordered-black.medium
-            | Add file format
-          button.bordered-black.medium
-            | Edit file format
+          a(href="/editorial/form/new")
+            button.bordered-black.medium
+              | Add file format
+          a(href="/editorial/search")
+            button.bordered-black.medium
+              | Edit file format
         div
-          button.bordered-black.medium
-            | Add contributor
-          button.bordered-black.medium
-            | Add institutional actor
+          a(href="/editorial/actor/new")
+            button.bordered-black.medium
+              | Add contributor
+          a(href="/editorial/actor/new")
+            button.bordered-black.medium
+              | Add institutional actor

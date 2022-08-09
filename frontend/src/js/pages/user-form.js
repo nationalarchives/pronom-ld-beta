@@ -12,6 +12,7 @@ import {
   setupFormNavigation,
   setupForm,
   setupReferenceMultifield,
+  setupReviewFields,
 } from '../lib/jqueryUtils'
 
 window.$ = $;
@@ -38,6 +39,7 @@ const App = () => {
     setupByteSeqMultifield();
     setupFormNavigation();
     setupReferenceMultifield();
+    setupReviewFields();
     // checkReviewIndicators();
     // closeAccordions();
     if ($(window).width() < 1200) {

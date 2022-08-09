@@ -76,11 +76,12 @@ public class SubmissionController {
 
     @PostMapping("/contribute/form/new")
     public RedirectView newFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
+        logger.debug("FORM RECEIVED: "+ ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.randomizeURIs();
         ff.removeEmpties();
         FileFormatDAO ffDao = new FileFormatDAO();
-        List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
+        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(null, null, Instant.now(), cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
@@ -113,7 +114,7 @@ public class SubmissionController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
         }
 
-        List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
+        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
@@ -179,7 +180,7 @@ public class SubmissionController {
                 "",
                 false,
                 true);
-        List<Classification> cs = ffDao.getClassifications(ff.getClassifications());
+        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         FileFormat old = sub.getFormat();
         Submission newSub = new Submission(sub.getURI(),
                 makeResource(PRONOM.Submission.InternalSubmission),
@@ -234,9 +235,30 @@ public class SubmissionController {
     }
 
     @PostMapping("/editorial/form/new")
-    public String editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        logger.debug("Received FormFileFormat:\n" + ff);
-        return "redirect:/editorial";
+    public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
+        logger.debug("FORM RECEIVED: "+ ff);
+        // For new file formats generate random UUID based URIs for all the top level entities
+        ff.randomizeURIs();
+        ff.removeEmpties();
+        FileFormatDAO ffDao = new FileFormatDAO();
+        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
+        // Convert to a FileFormat object
+        FileFormat f = ff.toObject(null, null, Instant.now(), cs);
+        FormSubmittedBy submitter = ff.getSubmittedBy();
+        SubmissionDAO subDao = new SubmissionDAO();
+        // source == null because it's a new file format therefore there is no existing one to compare
+        Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
+                makeResource(PRONOM.Submission.InternalSubmission),
+                makeResource(PRONOM.Submission.StatusWaiting),
+                submitter.toObject(true),
+                null,
+                null,
+                new TentativeFileFormat(f.getURI(), f),
+                Instant.now(),
+                null);
+        subDao.saveSubmission(sub);
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for new file format created successfully."));
+        return new RedirectView("/editorial");
     }
 
     // Helpers

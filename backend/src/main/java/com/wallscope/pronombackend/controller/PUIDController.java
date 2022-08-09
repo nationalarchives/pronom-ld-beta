@@ -55,7 +55,7 @@ public class PUIDController {
         if (f == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
-        model.addAttribute("formats", List.of(f));
+        model.addAttribute("f", f);
         return "xml_signatures";
     }
 

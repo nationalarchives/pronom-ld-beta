@@ -220,8 +220,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p
-              a(th:href="${ref?.author}", th:text="${ref?.author}") Author
+            p(th:text="${ref?.author?.displayName}") Author
         //- ROW
         li.row(th:if="${ref.publicationDate}")
           .tooltip-container
@@ -410,7 +409,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${ff?.formatFamiliesList}")
         //- ROW
         //- TODO - tooltip not available
         li.row

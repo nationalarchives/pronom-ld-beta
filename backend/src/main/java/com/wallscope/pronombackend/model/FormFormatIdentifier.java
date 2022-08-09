@@ -2,8 +2,7 @@ package com.wallscope.pronombackend.model;
 
 import org.apache.jena.rdf.model.Resource;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FormFormatIdentifier {
     private String uri;
@@ -40,13 +39,13 @@ public class FormFormatIdentifier {
     public static FormFormatIdentifier convert(FormatIdentifier fi) {
         FormFormatIdentifier ffi = new FormFormatIdentifier();
         ffi.setName(fi.getName());
-        ffi.setType(fi.getType().getURI());
-        ffi.setUri(fi.getID());
+        ffi.setType(safelyGetUriOrNull(fi.getType()));
+        ffi.setUri(safelyGetUriOrNull(fi.getURI()));
         return ffi;
     }
 
     public FormatIdentifier toObject() {
-        Resource uri = makeResource(PRONOM.FormatIdentifier.id + getUri());
+        Resource uri = makeResource(getUri());
         return new FormatIdentifier(uri, getName(), makeResource(getType()), null);
     }
 

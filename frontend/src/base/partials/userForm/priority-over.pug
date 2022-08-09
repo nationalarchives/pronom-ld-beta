@@ -1,11 +1,11 @@
-fieldset(th:each="p, stat : *{hasPriorityOver}")
+fieldset.priority-over
   legend.sr-only For the current file format, specify others over which it has priority over
   .row-group
     #priority-inner
       p Priority over
       .priority-list
-        .priority-group
-          .form-row#priority-file-format(th:classappend="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+        .priority-group(th:each="p, stat : *{hasPriorityOver}")
+          .form-row.priority-file-format(th:classappend="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(p?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container

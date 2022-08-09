@@ -1,5 +1,196 @@
 import "jquery-ui/ui/widgets/autocomplete"
 
+export function setupReviewFields() {
+  $('.next, .prev, .nextSkip, .segment').on('click', function (evt) {
+    if (formParts[formStep] === '#review') {
+      reviewFieldsInner();
+    }
+  });
+}
+
+function reviewFieldsInner() {
+  const $revContainer = $('section#review #review-container')
+  const singleFields = [
+    'file-format-name',
+    'version-container',
+    'file-format-description',
+  ];
+  singleFields.forEach(field => {
+    const val = $(`.form-row.${field} .input-group:first input,textarea`).val() || '---';
+    $revContainer.find(`.${field}`).text(val);
+  });
+
+  const selectFields = [
+    'format-type-container'
+  ];
+
+  selectFields.forEach(field => {
+    const val = $(`.form-row.${field} .input-group:first option:selected`).text() || '---';
+    $revContainer.find(`.${field}`).text(val);
+  });
+
+  // Priority over
+  const $priorityContainer = $revContainer.find('#priority-over');
+  $('fieldset.priority-over').each((i, p) => {
+    if (i === 0) {
+      // cleanup prev instances
+      $priorityContainer.find('.element').remove();
+    }
+    const $priority = $(p).find('.input-group:first input.label');
+    const val = $priority.val() || '---';
+    const element = $('<div>', { class: 'element' }).append(
+      $('<p>', { class: 'label' }).text("File format"),
+      $('<p>', { class: 'value' }).text(val)
+    )
+    $priorityContainer.append(element)
+  });
+
+  // references
+  const $refContainer = $revContainer.find('.part.references');
+  // cleanup prev instances
+  $('fieldset.references').each((i, r) => {
+    if (i === 0) {
+      $refContainer.find('.count').remove();
+    }
+    const $ref = $(r).find('.reference-group');
+    const documentationPart =
+      $('<div>', { class: 'ifDocumentation' }).append(
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Author"),
+          $('<p>', { class: 'value' }).text($ref.find('.reference-author .input-group:first input.label').val() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Publication Date"),
+          $('<p>', { class: 'value' }).text($ref.find('.publication-date .input-group:first input.date').val() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Publication Type"),
+          $('<p>', { class: 'value' }).text($ref.find('.publication-type .input-group:first input').val() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Publication Note"),
+          $('<p>', { class: 'value' }).text($ref.find('.publication-note .input-group:first textarea').val() || '---')
+        ),
+      )
+
+    const isDocumentation = $ref.find('.reference-documentation .input-group:first input').is(':checked');
+    const element = $('<div>', { class: 'count' }).append(
+      $('<p>').text(i + 1),
+      $('<div>', { class: 'review-part three' }).append(
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Name"),
+          $('<p>', { class: 'value' }).text($ref.find('.reference-name .input-group:first input').val() || '---')
+        ),
+        $('<div>').append(
+          $('<div>', { class: 'element' }).append(
+            $('<p>', { class: 'label' }).text("Link"),
+            $('<p>', { class: 'value' }).text($ref.find('.reference-link .input-group:first input').val() || '---')
+          )
+        ),
+        ...(isDocumentation ? [documentationPart] : []),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Documentation"),
+          $('<p>', { class: 'value' }).text(isDocumentation ? 'Yes' : 'No')
+        )
+      )
+    );
+    $refContainer.append(element)
+  });
+  // signatures
+  const $sigContainer = $revContainer.find('.part.signatures');
+  $('fieldset.signature:not(.template)').each((i, s) => {
+    if (i === 0) {
+      $sigContainer.find('.count').remove();
+    }
+    const $ref = $(s);
+    const sequences = $ref.find('.byte-sequence-list .byte-sequence').map((j, seq) => {
+      const $seq = $(seq);
+      return $('<div>', { class: 'bordered-box' }).append(
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Binary value"),
+          $('<p>', { class: 'value' }).text($seq.find('.binary-value .input-group:first input').val() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Position type"),
+          $('<p>', { class: 'value' }).text($seq.find('.position-type .input-group:first option:selected').text() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Min offset"),
+          $('<p>', { class: 'value' }).text($seq.find('.min-offset .input-group:first input').val() || '---')
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Max offset"),
+          $('<p>', { class: 'value' }).text($seq.find('.max-offset .input-group:first input').val() || '---')
+        ),
+      );
+    })
+    const element = $('<div>', { class: 'count' }).append(
+      $('<p>').text(i + 1),
+      $('<div>', { class: 'review-part' }).append(
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Name"),
+          $('<p>', { class: 'value' }).text($ref.find('.signature-name .input-group:first input').val() || '---')
+        ),
+        $('<h4>').text('Byte Sequence'),
+        $('<div>').append(
+          $('<div>', { class: 'element' }).append(
+            $('<p>', { class: 'label' }).text("Endianness"),
+            $('<p>', { class: 'value' }).text($ref.find('.byte-order .input-group:first input').val() || '---')
+          )
+        ),
+        $('<div>', { class: 'element' }).append(
+          $('<p>', { class: 'label' }).text("Description"),
+          $('<p>', { class: 'value' }).text($ref.find('.signature-description .input-group:first textarea').val() || '---')
+        ),
+        ...sequences
+      )
+    );
+    $sigContainer.append(element);
+  });
+  // relationships
+  const $relContainer = $revContainer.find('#review-relationships:visible');
+  $('fieldset.relationships').each((i, r) => {  
+    if (i === 0) {
+      // cleanup prev instances
+      $relContainer.find('.two').remove();
+    }  
+    const $rel = $(r);
+    const type = $rel.find('.rel-type .input-group:first option:selected').text() || '---';
+    const ff = $rel.find('.rel-ff .input-group:first input.label').val() || '---';
+
+    const element = $('<div>', { class: 'two' }).append(
+      $('<div>', { class: 'element' }).append(
+        $('<p>', { class: 'label' }).text("Relationship type"),
+        $('<p>', { class: 'value' }).text(type)
+      ),
+      $('<div>', { class: 'element' }).append(
+        $('<p>', { class: 'label' }).text("Related file format"),
+        $('<p>', { class: 'value' }).text(ff)
+      ),
+    );
+    $relContainer.append(element);
+  });
+  // format families
+  const $ffContainer = $revContainer.find('#rel-fam:visible');
+  $('fieldset.format-families').each((i, ff) => {
+    if (i === 0) {
+      // cleanup prev instances
+      $ffContainer.find('> .element').remove();
+    }
+
+    const $fam = $(ff);
+    const fam = $fam.find('.input-group:first option:selected').text() || '---';
+
+    const element = $('<div>', { class: 'element' }).append(
+        $('<p>', { class: 'label' }).text("Format family"),
+        $('<p>', { class: 'value' }).text(fam)
+      );
+    $ffContainer.append(element);
+  });
+
+
+}
+
 export function autocomplete(field, selector) {
   $(document).on('keydown.autocomplete', selector, function () {
     const options = {
@@ -12,6 +203,31 @@ export function autocomplete(field, selector) {
     }
     $(this).autocomplete(options);
   });
+}
+
+export function FAQWordFilter(evt) {
+  evt.preventDefault();
+  console.log("searching");
+  const term = $(this).val().toLowerCase().trim();
+  if (term == "" || term.length < 3) {
+    $('.search-hide').removeClass('search-hide');
+  }
+  $('.category').each(function (i, c) {
+    const $category = $(c);
+    $category.addClass('search-hide');
+    $category.find('li').addClass('search-hide');
+    const catTitleMatches = $category.find('h2').text().toLowerCase().trim().includes(term);
+    $category.find('li').each((i, li) => {
+      const $li = $(li);
+      const title = $li.find('button span').text();
+      const content = $li.find('.content *').map((i, elem) => $(elem).text());
+      const texts = [title, ...content].map(text => text.toLowerCase().trim());
+      if (catTitleMatches || texts.some(text => text.includes(term))) {
+        $li.removeClass('search-hide');
+        $category.removeClass('search-hide');
+      }
+    });
+  })
 }
 
 export function optionWorkaround() {
@@ -104,7 +320,7 @@ export function setupRelationshipMultifield() {
   });
 }
 
-export function setupByteSeqMultifield(){
+export function setupByteSeqMultifield() {
   $('.add-byte-sequence').on('click', function (evt) {
     evt.preventDefault();
     const $container = $(this).closest('.byte-sequence-list').find('.list');
@@ -161,7 +377,7 @@ export function setupReferenceMultifield() {
   $('.documentation input:checkbox').trigger('change');
 }
 
-export function setupFormNavigation(){
+export function setupFormNavigation() {
   // Whenever .next is clicked add a step ========= NEXT
   $('.next').on('click', (evt) => {
     evt.preventDefault();
@@ -254,19 +470,19 @@ export function setupFormNavigation(){
   });
 }
 
-export function setupAddActorModal(){
+export function setupAddActorModal() {
   $('.add-actor-button').on('click', function (evt) {
     evt.preventDefault();
     $('.add-actor-modal').show();
     $('.add-actor-modal .close').show();
   });
 
-  $('.add-actor-modal .overlay').on('click', function(evt){
+  $('.add-actor-modal .overlay').on('click', function (evt) {
     evt.preventDefault();
     $('.add-actor-modal').hide();
   });
 
-  $('.add-actor-modal .close').on('click', function(evt){
+  $('.add-actor-modal .close').on('click', function (evt) {
     evt.preventDefault();
     $('.add-actor-modal').hide();
   });
@@ -275,7 +491,7 @@ export function setupAddActorModal(){
     evt.preventDefault();
     const $form = $(this)
     const dataString = $form.serialize();
-     
+
     $.ajax({
       type: "POST",
       url: $form.prop('action'),
@@ -285,8 +501,8 @@ export function setupAddActorModal(){
         $form.trigger('reset');
       }
     });
- 
-});
+
+  });
 }
 
 export function setupForm() {

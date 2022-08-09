@@ -1,6 +1,6 @@
 import '@styles/main.scss'
 
-
+window.$ = $;
 const App = () => {
   
 }
