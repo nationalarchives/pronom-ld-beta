@@ -389,7 +389,7 @@ section.form-part#signatures
                           | Add path
           
           //- simple signature templated output:
-          fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
+          //- fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
             input(type="hidden", th:field="*{internalSignatures[__${stat.index}__].uri}")
             legend.sr-only Fill up information about signature
             .row-group
