@@ -101,6 +101,16 @@ const App = () => {
     $(this).closest(".alias").remove();
   });
 
+  // contributors with action
+  $('.add-record').on('click', function (evt) {
+    evt.preventDefault();
+    $('.action-container:last').clone(true).appendTo('.contributors-list').find("input").val("").end();
+  });
+  $('.delete-record').on('click', function (evt) {
+    evt.preventDefault();
+    $(this).closest(".action-container").remove();
+  });
+
 
   // Autocomplete setup
   // Priority over
