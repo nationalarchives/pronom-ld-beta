@@ -169,7 +169,7 @@ section.form-part#signatures
                   button.accordion
                     .info
                       p Type: Signature
-                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}") PUID: (some PUID if any)
+                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}")
                     i.fa-solid.fa-chevron-up
                   button.bordered-red.small.delete-signature Delete signature
                 .collapse-content
@@ -339,7 +339,7 @@ section.form-part#signatures
                   button.accordion
                     .info
                       p Type: Container Signature
-                      p PUID: (some PUID if any)
+                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}")
                     i.fa-solid.fa-chevron-up
                   button.bordered-red.small.delete-container-signature
                     | Delete container signature
@@ -390,7 +390,7 @@ section.form-part#signatures
                           | Add path
           
           //- simple signature templated output:
-          fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
+          //- fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
             input(type="hidden", th:field="*{internalSignatures[__${stat.index}__].uri}")
             legend.sr-only Fill up information about signature
             .row-group
