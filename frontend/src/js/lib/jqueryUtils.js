@@ -470,11 +470,20 @@ export function setupFormNavigation() {
   });
 }
 
+
+
 export function setupAddActorModal() {
   $('.add-actor-button').on('click', function (evt) {
     evt.preventDefault();
     $('.add-actor-modal').show();
     $('.add-actor-modal .close').show();
+  });
+
+  $('.add-contributor').on('click', function (evt) {
+    evt.preventDefault();
+    $('.add-actor-modal').show();
+    $('.add-actor-modal .close').show();
+    $("#ifContributor").attr("checked", true);
   });
 
   $('.add-actor-modal .overlay').on('click', function (evt) {
