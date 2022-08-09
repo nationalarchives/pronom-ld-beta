@@ -644,6 +644,11 @@ fieldset {
 }
 
 // Signatures =======================================
+#signature-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .collapse-content-container {
   margin-bottom: 15px !important;
   &.collapse {
