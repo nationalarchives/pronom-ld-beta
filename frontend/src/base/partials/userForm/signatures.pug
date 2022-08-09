@@ -169,7 +169,7 @@ section.form-part#signatures
                   button.accordion
                     .info
                       p Type: Signature
-                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}") PUID: (some PUID if any)
+                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}")
                     i.fa-solid.fa-chevron-up
                   button.bordered-red.small.delete-signature Delete signature
                 .collapse-content
@@ -338,7 +338,7 @@ section.form-part#signatures
                   button.accordion
                     .info
                       p Type: Container Signature
-                      p PUID: (some PUID if any)
+                      p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}")
                     i.fa-solid.fa-chevron-up
                   button.bordered-red.small.delete-container-signature
                     | Delete container signature
