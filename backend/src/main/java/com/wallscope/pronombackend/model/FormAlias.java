@@ -1,5 +1,7 @@
 package com.wallscope.pronombackend.model;
 
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+
 public class FormAlias {
     private String uri;
     private String name;
@@ -34,7 +36,10 @@ public class FormAlias {
 
     public boolean isNotEmpty() {
         return uri != null && !uri.isBlank()
-                && name != null && !name.isBlank()
-                && version != null && !version.isBlank();
+                && name != null && !name.isBlank();
+    }
+
+    public FormatAlias toObject() {
+        return new FormatAlias(makeResource(uri), name, version);
     }
 }

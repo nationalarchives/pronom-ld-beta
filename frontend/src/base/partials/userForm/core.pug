@@ -27,7 +27,7 @@ section.form-part#core
         //- File format URI (hidden field)
         input(type="hidden", th:field="*{uri}")
         //- File format name
-        .form-row#file-format-name(th:classappend="${compare?.name} ? 'before-review' : ''")
+        .form-row.file-format-name(th:classappend="${compare?.name} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.name) ? 'New content' : 'Edited content'}") New content
           .tooltipPlusAction
             .tooltip-container
@@ -51,7 +51,7 @@ section.form-part#core
             input(th:value="${compare.name}" name="Name" id="FileFormatName" )
 
         //- File format version
-        .form-row#version-container(th:classappend="${compare?.version} ? 'before-review' : ''")
+        .form-row.version-container(th:classappend="${compare?.version} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.version) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             .tooltip-container
@@ -75,7 +75,7 @@ section.form-part#core
             input.medium-short(th:value="${compare.version}" name="version" id="version")
 
         //- File format description
-        .form-row#file-format-description(th:classappend="${compare?.description} ? 'before-review' : ''")
+        .form-row.file-format-description(th:classappend="${compare?.description} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.description) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             .tooltip-container
@@ -99,7 +99,7 @@ section.form-part#core
             textarea.medium-short(th:value="${compare.description}" cols="30" rows="10" name="description" id="description")
 
         //- Format type
-        .form-row#format-type-container(th:classappend="${compare?.formatType} ? 'before-review' : ''")
+        .form-row.format-type-container(th:classappend="${compare?.formatType} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.formatType) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             fieldset
@@ -127,7 +127,7 @@ section.form-part#core
             button.incoming Accept incoming
             select(th:if="${compare?.formatType}" id="formatType" name="formatType")
               option(th:each="co : ${classificationOptions}", th:value="${co.value}", th:text="${co.label}") option 1
-        .from-internal-only(th:if="${internal}")
+        .from-internal-only(th:if="${editorial}")
           include ./priority-over.pug
 
     h3.border References
@@ -136,7 +136,7 @@ section.form-part#core
         input(type="hidden", th:field="*{references[__${stat.index}__].uri}")
         .row-group.inline.reference-group
           //- Reference Name
-          .form-row#reference-name(th:classappend="${compareRef?.name} ? 'before-review' : ''")
+          .form-row.reference-name(th:classappend="${compareRef?.name} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(r.name) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
@@ -160,7 +160,7 @@ section.form-part#core
               input(th:value="${compareRef.name}" th:id="${'ReferenceName' + stat.index}")
             
           //- Link URL
-          .form-row#reference-link-url(th:classappend="${compareRef?.identifiers} ? 'before-review' : ''")
+          .form-row.reference-link-url(th:classappend="${compareRef?.identifiers} ? 'before-review' : ''")
             p.inputType(text="${#strings.isEmpty(r?.identifiers) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               .tooltip-container
@@ -184,7 +184,7 @@ section.form-part#core
               input(th:value="${compareRef.identifiers}" th:id="${'ReferenceLink' + stat.index}")
 
           //- Documentation
-          .form-row#reference-documentation.checkbox-container.documentation
+          .form-row.reference-documentation.checkbox-container.documentation
             .input-group
               input(type="checkbox", th:checked="${r?.isDocumentation}")
             .tooltipPlusAction
@@ -197,7 +197,7 @@ section.form-part#core
               
           .additional-fields
             //- Author
-            .form-row#reference-author(th:classappend="${compareRef?.author} ? 'before-review' : ''")
+            .form-row.reference-author(th:classappend="${compareRef?.author} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(r?.author) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
@@ -226,7 +226,7 @@ section.form-part#core
                 button.black.medium.push-right.add-actor-button.noJS Add actor
 
             //- Publication date
-            .form-row#publication-date(th:classappend="${compareRef?.publicationDate} ? 'before-review' : ''")
+            .form-row.publication-date(th:classappend="${compareRef?.publicationDate} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(r?.publicationDate) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
@@ -250,7 +250,7 @@ section.form-part#core
                 input.date(type="date" th:value="${compareRef.publicationDate}")
 
             //- Publication Type
-            .form-row#publication-type(th:classappend="${compareRef?.type} ? 'before-review' : ''")
+            .form-row.publication-type(th:classappend="${compareRef?.type} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(r?.type) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
@@ -274,7 +274,7 @@ section.form-part#core
                 input(th:value="${compareRef.type}")
 
             //- Publication Note
-            .form-row#publication-note(th:classappend="${compareRef?.note} ? 'before-review' : ''")
+            .form-row.publication-note(th:classappend="${compareRef?.note} ? 'before-review' : ''")
               p.inputType(text="${#strings.isEmpty(r?.note) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container

@@ -35,15 +35,14 @@ section.form-part#identifiers
             i.fa-solid.fa-angles-right
   .form-partial-content
     .part
-      fieldset(th:each="i, stat : *{identifiers}")
-        input(type="hidden", th:field="*{identifiers[__${stat.index}__].uri}")
+      fieldset
         legend.sr-only Provide identifiers and aliases
         #identifiers-list.row-group
-          .identifier
-
+          .identifier(th:each="i, stat : *{identifiers}")
+            input(type="hidden", th:field="*{identifiers[__${stat.index}__].uri}")
             //- Identifier type
-            .form-row#identifier-type(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.type} ? 'before-review' : ''")
-              p.inputType(th:text="${#strings.isEmpty(ff?.identifiers?.get(__${stat.index}__)?.type) ? 'New content' : 'Edited content'}") Edited content
+            .form-row.identifier-type(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.type} ? 'before-review' : ''")
+              p.inputType(th:text="${#strings.isEmpty(i?.type) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
                   .label
@@ -60,7 +59,7 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button.current Accept current
-                select(th:id="${'identifierType' + stat.index}", th:field="*{identifiers[__${stat.index}__]?.type}")
+                select(th:id="${'identifierType' + stat.index}", th:field="*{identifiers[__${stat.index}__].type}")
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
@@ -68,7 +67,7 @@ section.form-part#identifiers
                   option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
 
             //- Identifier
-            .form-row#identifier-container(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
+            .form-row.identifier-container(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
               p.inputType(th:text="${#strings.isEmpty(ff?.identifiers?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
               .tooltipPlusAction
                 .tooltip-container
@@ -86,7 +85,7 @@ section.form-part#identifiers
                     p Reviewed
               .input-group
                 button Accept current
-                input(th:id="${'identifier' + stat.index}", th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${ff?.identifiers?.get(__${stat.index}__)?.name}")
+                input(th:id="${'identifier' + stat.index}", th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${i?.name}")
               .input-group(th:if="${compare?.identifiers?.get(__${stat.index}__)?.name}")
                 button.incoming Accept incoming
                 input(th:id="${'identifier' + stat.index}", th:value="${compare.identifiers?.get(__${stat.index}__)?.name}")
@@ -97,13 +96,12 @@ section.form-part#identifiers
           button.black.small.push-right.add-identifier
             | Add identifier
 
-      fieldset(th:each="a, stat : *{aliases}")
+      fieldset
         h3.border
           | Aliases
         .part
           #aliases-list.row-group
-            .alias
-
+            .alias(th:each="a, stat : *{aliases}")
               //- Alias Name
               .form-row(th:classappend="${compare?.aliases?.get(__${stat.index}__)?.name} ? 'before-review' : ''")
                 p.inputType(th:text="${#strings.isEmpty(ff?.aliases?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
@@ -123,7 +121,7 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(th:id="${'aliasName' + stat.index}", th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.name}")
+                  input(th:id="${'aliasName' + stat.index}", th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${a?.name}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.name}")
                   button.incoming Accept incoming
                   input(th:id="${'aliasName' + stat.index}", th:value="${compare.aliases?.get(__${stat.index}__)?.name}")
@@ -147,7 +145,7 @@ section.form-part#identifiers
                       p Reviewed
                 .input-group
                   button Accept current
-                  input(th:id="${'aliasVersion' + stat.index}", th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${ff?.aliases?.get(__${stat.index}__)?.version}")
+                  input(th:id="${'aliasVersion' + stat.index}", th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${a?.version}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.version}")
                   button.incoming Accept incoming
                   input(th:id="${'aliasVersion' + stat.index}", th:value="${compare.aliases?.get(__${stat.index}__)?.version}")

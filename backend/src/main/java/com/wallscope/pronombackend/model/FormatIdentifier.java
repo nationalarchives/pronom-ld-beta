@@ -61,6 +61,14 @@ public class FormatIdentifier implements RDFWritable {
                 '}';
     }
 
+    public FormFormatIdentifier convert() {
+        FormFormatIdentifier fid = new FormFormatIdentifier();
+        fid.setUri(safelyGetUriOrNull(uri));
+        fid.setType(safelyGetUriOrNull(type));
+        fid.setName(name);
+        return fid;
+    }
+
     public static class Deserializer implements RDFDeserializer<FormatIdentifier> {
         @Override
         public Resource getRDFType() {

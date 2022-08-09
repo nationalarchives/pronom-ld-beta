@@ -111,7 +111,7 @@ block content
                     span Type
                     | Internal
                 div
-                  p.data(th:utext="'<span>Status</span>'+${s.submissionStatus?.localName ?: '-'}")
+                  p.data(th:utext="'<span>Status</span>'+${@templateUtils.getLabel(s.submissionStatus) ?: '-'}")
                     span Status
                     | Waiting
                 div
@@ -154,6 +154,10 @@ block content
         button.xsmall.bordered-blue XML
         button.xsmall.bordered-blue CSV
       .three-columns
+        //- This loop is quite complex because it mixes the two templating languages. Pug and Thymeleaf.
+        //- Essentially in Pug we're generating 3 instances of the kanban columns based on the list declared above(kanban)
+        //- And then Thymeleaf with access to the model generates the actual items in each column.
+        //- The div(th:with) is used to declare a few variables that are declared in the Pug templating language
         each cName, cVal in kanban
           div(th:with=`list=\$\{submissionMap.get('${cVal}') ?: {} \}, colName='${cName}', colVal='${cVal}'`)
             h3(th:text="${colName}+' ('+${#lists.size(list)}+')'")=cName
@@ -178,7 +182,7 @@ block content
                         span Type
                         | Internal
                     div
-                      p.data(th:utext="'<span>Status</span>'+${s.submissionStatus?.localName}")
+                      p.data(th:utext="'<span>Status</span>'+${@templateUtils.getLabel(s.submissionStatus)}")
                         span Status
                         | Waiting
                     div

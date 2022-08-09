@@ -58,10 +58,16 @@ public class SearchDAO {
               """ + SUB_SELECT_SEARCH + """
               }
               ?result a ?type ; rdfs:label ?label ; ?p ?o .
-              VALUES (?excludes){
+              VALUES (?excludePredicates){
                   #EXCLUDED_PREDICATES#
               }
-              FILTER(?p != ?excludes)
+              FILTER(?p != ?excludePredicates)
+              VALUES (?excludeTypes){
+                  #EXCLUDED_TYPES#
+              }
+              FILTER EXISTS {
+                ?result a ?excludedTypes .
+              }
             }
             """;
 
@@ -119,14 +125,16 @@ public class SearchDAO {
             default -> "ORDER BY DESC(?sc)";
         };
         // exclude extra properties that would bloat the messages and slow down the queries
-        String excludes = SearchResult.Deserializer.excludeProps.stream()
+        String excludePredicates = SearchResult.Deserializer.excludeProps.stream()
                 .filter(ex -> !List.of(RDF.type, RDFS.label, RDFS.comment).contains(ex))
                 .map(ex -> "(<" + ex + ">)")
                 .collect(Collectors.joining(" "));
 
-        return q.replace("#EXCLUDED_PREDICATES#", excludes)
+
+        return q.replace("#EXCLUDED_PREDICATES#", excludePredicates)
                 .replace("#ORDER#", order)
                 .replace("#ALLOWED_TYPES#", types)
+                .replace("#EXCLUDED_TYPES#", "(<" + PRONOM.Actor.ActorContributorType + ">)")
                 .replace("#SEARCH_FIELDS#", fields.toString());
     }
 

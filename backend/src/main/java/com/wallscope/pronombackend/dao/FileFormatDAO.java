@@ -1,7 +1,7 @@
 package com.wallscope.pronombackend.dao;
 
-import com.wallscope.pronombackend.model.Classification;
 import com.wallscope.pronombackend.model.FileFormat;
+import com.wallscope.pronombackend.model.LabeledURI;
 import com.wallscope.pronombackend.model.PUID;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
@@ -23,7 +23,6 @@ import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FileFormatDAO {
     Logger logger = LoggerFactory.getLogger(FileFormatDAO.class);
-    // TODO: Write Actors part of query
     public static final String EXTERNAL_SIGNATURE_SUB_QUERY = "?extSig a pr:ExternalSignature ; pr:externalSignature.FileFormat ?f ; rdfs:label ?extSigName ; pr:externalSignature.SignatureType ?extSigType .";
     public static final String DOCUMENTATION_SUB_QUERY = """
             ?f pr:fileFormat.Documentation ?fDocumentation .
@@ -51,7 +50,7 @@ public class FileFormatDAO {
                 ?puidType rdfs:label ?puidTypeName .
             """;
     public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
-            .replaceAll("\\?byteSeq pr:byteSequence.ContainerFile \\?contSigFile \\.", "");
+            .replaceAll("\\?byteSeq pr:byteSequence\\.ContainerFile \\?contSigFile \\.", "");
     public static final String FORMAT_RELATIONSHIPS_SUB_QUERY = """
             ?fRel pr:fileFormatRelationship.FileFormatRelationshipType ?fRelType ;
               pr:fileFormatRelationship.Source ?fRelSource ;
@@ -119,6 +118,16 @@ public class FileFormatDAO {
             # Format Relationships
             OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
                """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
+            }#END OPTIONAL
+            
+            # Format Families
+            OPTIONAL { ?f pr:fileFormat.FormatFamily ?fFamily .
+                ?fFamily rdfs:label ?fFamilyName .
+            }#END OPTIONAL
+            
+            # Format Aliases
+            OPTIONAL { ?f pr:fileFormat.Alias ?fAlias .
+                ?fAlias rdfs:label ?fAliasName ; pr:formatAlias.Version ?fAliasVersion .
             }#END OPTIONAL
             """;
     public static final String FILE_FORMAT_QUERY = PREFIXES + """
@@ -281,8 +290,8 @@ public class FileFormatDAO {
         return fs;
     }
 
-    public List<Classification> getClassifications(List<String> ls) {
+    public List<LabeledURI> getClassifications(List<String> ls) {
         Map<Resource, String> map = getURIsFromLabels(ls, makeResource(PRONOM.Classification.type));
-        return map.entrySet().stream().map(entry -> new Classification(entry.getKey(), entry.getValue())).collect(Collectors.toList());
+        return map.entrySet().stream().map(entry -> new LabeledURI(entry.getKey(), entry.getValue())).collect(Collectors.toList());
     }
 }

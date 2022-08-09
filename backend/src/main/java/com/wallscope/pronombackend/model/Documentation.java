@@ -96,11 +96,13 @@ public class Documentation implements RDFWritable {
         FormDocumentation fr = new FormDocumentation();
         fr.setUri(safelyGetUriOrNull(uri));
         fr.setName(name);
-        fr.setAuthor(safelyGetUriOrNull(author.getURI()));
-        fr.setAuthorName(author.getDisplayName());
-        fr.setIdentifiers(identifiers);
+        if (author != null) {
+            fr.setAuthor(safelyGetUriOrNull(author.getURI()));
+            fr.setAuthorName(author.getDisplayName());
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.UK).withZone(ZoneId.systemDefault());
-        fr.setPublicationDate(formatter.format(publicationDate));
+        if (publicationDate != null) fr.setPublicationDate(formatter.format(publicationDate));
+        fr.setIdentifiers(identifiers);
         fr.setType(type);
         fr.setNote(note);
         return fr;

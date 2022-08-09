@@ -12,7 +12,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RDFUtil {
     static Logger logger = LoggerFactory.getLogger(RDFUtil.class);
@@ -146,6 +148,10 @@ public class RDFUtil {
         return parseDate(lit);
     }
 
+    public static String createValuesString(List<String> rs) {
+        return rs.stream().map(r -> "(<" + r + ">)").collect(Collectors.joining(" "));
+    }
+
     public static class RDF {
         public static final String uri = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
         public static final String type = uri + "type";
@@ -203,6 +209,15 @@ public class RDFUtil {
             public static final String Documentation = uri + "Documentation";
             public static final String DevelopedBy = uri + "DevelopedBy.Actor";
             public static final String SupportedBy = uri + "SupportedBy.Actor";
+            public static final String FormatFamily = uri + "FormatFamily";
+            public static final String Alias = uri + "Alias";
+        }
+
+        public static class FormatAlias {
+            public static final String type = PRONOM.uri + "FormatAlias";
+            public static final String uri = PRONOM.uri + "formatAlias.";
+            public static final String id = PRONOM.uri + "id/FormatAlias/";
+            public static final String Version = uri + "Version";
         }
 
         public static class Documentation {

@@ -21,21 +21,24 @@ section.form-part#review
         .review-part
           .element
             p.label File format name
-            p.value Lorem ipsum
+            p.value.file-format-name ---
           .element
             p.label Version
-            p.value Lorem ipsum
+            p.value.version-container ---
           .element
             p.label File format description
-            p.value Lorem ipsum
+            p.value.file-format-description ---
+          .element
+            p.label File format type
+            p.value.format-type-container ---
           //- Internal only
           .element.from-internal-only  
             #priority-over
               p Priority over 
               .element
                 p.label File format
-                p.value Lorem ipsum
-      .part
+                p.value ---
+      .part.references
         h4.border References
         .count
           p 1
@@ -80,7 +83,7 @@ section.form-part#review
               p.label Documentation
               p.value YES
       h3 Signatures
-      .part.two
+      .part.two.signatures
         .count
           p 1
           .review-part
@@ -185,7 +188,7 @@ section.form-part#review
                   p.label Version
                   p.value Lorem ipsum
           h4 Relationships
-          .review-part
+          .review-part#rel-fam
             #review-relationships
               .two
                 .element
@@ -239,7 +242,7 @@ section.form-part#review
       //- Internal only
       .from-internal-only
         h3 Relationships
-        .review-part
+        .review-part#rel-fam
           #review-relationships
             .two
               .element
@@ -327,7 +330,7 @@ section.form-part#review
             p.label Contributor
             p.value Lorem ipsum
           .element
-            p.label Ation
+            p.label Action
             p.value Lorem ipsum
         .review-part.three
           .element

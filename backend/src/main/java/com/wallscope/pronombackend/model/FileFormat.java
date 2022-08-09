@@ -29,7 +29,7 @@ public class FileFormat implements RDFWritable {
     private final Boolean withdrawnFlag;
     private final List<Resource> byteOrder;
     private final List<Documentation> references;
-    private final List<Classification> classifications;
+    private final List<LabeledURI> classifications;
     private final List<InternalSignature> internalSignatures;
     private final List<ExternalSignature> externalSignatures;
     private final List<ContainerSignature> containerSignatures;
@@ -37,6 +37,8 @@ public class FileFormat implements RDFWritable {
     private final List<Actor> developmentActors;
     private final List<Actor> supportActors;
     private final List<FileFormatRelationship> hasRelationships;
+    private final List<LabeledURI> formatFamilies;
+    private final List<FormatAlias> aliases;
 
     public FileFormat(
             Resource uri,
@@ -51,14 +53,15 @@ public class FileFormat implements RDFWritable {
             Boolean withdrawnFlag,
             List<Resource> byteOrder,
             List<Documentation> references,
-            List<Classification> classifications,
+            List<LabeledURI> classifications,
             List<InternalSignature> internalSignatures,
             List<ExternalSignature> externalSignatures,
             List<ContainerSignature> containerSignatures,
             List<FormatIdentifier> formatIdentifiers,
             List<Actor> developmentActors,
             List<Actor> supportActors,
-            List<FileFormatRelationship> hasRelationships) {
+            List<FileFormatRelationship> hasRelationships,
+            List<LabeledURI> formatFamilies, List<FormatAlias> aliases) {
         this.uri = uri;
         this.puid = puid;
         this.puidType = puidType;
@@ -79,6 +82,8 @@ public class FileFormat implements RDFWritable {
         this.developmentActors = developmentActors;
         this.supportActors = supportActors;
         this.hasRelationships = hasRelationships;
+        this.formatFamilies = formatFamilies;
+        this.aliases = aliases;
     }
 
     public Resource getURI() {
@@ -135,12 +140,12 @@ public class FileFormat implements RDFWritable {
         return byteOrder;
     }
 
-    public List<Classification> getClassifications() {
+    public List<LabeledURI> getClassifications() {
         return classifications;
     }
 
     public String getClassificationsListString() {
-        return classifications.stream().map(Classification::getName).collect(Collectors.joining(", "));
+        return classifications.stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "));
     }
 
     public List<InternalSignature> getInternalSignatures() {
@@ -156,7 +161,9 @@ public class FileFormat implements RDFWritable {
     }
 
     public List<FileFormatRelationship> getHasRelationships() {
-        return hasRelationships;
+        return hasRelationships.stream()
+                .filter(r -> !r.getRelationshipType().getURI().equals(PRONOM.FormatRelationshipType.PriorityOver))
+                .collect(Collectors.toList());
     }
 
     public List<FormatIdentifier> getFormatIdentifiers() {
@@ -206,10 +213,21 @@ public class FileFormat implements RDFWritable {
         return supportActors.stream().map(Actor::getDisplayName).collect(Collectors.joining(", "));
     }
 
+    public String getFormatFamiliesList() {
+        return formatFamilies.stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "));
+    }
+
     public List<Documentation> getReferences() {
         return references;
     }
 
+    public List<LabeledURI> getFormatFamilies() {
+        return formatFamilies;
+    }
+
+    public List<FormatAlias> getAliases() {
+        return aliases;
+    }
 
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
@@ -235,7 +253,7 @@ public class FileFormat implements RDFWritable {
 
         if (byteOrder != null) byteOrder.forEach(bo -> m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), bo));
         if (classifications != null) {
-            classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
+            classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getUri()));
         }
 
         if (references != null) {
@@ -288,6 +306,15 @@ public class FileFormat implements RDFWritable {
                 m.add(rel.toRDF());
             });
         }
+        if (formatFamilies != null) {
+            formatFamilies.forEach(fam -> m.add(uri, makeProp(PRONOM.FileFormat.FormatFamily), fam.getUri()));
+        }
+        if (aliases != null) {
+            aliases.forEach(a -> {
+                m.add(uri, makeProp(PRONOM.FileFormat.Alias), a.getURI());
+                m.add(a.toRDF());
+            });
+        }
         return m;
     }
 
@@ -307,6 +334,8 @@ public class FileFormat implements RDFWritable {
                 ", version='" + version + '\'' +
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
+                ", byteOrder=" + byteOrder +
+                ", references=" + references +
                 ", classifications=" + classifications +
                 ", internalSignatures=" + internalSignatures +
                 ", externalSignatures=" + externalSignatures +
@@ -315,6 +344,8 @@ public class FileFormat implements RDFWritable {
                 ", developmentActors=" + developmentActors +
                 ", supportActors=" + supportActors +
                 ", hasRelationships=" + hasRelationships +
+                ", formatFamilies=" + formatFamilies +
+                ", aliases=" + aliases +
                 '}';
     }
 
@@ -348,11 +379,9 @@ public class FileFormat implements RDFWritable {
             Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
             Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));
 
-            List<Classification> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream().map(node -> {
-                Resource res = node.asResource();
-                String label = mu.getOneObjectOrNull(res, makeProp(RDFS.label)).asLiteral().getString();
-                return new Classification(res, label);
-            }).collect(Collectors.toList());
+            List<LabeledURI> classifications = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Classification)).stream()
+                    .map(node -> new LabeledURI(node.asResource(), safelyGetStringOrNull(mu.getOneObjectOrNull(node.asResource(), makeProp(RDFS.label)))))
+                    .collect(Collectors.toList());
 
             // ByteOrder
             List<Resource> byteOrders = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.ByteOrder)).stream().map(RDFNode::asResource).collect(Collectors.toList());
@@ -380,6 +409,13 @@ public class FileFormat implements RDFWritable {
             // Support Actors
             List<Resource> supActSubs = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.SupportedBy)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<Actor> supportActors = mu.buildFromModel(new Actor.Deserializer(), supActSubs);
+            // Format families
+            List<LabeledURI> formatFamilies = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.FormatFamily)).stream()
+                    .map(n -> new LabeledURI(n.asResource(), safelyGetStringOrNull(mu.getOneObjectOrNull(n.asResource(), makeProp(RDFS.label)))))
+                    .collect(Collectors.toList());
+            // Format Aliases
+            List<Resource> aliasSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Alias)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<FormatAlias> aliases = mu.buildFromModel(new FormatAlias.Deserializer(), aliasSubjects);
             return new FileFormat(uri,
                     puid,
                     puidType,
@@ -399,7 +435,9 @@ public class FileFormat implements RDFWritable {
                     formatIdentifiers,
                     developmentActors,
                     supportActors,
-                    hasRelationships);
+                    hasRelationships,
+                    formatFamilies,
+                    aliases);
         }
     }
 }
