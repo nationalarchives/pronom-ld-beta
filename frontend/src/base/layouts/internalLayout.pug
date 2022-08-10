@@ -8,10 +8,11 @@ include ../partials/head.pug
   img.logo(src="https://www.nationalarchives.gov.uk/wp-content/themes/tna-base/img/tna-horizontal-white-logo.svg", alt="National Archive Logo")
   .dropdown
     button.medium
-      | John Doe
+      span(th:text="${user?.name}") John Doe
       i.fa-solid.fa-chevron-down
     .dropdown-content
-      button Logout 
+      a(href="/editorial/logout")
+        button Logout 
 .page-container#pronom-content
   //- Pronom main menu - START #pronommainmenu
   include ../partials/internalNavigation.pug
