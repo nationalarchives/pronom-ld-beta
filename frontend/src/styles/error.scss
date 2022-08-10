@@ -8,10 +8,13 @@
     padding: 0 20px;
   }
   h2 {
-    font-size: 7em;
+    font-size: 4em;
     display: flex;
     flex-direction: column;
     font-weight: bold;
+    @media only screen and (max-width: 600px) {
+      font-size: 2.5em;
+    }
     span {
       font-family: 'Roboto Mono', monospace;
       font-size: 0.5em;
@@ -22,16 +25,26 @@
     font-size: 2.2em;
     margin-top: -10px;
     margin-bottom: 15px;
+    @media only screen and (max-width: 600px) {
+      font-size: 1.5em;
+      margin-top: 0;
+    }
   }
   ul.advising-steps {
     li {
       font-size: 1.4em;
+      @media only screen and (max-width: 600px) {
+        font-size: 1em;
+      }
     }
   }
   a {
     max-width: fit-content;
     margin-top: 30px;
     margin-left: auto;
+    @media only screen and (max-width: 600px) {
+      margin-left: 0;
+    }
   }
   
   .error-page-content-container {
@@ -40,23 +53,17 @@
     margin-right: auto;
     max-width: 1700px;
     display: grid;
-    align-items: center;
+    margin-top: 100px;
+    @media only screen and (max-width: 1050px) {
+      margin-top: 20px;
+    }
     > div {
       &:nth-child(1){
-        max-width: 200px;
-        margin-right: auto;
-      }
-      &:nth-child(2){
         max-width: 950px;
         margin-left: auto;
         margin-right: auto;
       }
     }
-  }
-  > div:nth-child(2){
-    background: #8BACCB;
-    height: 20vh;
-    margin-top: 30px;
   }
 
 }
