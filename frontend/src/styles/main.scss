@@ -1334,7 +1334,7 @@ main {
       background: black;
       color: white;
       padding: 10px;
-      > button {
+      > button, a > button {
         border: 2px solid white;
         background: black;
         color: white;
