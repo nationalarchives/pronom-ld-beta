@@ -70,47 +70,47 @@ block modalBody
         li.row
           .tooltip-container
             .label
-              p.label-text#fName Format name
+              p.label-text Format name
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fName", th:text="${ff.name}") Lorem ipsum dolor sit amet
+            p(th:text="${ff.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
             .label
-              p.label-text#fVersion Version
+              p.label-text Version
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.2') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fVersion", th:text="${ff.version ?: ''}") 1.0
+            p( th:text="${ff.version ?: ''}") 1.0
         //- ROW
         li.row
           .tooltip-container
             .label
-              p.label-text#fExtension Extension
+              p.label-text Extension
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '6.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fExtension", th:text="${ff.firstExtension ?: ''}") PLACEHOLDER(1.0)
+            p( th:text="${ff.firstExtension ?: ''}") PLACEHOLDER(1.0)
         //- ROW
         li.row
           .tooltip-container
             .label
-              p.label-text#fMediaType Media Type
+              p.label-text Media Type
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '7.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fMediaType") NOT IMPLEMENTED
+            p(th:text="${ff.MIMETypeList}") NOT IMPLEMENTED
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
             .label
-              p.label-text#fMediaType Identifiers
+              p.label-text Identifiers
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -123,141 +123,96 @@ block modalBody
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fPUID PUID
+                  p.label-text PUID
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '8.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fPUID", th:text="${ff.formattedPuid}") fmt/11
+                p(th:text="${ff.formattedPuid}") fmt/11
             //- ROW
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fMIME MIME
+                  p.label-text MIME
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '9.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fMIME") NOT IMPLEMENTED
+                p(th:text="${ff.MIMETypeList}") NOT IMPLEMENTED
             //- ROW
-            li.row
+            li.row(th:each="otherId : ${ff.otherIdentifiers}")
               .tooltip-container
                 .label
-                  p.label-text#fOther Other
+                  p.label-text(th:text="${otherId?.typeName}") Other
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fOther") NOT IMPLEMENTED
+                p( th:text="${otherId?.name}") NOT IMPLEMENTED
           //- ROW
           //- TODO - tooltip not available
         li.row
           .tooltip-container
             .label
-              p.label-text#fClassification Classification
+              p.label-text Classification
               //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="#fClassification", th:text="${ff.classificationsListString}") audio
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text#fDescription Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.3') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="#fDescription", th:text="${ff.description}") audio
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text#fRelatedFileFormats Related file formats
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            a(aria-labeledby="#fRelatedFileFormats" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text#fPriorityOver Priority over
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.1.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            a(aria-labeledby="#fPriorityOver" th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
-      
-      
-      
-      h2#references References
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="") NOT IMPLEMENTED 1
-      
-      
-      
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="") NOT IMPLEMENTED 2.1
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="") NOT IMPLEMENTED 2.2
-
-
-
-      h3 Documentation
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Link name/title
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p( th:text="${ff.classificationsListString}") audio
         //- ROW
         li.row
           .tooltip-container
             .label
               p.label-text Description
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.3') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.1.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:utext="${@templateUtils.autolinker(ff.description)}") audio
         //- ROW
         li.row
+          .tooltip-container
+            .label
+              p.label-text Related file formats
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.2') tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          div
+            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
+        //- ROW
+        li.row
+          .tooltip-container
+            .label
+              p.label-text Priority over
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.1.1') tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          div
+            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
+      
+      
+      
+      h2#references References
+      //- TABLE =========================================================================
+      ul.table(th:if="${#lists.isEmpty(ff?.references ?: {})}")
+        li.row
+          p No references
+      ul.table(th:each="ref : ${ff.references}", th:with="hasLink=${!#strings.isEmpty(ref?.identifiers)}")
+        //- ROW
+        li.row
+          .tooltip-container
+            .label
+              p.label-text Reference name
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          div
+            p(th:if="${hasLink}")
+              a(th:href="${ref?.identifiers}", th:text="${ref?.name}") Link
+            p(th:if="${!hasLink}", th:text="${ref?.name}") No Link
+        //- ROW
+        li.row(th:if="${ref.author}")
           .tooltip-container
             .label
               p.label-text Author
@@ -265,29 +220,19 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:text="${ref?.author?.displayName}") Author
         //- ROW
-        li.row
+        li.row(th:if="${ref.publicationDate}")
           .tooltip-container
             .label
-              p.label-text Identifiers
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p(aria-labeledby="") NOT IMPLEMENTED
-        //- ROW 
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Publication date
+              p.label-text Publication Date
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.6') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:text="${#temporals.format(ref?.publicationDate, 'dd/MM/yyyy')}") Publication Date
         //- ROW 
-        li.row
+        li.row(th:if="${ref.type}")
           .tooltip-container
             .label
               p.label-text Type
@@ -295,9 +240,9 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:text="${ref?.type}") Type
         //- ROW 
-        li.row
+        li.row(th:if="${ref.note}")
           .tooltip-container
             .label
               p.label-text Note
@@ -305,14 +250,15 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
-
-
+            p(th:text="${ref.note}") Note
 
       h2#signatures Signatures
-      h3 display signatures
+      h3 External signatures
       //- TABLE =========================================================================
-      ul.table(th:each=" extSig : ${ff.displaySignatures}")
+      ul.table(th:if="${#lists.isEmpty(ff?.externalSignatures ?: {})}")
+        li.row
+          p No internal signatures
+      ul.table(th:each=" extSig : ${ff.externalSignatures}")
         //- ROW 
         li.row
           .tooltip-container
@@ -322,7 +268,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="", th:text="${extSig.name}") Lorem ipsum dolor sit amet
+            p(th:text="${extSig.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
@@ -332,12 +278,15 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="", th:text="${extSig.signatureType}") Lorem ipsum dolor sit amet
+            p( th:text="${extSig.signatureType}") Lorem ipsum dolor sit amet
 
 
 
       h3 Internal signatures
       //- TABLE =========================================================================
+      ul.table(th:if="${#lists.isEmpty(ff?.internalSignatures ?: {})}")
+        li.row
+          p No internal signatures
       ul.table(th:each="intSig : ${ff.internalSignatures}")
         //- ROW
         li.row
@@ -348,7 +297,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="", th:text="${intSig.name}") Lorem ipsum dolor sit amet
+            p(th:text="${intSig.name}") Lorem ipsum dolor sit amet
         //- ROW
         li.row
           .tooltip-container
@@ -358,12 +307,12 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="", th:text="${intSig.note ?: ''}") Lorem ipsum dolor sit amet
+            p( th:text="${intSig.note ?: ''}") Lorem ipsum dolor sit amet
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
             .label
-              p.label-text#fMediaType Byte sequence
+              p.label-text Byte sequence
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -376,53 +325,53 @@ block modalBody
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fPUID Position type
+                  p.label-text Position type
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.4') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fPUID", th:text="${byteSeq.positionName} ?: ''") Absolute from EOF
+                p( th:text="${byteSeq.positionName} ?: ''") Absolute from EOF
             //- ROW
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fMIME Min Offset
+                  p.label-text Min Offset
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fMIME", th:text="${byteSeq.offset} ?: ''") Lorem ipsum
+                p( th:text="${byteSeq.offset} ?: ''") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fOther Max offset
+                  p.label-text Max offset
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.6') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fOther", th:text="${byteSeq.maxOffset} ?: ''") Lorem ipsum
+                p( th:text="${byteSeq.maxOffset} ?: ''") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fOther Byte order
+                  p.label-text Byte order
                   //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fOther", , th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
+                p( th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
             //- ROW
             //- TODO - tooltip not available
             li.row
               .tooltip-container
                 .label
-                  p.label-text#fOther Value
+                  p.label-text Value
                   //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(aria-labeledby="#fOther", th:text="${byteSeq.sequence}") Lorem ipsum
+                p( th:text="${byteSeq.sequence}") Lorem ipsum
 
 
 
@@ -438,7 +387,8 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p
+              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.labelMap(bo)}") NOT IMPLEMENTED
         //- ROW
         //- TODO - tooltip not available
         li.row
@@ -449,7 +399,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -459,7 +409,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:text="${ff?.formatFamiliesList}")
         //- ROW
         //- TODO - tooltip not available
         li.row
@@ -470,7 +420,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -480,7 +430,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p(th:text="${ff?.developmentActorsList}")
         //- ROW
         li.row
           .tooltip-container
@@ -490,7 +440,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") Lorem ipsum dolor sit amet
+            p(th:text="${ff?.supportActorsList}") Support actors
         //- ROW
         //- TODO - tooltip not available
         li.row
@@ -501,7 +451,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -511,7 +461,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
 
 
 
@@ -527,7 +477,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -537,7 +487,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -547,7 +497,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -557,7 +507,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -567,7 +517,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -577,7 +527,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -587,7 +537,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -597,7 +547,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -607,7 +557,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -617,7 +567,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -627,7 +577,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -637,17 +587,17 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
             .label
               p.label-text Note
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
+              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
                 .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  i.fa.fa-solid.fa-circle-info(role="img" )
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
 
 
 
@@ -663,7 +613,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -673,7 +623,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -683,7 +633,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -693,7 +643,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -703,7 +653,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -713,7 +663,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
 
 
 
@@ -727,7 +677,7 @@ block modalBody
               p.label-text Compression Type
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -735,7 +685,7 @@ block modalBody
               p.label-text Description
             
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -745,7 +695,7 @@ block modalBody
               p.label-text Compression Level
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -753,7 +703,7 @@ block modalBody
               p.label-text Description
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -763,7 +713,7 @@ block modalBody
               p.label-text Image Width
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -771,7 +721,7 @@ block modalBody
               p.label-text Description
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -781,7 +731,7 @@ block modalBody
               p.label-text Image Height
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -789,7 +739,7 @@ block modalBody
               p.label-text Description
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -799,7 +749,7 @@ block modalBody
               p.label-text Color Space
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -807,7 +757,7 @@ block modalBody
               p.label-text Description
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -817,7 +767,7 @@ block modalBody
               p.label-text Sampling Frequency Unit
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -825,7 +775,7 @@ block modalBody
               p.label-text Description
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -835,7 +785,7 @@ block modalBody
               p.label-text X Sampling Frequency
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -843,7 +793,7 @@ block modalBody
               p.label-text Description
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -853,7 +803,7 @@ block modalBody
               p.label-text Bits Per Sample
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -861,7 +811,7 @@ block modalBody
               p.label-text Description
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -871,7 +821,7 @@ block modalBody
               p.label-text Sample Per Pixel
              
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -879,7 +829,7 @@ block modalBody
               p.label-text Description
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -889,7 +839,7 @@ block modalBody
               p.label-text Byte Order
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -897,7 +847,7 @@ block modalBody
               p.label-text Description
             
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
       //- TABLE =========================================================================
       ul.table
         //- ROW
@@ -907,7 +857,7 @@ block modalBody
               p.label-text Comments
               
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED
         //- ROW
         li.row
           .tooltip-container
@@ -915,4 +865,4 @@ block modalBody
               p.label-text Description
             
           div
-            p(aria-labeledby="") NOT IMPLEMENTED
+            p NOT IMPLEMENTED

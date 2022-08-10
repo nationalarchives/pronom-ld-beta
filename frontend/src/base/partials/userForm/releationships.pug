@@ -34,18 +34,19 @@ section.form-part#relationships
             | Next
             i.fa-solid.fa-angles-right
   .form-partial-content
-    fieldset
+    fieldset.relationships
       legend.sr-only Provide relationships and format families
       #relationships-list.row-group
-        .relationship
+        .relationship(th:each="rel, stat : *{hasRelationships}")
+          input(type="hidden", th:field="*{hasRelationships[__${stat.index}__].uri}")
 
           //- Choose relationship type
-          .form-row(th:classappend="${compare?.relationshipType} ? 'before-review' : ''")
-            p.inputType(th:text="${#strings.isEmpty(ff?.relationshipType) ? 'New content' : 'Edited content'}") New content
+          .form-row.rel-type(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(rel?.relationshipType) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="relationshipType") Choose relationship type
+                  label(th:for="${'relationshipType' + stat.index}") Choose relationship type
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.1') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -58,20 +59,20 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button.current Accept current
-              select(id="relationshipType", th:field="*{relationshipType}")
-                option(th:each="fio : ${relationshipTypeOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
-            .input-group
+              select(th:id="${'relationshipType' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
+                option(th:each="rto : ${relationshipTypeOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
+            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
               button.incoming Accept incoming
-              select(th:if="${compare?.relationshipType}" id="relationshipType")
-                option(th:each="fio : ${relationshipTypeOptions}", th:value="${compare.relationshipType}", th:text="${fio.label}") option 1
+              select(th:id="${'relationshipType' + stat.index}")
+                option(th:each="rto : ${relationshipTypeOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
 
           //- Related file format
-          .form-row(th:classappend="${compare?.relatedFileFormat} ? 'before-review' : ''")
-            p.inputType(th:text="${#strings.isEmpty(ff?.relatedFileFormat) ? 'New content' : 'Edited content'}") New content
+          .form-row.rel-ff(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(ff?.hasRelationships?.get(__${stat.index}__)?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
                 .label
-                  label(for="relatedFileFormat") Related file format
+                  label(th:for="${'target' + stat.index}") Related file format
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.2') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -84,10 +85,13 @@ section.form-part#relationships
                   p Reviewed
             .input-group
               button Accept current
-              input(name="relatedFileFormat" id="relatedFileFormat" th:field="*{relatedFileFormat}", th:data-undo="${ff?.relatedFileFormat}")
-            .input-group(th:if="${compare?.relatedFileFormat}")
+              input(type="hidden", th:id="${'sourceUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].source}", th:value="${ff?.Uri}")
+              input.value(type="hidden", th:id="${'targetUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
+              input.label(th:id="${'hasRelationshipsName' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].targetName}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.targetName}")
+            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target}")
               button.incoming Accept incoming
-              input(th:value="${compare.relatedFileFormat}" name="relatedFileFormat" id="relatedFileFormat")
+              input(type="hidden", th:id="${'targetUri' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(th:id="${'hasRelationshipsName' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.targetName}")
           .button-container
             button.bordered-red.small.delete-relationship
               | Delete relationship
@@ -95,13 +99,15 @@ section.form-part#relationships
         button.black.small.push-right.add-relationship
           | Add relationship
 
-      //- Format families
-      .form-row(th:classappend="${compare?.formatFamilies} ? 'before-review' : ''")
-        p.inputType(th:text="${#strings.isEmpty(ff?.formatFamilies) ? 'New content' : 'Edited content'}") New content
+    //- Format families
+    fieldset.format-families(th:each="fam, stat : *{formatFamilies}", ,th:with="compareSize=${#lists.size(compare?.formatFamilies ?: {})}, compareFam=${compareSize > stat.index} ? ${compare.formatFamilies.get(__${stat.index}__)} : null")
+      input(type="hidden", th:field="*{formatFamilies[__${stat.index}__].uri}")
+      .form-row(th:classappend="${compareFam?.uri} ? 'before-review' : ''")
+        p.inputType(th:text="${#strings.isEmpty(fam?.uri) ? 'New content' : 'Edited content'}") New content
         .tooltipPlusAction
           .tooltip-container
             .label
-              label(for="formatFamilies") Format families
+              label(th:for="${'formatFamilies' + stat.index}") Format families
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -113,8 +119,12 @@ section.form-part#relationships
               i.fa-solid.fa-square-check
               p Reviewed
         .input-group
-          button Accept current
-          input(name="formatFamilies" id="formatFamilies" th:field="*{formatFamilies}", th:data-undo="${ff?.formatFamilies}")
-        .input-group(th:if="${compare?.formatFamilies}")
+          button.current Accept current
+          select(th:id="${'formatFamilies' + stat.index}", th:field="*{formatFamilies[__${stat.index}__].uri}")
+            option(th:value="null") None
+            option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.value}", th:text="${ffo.label}") option 1
+        .input-group(th:if="${compareFam?.uri}")
           button.incoming Accept incoming
-          input(th:value="${compare.formatFamilies}" name="formatFamilies" id="formatFamilies")
+          select(th:id="${'formatFamilies' + stat.index}")
+            option(th:value="null") None
+            option(th:each="ffo : ${formatFamilyOptions}", th:value="${compareFam.uri}", th:text="${ffo.label}") option 1

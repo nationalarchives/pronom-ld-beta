@@ -16,6 +16,6 @@ public class ApplicationConfig {
         return v;
     }
 
-    public static String MARKDOWN_DIR = getEnvOr("MARKDOWN_DIR", "/md");
-    public static String TRIPLESTORE = getEnvOr("TRIPLESTORE", "http://localhost:3030/ds");
+    public static final String MARKDOWN_DIR = getEnvOr("MARKDOWN_DIR", "/md");
+    public static final String TRIPLESTORE = getEnvOr("TRIPLESTORE", "http://localhost:3030/ds");
 }

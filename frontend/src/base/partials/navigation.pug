@@ -4,7 +4,8 @@ block vars
 section#pronom-nav
   .container
     #pronom-nav-header
-      a#page-title(href='/') PRONOM
+      a.sr-only.skip-to-main-content(href="#main-pronom-content") Skip to Main Content
+      a#page-title(href='/' aria-hidden="true" role="presentation") PRONOM
       button#pronom-nav-mobile-collapse(type='button', onclick="toggleMenuFunction()" title="Toggles Pronom menu")
         | MENU
     nav
@@ -18,7 +19,7 @@ section#pronom-nav
             li
               // INFO for blue color add class="active"
               a.active(href="#home1" role="presentation")
-                | What is Pronom?
+                | What is PRONOM?
             li
               a(href="#home2" role="presentation")
                 | PRONOM and DROID
@@ -51,7 +52,7 @@ section#pronom-nav
         li(class=(currentURL === "/faq" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/faq'} href='/faq')
             | FAQ
-          ul.sub-menu-pronom
+          //- ul.sub-menu-pronom
             li
               a(href="#faq1" role="presentation")
                 | Category 1
@@ -66,17 +67,17 @@ section#pronom-nav
             | External Projects
         li(class=(currentURL === "/contribute" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/contribute'} href='/contribute')
-            | Submit to Pronom
+            | Contribute to PRONOM
           ul.sub-menu-pronom
             li
               a(href="#contribute1" role="presentation")
-                | Why submit to PRONOM?
+                | Why contribute to PRONOM?
             li
               a(href="#contribute2" role="presentation")
-                | How to make a submission
+                | How to make a contribution
             li
               a(href="#contribute3" role="presentation")
-                | How do we proceed your submission
+                | How do we process your contributions
         li(class=(currentURL === "/contact" ? "selected" : undefined))
           a.top-link(class={active: currentUrl === '/contact'} href='/contact')
             | Contact

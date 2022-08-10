@@ -6,10 +6,12 @@ import static com.wallscope.pronombackend.utils.RDFUtil.trimOptionals;
 public class ByteSequenceDAO {
     public static final String BYTE_SEQUENCE_SUB_QUERY = """
             ?byteSeq a pr:ByteSequence ;
-              pr:byteSequence.InternalSignature ?sig ;
               pr:byteSequence.ByteSequence ?byteSeqSequence ;
               pr:byteSequence.ByteSequencePosition ?byteSeqPosition ;
             .
+              ?byteSeq pr:byteSequence.InternalSignature ?sig .
+              ?byteSeq pr:byteSequence.ContainerFile ?contSigFile .
+
               # Byte Sequence Links
               ?byteSeqPosition rdfs:label ?byteSeqPositionName .
 

@@ -32,7 +32,9 @@ const rewrites = [
   { from: new RegExp("^\/(?:x-)?(?:chr|sfw|cmp)\/\d+$"), to: "/generic-puid.html" },
   // internal interface
   { from: new RegExp("^\/dashboard$"), to: "/dashboard.html" },
+  { from: new RegExp("^\/editorial$"), to: "/dashboard.html" },
   { from: new RegExp("^\/internal-search$"), to: "/internal-search.html" },
+  { from: new RegExp("^\/editorial/content$"), to: "/content-manager.html" },
   { from: new RegExp("^\/content-manager$"), to: "/content-manager.html" },
   { from: new RegExp("^\/internal-form$"), to: "/internal-form.html" },
 ]

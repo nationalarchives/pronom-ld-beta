@@ -2,7 +2,10 @@ package com.wallscope.pronombackend.model;
 
 import javax.validation.constraints.NotNull;
 
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+
 public class FormSubmittedBy {
+    private String uri;
     private String name;
     private String organisation;
     @NotNull
@@ -12,6 +15,14 @@ public class FormSubmittedBy {
     private Boolean isAnonymous;
 
     public FormSubmittedBy() {
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getName() {
@@ -60,6 +71,10 @@ public class FormSubmittedBy {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Contributor toObject(Boolean isInternal) {
+        return new Contributor(makeResource(uri), name, organisation, email, country, comment, isAnonymous, isInternal);
     }
 
     @Override

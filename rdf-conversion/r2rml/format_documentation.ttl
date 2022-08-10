@@ -6,12 +6,11 @@
 <#PRONOM6/format_documentation>
  	rr:logicalTable <#PRONOM6/format_documentation#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatDocumentation/{file_format_id}";
- 		rr:class pr:FormatDocumentation;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate formatDocumentation:DocumentId;
-        rr:objectMap [ rr:column "document_id" ];
+        rr:predicate pr:fileFormat.Documentation;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Documentation/{document_id}" ];
     ];
  	.
 

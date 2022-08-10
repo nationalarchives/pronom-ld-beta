@@ -5,7 +5,7 @@ block vars
   - var breadcrumbs = {'Home':"/", "Contribute": "/contribute"}
 
 block pageTitle
-  h1.title.hidden-title(th:utext="${@templateUtils.md('contribute_accessibility_title')}") Contribute to Pronom
+  h1.title.hidden-title(th:utext="${@templateUtils.md('contribute_accessibility-title')}") Contribute to Pronom
 
 block content
   .unique-page-content#contribute
@@ -19,15 +19,10 @@ block content
           velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
           culpa qui officia deserunt mollit anim id est laborum.
       a.blue.xlarge(href="/contribute/form")
-        | Make a submission
-    article.two-columns(th:utext="${@templateUtils.md('contribute_how-to-submit')}")
-      h2#contribute2 How to make a submission
-      p.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-        culpa qui officia deserunt mollit anim id est laborum.
+        | Make a contribution
+    article.two-columns
+      h2#contribute2 How to make a contribution
+      div(th:utext="${@templateUtils.md('contribute_how-to-submit-introduction')}").
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
@@ -35,51 +30,23 @@ block content
         culpa qui officia deserunt mollit anim id est laborum.
     .step-by-step-guide
       ul
-        li
+        li(th:each="step, stepI : ${@templateUtils.parseSubmissionSteps('contribute_how-to-submit-steps')}")
           div.step-title
-            p.number 1
-            h3(th:utext="${@templateUtils.md('contribute_step1title')}") Some title here
-          div(th:utext="${@templateUtils.md('contribute_step1')}")
+            p.number(th:text="${stepI.index} + 1") 1
+            h3(th:utext="${@templateUtils.mdString(step.title)}") Some title here
+          div(th:utext="${@templateUtils.mdString(step.text)}")
             p.
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
               ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
               laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('contribute_example1')}")
-              h4 Example
-              p.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua.
-        li
-          div.step-title
-            p.number 2
-            h3(th:utext="${@templateUtils.md('contribute_step-2-title')}") Some title here
-          div(th:utext="${@templateUtils.md('contribute_step-2')}")
-            p.
+          div
+            h4 Example
+            p(th:utext="${@templateUtils.mdString(step.example)}").
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-              laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('contribute_example-2')}")
-              h4 Example
-              p.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua.
-        li
-          div.step-title
-            p.number 3
-            h3(th:utext="${@templateUtils.md('contribute_step-3-title')}") Some title here
-          div(th:utext="${@templateUtils.md('contribute_step-3')}")
-            p.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-              laboris nisi ut aliquip ex ea commodo consequat. 
-            div(th:utext="${@templateUtils.md('contribute_example-3')}")
-              h4 Example
-              p.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua.
+              ut labore et dolore magna aliqua.
         
     article.two-columns(th:utext="${@templateUtils.md('contribute_how-do-we-process-your-submission')}")
-      h2#contribute3 How do we process your submission
+      h2#contribute3 How to we process your contributions
       p.
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 

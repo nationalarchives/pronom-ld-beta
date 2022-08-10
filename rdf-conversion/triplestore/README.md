@@ -9,7 +9,7 @@ In order to avoid copying the data files into the Docker build context, the dock
 
 ```bash
 cd ${REPO_ROOT}/rdf-conversion
-docker build -f triplestore/Dockerfile -t ***REMOVED***.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:${VERSION} .
+docker build -f triplestore/Dockerfile -t ${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-2.amazonaws.com/pronom-triplestore:${VERSION} .
 ```
 
 ## Pushing to ECR repository

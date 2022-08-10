@@ -4,6 +4,7 @@ block vars
 aside
   .form-nav-container
     .border &nbsp;
+    a.sr-only.skip-to-main-content(href="#main-form-content") Skip to Main Content
     ul.main-nav
       li#coreBtn
         button.segment
@@ -34,13 +35,13 @@ aside
               i.fa-solid.fa-square-check
         ul.side-menu
           li#prioritySubBtn
-            button Priority
+            button.segment-sub Priority
           li#identifiersSubBtn
-            button Identifiers
-          li#relationshipSubBtn
-            button Relationship
-          li#additionalSubBtn
-            button Additional properties
+            button.segment-sub Identifiers
+          li#relationshipsSubBtn
+            button.segment-sub Relationship
+          li#additionalPropertiesSubBtn
+            button.segment-sub Additional properties
       li#relationshipsBtn.from-internal-only
         button.segment
           .top-button
@@ -97,6 +98,5 @@ script.
   var currentFormSectionw = 0;
   function showFormSection(formPart){
     var currentFormSection = formPart;
-    console.log(currentFormSection);
     return currentFormSection
   }

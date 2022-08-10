@@ -2,15 +2,15 @@ extends /layouts/mainLayout.pug
 
 block vars
   - var currentURL = "/form-choice"
-  - var breadcrumbs = {'Home':"/", "Contribute": "/contribute", "From choice": "/form-choice"}
+  - var breadcrumbs = {'Home':"/", "Contribute": "/contribute", "Form choice": "/form-choice"}
 
 block pageTitle
-  h1.hidden-title(th:utext="${@templateUtils.md('form-choice_accessibility_title')}") Form choice
+  h1.hidden-title(th:utext="${@templateUtils.md('form-choice_accessibility-title')}") Form choice
 
 block content
   .unique-page-content#formChoice
     article
-      h2 Choose submission type
+      h2 Choose contribution type
       .option
         a.bordered-blue(href="/contribute/form/new")
           i.fa-regular.fa-file(aria-hidden="true")
@@ -39,8 +39,8 @@ block content
             laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
             velit esse cillum dolor
       h2 Other enquiries
-      p For any other enquiry please contact us on
-      a(href="mailto:pronom@nationalarchive.gov.uk") pronom@nationalarchive.gov.uk
+      p For any other enquiries please contact us on
+      a(href="mailto:pronom@nationalarchive.gov.uk") PRONOM@nationalarchives.gov.uk
       div(th:utext="${@templateUtils.md('form-choice_other-enquiries')}")
           p.
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 

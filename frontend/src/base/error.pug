@@ -1,0 +1,12 @@
+extends /layouts/mainLayout.pug
+
+block vars
+  - var currentURL = "/error"
+  - var breadcrumbs = {'Home':"/"}
+
+block pageTitle
+  h1.title.hidden-title(th:utext="${@templateUtils.md('error_accessibility-title')}") Error
+
+block content
+  include ./partials/error.pug
+  

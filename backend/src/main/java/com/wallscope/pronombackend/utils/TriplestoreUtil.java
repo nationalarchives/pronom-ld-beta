@@ -13,6 +13,12 @@ import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -60,12 +66,15 @@ public class TriplestoreUtil {
         return constructQuery(query, null);
     }
 
-    // All we really need to sanitise for a Literal is quotes.
+    // All we really need to sanitise for a Literal is quotes and forward slashes.
     // As long as we don't allow an attacker to close the quotes early, there's nothing really they can do inside quotes that would change the result of a SPARQL query
+    // Forward slashes are allowed in RDF literals but they break the text index search
     public static String sanitiseLiteral(String input) {
         // I know this looks weird, this explains it: https://stackoverflow.com/a/51057519/2614483
-        String out = input.replaceAll("\"", "\\\\\\\"");
-        logger.trace("SANITISING, in=[" + input + "], out=[" + out + "]");
+        String out = input.replaceAll("\"", "\\\\\\\"")
+                .replaceAll("/","\\\\/");
+        logger.debug("SANITISING, in=[" + input + "], out=[" + out + "]");
+
         return out;
     }
 
@@ -83,5 +92,25 @@ public class TriplestoreUtil {
 
     public static void selectQuery(String query, Consumer<QuerySolution> f) {
         selectQuery(query, null, f);
+    }
+
+    public static void updateQuery(String query, Map<String, RDFNode> params) {
+        ParameterizedSparqlString q = new ParameterizedSparqlString();
+        q.setCommandText(query);
+        if (params != null) {
+            for (Map.Entry<String, RDFNode> entry : params.entrySet()) {
+                q.setParam(entry.getKey(), entry.getValue());
+            }
+        }
+        logger.debug("sending update: " + q);
+        conn.build().update(q.asUpdate());
+    }
+
+    public static void updateQuery(String query) {
+        updateQuery(query, null);
+    }
+
+    public static void load(Model m) {
+        conn.build().load(GRAPH, m);
     }
 }

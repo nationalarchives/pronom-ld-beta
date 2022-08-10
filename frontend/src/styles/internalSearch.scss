@@ -6,9 +6,6 @@
     display: grid;
     grid-template-columns: 1fr auto;
     grid-gap: 10px;
-    @media only screen and (max-width: 850px) {
-      grid-template-columns: 1fr;
-    }
     >div:nth-child(1) {
       background: #dbdbdb63;
       padding: 15px;
@@ -17,14 +14,12 @@
     }
     .search-input {
       fieldset {
+        width:100%;
         >div {
           display: grid;
           grid-template-columns: 1fr 140px;
           grid-gap: 2px;
           width: 100%;
-          @media only screen and (max-width: 850px) {
-            grid-template-columns: 1fr;
-          }
         }
         button {
           background: black;
@@ -36,11 +31,6 @@
           font-size: 1.1em;
           i {
             margin-right: 5px;
-          }
-          @media only screen and (max-width: 850px) {
-            width: 200px;
-            margin-left: auto;
-            height: 40px;
           }
         }
       }
@@ -92,21 +82,11 @@
     form {
       width: 80%;
       margin-left: 10%;
-      @media only screen and (max-width: 980px) {
-        width: 100%;
-        margin-left: 0;
-      }
     }
   }
   .search-output {
     .additionals {
       display: flex;
-      @media only screen and (max-width: 980px) {
-        flex-direction: column;
-        margin-left: 10px;
-        align-items: flex-start;
-        grid-gap: 0;
-      }
       label {
         margin-right: 5px;
         font-family: 'Roboto Mono', monospace;
@@ -115,17 +95,6 @@
       .manage-results {
         display: flex;
         align-items: center;
-        @media only screen and (max-width: 980px) {
-          flex-direction: column;
-          align-items: flex-start;
-          > div {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            border:none;
-            border-top: 2px solid #7070708c;
-            width: 100%;
-          }
-        }
         #results_per_page {
           width:38px;
         }
@@ -136,16 +105,10 @@
         }
         .result-counts {
           border-right: 2px solid #7070708c;
-          @media only screen and (max-width: 980px) {
-            border-right: none;
-          }
         }
       }
       .sort-by {
         padding-left: 5px;
-        @media only screen and (max-width: 980px) {
-          padding-left: 0;
-        }
         select {
           display: block;
           width: 100%;
@@ -173,17 +136,6 @@
         margin-left: auto;
         padding-left: 5px;
         align-items: center;
-        @media only screen and (max-width: 980px) {
-          margin-left: 0;
-          margin-bottom: 10px;
-          padding-left: 0;
-          padding-top: 10px;
-          border-top: 2px solid #7070708c;
-          border-left: none;
-        }
-        @media only screen and (max-width: 500px) {
-          display: block;
-        }
         .button-list {
           display: flex;
           button {
@@ -222,12 +174,9 @@
       background: #dbdbdb63;
       padding: 0 20px 20px 20px;
       margin-top: 5px;
-      @media only screen and (max-width: 980px) {
-        padding: 20px;
-      }
       .pagination {
         margin-top: 40px;
-        ul {
+        ul{
           display: flex;
           justify-content: flex-end;
           li {
@@ -241,9 +190,6 @@
             &.controls {
               width: auto;
               padding: 0 10px;
-              @media only screen and (max-width: 980px) {
-                padding: 0;
-              }
             }
             &.active {
               background: #ccdbea;
@@ -265,6 +211,9 @@
         &:hover {
           background: #ccdbea;
         }
+        &.results-container {
+          border: none;
+        }
         &.column-names {
           display: grid;
           grid-template-columns: 95px 0.8fr 1.4fr 1fr 100px 260px;
@@ -272,9 +221,6 @@
           background: none;
           padding: 10px 5px;
           margin-bottom: 0;
-          @media only screen and (max-width: 980px) {
-            display: none;
-          }
         }
         h4 {
           margin: 0;
@@ -295,13 +241,6 @@
             text-decoration: none;
             grid-gap: 5px;
             color: black;
-            @media only screen and (max-width: 1000px) {
-              grid-template-columns: 1fr 1fr;
-              grid-gap: 10px;
-            }
-            @media only screen and (max-width: 760px) {
-              grid-template-columns: 1fr;
-            }
             .data {
               display: flex;
               flex-direction: column;
@@ -322,14 +261,6 @@
             >p, >div, >h5 {
               border-left: 2px solid lightgray;
               padding-left: 8px;
-              @media only screen and (max-width: 760px) {
-                border-left: none;
-              }
-            >p {
-              @media only screen and (max-width: 760px) {
-                padding-left: 0;
-              }
-            }
             }
             p:first-child {
               border:none;
@@ -345,15 +276,6 @@
           span {
             position: absolute;
             color: transparent;
-            @media only screen and (max-width: 1000px) {
-              position: relative;
-              color: black;
-            }
-          }
-        }
-        .basic {
-          @media only screen and (max-width: 650px) {
-            grid-template-columns: 1fr;
           }
         }
       }
@@ -373,4 +295,23 @@ h1 {
 }
 .extended {
   display: block;
+}
+#noResults {
+  margin-top: 20px;
+  width: fit-content;
+  min-width: 600px;
+  > div {
+    background: #f9ecd2;
+    padding: 7px 20px;
+    ul {
+      padding-left: 20px;
+      li {
+        background: none;
+        border: none;
+        list-style-type:circle;
+        background: none !important;
+        border: none !important;
+      }
+    }
+  }
 }

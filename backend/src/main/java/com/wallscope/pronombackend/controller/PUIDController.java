@@ -1,6 +1,8 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
+import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
 import org.slf4j.Logger;
@@ -16,6 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /*
@@ -49,22 +55,47 @@ public class PUIDController {
         if (f == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
-        model.addAttribute("formats", List.of(f));
+        model.addAttribute("f", f);
         return "xml_signatures";
     }
 
     @GetMapping(value = {"/signature.xml"}, produces = "text/xml")
     public String xmlAllSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
         FileFormatDAO dao = new FileFormatDAO();
-        List<FileFormat> fs = dao.getAll();
+        List<FileFormat> fs = dao.getAllForSignature();
         List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
+                .filter(distinctByKey(InternalSignature::getID))
                 .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
                 .collect(Collectors.toList());
+
         fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
         model.addAttribute("formats", fs);
         model.addAttribute("signatures", signatures);
         model.addAttribute("dev", dev);
         return "xml_signatures";
+    }
+
+    @GetMapping(value = {"/container-signature.xml"}, produces = "text/xml")
+    public String xmlContainerSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
+        ContainerSignatureDAO dao = new ContainerSignatureDAO();
+        List<FileFormat> fs = dao.getAllFileFormats();
+        List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
+                .filter(distinctByKey(ContainerSignature::getID))
+                .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
+                .collect(Collectors.toList());
+        List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
+
+        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+        model.addAttribute("formats", fs);
+        model.addAttribute("containerSignatures", signatures);
+        model.addAttribute("containerTypes", cts);
+        model.addAttribute("dev", dev);
+        return "xml_container_signatures";
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     @GetMapping(value = {"/chr/{puid}", "/x-chr/{puid}", "/sfw/{puid}", "/x-sfw/{puid}", "/cmp/{puid}", "/x-cmp/{puid}"})

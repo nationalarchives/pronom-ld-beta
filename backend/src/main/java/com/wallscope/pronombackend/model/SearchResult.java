@@ -131,7 +131,7 @@ public class SearchResult implements RDFWritable {
 
     // Returns the last 2 parts of the uri, which allows us to link to the generic /id endpoint which will then redirect accordingly.
     public String getIdUri() {
-        if (this.uri == null || this.uri.getURI().isBlank()) return "";
+        if (this.uri == null || this.uri.getURI() == null || this.uri.getURI().isBlank()) return "";
         String[] parts = this.uri.getURI().split("/");
         String id = parts[parts.length - 1];
         return getStringType() + "/" + id;
@@ -165,8 +165,33 @@ public class SearchResult implements RDFWritable {
         return number;
     }
 
+    @Override
+    public String toString() {
+        return "SearchResult{" +
+                "uri=" + uri +
+                ", type=" + type +
+                ", score=" + score +
+                ", match='" + match + '\'' +
+                ", fields=" + fields +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", properties=" + properties +
+                '}';
+    }
+
     public static class Deserializer implements RDFDeserializer<SearchResult> {
-        private final List<String> excludeProps = List.of(RDF.type, RDFS.label, RDFS.comment);
+        public static final List<String> excludeProps = List.of(
+                RDF.type,
+                RDFS.label,
+                RDFS.comment,
+                PRONOM.Actor.DevelopsFileFormat,
+                PRONOM.Actor.SupportsFileFormat,
+                PRONOM.Actor.SupportWebsite,
+                PRONOM.Actor.AuthorsDocument,
+                PRONOM.Actor.DevelopsCompressionType,
+                PRONOM.Actor.MaintainsSoftware,
+                PRONOM.Actor.PublishesDocument
+        );
 
         @Override
         public Resource getRDFType() {

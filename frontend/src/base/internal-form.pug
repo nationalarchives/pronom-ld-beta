@@ -2,28 +2,38 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1
-      | Add new file fomat
+    h1(th:text="${edit ? 'Edit file format' : 'Add new file format' }") Add new file format
 block modalBody
-  .error-notification
+  .add-actor-modal
+    .overlay
+      include ./partials/actorInner.pug
+  .error-notification(th:if="${errors}")
     .error-inner
       div
-        h2 Erorr
+        h2 Error
       div
         p Please check fields:
         ul
-          li File format name
-          li File format version
+          li(th:each="e : ${errors}", th:text="${e}") File format name
   .form-content#internal-form
     include ./partials/userForm/form-navigation.pug
-    main
-      include ./partials/userForm/core.pug
-      include ./partials/userForm/signatures.pug
-      include ./partials/userForm/releationships.pug
-      include ./partials/userForm/identifiers.pug
-      include ./partials/userForm/additionalProperties.pug
-      include ./partials/userForm/contributor.pug
-      include ./partials/userForm/review.pug
+    main#main-form-content
+      form(th:action="@{/editorial/form/{target}(target=${submissionId} ?: 'new')}", method='POST', th:object="${ff}") 
+        .form-section
+          include ./partials/userForm/core.pug
+        .form-section
+          include ./partials/userForm/signatures.pug
+        .form-section
+          include ./partials/userForm/releationships.pug
+        .form-section
+          include ./partials/userForm/identifiers.pug
+        .form-section
+          include ./partials/userForm/contributor.pug
+        .form-section
+          include ./partials/userForm/additionalProperties.pug
+        .form-section
+          include ./partials/userForm/review.pug
+    
     .smallScreen#submit-mobile
       div
         button.blue.medium.right.submit-button

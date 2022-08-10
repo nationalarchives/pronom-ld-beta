@@ -1,0 +1,15 @@
+.error-page
+    .error-page-content-container
+      div
+        h1 PRONOM
+      div
+        div
+          h2(th:utext="'<span>'+${code}+'</span>'+${name}")
+            span 404
+            | Page not found
+          p.explanation(th:text="${message}") The page you are looking for might have been removed. 
+          ul.advising-steps(th:if="${code == 404}")
+            li If you typed the web address, check it is correct.
+            li If you pasted the web address, check you copied the entire address.  
+          a(href="/").blue.xlarge Back to the home page
+    div &nbsp;

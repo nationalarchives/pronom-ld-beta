@@ -5,6 +5,7 @@ import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PREFIXES;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeLiteral;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class SearchDAO {
     Logger logger = LoggerFactory.getLogger(SearchDAO.class);
-    public static final String ALLOWED_TYPES = " (pr:FileFormat) (pr:Actor) (pr:InternalSignature) (pr:ExternalSignature) (pr:Software) (pr:Hardware) (pr:Encoding) (pr:CompressionType) ";
+    public static final String ALLOWED_TYPES = " (pr:FileFormat) (pr:Actor) (pr:Software) (pr:Hardware) (pr:Encoding) (pr:CompressionType) ";
     public static final String SUB_SELECT_WHERE = """
             WHERE {
                 VALUES (?field) {
@@ -57,17 +58,35 @@ public class SearchDAO {
               """ + SUB_SELECT_SEARCH + """
               }
               ?result a ?type ; rdfs:label ?label ; ?p ?o .
+              VALUES (?excludePredicates){
+                  #EXCLUDED_PREDICATES#
+              }
+              FILTER(?p != ?excludePredicates)
+              VALUES (?excludeTypes){
+                  #EXCLUDED_TYPES#
+              }
+              FILTER EXISTS {
+                ?result a ?excludedTypes .
+              }
             }
             """;
 
+    public List<SearchResult> autocomplete(String q, Resource type) {
+        return search(q, 10, 0, new Filters(true, true, true, true), "score", "(<" + type + ">)");
+    }
+
     public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort) {
+        return search(q, limit, offset, filters, sort, ALLOWED_TYPES);
+    }
+
+    public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort, String types) {
         logger.debug("fetching search results");
         String sanitised = TriplestoreUtil.sanitiseLiteral(q);
         Map<String, RDFNode> params = new HashMap<>();
         params.put("query", makeLiteral(sanitised));
         params.put("limit", makeLiteral(limit));
         params.put("offset", makeLiteral(offset));
-        Model m = TriplestoreUtil.constructQuery(preprocessQuery(SEARCH_QUERY, filters, sort), params);
+        Model m = TriplestoreUtil.constructQuery(preprocessQuery(SEARCH_QUERY, filters, sort, types), params);
         ModelUtil mu = new ModelUtil(m);
         return mu.buildAllFromModel(new SearchResult.Deserializer());
     }
@@ -85,30 +104,41 @@ public class SearchDAO {
     }
 
     private String preprocessQuery(String q, Filters f) {
-        return preprocessQuery(q, f, null);
+        return preprocessQuery(q, f, null, ALLOWED_TYPES);
     }
 
-    private String preprocessQuery(String q, Filters f, String sort) {
+    private String preprocessQuery(String q, Filters f, String sort, String types) {
         StringBuilder fields = new StringBuilder();
         if (f.name) fields.append(" (rdfs:label)");
         if (f.description) fields.append(" (rdfs:comment)");
-        if (f.extension) fields.append(" (skos:notation)");
-        if (f.puid) fields.append(" (skos:hiddenLabel)");
+        if (f.extension) fields.append(" (skos:hiddenLabel)");
+        if (f.puid) fields.append(" (skos:notation)");
         fields.append(" ");
-        String processed = q;
-        if (sort != null) {
-            String order = switch (sort) {
-                case "name" -> "ORDER BY ?label";
-                case "type" -> "ORDER BY ?type";
-                case "puid" -> "ORDER BY COALESCE(xsd:integer(?puid), 9999999)";
-                default -> "ORDER BY DESC(?sc)";
-            };
-            processed = processed.replace("#ORDER#", order);
+        String nullSafeSort = sort;
+        if (sort == null) {
+            nullSafeSort = "";
         }
-        return processed.replace("#ALLOWED_TYPES#", ALLOWED_TYPES).replace("#SEARCH_FIELDS#", fields.toString());
+        String order = switch (nullSafeSort) {
+            case "name" -> "ORDER BY ?label";
+            case "type" -> "ORDER BY ?type";
+            case "puid" -> "ORDER BY COALESCE(xsd:integer(?puid), 9999999)";
+            default -> "ORDER BY DESC(?sc)";
+        };
+        // exclude extra properties that would bloat the messages and slow down the queries
+        String excludePredicates = SearchResult.Deserializer.excludeProps.stream()
+                .filter(ex -> !List.of(RDF.type, RDFS.label, RDFS.comment).contains(ex))
+                .map(ex -> "(<" + ex + ">)")
+                .collect(Collectors.joining(" "));
+
+
+        return q.replace("#EXCLUDED_PREDICATES#", excludePredicates)
+                .replace("#ORDER#", order)
+                .replace("#ALLOWED_TYPES#", types)
+                .replace("#EXCLUDED_TYPES#", "(<" + PRONOM.Actor.ActorContributorType + ">)")
+                .replace("#SEARCH_FIELDS#", fields.toString());
     }
 
-    public class Filters {
+    public static class Filters {
         public Boolean name;
         public Boolean extension;
         public Boolean description;

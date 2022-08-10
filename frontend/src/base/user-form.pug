@@ -4,10 +4,10 @@ block modalHeader
   div
     h1(th:text="${edit ? 'Edit file format' : 'Add new file format' }") Add new file format
 block modalBody
-  .error-notification
+  .error-notification(th:if="${errors}")
     .error-inner
       div
-        h2 Erorr
+        h2 Error
       div
         p Please check fields:
         ul
@@ -17,8 +17,8 @@ block modalBody
     
     include ./partials/userForm/form-navigation.pug
    
-    main
-      form(action="#", th:action='@{/contribute/form/new}', method='POST', th:object="${ff}") 
+    main#main-form-content
+      form(action="#", th:action="@{/contribute/form/{target}(target=${ff?.puid} ?: 'new')}", method='POST', th:object="${ff}") 
         .form-section
           include ./partials/userForm/core.pug
         .form-section

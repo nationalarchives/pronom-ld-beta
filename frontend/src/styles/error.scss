@@ -1,0 +1,62 @@
+.error-page {
+  h1, h2 {
+    font-family: 'Open Sans', sans-serif;
+  }
+  h1 {
+    font-weight: bold;
+    margin-bottom: 40px;
+    padding: 0 20px;
+  }
+  h2 {
+    font-size: 7em;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    span {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.5em;
+      margin-bottom: -10px;
+    }
+  }
+  p.explanation {
+    font-size: 2.2em;
+    margin-top: -10px;
+    margin-bottom: 15px;
+  }
+  ul.advising-steps {
+    li {
+      font-size: 1.4em;
+    }
+  }
+  a {
+    max-width: fit-content;
+    margin-top: 30px;
+    margin-left: auto;
+  }
+  
+  .error-page-content-container {
+    min-height: 80vh;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1700px;
+    display: grid;
+    align-items: center;
+    > div {
+      &:nth-child(1){
+        max-width: 200px;
+        margin-right: auto;
+      }
+      &:nth-child(2){
+        max-width: 950px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+  > div:nth-child(2){
+    background: #8BACCB;
+    height: 20vh;
+    margin-top: 30px;
+  }
+
+}

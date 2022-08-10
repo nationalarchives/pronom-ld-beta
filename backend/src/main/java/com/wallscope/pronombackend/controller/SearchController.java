@@ -25,7 +25,7 @@ public class SearchController {
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/search")
-    public String fileFormatHandler(
+    public String searchHandler(
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -43,10 +43,16 @@ public class SearchController {
         // if no query parameter is specified we early return the template with only the default variables set
         Integer limitVal = pageSize.orElse(10);
         model.addAttribute("pageSize", limitVal);
-        if (q == null || q.isBlank()) return "search";
+        if (q == null || q.isBlank()) {
+            model.addAttribute("f_name", true);
+            model.addAttribute("f_ext", true);
+            model.addAttribute("f_desc", true);
+            model.addAttribute("f_puid", true);
+            return "search";
+        }
         Integer offsetVal = offset.orElse(0);
         SearchDAO dao = new SearchDAO();
-        SearchDAO.Filters filters = dao.new Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
+        SearchDAO.Filters filters = new SearchDAO.Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
         Integer totalResults = dao.count(q, limitVal, offsetVal, filters);
         List<SearchResult> results = dao.search(q, limitVal, offsetVal, filters, sort.orElse("score"));
         // default is "relevance" which sorts by the score property
@@ -83,9 +89,10 @@ public class SearchController {
             if (totalResults > limitVal * current)
                 pages.add(new PaginationHelper("" + (current + 1), current * limitVal, false));
         }
-        if (totalResults > limitVal * current)
-            pages.add(new PaginationHelper("Next", offsetVal + limitVal, false));
+        if (totalResults > limitVal * current) pages.add(new PaginationHelper("Next", offsetVal + limitVal, false));
         model.addAttribute("pages", pages);
+
+        logger.trace("SERVING SEARCH RESULTS: " + results);
 
         // set the search and filter parameters as set by the user before rendering the template
         model.addAttribute("q", q);
@@ -94,7 +101,7 @@ public class SearchController {
         model.addAttribute("f_name", filters.name);
         model.addAttribute("f_ext", filters.extension);
         model.addAttribute("f_desc", filters.description);
-        model.addAttribute("f_puid", filters.extension);
+        model.addAttribute("f_puid", filters.puid);
         model.addAttribute("results", results);
         return "search";
     }

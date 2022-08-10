@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
 
 java {
@@ -18,12 +19,50 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'build/generated-sources/jaxb'
+        }
+    }
+}
+
+task genJaxb {
+    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+    ext.schema = "src/main/resources/pronom.wsdl"
+
+    outputs.dir sourcesDir
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+
+            xjc(destdir: sourcesDir, schema: schema) {
+                arg(value: "-wsdl")
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+        }
+    }
+}
+
+compileJava.dependsOn genJaxb
+
+configurations {
+    jaxb
+}
+
 dependencies {
     // Spring deps
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services:2.6.7'
+    implementation 'org.keycloak:keycloak-spring-boot-starter:18.0.0'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:18.0.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testImplementation 'org.springframework.security:spring-security-test:5.6.3'
@@ -41,15 +80,40 @@ dependencies {
     // https://search.maven.org/artifact/org.lucee/txtmark/0.16.0/bundle
     implementation 'org.lucee:txtmark:0.16.0'
 
+    // Auto linker
+    // https://github.com/robinst/autolink-java
+    implementation(group:"org.nibor.autolink", name: "autolink", version: "0.10.0")
+
     // Jena
     // https://mvnrepository.com/artifact/org.apache.jena/jena-core
-    implementation(group: "org.apache.jena", name: "jena-core", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-core", version: "4.5.0")
     // https://mvnrepository.com/artifact/org.apache.jena/jena-arq
-    implementation(group: "org.apache.jena", name: "jena-arq", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-arq", version: "4.5.0")
     // https://mvnrepository.com/artifact/org.apache.jena/jena-rdfconnection
-    implementation(group: "org.apache.jena", name: "jena-rdfconnection", version: "4.3.2")
+    implementation(group: "org.apache.jena", name: "jena-rdfconnection", version: "4.5.0")
+    // https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs
+    implementation(group: "org.apache.jena", name: "apache-jena-libs", version: "4.5.0")
+    
+    // Container conversion script 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.simpleframework:simple-xml:2.7.1"
+
+    // SOAP deps
+    implementation 'wsdl4j:wsdl4j'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+    jaxb("org.glassfish.jaxb:jaxb-xjc")
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
 }

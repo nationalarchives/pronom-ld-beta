@@ -1,10 +1,16 @@
 package com.wallscope.pronombackend.model;
 
+import org.apache.jena.rdf.model.Resource;
+
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+
 public class FormFileFormatRelationship {
     private String uri;
     private String relationshipType;
     private String source;
+    private String sourceName;
     private String target;
+    private String targetName;
     private String note;
 
     public FormFileFormatRelationship() {
@@ -42,10 +48,27 @@ public class FormFileFormatRelationship {
         this.relationshipType = relationshipType;
     }
 
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
+    }
+
     @Override
     public String toString() {
         return "FormFileFormatRelationship{" +
-                "relationshipType='" + relationshipType + '\'' +
+                "uri='" + uri + '\'' +
+                ", relationshipType='" + relationshipType + '\'' +
                 ", source='" + source + '\'' +
                 ", target='" + target + '\'' +
                 ", note='" + note + '\'' +
@@ -58,5 +81,26 @@ public class FormFileFormatRelationship {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public FileFormatRelationship toObject() {
+        Resource relUri = makeResource(uri);
+        return new FileFormatRelationship(relUri,
+                makeResource(getRelationshipType()),
+                null,
+                null,
+                makeResource(getSource()),
+                null,
+                makeResource(getTarget()),
+                null,
+                getNote()
+        );
+    }
+
+    public boolean isNotEmpty() {
+        return uri != null && !uri.isBlank()
+                && source != null && !source.isBlank()
+                && target != null && !target.isBlank()
+                && relationshipType != null && !relationshipType.isBlank();
     }
 }

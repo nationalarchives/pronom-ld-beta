@@ -15,6 +15,7 @@ section.form-part#yourDetails
           i.fa-solid.fa-angles-right
   .form-partial-content
         fieldset
+          input(type="hidden", th:field="*{submittedBy.uri}")
           legend.sr-only Add your details and any additional comments
           #main-details
             div
@@ -33,7 +34,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.2') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Organisation" id="Organisation" th:field="*{submittedBy.organisation}")
+                input(id="Organisation" th:field="*{submittedBy.organisation}")
               .form-row
                 .tooltip-container
                   .label
@@ -41,7 +42,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.3') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Email" id="Email" th:field="*{submittedBy.email}")
+                input(id="Email" th:field="*{submittedBy.email}")
               .form-row
                 .tooltip-container
                   .label
@@ -49,7 +50,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Country" id="Country" th:field="*{submittedBy.country}")
+                input(id="Country" th:field="*{submittedBy.country}")
             div
               .form-row
                 .tooltip-container
@@ -63,20 +64,20 @@ section.form-part#yourDetails
             h3 Recognition (required)
             div
               fieldset
-                legend.sr-only Select if you would like to be recognised for your submission
+                legend.sr-only Select if you would like to be recognised for your contribution
                 .form-row.checkbox-container
-                  input(type="radio" id="permission" name="isAnonymous" value="false" th:field="*{submittedBy.isAnonymous}")
+                  input(type="radio" id="permission1" value="false" th:field="*{submittedBy.isAnonymous}")
                   .tooltip-container
                     .label
-                      label(for="permission") I give permission for my details to be recorded and displayed on PRONOM
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
+                      label(for="permission1") I give permission for my details to be recorded and displayed on PRONOM
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6.1') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
-                  input(type="radio" id="permission" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
+                  input(type="radio" id="permission2" value="true" th:field="*{submittedBy.isAnonymous}" checked)
                   .tooltip-container
                     .label
-                      label(for="permission") Prefer to stay anonymous
-                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6') tabindex='0')
+                      label(for="permission2") Prefer to stay anonymous
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.6.2') tabindex='0')
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")

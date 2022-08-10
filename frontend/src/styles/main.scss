@@ -1,5 +1,6 @@
 
-/* Style Menu 
+/* Style Menu Guide (use hash tags to find content quicker)
+
 - Overall page style    / #pagestyle
 - Pronom main menu      / #pronommainmenu
 - Main                  / #main
@@ -14,10 +15,17 @@
 - List                  / #list
 - Modal                 / #modal
 - Feedback              / #feedback
+- Scroll to top button  / #scrolltotop
+
+- Editorial enviroment  / #editorialenviroment
 - TNA Header and Footer / #tnaheaderandfooter
+- dropdown(no select)   / #dropdown
+- form autocomplete     / #formautocomplete
+- actor modal           / #actormodal
+
 */
 
-/* Font Awesome Import */
+// Font Awesome Import
 
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
@@ -26,7 +34,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
 
-/* Overall page style #pagestyle ========================== */
+// Overall page style #pagestyle 
 $active-blue: #0f528d;
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap');
@@ -38,9 +46,14 @@ html, body {
 button, a {
   cursor: pointer;
 }
+@viewport {
+  width: device-width;
+  zoom: 1;
+  min-zoom: 0.5;
+  max-zoom: 3;
+}
 .page-container {
   display: grid;
-  min-height: 100vh;
   padding: 0 90px;
   max-width: 1500px;
   margin-left: auto;
@@ -53,14 +66,23 @@ button, a {
     padding: 0;
   }
 }
+.editorial.page-container {
+  display: grid;
+  padding: 0 60px;
+  max-width: unset !important;;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: none;
+  background: white;
+  grid-template-columns: auto 1fr;
+  margin-top: 80px;
+}
 .propose-edition {
-  border-left: 2px solid #7070708c;
-  padding-left: 20px;
-  @media only screen and (max-width: 980px) {
-    grid-row: 2/3;
-    border-left: none;
-    padding-left: 0;
-  }
+  max-width: unset !important;
+  // min-width: 1600px;
+  // padding: 0 30px;
+  // padding-top: 80px;
+  display: grid !important;
 }
 ul {
   margin:0;
@@ -112,6 +134,29 @@ hr {
 html {
   scroll-behavior: smooth;  
 }
+.sr-only {
+  position: absolute;
+  &.skip-to-main-content:focus {
+    position: absolute;
+    padding: 0.3em;
+    top: auto;
+    width: auto;
+    height: auto;
+    outline: #1d70b8 solid 5px;
+    outline-offset: unset;
+    z-index: 999;
+    background-color: #fff;
+    color: #26262a;
+    clip: auto;
+    overflow: auto;
+    margin: 0;
+  }
+}
+fieldset {
+  border:none;
+  padding: 0;
+}
+
 // Checkbox #checkbox START
 input {
   &.check {
@@ -127,6 +172,8 @@ input {
   }
 }
 // Checkbox END
+
+
 // Select #select START
 select {
   display: block;
@@ -153,6 +200,8 @@ select {
   }
 }
 // Select #select END
+
+
 // Buttons - START #buttons
 button, a{
   font-family: 'Roboto Mono', monospace;
@@ -248,7 +297,7 @@ button, a{
   &.xlarge{
     font-size: 1.5em;
     height: 50px;
-    padding: 0 50px;
+    padding: 0 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -258,6 +307,8 @@ button, a{
   }
 }
 // Buttons - END
+
+
 // List #list - START
 ul {
   padding-left: 0;
@@ -266,6 +317,8 @@ ul {
   }
 }
 // List END
+
+
 // Tooltip  #tooltip -START
 .tooltip-container{
   .label-text {
@@ -348,14 +401,11 @@ ul {
   }
 }
 // Tooltip END
-.sr-only {
-  position: absolute;
-}
-fieldset {
-  border:none;
-  padding: 0;
-}
-/* Overall page style - END */
+
+// Overall page style - END
+
+
+
 // Input search START 
 input:focus,
 a:focus,
@@ -398,10 +448,10 @@ textarea {
   font-family: 'Open Sans', sans-serif;
 }
 
-/* Main START #main =======================================*/
+// Main START #main =======================================
 main {
   border-left: 12px solid #C4DFF8;
-  min-height: 100vh;
+  // min-height: 100vh;
   padding: 60px 0 50px 50px;
   @media only screen and (max-width: 1200px) {
     margin-left: 0 !important;
@@ -426,9 +476,9 @@ main {
     }
   }
 }
-/* Main END */
+// Main END 
 
-/* Pronom main menu - START #pronommainmenu ============== */
+// Pronom main menu - START #pronommainmenu ============== 
 
 #pronom-nav {
   width: 230px;
@@ -564,6 +614,18 @@ main {
     margin-left: auto;
   }
 }
+.editorial #pronom-nav-header{
+  @media only screen and (max-width: 1200px) {
+    display: flex;
+    align-items: flex-end;
+    background: white;
+    height: 45px;
+    width: auto;
+    box-shadow: none;
+    padding: 0;
+    padding-top: 50px;
+  }
+}
 .menu-pronom {
   padding-top: 30px;
   background: white;
@@ -581,6 +643,22 @@ main {
     box-shadow: 0px 6px 17px 0px #0000004a;
     width: calc(100vw - 40px);
     padding: 0 20px !important;
+  }
+}
+.editorial {
+  .menu-pronom {
+    padding-top: 30px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 9;
+    min-height: calc(100vh - 120px);
+    overflow: auto;
+    position: relative;
+    width: auto;
+    box-shadow: none;
+    padding: 0  !important;
+    border-top: none;
   }
 }
 #internal-pronom-nav {
@@ -611,6 +689,9 @@ main {
     display: block;
   }
 }
+.editorial #pronom-nav-mobile-collapse {
+  display: none;
+}
 .page-container {
   &.noJS {
     @media only screen and (max-width: 1200px) {
@@ -620,11 +701,10 @@ main {
     }
   }
 }
+// Pronom main menu - END 
 
 
-/* Pronom main menu - END */
-
-/* Breadcrumbs - START #breadcrumbs ==============================*/
+// Breadcrumbs - START #breadcrumbs ==============================
 .breadcrumb-holder{
   ul, li {
     margin: 0;
@@ -660,7 +740,6 @@ main {
   background: #8BACCB;
   padding: 20px;
   min-height: 250px;
-  width: calc(100vw - 55px);
   .social-media-wrapper {
     max-width: 1500px;
     margin-left: auto;
@@ -735,9 +814,9 @@ main {
     }
   }
 }
-/* Social media - END */
+// Social media - END
 
-/* Modal #modal - START */
+// Modal #modal - START
 .modal-container {
   background: #F3F3F3;
   min-height: 100vh;
@@ -824,6 +903,8 @@ main {
   grid-template-columns: auto auto 1fr;
   grid-gap: 20px;
   align-items: flex-end;
+  max-width: 100vw;
+  overflow: hidden;
   @media only screen and (max-width: 980px) {
     grid-template-columns: 1fr;
   }
@@ -849,9 +930,13 @@ main {
 .modal-body {
   background: #F3F3F3;
 }
-/* Modal - END */
+// Modal - END
 
-/* Save options #saveoptions - START */
+// Save options #saveoptions - START
+.editorial .save-options {
+  border-top: none;
+  padding-top: 0;
+}
 .save-options {
   display: flex;
   grid-gap:5px;
@@ -903,9 +988,9 @@ main {
     }
   }
 }
-/* Save options END */
+// Save options END
 
-/* Table #table START */
+// Table #table START
 .table{
   max-width: 900px;
   margin-left: 10%;
@@ -953,6 +1038,9 @@ main {
     a {
       margin:2.5px;
       margin-right: 15px;
+      &.autolink {
+        margin:0;
+      }
     }
   }
   .row-nested {
@@ -979,8 +1067,10 @@ main {
     }
   }
 }
-/* Table END */
-// Scroll to top 
+// Table END
+
+
+// Scroll to top button #scrolltotop - START
 #scrollToTop {
   display: none;
   button {
@@ -997,8 +1087,32 @@ main {
     }
   }
 }
-// Feedback #feedback START
+// Scroll to top button  - END
+
+
+// Feedback #feedback - START
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-down {
+  0% {
+    display: none;
+  }
+  70%{
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+    
+  }
+}
 .feedback-container {
+  z-index: 9;
   height: 200px;
   position: fixed;
   width: 100%;
@@ -1006,10 +1120,14 @@ main {
   top: calc(100vh - 200px);
   left: 0;
   box-shadow: -5px -1px 10px 5px #0000002e;
+
+  animation: slide-up .6s cubic-bezier(0.4, 0, 0.2, 1) 500ms backwards;
   &.hide {
+    animation: slide-down .6s cubic-bezier(0.4, 0, 0.2, 1) 5000ms ;
     display: none;
   }
   .feedback-inner {
+    background: white;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -1060,23 +1178,34 @@ main {
     }
   }
 }
-// Feedback END
+// Feedback - END
 
-// INTERNAL INTERFACE START
 
-/* Pronom main menu - START #pronommainmenu ============== */
+
+
+
+
+
+// EDITORIAL ENVIROMENT #editorialenviroment - START 
+// Please note - editiorial enviroment has a set window width - it's not responsive for small screens
+
+// Pronom main menu - START #pronommainmenu ==============
+@media only screen and (max-width: 1650px) {
+  html.watchWidth{
+    zoom: 0.85;
+    #scrollToTop button {
+      left: 110vw;
+      top: 100vh;
+    }
+  }
+}
 .logo {
   max-width: 300px;
 }
 #internal-pronom-nav {
   padding-right: 10px;
-  width: 250px;
+  width: 280px;
   top: 80px;
-  @media only screen and (max-width: 1200px) {
-    .hide {
-      display: none;
-    }
-  }
   #page-title {
     text-decoration: none;
     color:black;
@@ -1089,9 +1218,6 @@ main {
       font-size: 0.6em;
       font-weight: normal;
       margin-top: -10px;
-    }
-    @media only screen and (max-width: 700px) {
-      font-size: 1.8em;
     }
   }
   .container {
@@ -1146,9 +1272,6 @@ main {
     &.selected {
       .sub-menu-pronom {
         display: block;
-        @media only screen and (max-width: 1200px) {
-          display: none;
-        }
       }
     }
   }
@@ -1158,16 +1281,9 @@ main {
       color: $active-blue;
     }
   }
-  @media only screen and (max-width: 1200px) {
-    border-right: none;
-    position: sticky;
-    top: 0;
-    z-index: 9;
-  }
   #internal-menu {
     nav {
       margin-left: 20px;
-      margin-top: -20px;
     }
   }
   #internal-actions {
@@ -1193,12 +1309,15 @@ main {
 }
 #internal-banner {
   position: fixed;
-  width: calc(100vw - 75px);
+  width: calc(100% - 55px);
   padding: 10px 30px;
   display: flex;
   background: black;
   min-height: 60px;
   align-items: center;
+  min-width: 1600px;
+  margin-top: -80px;
+  z-index: 99;
   .dropdown{
     margin-left: auto;
     >button {
@@ -1236,17 +1355,7 @@ main {
 main#internal-main {
   border-left: 10px solid black;
   min-height: 100vh;
-  padding: 30px 0 50px 50px;
-  @media only screen and (max-width: 1200px) {
-    margin-left: 0 !important;
-    margin-left: 20px;
-    border-left: none;
-    padding: 30px 20px 20px 20px;
-  }
-  @media only screen and (max-width: 700px) {
-    margin-left: 20px;
-  }
-  
+  padding: 30px 0 50px 30px;
 }
 h1.internal-title {
   display: block !important;
@@ -1489,19 +1598,17 @@ h1.internal-title {
     padding: 0 4px 10px 4px;
     li {
       grid-template-columns: 1fr auto;
-      @media only screen and (max-width: 1150px) {
-        grid-template-columns: 1fr;
-      }
       padding: 10px 5px 5px 10px;
       margin-bottom: 8px;
       .maintain-buttons {
         padding: 5px;
         flex-direction: column;
         justify-content: flex-start;
-        button {
+        .mb-container{
           width: 100%;
           margin-bottom: 8px;
-          &.option {
+          button {
+            width: 100%;
             margin-bottom: 0;
           }
         }
@@ -1509,7 +1616,7 @@ h1.internal-title {
       .selector-checkbox {
         display: none;
       }
-      a {
+      > a {
         grid-template-columns: 1fr 1fr;
         @media only screen and (max-width: 1850px) {
           grid-template-columns: 1fr;
@@ -1546,7 +1653,7 @@ h1.internal-title {
       &.active {
         background: #CCDBEA;
       }
-    a {
+    > a {
       display: grid;
       grid-template-columns: 40px 110px 1fr 100px 80px 200px 110px 1fr;
       align-items: center;
@@ -1579,24 +1686,22 @@ h1.internal-title {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-  }
-  .maintain-buttons {
-    button {
-      margin-left: 5px;
+      button {
+        margin-right: 5px;
+      }
     }
   }
   &.card {
     .maintain-buttons {
       button {
-        margin-left: 0;
+        margin-right: 0;
       }
     } 
   } 
 }
+
 // TNA Header and Footer #tnaheaderandfooter START
 // header
-
 header#header {
   background-color: #26262a;
   color: #fff;
@@ -1806,6 +1911,9 @@ header#header {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 30px;
+        @media only screen and (max-width: 600px) { 
+          grid-template-columns: 1fr;
+        }
         > div {
           display: flex;
           flex-direction: column;
@@ -1867,8 +1975,8 @@ header#header {
 }
 // TNA Header and Footer END
 
+// dropdown (not select) #dropdown - START
 .dropdown {
-  // position: relative;
   display: inline-block;
   i {
     margin-left: 10px;
@@ -1884,10 +1992,8 @@ header#header {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    // padding: 12px 16px;
     z-index: 1;
     max-width: 300px;
-    margin-left: -182px;
   }
   &:hover {
     i {
@@ -1923,8 +2029,10 @@ header#header {
   }
 }
 
+// dropdown - END
 
-// actor modal - START
+
+// actor modal #actormodal - START
 .form-container {
   margin-top: 30px;
 }
@@ -1944,3 +2052,21 @@ header#header {
   margin-right: auto;
 }
 // actor modal - END
+
+
+// form autocomplete #formautocomplete START
+ul#ui-id-1 {
+  background: white;
+  box-shadow: 3px 3px 6px #211b1ba8;
+  padding: 5px 8px;
+  width: fit-content !important;
+}
+li.ui-menu-item {
+  cursor: pointer;
+  transition: 0.2s;
+}
+li.ui-menu-item:hover {
+  background: #0f528d;
+  color: white;
+}
+// form autocomplete END

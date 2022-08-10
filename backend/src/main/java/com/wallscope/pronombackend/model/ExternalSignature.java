@@ -1,12 +1,11 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
-import com.wallscope.pronombackend.utils.RDFUtil;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.makeProp;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class ExternalSignature implements RDFWritable {
     private final Resource uri;
@@ -17,6 +16,11 @@ public class ExternalSignature implements RDFWritable {
         this.uri = uri;
         this.name = name;
         this.signatureType = signatureType;
+    }
+
+    public String getID() {
+        String[] parts = uri.getURI().split("/");
+        return parts[parts.length - 1];
     }
 
     public String getName() {
@@ -34,7 +38,11 @@ public class ExternalSignature implements RDFWritable {
 
     @Override
     public Model toRDF() {
-        return null;
+        Model m = ModelFactory.createDefaultModel();
+        if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        if (signatureType != null)
+            m.add(uri, makeProp(PRONOM.ExternalSignature.SignatureType), makeLiteral(signatureType));
+        return m;
     }
 
     @Override
@@ -49,14 +57,14 @@ public class ExternalSignature implements RDFWritable {
     public static class Deserializer implements RDFDeserializer<ExternalSignature> {
         @Override
         public Resource getRDFType() {
-            return makeResource(RDFUtil.PRONOM.ExternalSignature.type);
+            return makeResource(PRONOM.ExternalSignature.type);
         }
 
         @Override
         public ExternalSignature fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
-            String name = mu.getOneObjectOrNull(uri, makeProp(RDFUtil.RDFS.label)).asLiteral().getString();
-            String sigType = mu.getOneObjectOrNull(uri, makeProp(RDFUtil.PRONOM.ExternalSignature.SignatureType)).asLiteral().getString();
+            String name = mu.getOneObjectOrNull(uri, makeProp(RDFS.label)).asLiteral().getString();
+            String sigType = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ExternalSignature.SignatureType)).asLiteral().getString();
             return new ExternalSignature(uri, name, sigType);
         }
     }

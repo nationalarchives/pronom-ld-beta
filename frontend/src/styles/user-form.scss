@@ -183,7 +183,6 @@ main {
     &.active {
       button {
         border: 2px solid #0f528d;
-        background: white;
       }
     }
   }
@@ -199,6 +198,7 @@ aside {
     display: none;
   }
 }
+
 
 .form-content {
   display: grid;
@@ -235,8 +235,8 @@ aside {
 }
 
 .part {
-  margin-left: 50px;
-  margin-top: 20px;
+  // margin-left: 50px;
+  // margin-top: 20px;
 
   @media only screen and (max-width: 950px) {
     margin-left: 0;
@@ -627,15 +627,29 @@ fieldset {
 }
 .references {
   .reference-group {
-    &:nth-child(1) {
+    &:nth-child(2) {
       .delete-reference {
-        display: none;
+        display: none !important;
+        color: grey !important;
+      }
+    }
+    .additional-fields {
+      display: none;
+    }
+    &.open-additional {
+      .additional-fields {
+        display: block;
       }
     }
   }
 }
 
 // Signatures =======================================
+#signature-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .collapse-content-container {
   margin-bottom: 15px !important;
   &.collapse {
@@ -817,16 +831,10 @@ fieldset {
 .form-part {
   
   &.hide {
-    height: 0;
-    width: 0;
-    position: absolute;
-    overflow: hidden;
+    display: none;
   }
   &.show {
-    height: auto;
-    width: auto;
-    position: inherit;
-    overflow:visible;
+    display: block;
   }
 }
 select {
@@ -994,12 +1002,12 @@ select:focus {
 }
 
 // Additional properties ==============================
-.add-actor {
-  display: grid;
-  grid-template-columns: 1fr 20px auto;
-  grid-column-gap: 20px;
-  align-items: flex-end;
-}
+// .add-actor {
+//   display: grid;
+//   grid-template-columns: 1fr 20px auto;
+//   grid-column-gap: 20px;
+//   align-items: flex-end;
+// }
 
 // Relationship =======================================
 #relationships {
@@ -1239,7 +1247,7 @@ select:focus {
     }
   }
   &.open {
-    i {
+    i.fa-chevron-down {
       transform: rotate(180deg) scaleX(-1);
     }
   }

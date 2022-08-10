@@ -3,15 +3,19 @@
 @prefix actor: <http://www.nationalarchives.gov.uk/PRONOM/actor.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/actors>
  	rr:logicalTable [ rr:sqlQuery """
   SELECT
       -- ACTORS BASIC FIELDS
          [actors].[actor_id]
-        ,[actors].[name_text]
         ,[actors].[job_title_text]
-        ,[actors].[organisation_name_text]
+      -- The following lines make sure that:
+      -- 1. The name_text column is the main name of the actor
+      -- 2. There are no cases where the name_text and the organisational_name are the same
+        ,COALESCE([actors].[name_text],[actors].[organisation_name_text]) as name_text
+        ,COALESCE(CASE WHEN (name_text = NULL) THEN [organisation_name_text] ELSE NULL END, CASE WHEN (name_text != organisation_name_text) THEN [organisation_name_text] ELSE NULL END) as [organisation_name_text]
         ,[actors].[actor_type_id]
         ,[actors].[telephone_text]
         ,[actors].[website_text]
@@ -34,6 +38,8 @@
         ,[document_publishers].[document_id] as publishes_document_id
       -- format_support fields - predicate: actor:Supports.FileFormat, type: FileFormat
         ,[format_support].[file_format_id] as supports_file_format_id
+      -- country names link
+        ,[countries].[country_name_text] as country_name_text
 
     FROM [PRONOM6].[dbo].[actors]
     LEFT JOIN [PRONOM6].[dbo].[document_authors] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[document_authors].author_id
@@ -41,6 +47,7 @@
     LEFT JOIN [PRONOM6].[dbo].[software_maintainers] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[software_maintainers].maintainer_id
     LEFT JOIN [PRONOM6].[dbo].[document_publishers] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[document_publishers].publisher_id
     LEFT JOIN [PRONOM6].[dbo].[format_support] ON [PRONOM6].[dbo].[actors].actor_id = [PRONOM6].[dbo].[format_support].support_id
+    LEFT JOIN [PRONOM6].[dbo].[countries] ON [PRONOM6].[dbo].[actors].country_code_text = [PRONOM6].[dbo].[countries].country_code_text
 
   """
  	];
@@ -61,7 +68,7 @@
         rr:objectMap [ rr:column "organisation_name_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate actor:TypeId;
+        rr:predicate actor:Type;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/ActorType/{actor_type_id}" ];
     ];
  	rr:predicateObjectMap [
@@ -70,19 +77,23 @@
     ];
  	rr:predicateObjectMap [
         rr:predicate actor:Website;
-        rr:objectMap [ rr:column "website_text"; rr:datatype xsd:anyURI ];
+        rr:objectMap [ rr:column "website_text" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate actor:Country;
+        rr:predicate actor:CountryId;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Country/{country_code_text}" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate actor:Country;
+        rr:objectMap [ rr:column "country_name_text" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate actor:Support.Website;
-        rr:objectMap [ rr:column "support_website_text"; rr:datatype xsd:anyURI ];
+        rr:objectMap [ rr:column "support_website_text" ];
     ];
  	rr:predicateObjectMap [
  		rr:predicate actor:Email;
- 		rr:objectMap [ rr:column "contact_email_text"; rr:datatype xsd:anyURI ];
+ 		rr:objectMap [ rr:column "contact_email_text" ];
  	];
  	rr:predicateObjectMap [
         rr:predicate actor:SourceId;
@@ -106,7 +117,7 @@
     ];
     rr:predicateObjectMap [
         rr:predicate actor:Authors.Document;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{document_id}" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Documentation/{document_id}" ];
     ];
     rr:predicateObjectMap [
         rr:predicate actor:Develops.CompressionType;
@@ -119,10 +130,15 @@
     ];
     rr:predicateObjectMap [
         rr:predicate actor:Publishes.Document;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{publishes_document_id}" ];
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Documentation/{publishes_document_id}" ];
     ];
     rr:predicateObjectMap [
         rr:predicate actor:Supports.FileFormat;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{supports_file_format_id}" ];
+    ];
+    # Search helper. Organisational name as skos:hiddenLabel
+    rr:predicateObjectMap [
+        rr:predicate skos:hiddenLabel;
+        rr:objectMap [ rr:column "organisation_name_text" ];
     ];
  	.

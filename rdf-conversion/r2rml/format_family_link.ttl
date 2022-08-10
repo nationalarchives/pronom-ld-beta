@@ -6,12 +6,11 @@
 <#PRONOM6/format_family_link>
  	rr:logicalTable <#PRONOM6/format_family_link#view>;
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatFamilyLink/{file_format_id}";
- 		rr:class pr:FormatFamilyLink;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate formatFamilyLink:FamilyId;
-        rr:objectMap [ rr:column "family_id" ];
+        rr:predicate pr:fileFormat.FormatFamily;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormatFamily/{family_id}" ];
     ];
  	.
 

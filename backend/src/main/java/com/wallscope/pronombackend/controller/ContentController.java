@@ -36,21 +36,29 @@ public class ContentController {
 
     private final String mdDir = ApplicationConfig.MARKDOWN_DIR;
 
-    @GetMapping("/content-manager")
+    @GetMapping("/editorial/content")
     public String contribute(Model model, TemplateUtils templateUtils) throws IOException {
         ArrayList<String> regions = new ArrayList<>(getAvailableRegions());
         Collections.sort(regions);
-        HashMap<String, String> contentMap = new HashMap<>();
+        HashMap<String, Map<String, String>> contentMap = new HashMap<>();
         for (String r : regions) {
-            contentMap.put(r, templateUtils.raw(r));
+            String[] parts = r.split("_");
+            if (parts.length != 2) {
+                logger.debug("INVALID REGION NAME, IGNORING: " + r);
+                continue;
+            }
+            if (!contentMap.containsKey(parts[0])) {
+                contentMap.put(parts[0], new HashMap<>());
+            }
+            contentMap.get(parts[0]).put(parts[1], templateUtils.raw(r));
         }
+        logger.trace("CONTENT MAP: "+ contentMap);
         model.addAttribute("contentMap", contentMap);
         // Adding the regions set allows for sorted iteration
-        model.addAttribute("regions", regions);
         return "content-manager";
     }
 
-    @RequestMapping(value = "/content-manager/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/editorial/content/{region}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveContent(Model model, @PathVariable(required = true) String region, @RequestParam HashMap<String, String> formData) {
         try {
             if (!getAvailableRegions().contains(region)) {
@@ -64,14 +72,14 @@ public class ContentController {
             FileWriter f2 = new FileWriter(f, false);
             f2.write(content);
             f2.close();
-            return "redirect:/content-manager";
+            return "redirect:/editorial/content";
         } catch (IOException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "something went wrong");
         }
     }
 
-    private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ)\\('(?<region>[a-z_-]+)'\\)");
+    private final Pattern p = Pattern.compile("@templateUtils\\.(?:md|parseFAQ|parseSubmissionSteps)\\('(?<region>[a-z_-]+)'\\)");
 
     private Set<String> getAvailableRegions() {
         try {

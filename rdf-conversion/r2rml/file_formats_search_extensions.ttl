@@ -2,7 +2,7 @@
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
 @prefix fileFormat: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 <#PRONOM6/file_format_extensions>
  	rr:logicalTable [ rr:sqlQuery """

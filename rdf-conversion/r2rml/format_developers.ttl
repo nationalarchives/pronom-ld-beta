@@ -5,13 +5,12 @@
 
 <#PRONOM6/format_developers>
  	rr:logicalTable <#PRONOM6/format_developers#view>;
- 	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FormatDeveloper/{file_format_id}";
- 		rr:class pr:FormatDeveloper;
+ rr:subjectMap [
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate formatDeveloper:DeveloperId;
-        rr:objectMap [ rr:column "developer_id" ];
+        rr:predicate pr:fileFormat.DevelopedBy.Actor;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{developer_id}" ];
     ];
  	.
 

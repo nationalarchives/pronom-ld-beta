@@ -1,9 +1,9 @@
 include ../partials/head.pug
 
-.modal-container.noJS
+.modal-container.noJS(role="dialog" aria-labelledby="dialogTitle")
   .modal-header
     .modal-header-inner
-      .title
+      .title#dialogTitle
         block modalHeader
       .additionals
         block modalHeaderAdditionals
@@ -11,7 +11,7 @@ include ../partials/head.pug
         i.fa-solid.fa-xmark(aria-hidden="true")
       a.close.forNoJS(a href="/" aria-label="Close modal")
         i.fa-solid.fa-xmark(aria-hidden="true")
-  .modal-body
+  .modal-body(role="main")
     div
       block modalBody
     include ../partials/scrollTop.pug

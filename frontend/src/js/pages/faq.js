@@ -1,48 +1,47 @@
-import { test } from '@js/lib/test'
-
 import '@styles/main.scss'
 import '@styles/faq.scss'
+import { FAQWordFilter } from '../lib/jqueryUtils';
 
 
 
 const App = () => {
   // Signal JS is active
-  $('.page-container').removeClass('noJS');
-  $('#header').removeClass('noJS');
+  $('.noJS').removeClass('noJS');
 
-  $('.faq-questions button').on('click', function() {
+  $('.faq-questions button').on('click', function () {
     var selectedButton = this.id;
     var selectedP = this.id + 'text';
-    console.log(selectedButton)
-    if($( "#" + selectedButton ).hasClass( "closed" )){
-      console.log('class closed detected')
+    if ($("#" + selectedButton).hasClass("closed")) {
       // manage button
       // change aria-expanded for accessibility
-      $('#'+selectedButton).attr("aria-expanded","true");
-      $('#'+selectedButton).removeClass( "closed" );
+      $('#' + selectedButton).attr("aria-expanded", "true");
+      $('#' + selectedButton).removeClass("closed");
       // manage p tag
-      $('#'+selectedP).removeClass( "hide" );
+      $('#' + selectedP).removeClass("hide");
     } else {
       // manage button
       // change aria-expanded for accessibility
-      $('#'+selectedButton).attr("aria-expanded","false");
-      $('#'+selectedButton).addClass( "closed" );
+      $('#' + selectedButton).attr("aria-expanded", "false");
+      $('#' + selectedButton).addClass("closed");
       // manage p tag
-      $('#'+selectedP).addClass( "hide" );
+      $('#' + selectedP).addClass("hide");
     }
   });
 
   // open all acccordions
-  $('#openAllFAQ').on('click', function() {
-    $('.faq-questions button').attr("aria-expanded","true");
-    $('.faq-questions p').removeClass( "hide" );
+  $('#openAllFAQ').on('click', function () {
+    $('.faq-questions button').attr("aria-expanded", "true");
+    $('.faq-questions p').removeClass("hide");
   });
 
   // close all accordions
-  $('#closeAllFAQ').on('click', function() {
-    $('.faq-questions button').attr("aria-expanded","false");
-    $('.faq-questions p').addClass( "hide" );
+  $('#closeAllFAQ').on('click', function () {
+    $('.faq-questions button').attr("aria-expanded", "false");
+    $('.faq-questions p').addClass("hide");
   });
+
+  //faq term filter
+  $('#faq-search').on('keyup', FAQWordFilter);
 }
 
 App()

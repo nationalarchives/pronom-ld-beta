@@ -1,5 +1,5 @@
 variable "repositories" {
-  default = ["pronom-backend", "pronom-triplestore"]
+  default = ["pronom-backend", "pronom-triplestore", "pronom-keycloak"]
 }
 
 # Set up AWS ECR Repo for the backend image

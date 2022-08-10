@@ -8,9 +8,9 @@ block vars
       each link, name in breadcrumbs
         li
           if currentURL !== link
-            a.isDisabled(href=link, aria-disabled='true' disabled='') #{name}
-          else
             a(href=link) #{name}
+          else
+            a.isDisabled(href="" aria-disabled='true' disabled="") #{name}
           i.fa-solid.fa-angle-right(aria-hidden="true")
       //- li
       //-   a.isDisabled(href="/", aria-disabled='true' disabled='')

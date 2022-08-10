@@ -1,9 +1,14 @@
 aside.home-page-additional-info(aria-label="Quick search, links and additional information")
   #small-search-container
     form(aria-label="Search for file format, software or vendor", method="GET", action="/search")
+      input(type="hidden", name="f_name", value="true")
+      input(type="hidden", name="f_ext", value="true")
+      input(type="hidden", name="f_desc", value="true")
+      input(type="hidden", name="f_puid", value="true")
+      input(type="hidden", name="sort", value="relevance")
       fieldset
         label(for="small_search")
-          h3 Search Pronom
+          h3 Search PRONOM
         legend.sr-only Enter search file format name, PUID or keywords
         div
           input(type="search", name="q", id="small_search", placeholder="Search for file formats...")
@@ -36,9 +41,9 @@ aside.home-page-additional-info(aria-label="Quick search, links and additional i
       h4 Help build PRONOM
       .button-list.quick-links
         a.black.medium(href="/contribute")
-          | How to make a submission
+          | How to make a contribution
         a.black.medium(href="/contribute/form")
-          | Submission Form
+          | Contribution Form
     div
       h4 Documentation and recognition
       .button-list.quick-links

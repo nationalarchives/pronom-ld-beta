@@ -1,97 +1,97 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#>. 
 @prefix pr: <http://www.nationalarchives.gov.uk/PRONOM/>
-@prefix document: <http://www.nationalarchives.gov.uk/PRONOM/document.>
+@prefix documentation: <http://www.nationalarchives.gov.uk/PRONOM/documentation.>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
 
 <#PRONOM6/documents>
  	rr:logicalTable [ rr:sqlQuery """
-  SELECT
-     -- DOCUMENTS BASIC FIELDS
+SELECT
+   document_id 
+  ,document_type_text
+  ,CONCAT(document_availability, '\\n', availability_text, '\\n', title_text, '\\n', document_note_text) as note
+  ,display_text
+  ,source_id
+  ,source_date
+  ,last_updated_date
+  ,provenance_text
+  ,publication_date
+  ,title_text
+  ,author_id
+  ,publisher_id
+  -- sub select to help with field concatenation
+  FROM (SELECT
+    -- DOCUMENTS BASIC FIELDS
         [documents].[document_id]
     -- document_type_id is replaced since there's only 3 values and this way we can build the URI
        ,COALESCE(CASE WHEN ([documents].document_type_id = 1) THEN 'Authoritative' ELSE NULL END,
                  CASE WHEN ([documents].document_type_id = 2) THEN 'Informative' ELSE NULL END,
-                 CASE WHEN ([documents].document_type_id = 3) THEN 'Speculative' ELSE NULL END) as document_type_id
+                 CASE WHEN ([documents].document_type_id = 3) THEN 'Speculative' ELSE '' END) as document_type_text
+    -- the following fields are concatenated into a single notes field to simplify the Documentation type
+    --- availability_id is replaced since there's only 3 values and this way we can add to the note
+       ,COALESCE(CASE WHEN ([documents].availability_id = 1) THEN 'Document availability: Public' ELSE NULL END,
+                 CASE WHEN ([documents].availability_id = 2) THEN 'Document availability: Restricted' ELSE NULL END,
+                 CASE WHEN ([documents].availability_id = 3) THEN 'Document availability: Not Available' ELSE '' END) as document_availability
+       ,COALESCE([documents].[availability_text], '') as availability_text
+       ,COALESCE([documents].[title_text], '') as title_text
+       ,COALESCE([documents].[document_note_text], '') as document_note_text
+    --- concat end
        ,[documents].[display_text]
        ,[documents].[source_id]
        ,[documents].[source_date]
        ,[documents].[last_updated_date]
        ,[documents].[provenance_text]
        ,[documents].[publication_date]
-       ,[documents].[title_text]
-       ,[documents].[availability_id]
-       ,[documents].[availability_text]
-       ,[documents].[document_note_text]
-     -- document_authors fields - predicate: document:Author.Actor, type: Actor
+     -- document_authors fields - predicate: documentation:Author.Actor, type: Actor
        ,[document_authors].[author_id] as author_id
-     -- document_publishers fields - predicate: document:Publisher.Actor, type: Actor
+     -- document_publishers fields - predicate: documentation:Publisher.Actor, type: Actor
        ,[document_publishers].[publisher_id] as publisher_id
    FROM [PRONOM6].[dbo].[documents]
    LEFT JOIN [PRONOM6].[dbo].[document_authors] ON [PRONOM6].[dbo].[documents].document_id = [PRONOM6].[dbo].[document_authors].document_id
-   LEFT JOIN [PRONOM6].[dbo].[document_publishers] ON [PRONOM6].[dbo].[documents].document_id = [PRONOM6].[dbo].[document_publishers].document_id
+   LEFT JOIN [PRONOM6].[dbo].[document_publishers] ON [PRONOM6].[dbo].[documents].document_id = [PRONOM6].[dbo].[document_publishers].document_id) as subquery
 
   """
  	];
  	rr:subjectMap [
- 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Document/{document_id}";
- 		rr:class pr:Document;
+ 		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Documentation/{document_id}";
+ 		rr:class pr:Documentation;
  	];
  	rr:predicateObjectMap [
-        rr:predicate document:DocumentType;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/DocumentType/{document_type_id}" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate document:Display;
-        rr:objectMap [ rr:column "display_text" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate rdfs:comment;
-        rr:objectMap [ rr:column "display_text" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate document:SourceId;
-        rr:objectMap [ rr:column "source_id" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate document:SourceDate;
-        rr:objectMap [ rr:column "source_date" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate document:LastUpdatedDate;
-        rr:objectMap [ rr:column "last_updated_date" ];
-    ];
- 	rr:predicateObjectMap [
-        rr:predicate document:Provenance;
-        rr:objectMap [ rr:column "provenance_text" ];
- 	];
- 	rr:predicateObjectMap [
-        rr:predicate document:PublicationDate;
-        rr:objectMap [ rr:column "publication_date" ];
+        rr:predicate documentation:DocumentType;
+        rr:objectMap [ rr:column "document_type_text" ];
     ];
  	rr:predicateObjectMap [
         rr:predicate rdfs:label;
-        rr:objectMap [ rr:column "title_text" ];
+        rr:objectMap [ rr:column "display_text" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate documentation:SourceId;
+        rr:objectMap [ rr:column "source_id" ];
+    ];
+ 	rr:predicateObjectMap [
+        rr:predicate documentation:SourceDate;
+        rr:objectMap [ rr:column "source_date" ];
  	];
  	rr:predicateObjectMap [
-        rr:predicate document:Availability;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Availability/{availability_id}" ];
+        rr:predicate documentation:LastUpdatedDate;
+        rr:objectMap [ rr:column "last_updated_date" ];
     ];
  	rr:predicateObjectMap [
-        rr:predicate document:Availability;
-        rr:objectMap [ rr:column "availability_text" ];
- 	];
+        rr:predicate documentation:PublicationDate;
+        rr:objectMap [ rr:column "publication_date" ];
+    ];
  	rr:predicateObjectMap [
-        rr:predicate document:DocumentNote;
-        rr:objectMap [ rr:column "document_note_text" ];
+        rr:predicate documentation:Note;
+        rr:objectMap [ rr:column "note" ];
     ];
     rr:predicateObjectMap [
-        rr:predicate document:Author.Actor;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+        rr:predicate documentation:Author;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{author_id}" ];
     ];
     rr:predicateObjectMap [
-        rr:predicate document:Publisher.Actor;
-        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{document_id}" ];
+        rr:predicate documentation:Publisher;
+        rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/Actor/{publisher_id}" ];
     ];
  	.
 
