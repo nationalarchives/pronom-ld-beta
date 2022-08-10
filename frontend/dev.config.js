@@ -27,6 +27,7 @@ const rewrites = [
   { from: new RegExp("^\/release-notes$"), to: "/rel-notes-list.html" },
   { from: new RegExp("^\/release-notes\/\d+$"), to: "/rel-notes-single.html" },
   { from: new RegExp("^\/droid"), to: "/droid.html" },
+  { from: new RegExp("^\/error"), to: "/error.html" },
   { from: new RegExp("^\/vendor\/\d+$"), to: "/vendor.html" },
   { from: new RegExp("^\/(x-)?fmt\/\d+$"), to: "/file-format.html" },
   { from: new RegExp("^\/(?:x-)?(?:chr|sfw|cmp)\/\d+$"), to: "/generic-puid.html" },
