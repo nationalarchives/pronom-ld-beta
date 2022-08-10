@@ -4,7 +4,7 @@ import '@js/common.js'
 
 const App = () => {
   // Signal JS is active
-  $('.page-container').removeClass('noJS');
+  $('.noJS').removeClass('noJS');
 }
 
 App()

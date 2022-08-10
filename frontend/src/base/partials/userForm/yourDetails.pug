@@ -34,7 +34,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.2') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Organisation" id="Organisation" th:field="*{submittedBy.organisation}")
+                input(id="Organisation" th:field="*{submittedBy.organisation}")
               .form-row
                 .tooltip-container
                   .label
@@ -42,7 +42,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.3') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Email" id="Email" th:field="*{submittedBy.email}")
+                input(id="Email" th:field="*{submittedBy.email}")
               .form-row
                 .tooltip-container
                   .label
@@ -50,7 +50,7 @@ section.form-part#yourDetails
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '4.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(name="Country" id="Country" th:field="*{submittedBy.country}")
+                input(id="Country" th:field="*{submittedBy.country}")
             div
               .form-row
                 .tooltip-container
@@ -66,7 +66,7 @@ section.form-part#yourDetails
               fieldset
                 legend.sr-only Select if you would like to be recognised for your contribution
                 .form-row.checkbox-container
-                  input(type="radio" id="permission1" name="isAnonymous" value="false" th:field="*{submittedBy.isAnonymous}")
+                  input(type="radio" id="permission1" value="false" th:field="*{submittedBy.isAnonymous}")
                   .tooltip-container
                     .label
                       label(for="permission1") I give permission for my details to be recorded and displayed on PRONOM
@@ -74,7 +74,7 @@ section.form-part#yourDetails
                         .i-wrapper
                           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 .form-row.checkbox-container
-                  input(type="radio" id="permission2" name="isAnonymous" value="true" th:field="*{submittedBy.isAnonymous}" checked)
+                  input(type="radio" id="permission2" value="true" th:field="*{submittedBy.isAnonymous}" checked)
                   .tooltip-container
                     .label
                       label(for="permission2") Prefer to stay anonymous

@@ -9,6 +9,7 @@ services:
     environment:
       - MARKDOWN_DIR=/md
       - TRIPLESTORE=http://triplestore:3030/ds
+      - KC_ENABLED=false
     volumes:
       - ${PWD}/../backend/md:/md
     restart: on-failure
@@ -35,13 +36,13 @@ services:
   # Like so:
   # $ cd rdf-conversion
   # $ docker-compose -f ../deployment/docker-compose.yaml up container-signature-converter
-  container-signature-converter:
-    image: ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
-    command: java -jar /pronombackend.jar convert-container-signatures /data/container-signatures.xml /data/puids.csv /out/container_signatures.ttl
-    volumes:
-      - ${PWD}/data/puid-lookup.csv:/data/puids.csv
-      - ${PWD}/data/container-signature-20211216.xml:/data/container-signatures.xml
-      - ${PWD}/out:/out
+  # container-signature-converter:
+  #   image: ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pronom-backend:0.0.1
+  #   command: java -jar /pronombackend.jar convert-container-signatures /data/container-signatures.xml /data/puids.csv /out/container_signatures.ttl
+  #   volumes:
+  #     - ${PWD}/data/puid-lookup.csv:/data/puids.csv
+  #     - ${PWD}/data/container-signature-20211216.xml:/data/container-signatures.xml
+  #     - ${PWD}/out:/out
 
 networks:
   pronom-net:
