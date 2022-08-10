@@ -9,7 +9,7 @@ import {
   setupPriorityMultifield,
   setupSignatureMultifield,
   setupRelationshipMultifield,
-  setupFormNavigation,
+  // setupFormNavigation,
   setupForm,
   setupReferenceMultifield,
   setupAddActorModal,
@@ -18,7 +18,7 @@ import {
 
 window.formStep = 0;
 
-window.formParts = ['#core', '#signatures', '#priority', '#identifiers', '#relationships', '#additionalProperties', '#contributors', '#review']
+window.formParts = ['#core', '#signatures', '#relationships', '#identifiers', '#additionalProperties', '#contributors', '#review']
 window.formMenuButtons = ['#coreBtn', '#signaturesBtn', '#relationshipsBtn', '#identifiersBtn', '#additionalPropertiesBtn', '#contributorsBtn', '#reviewBtn']
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
     setupPriorityMultifield();
     setupRelationshipMultifield();
     setupByteSeqMultifield();
-    setupFormNavigation();
+    // setupFormNavigation();
     setupReferenceMultifield();
     // Internal specific
     setupAddActorModal()
@@ -123,6 +123,47 @@ const App = () => {
   autocomplete('actor', 'section.form-part#additionalProperties .add-actor.development .input-group input.label');
   // Support actors
   autocomplete('actor', 'section.form-part#additionalProperties .add-actor.support .input-group input.label');
+
+
+  // 
+  window.$ = $;
+  window.formStep = 0;
+  // let formStep = 0
+  $('.form-part').addClass('hide');
+
+  // active class to the button
+  $(formMenuButtons[formStep]).addClass( "active" );
+  // Show first step
+  $(formParts[formStep]).addClass('show');
+  $('.next').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $( '.main-nav li' ).removeClass( "active" );
+    formStep++;
+    $(formParts[formStep]).addClass('show');
+    $(formMenuButtons[formStep]).addClass( "active" );
+  });
+  // Whenever .prev is clicked return a step ========= PREV
+  $('.prev').on('click', function(evt) {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $( '.main-nav li' ).removeClass( "active" );
+    formStep--;
+    $(formParts[formStep]).addClass('show');
+    $(formMenuButtons[formStep]).addClass( "active" );
+  });
+  // clicking on the side menu buttons
+  $('.segment').on('click', function(evt) {
+    evt.preventDefault();evt.preventDefault();
+    $( '.main-nav li' ).removeClass( "active" );
+    $('.form-part').removeClass('show');
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('Btn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    $( currentBtn ).addClass('active');
+    $(formParts[formStep]).addClass('show');
+  });
+  
 }
 
 App()

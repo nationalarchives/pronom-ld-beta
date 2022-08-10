@@ -9,7 +9,7 @@ import {
   setupPriorityMultifield,
   setupSignatureMultifield,
   setupRelationshipMultifield,
-  setupFormNavigation,
+  // setupFormNavigation,
   setupForm,
   setupReferenceMultifield,
   setupReviewFields,
@@ -37,7 +37,7 @@ const App = () => {
     setupPriorityMultifield();
     setupRelationshipMultifield();
     setupByteSeqMultifield();
-    setupFormNavigation();
+    // setupFormNavigation();
     setupReferenceMultifield();
     setupReviewFields();
     // checkReviewIndicators();
@@ -126,6 +126,103 @@ const App = () => {
   autocomplete('actor', 'section.form-part#additionalProperties .add-actor.development .input-group input.label');
   // Support actors
   autocomplete('actor', 'section.form-part#additionalProperties .add-actor.support .input-group input.label');
+
+
+
+  // 
+
+   // Whenever .next is clicked add a step ========= NEXT
+   $('.next').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    formStep++;
+    $(formParts[formStep]).addClass('show');
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $(formMenuButtons[formStep]).addClass("active");
+    }
+  });
+  // Whenever .prev is clicked return a step ========= PREV
+  $('.prev').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    formStep--;
+    $(formParts[formStep]).addClass('show');
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $(formMenuButtons[formStep]).addClass("active");
+    }
+  });
+  // Whenever skipping 3 steps forwards (only aplied to More intormation in external interface) ========= NEXT + 3
+  $('.nextSkip').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    if (1 < formStep && formStep < 6) {
+      $(formMenuButtons[2]).addClass("active");
+    } else {
+      $('.main-nav li').removeClass("active");
+      formStep = 6
+      $(formMenuButtons[formStep]).addClass("active");
+    }
+    $('.main-nav li').removeClass("active");
+    formStep = 6
+    $(formMenuButtons[formStep]).addClass("active");
+    $(formParts[formStep]).addClass('show');
+
+  });
+
+  // Navigation bar
+
+  // Main menu buttons
+  $('.segment').on('click', function() {
+    $( '.main-nav li' ).removeClass( "active" );
+    $( '.side-menu li' ).removeClass( "active" );
+    $('.form-part').removeClass('show');
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('Btn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    $( currentBtn ).addClass('active');
+    $(formParts[formStep]).addClass('show');
+    console.log(formStep);
+    if(formStep === 2){
+      $('#prioritySubBtn').closest('li').addClass('active');
+    }
+  });
+
+  // Side menu buttons (More information)
+  $('.segment-sub').on('click', function() {
+    $('.form-part').removeClass('show');
+    $( '.side-menu li' ).removeClass( "active" );
+    var currentBtn = ('#' + $(this).closest('li').attr('id'));
+    var currentFormPart = currentBtn.replace('SubBtn', '');
+    formStep = formParts.indexOf(currentFormPart);
+    console.log(currentBtn);
+    $(formParts[formStep]).addClass('show');
+    $(currentBtn).closest('li').addClass('active');
+  });
+
+
+  
+  // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
+  $('.prevSkip').on('click', (evt) => {
+    evt.preventDefault();
+    $(formParts[formStep]).removeClass('show');
+    $('.main-nav li').removeClass("active");
+    if (1 < formStep && formStep < 6) {
+      formStep = 1;
+      $(formMenuButtons[formStep]).addClass("active");
+    } else {
+      $('.main-nav li').removeClass("active");
+      formStep--;
+      $(formMenuButtons[formStep]).addClass("active");
+    }
+    $(formParts[formStep]).addClass('show');
+  });
 
 }
 
