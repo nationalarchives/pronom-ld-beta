@@ -107,7 +107,7 @@ public class EditorialController {
         Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
         model.addAttribute("submissions", subs);
         model.addAttribute("submissionMap", subsMap);
-        logger.trace("SUBMISSIONS: " + subs);
+        logger.debug("SUBMISSIONS: " + subs);
         logger.trace("SUBMISSIONS MAP: " + subsMap);
         return "dashboard";
     }

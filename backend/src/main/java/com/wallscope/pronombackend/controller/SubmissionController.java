@@ -85,12 +85,13 @@ public class SubmissionController {
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(null, null, Instant.now(), cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
+        Contributor contributor = submitter.toObject(false);
         SubmissionDAO subDao = new SubmissionDAO();
         // source == null because it's a new file format therefore there is no existing one to compare
         Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
                 makeResource(PRONOM.Submission.UserSubmission),
                 makeResource(PRONOM.Submission.StatusWaiting),
-                submitter.toObject(false),
+                contributor,
                 null,
                 null,
                 new TentativeFileFormat(f.getURI(), f),
