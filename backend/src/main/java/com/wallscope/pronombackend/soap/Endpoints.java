@@ -14,6 +14,7 @@ import uk.gov.nationalarchives.pronom.Version;
 import uk.gov.nationalarchives.pronom.signaturefile.SigFile;
 import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -31,7 +32,7 @@ public class Endpoints {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getSignatureFileV1")
     @ResponsePayload
-    public GetSignatureFileV1Response getSignatureFileV1(@RequestPayload GetSignatureFileV1 request) throws DatatypeConfigurationException {
+    public GetSignatureFileV1Response getSignatureFileV1(@RequestPayload GetSignatureFileV1 request) throws DatatypeConfigurationException, JAXBException {
         // Fetch data using DAO
         FileFormatDAO dao = new FileFormatDAO();
         List<FileFormat> fs = dao.getAllForSignature();
