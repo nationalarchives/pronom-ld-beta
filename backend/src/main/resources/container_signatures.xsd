@@ -1,0 +1,192 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Path" type="xs:string"/>
+    <xs:element name="Sequence" type="xs:string"/>
+    <xs:element name="SubSequence">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Sequence"/>
+                <xs:element ref="RightFragment" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:byte" name="Position" use="optional"/>
+            <xs:attribute type="xs:short" name="SubSeqMinOffset" use="optional"/>
+            <xs:attribute type="xs:int" name="SubSeqMaxOffset" use="optional"/>
+            <xs:attribute type="xs:byte" name="MinFragLength" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ByteSequence">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element ref="SubSequence" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="Reference" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="InternalSignature">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element ref="ByteSequence" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[  We do not check for the 1.1 version number, as this is the default
+                                        version in the *absence* of any version specification.
+                                        File format precedence rules ensure that other versions take priority
+                                        over this one, if a version is explicitly defined.
+                                  <SubSequence Position="2" SubSeqMinOffset="0">
+                                      <Sequence>'office:version=' [22 27] '1.1' [22 27]</Sequence>
+                                  </SubSequence>
+                                    We do not check for the 1.1 version number, as this is the default
+                                        version in the *absence* of any version specification.
+                                        File format precedence rules ensure that other versions take priority
+                                        over this one, if a version is explicitly defined.
+                                  <SubSequence Position="2" SubSeqMinOffset="0">
+                                      <Sequence>'office:version=' [22 27] '1.1' [22 27]</Sequence>
+                                  </SubSequence>
+                                    We do not check for the 1.1 version number, as this is the default
+                                        version in the *absence* of any version specification.
+                                        File format precedence rules ensure that other versions take priority
+                                        over this one, if a version is explicitly defined.
+                                  <SubSequence Position="2" SubSeqMinOffset="0">
+                                      <Sequence>'office:version=' [22 27] '1.1' [22 27]</Sequence>
+                                  </SubSequence>
+                                    We do not check for the 1.1 version number, as this is the default
+                                        version in the *absence* of any version specification.
+                                        File format precedence rules ensure that other versions take priority
+                                        over this one, if a version is explicitly defined.
+                                  <SubSequence Position="2" SubSeqMinOffset="0">
+                                      <Sequence>'office:version=' [22 27] '1.1' [22 27]</Sequence>
+                                  </SubSequence>
+                                  ]]></xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:int" name="ID" use="optional"/>
+            <xs:attribute type="xs:string" name="Specificity" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="InternalSignatureCollection">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="InternalSignature"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="BinarySignatures">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="InternalSignatureCollection"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="File">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Path"/>
+                <xs:element ref="BinarySignatures" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Description" type="xs:string"/>
+    <xs:element name="Files">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="File" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="BinarySignatures" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RightFragment">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:byte" name="MaxOffset" use="optional"/>
+                    <xs:attribute type="xs:byte" name="MinOffset" use="optional"/>
+                    <xs:attribute type="xs:byte" name="Position" use="optional"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ContainerSignature">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+                <xs:element ref="Files">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[  Some valid files do not have a CombObj stream.
+                <File>
+                    <Path>CompObj</Path>
+                    <BinarySignatures>
+                        <InternalSignatureCollection>
+                          <InternalSignature ID="309">
+                              <ByteSequence Reference="BOFoffset">
+                                  <SubSequence Position="1" SubSeqMinOffset="40" SubSeqMaxOffset="1024">
+                                      <Sequence>12 00 00 00 'PowerPoint.Show.8' 00</Sequence>
+                                  </SubSequence>
+                              </ByteSequence>
+                          </InternalSignature>
+                      </InternalSignatureCollection>
+                    </BinarySignatures>
+                </File>
+                 ]]></xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:int" name="Id" use="optional"/>
+            <xs:attribute type="xs:string" name="ContainerType" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FileFormatMapping">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:int" name="signatureId" use="optional"/>
+                    <xs:attribute type="xs:string" name="Puid" use="optional"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TriggerPuid">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="ContainerType" use="optional"/>
+                    <xs:attribute type="xs:string" name="Puid" use="optional"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ContainerSignatures">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ContainerSignature" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FileFormatMappings">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="FileFormatMapping" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>  Microsoft Word 6.0/95 (OLE2)  Microsoft Word 97 (OLE2) Microsoft Word OOXML (ZIP) Microsoft Word OOXML little endian (ZIP) Microsoft Word OOXML big endian (ZIP) Macro enabled Microsoft Word Document OOXML (ZIP) Microsoft Word OOXML Template (ZIP) Microsoft Word OOXML Macro-enabled Document Template (ZIP)  Microsoft Word (Generic) 6.0-2003 (OLE2)  Microsoft Word 97 OLE2 Template (OLE2)  Microsoft Word 97 OLE2 Template Password Protected (OLE2)  Microsoft Word 97 OLE2 Password Protected (OLE2)  Microsoft Excel 5.0/95 (OLE2)  Microsoft Excel 97 (OLE2)  Microsoft Excel 97 (OLE2) Microsoft Excel OOXML (ZIP) Microsoft Excel OOXML little endian (ZIP) Microsoft Excel OOXML big endian (ZIP) Microsoft Excel OOXML Macro-Enabled(ZIP) Microsoft Excel OOXML Binary workbook(ZIP)  Microsoft Excel OOXML Template (ZIP)  Microsoft Excel Macro-Enabled Template (ZIP) Microsoft Excel Macro-enabled add-in (ZIP)  Microsoft Excel 97-2003 Template (OLE2) Microsoft PowerPoint 2000 (OLE2) Microsoft PowerPoint 2007 OOXML (ZIP) Microsoft PowerPoint 2007 OOXML little endian (ZIP) Microsoft PowerPoint 2007 OOXML big endian (ZIP)  Macro Enabled Microsoft Powerpoint 2007 OOXML (ZIP)  Microsoft Office Theme OOXML (ZIP)  Microsoft PowerPoint show (ZIP)  Microsoft PowerPoint Macro-enabled show (ZIP)  Microsoft PowerPoint Template (ZIP)  Microsoft PowerPoint Macro-enabled template (ZIP)  Microsoft PowerPoint Macro-enabled add-in (ZIP)  Microsoft PowerPoint Macro-enabled slide (ZIP)  Microsoft PowerPoint 95 (OLE2)  Microsoft PowerPoint 4.0 (OLE2) Microsoft Project 4.0 (OLE2) Microsoft Project 98 (OLE2) Microsoft Project 98 (OLE2) Microsoft Project 2000-2003 (OLE2) Microsoft Project 2000-2003 (OLE2) Microsoft Project 2007 (OLE2) Microsoft Project 2007 (OLE2) Microsoft Project 2010 (OLE2) Microsoft Project 2010 (OLE2) Microsoft Project 95 (OLE2) Microsoft Publisher 2.0 (OLE2) Microsoft Publisher 95 (OLE2) Microsoft Publisher 97 (OLE2) Microsoft Publisher 98 (OLE2) Microsoft Publisher 2000 (OLE2) Microsoft Publisher 2002 (OLE2) Microsoft Publisher 2003 (OLE2) Microsoft Publisher 2007 (OLE2) Microsoft Publisher 2010 (OLE2) Microsoft Publisher 2013 (OLE2) Microsoft Publisher 2016-2019 (OLE2) Microsoft Office Binder File for Windows 97-2000 (OLE2) Open Document Text 1.0 (ZIP) Open Document Text 1.0 (ZIP) Open Document Text 1.1 (ZIP) Open Document Text 1.2 (ZIP) Open Document Spreadsheet 1.0 (ZIP) Open Document Spreadsheet 1.0 (ZIP) Open Document Spreadsheet 1.1 (ZIP) Open Document Spreadsheet 1.2 (ZIP) Open Document Presentation 1.0 (ZIP) Open Document Presentation 1.1 (ZIP) Open Document Presentation 1.2 (ZIP) Open Document Database 1.0 (ZIP) Open Document Database 1.1 (ZIP) Open Document Database 1.2 (ZIP) Java Archive Format (ZIP) Microsoft Outlook Email Message (OLE2)  Microsoft Visio Document generic (OLE2)  Microsoft Visio Document 2000-2002 (OLE2)  Microsoft Visio Document 2003-2010 (OLE2)  Microsoft Visio Document 2013 (ZIP)  Microsoft Visio Stencil 2013 (ZIP)  Microsoft Visio Template 2013 (ZIP)  Microsoft Visio Macro-Enabled Document 2013 (ZIP)  Microsoft Visio Macro-Enabled Stencil 2013 (ZIP)  Microsoft Visio Macro-Enabled Template 2013 (ZIP)  Microsoft Visio Document 3 (OLE2)  Microsoft Visio Document 4 (OLE2)  Microsoft Visio Document 5 (OLE2)  Apple iBooks format (ZIP) ePub format (ZIP)  Microsoft Works Word Processor 3-4 (OLE2)  Microsoft Works Word Processor 5-6 (OLE2)  Microsoft Works Spreadsheet (OLE2)  Microsoft Works Spreadsheet (OLE2)  Microsoft Encrypted Document (OLE2)  Microsoft Thumbs.db XP (OLE2)  Microsoft Shell Scrap Object File (OLE2)  Kodak FlashPix Image (OLE2)  Kodak FlashPix Image (OLE2)  Microsoft PhotoDraw (OLE2)  Microsoft Picture It! Image File (OLE2)  Micrografx Designer (OLE2)  Bentley V8 DGN (OLE2)  3MF 3D Manufacturing Format (ZIP)  GeoGebra 2 (ZIP)  GeoGebra 1.X (ZIP)  GeoGebra 3 (ZIP)  GeoGebra 4 (ZIP)  GeoGebra 5 (ZIP)  SPSS Output File (spv) (ZIP)  SPSS Output File (spv) (ZIP)  Keyhole Markup Language (Container) (ZIP)  Open XML Paper Specification (ZIP)  Apple iWork Keynote 09 (ZIP)  Apple iWork Template 13 (ZIP)  Apple iWork Numbers 09 (ZIP)  Apple iWork Pages 09 (ZIP)  Apple iWork Document 14 (ZIP)  Serif PagePlus Publication 4(OLE2)  Serif PagePlus Publication 5(OLE2)  Serif PagePlus Publication 6(OLE2)  Serif PagePlus Publication 7(OLE2)  Serif PagePlus Publication 8(OLE2)  Serif PagePlus Publication 8(OLE2)  Serif PagePlus Publication 9(OLE2)  Serif PagePlus Publication 10(OLE2)  Serif PagePlus Publication 11(OLE2)  Serif PagePlus Publication 12(OLE2)  Serif PagePlus Publication X3 (ZIP)  Serif PagePlus Publication X4 (ZIP)  Serif PagePlus Publication X5 (ZIP)  Serif PagePlus Publication X6 (ZIP)  Serif PagePlus Publication X7 (ZIP)  Serif PagePlus Publication X8 (ZIP)  Serif PagePlus Publication X9 (ZIP)  Serif PagePlus Publication Home Office (OLE2)  Serif PagePlus Publication SE (OLE)  Serif PagePlus Publication Generic (OLE2)  Serif DrawPlus Drawing 3 (OLE2)  Serif DrawPlus Drawing 4 (OLE2)  Serif DrawPlus Drawing 5 (OLE2)  Serif DrawPlus Drawing 6 (OLE)  Serif DrawPlus Drawing 7 (OLE)  Serif DrawPlus Drawing 8 (OLE)  Serif DrawPlus Drawing X2 (OLE)  Serif DrawPlus Drawing X3 (ZIP)  Serif DrawPlus Drawing X4 (ZIP)  Serif DrawPlus Drawing X5 (ZIP)  Serif DrawPlus Drawing X6 (ZIP)  Serif DrawPlus Drawing X8 (ZIP)  Serif DrawPlus Drawing Generic(OLE2)  Serif PhotoPlus Image 5-X2 (ZIP)  Serif PhotoPlus Image X3 Onwards (OLE)  StarOffice Writer 3.x (OLE2)  StarOffice Writer 4.x (OLE2)  StarOffice Writer 5.x (OLE2)  StarOffice Draw 3.x (OLE2)  StarOffice Draw 3.x (OLE2)  StarOffice Draw 4.x (OLE2)  StarOffice Draw 5.x (OLE2)  StarOffice Draw 5.x (OLE2)  StarOffice Impress 3.x (OLE2)  StarOffice Impress 4.x (OLE2)  StarOffice Impress 5.x (OLE2)  StarOffice Calc 3.x (OLE2)  StarOffice Calc 4.x (OLE2)  StarOffice Calc 5.x (OLE2)  Quattro Pro Spreadsheet 7-8 (OLE2)  Quattro Pro Spreadsheet 9 onwards (OLE2)  Corel Presentation 7-8-9 (OLE2)  Compound WordPerfect for Windows Document 6 onwards(OLE2)  PageMaker Document (Generic) (OLE2)  i2 Analysts Notebook (OLE2)  ESRI ArcMap Document (OLE2)  ESRI ArcScene Document (OLE2)  ESRI ArcGlobe Document (OLE2)  Adobe Air 1.0 (ZIP)  Adobe Air 1.5 (ZIP)  Adobe Air 2.0 (ZIP)  InDesign Markup Language Package (ZIP)  Adobe SWC Package (ZIP)  Microsoft Windows Movie Maker File (OLE2)  AutoCAD Design Web Format(DWFx) (ZIP)  3DS Max (OLE2)  3DS Max (nullbytes) (OLE2)  3DS Max 2(OLE2)  SIARD - Software-Independent Archiving of Relational Databases v1.0(ZIP)  SIARD - Software-Independent Archiving of Relational Databases v2.0(ZIP)  SIARD - Software-Independent Archiving of Relational Databases v2.1(ZIP)  Open Raster Image Format(ZIP)  Krita Document Format(ZIP)  Hangul Word Processor Document 5(OLE2)  JASCO JWS Format OLE2 (OLE2)  Zoner Callisto Metafile (OLE2)  602Text Document (OLE2)  602Tab Spreadsheet (OLE2)  Calendar Creator Event 3-4 (OLE2)  Calendar Creator File 4 (OLE2)  Calendar Creator File 5-6 (OLE2)  Calendar Creator File 7-8 (OLE2)  Broderbund The Print Shop/PrintMaster/American Greetings Project (OLE2) Electronically Certified Document (EDOC) (ZIP) BDOC 1 (ZIP) BDOC 2.x (ZIP) BDOC 2.x (ZIP) Associated Signature Container Simple (ASiC-S) (ZIP) ZFO (Form) File (ZIP) Avery DesignPro Document 4 (OLE2) Avery DesignPro Document 5 (OLE2) HP Photo Album (OLE2) Autodesk Revit File 4 (OLE2) Autodesk Revit Project File 2008 (OLE2) Autodesk Revit Family File 2008 (OLE2) Autodesk Revit Family File 2010 (OLE2) Autodesk Revit Project File 2019 (OLE2) Autodesk Revit Family File 2019 (OLE2) FamilyTree Maker Database 1-4 (OLE2) FamilyTree Maker Database 5-16 (OLE2) Picture Publisher Bitmap 6-10 (OLE2) Microsoft MapPoint Document (OLE2) ESRI Published Map Format (OLE2) Omnipage Document 10 (OLE2) Omnipage Document 12 (OLE2) Omnipage Document 18 (OLE2) Muvee autoProducer 1-5 (OLE2) Muvee autoProducer 6 (OLE2) Faro Laser Scan File (OLE2) Faro Workspace File (OLE2) Ichitaro Document 8 (OLE2) GST Publisher 2 (OLE2) Corel Print House 1 (OLE2) Corel Print House 1 (OLE2) Corel Print House 2 (OLE2) Corel Print House 2 (OLE2) Corel Print House/Print Office 3 (OLE2) Corel Print House/Print Office 3 (OLE2) Corel Print House/Print Office 4 (OLE2) Corel Print House/Print Office 4 (OLE2) Corel Print House/Print Office 5 (OLE2) Corel Print House/Print Office 5 (OLE2) Corel Photo House 1 (OLE2) Minitab Worksheet 12 (OLE2) Minitab Worksheet 13 (OLE2) Minitab Project 12-13 (OLE2) Minitab Worksheet 14 (OLE2) Minitab Project 14 (OLE2) Minitab Worksheet 15+ (OLE2) Minitab Project 15+ (OLE2) Harvard Graphics Presentation 4 (OLE2)  JWC Container File (OLE2)  Agisoft Project Archive (ZIP)  ISDOCX Information System Document (version 6.0.1) (ZIP)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TriggerPuids">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="TriggerPuid" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ContainerSignatureMapping">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ContainerSignatures"/>
+                <xs:element ref="FileFormatMappings"/>
+                <xs:element ref="TriggerPuids"/>
+            </xs:sequence>
+            <xs:attribute type="xs:float" name="schemaVersion"/>
+            <xs:attribute type="xs:byte" name="signatureVersion"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
