@@ -5,10 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.oxm.Marshaller;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 public class PronombackendApplication {
@@ -42,6 +45,17 @@ public class PronombackendApplication {
         templateResolver.setCheckExistence(true);
 
         return templateResolver;
+    }
+
+    @Bean
+    public Marshaller jaxbMarshaller() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+        Jaxb2Marshaller m = new Jaxb2Marshaller();
+        m.setMarshallerProperties(props);
+        m.setPackagesToScan("com.wallscope.pronombackend", "uk.gov.nationalarchives.pronom.signaturefile");
+        return m;
     }
 
     private static final String usageStmt = "Usage: java -jar /path/to/pronombackend.jar convert-container-signatures /path/to/containerfile.xml /path/to/puidmap.csv /path/to/outFile.ttl";
