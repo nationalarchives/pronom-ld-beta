@@ -1,7 +1,7 @@
 name: Build and Push Image to AWS ECR
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 permissions:
   id-token: write
   contents: write    # This is required for actions/checkout, and tagging
