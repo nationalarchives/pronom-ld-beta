@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-
 public class Converter {
     static Logger logger = LoggerFactory.getLogger(Converter.class);
 
@@ -55,7 +53,7 @@ public class Converter {
             QName extID = new QName("Extension");
             List<JAXBElement<String>> exts = ff.getExternalSignatures().stream()
                     // get only the file extensions
-                    .filter(es -> es.getSignatureType().equals(PRONOM.ExternalSignature.FileExtension))
+                    .filter(es -> es.getSignatureType().equals("File extension"))
                     .sorted(Comparator.comparing(ExternalSignature::getName))
                     .map(es -> new JAXBElement<>(extID, String.class, es.getName()))
                     .collect(Collectors.toList());
@@ -67,9 +65,8 @@ public class Converter {
                     .map(ps -> new JAXBElement<>(pID, BigInteger.class, new BigInteger(ps.getTargetID())))
                     .collect(Collectors.toList());
             children.addAll(pIDs);
-            if (!isIDs.isEmpty() || !exts.isEmpty() || !pIDs.isEmpty()) {
-                listRef.add(conv);
-            }
+
+            listRef.add(conv);
         });
         return collection;
     }
