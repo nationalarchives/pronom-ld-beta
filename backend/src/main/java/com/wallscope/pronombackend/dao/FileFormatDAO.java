@@ -51,6 +51,7 @@ public class FileFormatDAO {
                     ff:PuidTypeId ?fPuidType ;
                     ff:LastUpdatedDate ?fUpdated .
                 ?f ff:PuidTypeId/rdfs:label ?puidTypeName .
+                OPTIONAL { ?f pr:fileFormat.Version ?version . }#END OPTIONAL
                 
             """;
     public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
