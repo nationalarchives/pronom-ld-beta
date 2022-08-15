@@ -74,21 +74,20 @@ public class RESTController {
                 .collect(Collectors.toList());
 
         fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+
         SignatureFileWrapper wrapper = new SignatureFileWrapper();
-        SignatureFileType signatureFileType = new SignatureFileType();
         // Set Version: for now we hardcode at 100 which is what the data is based off of
-        signatureFileType.setVersion(BigInteger.valueOf(100));
+        wrapper.setVersion(BigInteger.valueOf(100));
         // DateCreated is set to 'now'
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date());
         XMLGregorianCalendar xCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal); // setDateCreated
-        signatureFileType.setDateCreated(xCal);
+        wrapper.setDateCreated(xCal);
         // Convert the FileFormat collection using the helper class
-        signatureFileType.setFileFormatCollection(Converter.convertFileFormatCollection(fs));
+        wrapper.setFileFormatCollection(Converter.convertFileFormatCollection(fs));
         // Convert the InternalSignature collection using the helper class
         JAXBContext ctx = JAXBContext.newInstance(ByteSequenceType.class);
-        signatureFileType.setInternalSignatureCollection(Converter.convertInternalSignatureCollection(signatures, ctx));
-        wrapper.setSignatureFile(signatureFileType);
+        wrapper.setInternalSignatureCollection(Converter.convertInternalSignatureCollection(signatures, ctx));
         return wrapper;
     }
 

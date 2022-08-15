@@ -45,9 +45,13 @@ public class FileFormatDAO {
             """;
     // This sub-query is used to gather file-format related data in non-file format
     public static final String MINIMAL_FILE_FORMAT_SUB_QUERY = """
-                ?f a pr:FileFormat ; rdfs:label ?label ; rdfs:comment ?comment ; ff:Puid ?puid ; ff:PuidTypeId ?puidType ; ff:LastUpdatedDate ?updated .
-                # Links
-                ?puidType rdfs:label ?puidTypeName .
+                ?f a pr:FileFormat ;
+                    rdfs:label ?fLabel ;
+                    ff:Puid ?fPuid ;
+                    ff:PuidTypeId ?fPuidType ;
+                    ff:LastUpdatedDate ?fUpdated .
+                ?f ff:PuidTypeId/rdfs:label ?puidTypeName .
+                
             """;
     public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
             .replaceAll("\\?byteSeq pr:byteSequence\\.ContainerFile \\?contSigFile \\.", "");
@@ -104,27 +108,27 @@ public class FileFormatDAO {
             OPTIONAL { ?f ff:ContainerSignature ?contSig .
                """ + FORM_CONTAINER_SIG_SUB_QUERY + """
             }#END OPTIONAL
-            
+                        
             # Development Actors
             OPTIONAL { ?f pr:fileFormat.DevelopedBy.Actor ?fDevActor .
             """ + ActorDAO.ACTOR_SUB_QUERY.replaceAll("\\?act", "?fDevActor") + """
             }#END OPTIONAL
-            
+                        
             # Support Actors
             OPTIONAL { ?f pr:fileFormat.SupportedBy.Actor ?fSupportActor .
             """ + ActorDAO.ACTOR_SUB_QUERY.replaceAll("\\?act", "?fSupportActor") + """
             }#END OPTIONAL
-            
+                        
             # Format Relationships
             OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
                """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
             }#END OPTIONAL
-            
+                        
             # Format Families
             OPTIONAL { ?f pr:fileFormat.FormatFamily ?fFamily .
                 ?fFamily rdfs:label ?fFamilyName .
             }#END OPTIONAL
-            
+                        
             # Format Aliases
             OPTIONAL { ?f pr:fileFormat.Alias ?fAlias .
                 ?fAlias rdfs:label ?fAliasName ; pr:formatAlias.Version ?fAliasVersion .
@@ -140,29 +144,33 @@ public class FileFormatDAO {
 
     public static final String SIG_GEN_QUERY = PREFIXES + """
             CONSTRUCT {
+            # File format representation
+            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY)
+            .replaceAll("\\?f ff:PuidTypeId/rdfs:label \\?puidTypeName \\.", "?fPuidType rdfs:label ?puidTypeName .") + """
+            # Binary signatures
               """ + trimOptionals(INTERNAL_SIG_SUB_QUERY) + """
-            # Byte Sequences
-            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
             # Link File Format
             ?f pr:fileFormat.InternalSignature ?sig .
-            # File format representation
-            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY) + """
-                        
+            # Byte Sequences
+            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
+            # Format Identifiers
+            ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
             """ + trimOptionals(FORMAT_RELATIONSHIPS_SUB_QUERY) + """
                         
             """ + trimOptionals(EXTERNAL_SIGNATURE_SUB_QUERY) + """
                         
             """ + trimOptionals(FORMAT_IDENTIFIER_SUB_QUERY) + """
             } WHERE {
+            # File format representation
+            """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
+            OPTIONAL { ?f pr:fileFormat.InternalSignature ?sig .
               """ + INTERNAL_SIG_SUB_QUERY + """
             # Byte Sequences
             OPTIONAL {
-            """ + BYTE_SEQUENCE_SUB_QUERY + """
+                """ + BYTE_SEQUENCE_SUB_QUERY + """
+                }#END OPTIONAL
             }#END OPTIONAL
-            # Link File Format
-            ?f pr:fileFormat.InternalSignature ?sig .
-            # File format representation
-            """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
+            # Format identifiers
             OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
             """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
             }#END OPTIONAL
@@ -175,7 +183,7 @@ public class FileFormatDAO {
                """ + FORMAT_IDENTIFIER_SUB_QUERY + """
             }#END OPTIONAL
             }
-            """;
+            """.replaceAll("\\?fRelType", "<" + PRONOM.FormatRelationshipType.PriorityOver + ">");
 
     public static final String LABEL_TO_URI_QUERY = PREFIXES + "CONSTRUCT { ?s a ?type . } WHERE { ?s a ?type ; rdfs:label ?label . }";
     public static final String PUID_QUERY = PREFIXES + "CONSTRUCT {?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName} WHERE{ ?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName }";
