@@ -1,11 +1,15 @@
 package com.wallscope.pronombackend.soap;
 
 import com.wallscope.pronombackend.model.ByteSequence;
+import com.wallscope.pronombackend.model.ExternalSignature;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.nationalarchives.pronom.signaturefile.*;
+import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
+import uk.gov.nationalarchives.pronom.signaturefile.FileFormatType;
+import uk.gov.nationalarchives.pronom.signaturefile.InternalSignatureType;
+import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -19,11 +23,10 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
 
 public class Converter {
     static Logger logger = LoggerFactory.getLogger(Converter.class);
@@ -42,6 +45,7 @@ public class Converter {
             // Add InternalSignatureID elements
             QName isID = new QName("InternalSignatureID");
             List<JAXBElement<BigInteger>> isIDs = ff.getInternalSignatures().stream()
+                    .sorted(Comparator.comparingInt(s -> Integer.parseInt(s.getID())))
                     .map(is -> new JAXBElement<>(isID, BigInteger.class, new BigInteger(is.getID())))
                     .collect(Collectors.toList());
             children.addAll(isIDs);
@@ -49,16 +53,19 @@ public class Converter {
             QName extID = new QName("Extension");
             List<JAXBElement<String>> exts = ff.getExternalSignatures().stream()
                     // get only the file extensions
-                    .filter(es -> es.getSignatureType().equals(PRONOM.ExternalSignature.FileExtension))
+                    .filter(es -> es.getSignatureType().equals("File extension"))
+                    .sorted(Comparator.comparing(ExternalSignature::getName))
                     .map(es -> new JAXBElement<>(extID, String.class, es.getName()))
                     .collect(Collectors.toList());
             children.addAll(exts);
             // Add PriorityOver elements
             QName pID = new QName("HasPriorityOverFileFormatID");
             List<JAXBElement<BigInteger>> pIDs = ff.getHasPriorityOver().stream()
+                    .sorted(Comparator.comparingInt(p -> Integer.parseInt(p.getTargetID())))
                     .map(ps -> new JAXBElement<>(pID, BigInteger.class, new BigInteger(ps.getTargetID())))
                     .collect(Collectors.toList());
             children.addAll(pIDs);
+
             listRef.add(conv);
         });
         return collection;
