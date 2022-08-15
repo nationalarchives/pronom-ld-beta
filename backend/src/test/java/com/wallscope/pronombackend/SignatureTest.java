@@ -2,11 +2,16 @@ package com.wallscope.pronombackend;
 
 import com.google.common.io.Resources;
 import com.wallscope.pronombackend.model.ByteSequence;
+import net.byteseek.compiler.CompileException;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.builder.Input;
 import org.xmlunit.diff.*;
+import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceAnchor;
+import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceCompiler;
+import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceSerializer;
+import uk.gov.nationalarchives.droid.core.signature.compiler.SignatureType;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -23,37 +28,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SignatureTest {
-    @Test
-    void generatesSubsequences() {
-        System.out.println("---------------------SIMPLE EXAMPLE----------------------------");
-        List<ByteSequence.SubSequence> seqs = TestResources.SimpleExampleByteSequence.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("--------------------COMPLEX EXAMPLE----------------------------");
-        seqs = TestResources.ExampleByteSequence.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("---------------------------------------------------------------");
-        System.out.println("---------------------OTHER EXAMPLE-----------------------------");
-        seqs = TestResources.OtherExampleByteSequence.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("---------------------------------------------------------------");
-        System.out.println("----------------------OFFSET TEST------------------------------");
-        seqs = TestResources.OffsetTestByteSequence.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("---------------------------------------------------------------");
-        System.out.println("------------------FURTHER OFFSET TEST--------------------------");
-        seqs = TestResources.FurtherOffsetTestBS.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("---------------------------------------------------------------");
-        System.out.println("--------------------EOF OFFSET TEST----------------------------");
-        seqs = TestResources.EOFExample.getSubSequences();
-        System.out.println(seqs);
-        System.out.println("---------------------------------------------------------------");
-    }
+
 //    @LocalServerPort
 //    private int port;
 //
 //    @Autowired
 //    private TestRestTemplate testTemplate;
+
+    @Test
+    void usingDroidParser() {
+        try {
+            ByteSequence bseq = TestResources.SimpleExampleByteSequence;
+            ByteSequenceAnchor a = ByteSequenceAnchor.BOFOffset;
+            if (bseq.isEOFOffset()) {
+                a = ByteSequenceAnchor.EOFOffset;
+            }
+            String XML = ByteSequenceSerializer.SERIALIZER.toXML(bseq.getSequence(), a, ByteSequenceCompiler.CompileType.PRONOM, SignatureType.BINARY);
+
+
+            System.out.println(XML);
+        } catch (CompileException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     void testAgainstSchema() throws IOException {

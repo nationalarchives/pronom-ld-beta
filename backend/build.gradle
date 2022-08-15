@@ -51,6 +51,9 @@ task genJaxb {
 compileJava.dependsOn genJaxb
 
 configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
     jaxb
 }
 
@@ -97,6 +100,13 @@ dependencies {
     // Container conversion script 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.simpleframework:simple-xml:2.7.1"
+
+    // DROID: droid-core used for the ByteSequence parser
+    // https://mvnrepository.com/artifact/uk.gov.nationalarchives/droid-core
+    implementation(group: 'uk.gov.nationalarchives', name: 'droid-core', version: '6.5.2'){
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+
 
     // SOAP deps
     implementation 'wsdl4j:wsdl4j'

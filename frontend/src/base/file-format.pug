@@ -388,7 +388,7 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p
-              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.labelMap(bo)}") NOT IMPLEMENTED
+              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.getLabel(bo)}") NOT IMPLEMENTED
         //- ROW
         //- TODO - tooltip not available
         li.row
