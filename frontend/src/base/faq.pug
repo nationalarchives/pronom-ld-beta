@@ -13,12 +13,14 @@ block content
 
   .unique-page-content#faq
     .faq-search.noJS
-      .search-input
-        fieldset
-          legend.sr-only Enter term
-          div
-            label.sr-only(for="faq-search") Filter FAQ terms
-            input#faq-search(placeholder="Filter for terms...")
+      .searchFAQ
+        h3 Search in FAQ
+        .search-input
+          fieldset
+            legend.sr-only Enter term
+            div
+              label.sr-only(for="faq-search") Filter FAQ terms
+              input#faq-search(placeholder="Filter for terms...")
       .buttons
         button.bordered-blue.medium#openAllFAQ
           span Open all
