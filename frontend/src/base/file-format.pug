@@ -85,7 +85,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.version ?: ''}") 1.0
+            p( th:text="${ff.version ?: '---'}") 1.0
         //- ROW
         li.row
           .tooltip-container
@@ -95,7 +95,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.firstExtension ?: ''}") PLACEHOLDER(1.0)
+            p( th:text="${ff.firstExtension ?: '---'}") PLACEHOLDER(1.0)
         //- ROW
         li.row
           .tooltip-container
@@ -307,7 +307,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${intSig.note ?: ''}") Lorem ipsum dolor sit amet
+            p( th:text="${intSig.note ?: '---'}") Lorem ipsum dolor sit amet
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
@@ -330,7 +330,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.positionName} ?: ''") Absolute from EOF
+                p( th:text="${byteSeq.positionName} ?: '---'") Absolute from EOF
             //- ROW
             li.row
               .tooltip-container
@@ -340,7 +340,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.offset} ?: ''") Lorem ipsum
+                p( th:text="${byteSeq.offset} ?: '---'") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
@@ -350,7 +350,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.maxOffset} ?: ''") Lorem ipsum
+                p( th:text="${byteSeq.maxOffset} ?: '---'") Lorem ipsum
             //- ROW
             li.row
               .tooltip-container
@@ -360,7 +360,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.byteOrder} ?: ''") Lorem ipsum
+                p( th:text="${@templateUtils.getLabel(byteSeq.byteOrder)} ?: '---'") Lorem ipsum
             //- ROW
             //- TODO - tooltip not available
             li.row

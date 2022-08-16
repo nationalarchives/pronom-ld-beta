@@ -2,7 +2,7 @@
   .form-inner
     .modal-title
       h2 Add actor
-      button.close
+      //- button.close
         i.fa-solid.fa-xmark(aria-hidden="true")
     form(action="#", th:action="@{/editorial/actor/{target}(target=${actor?.ID} ?: 'new')}", method='POST', th:object="${actor}") 
       //- Hidden URI field

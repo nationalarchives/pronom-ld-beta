@@ -486,10 +486,10 @@ export function setupAddActorModal() {
     $("#ifContributor").attr("checked", true);
   });
 
-  $('.add-actor-modal .overlay').on('click', function (evt) {
-    evt.preventDefault();
-    $('.add-actor-modal').hide();
-  });
+  // $('.add-actor-modal .overlay').on('click', function (evt) {
+  //   evt.preventDefault();
+  //   $('.add-actor-modal').hide();
+  // });
 
   $('.add-actor-modal .close').on('click', function (evt) {
     evt.preventDefault();

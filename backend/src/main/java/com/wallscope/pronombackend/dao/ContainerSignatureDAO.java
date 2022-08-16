@@ -32,31 +32,29 @@ public class ContainerSignatureDAO {
             OPTIONAL { ?contSigFile pr:containerFile.FilePath ?contSigFileFilePath . }#END OPTIONAL
             OPTIONAL { ?contSigFile pr:containerFile.ByteSequence ?contByteSeq . }#END OPTIONAL
             """;
-    public static final String FORM_CONTAINER_SIG_SUB_QUERY = CONTAINER_SIG_SUB_QUERY.replaceAll("\\?byteSeq","?contByteSeq") + "\n\n" + BYTE_SEQUENCE_SUB_QUERY;
+    public static final String FORM_CONTAINER_SIG_SUB_QUERY = CONTAINER_SIG_SUB_QUERY.replaceAll("\\?byteSeq", "?contByteSeq") + "\n\n" + BYTE_SEQUENCE_SUB_QUERY;
     public static final String CONTAINER_SIG_QUERY = PREFIXES + """
-            prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             CONSTRUCT {
+            # File format representation
+            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY)
+            .replaceAll("\\?f ff:PuidTypeId/rdfs:label \\?puidTypeName \\.", "?fPuidType rdfs:label ?puidTypeName .") + """
+            # Container signatures
             """ + trimOptionals(CONTAINER_SIG_SUB_QUERY) + """
-                        
-            # Byte Sequences
-            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
-                        
-            # File Format Properties
-            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY) + """
             # Link File Format
             ?f pr:fileFormat.ContainerSignature ?contSig .
-                        
+            # Byte Sequences
+            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
             } WHERE {
+            # File format representation
+            """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
+            # Link File Format
+            ?f pr:fileFormat.ContainerSignature ?contSig .
+            # Container signatures
             """ + CONTAINER_SIG_SUB_QUERY + """
             # Byte Sequences
               OPTIONAL {
               """ + BYTE_SEQUENCE_SUB_QUERY + """
-            }#END OPTIONAL
-                          
-                          
-            """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
-            # Link File Format
-            ?f pr:fileFormat.ContainerSignature ?contSig .
+              }#END OPTIONAL
             }
             """;
 
@@ -64,7 +62,8 @@ public class ContainerSignatureDAO {
             prefix ff: <http://www.nationalarchives.gov.uk/PRONOM/fileFormat.>
             CONSTRUCT {
               ?contSigType a pr:ContainerType ; rdfs:label ?contSigTypeLabel ; pr:containerType.FileFormat ?f .
-              """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY) + """
+              """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY)
+            .replaceAll("\\?f ff:PuidTypeId/rdfs:label \\?puidTypeName \\.", "?fPuidType rdfs:label ?puidTypeName .") + """
             }WHERE{
               ?contSigType a pr:ContainerType ; rdfs:label ?contSigTypeLabel ; pr:containerType.FileFormat ?f .
               """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
