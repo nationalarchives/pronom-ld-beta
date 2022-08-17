@@ -6,15 +6,9 @@ import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
-import uk.gov.nationalarchives.pronom.signaturefile.FileFormatType;
-import uk.gov.nationalarchives.pronom.signaturefile.InternalSignatureType;
-import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType;
+import uk.gov.nationalarchives.pronom.signaturefile.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -22,10 +16,12 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Converter {
@@ -84,31 +80,70 @@ public class Converter {
             conv.setSpecificity(is.getSpecificity());
             List<ByteSequenceType> bsList = conv.getByteSequence();
 
-            bsList.addAll(convertByteSequenceList(is.getByteSequences(), jaxbContext));
+            bsList.addAll(convertByteSequenceList(is.getByteSequences(), jaxbContext, false));
 
             listRef.add(conv);
         });
         return collection;
     }
 
-    private static List<ByteSequenceType> convertByteSequenceList(List<ByteSequence> bss, JAXBContext jaxbContext) {
-        return bss.stream().map(bs -> {
-            try {
-                String XML = bs.toXML(false);
+    public static List<ByteSequenceType> convertByteSequenceList(List<ByteSequence> bss, JAXBContext jaxbContext, boolean isContainer) {
+        return bss.stream().map(bs -> convertByteSequence(bs, jaxbContext, isContainer)).filter(Objects::nonNull).collect(Collectors.toList());
+    }
 
-                XMLInputFactory xif = XMLInputFactory.newFactory();
-                StreamSource xml = new StreamSource(new StringReader(XML));
-                XMLStreamReader xsr = xif.createXMLStreamReader(xml);
+    public static ByteSequenceType convertByteSequence(ByteSequence bs, JAXBContext jaxbContext, boolean isContainer) {
+        try {
+            String XML = bs.toXML(isContainer);
+            if (XML == null) return null;
+            XMLInputFactory xif = XMLInputFactory.newFactory();
+            StreamSource xml = new StreamSource(new StringReader(XML));
+            XMLStreamReader xsr = xif.createXMLStreamReader(xml);
 
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                JAXBElement<ByteSequenceType> conv = jaxbUnmarshaller.unmarshal(xsr, ByteSequenceType.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            JAXBElement<ByteSequenceType> elem = jaxbUnmarshaller.unmarshal(xsr, ByteSequenceType.class);
+            if (elem == null) return null;
+            ByteSequenceType converted = elem.getValue();
+            Optional<SubSequenceType> firstSs = converted.getSubSequence().stream().filter(ss -> ss.getPosition().equals(new BigInteger("1"))).findFirst();
+            firstSs.ifPresent(ss -> ss.setSubSeqMinOffset(intToBigIntOrNull(bs.getOffset())));
+            firstSs.ifPresent(ss -> ss.setSubSeqMaxOffset(intToBigIntOrNull(bs.getMaxOffset())));
 
-                return conv.getValue();
-            } catch (JAXBException | XMLStreamException e) {
-                logger.error("ERROR PARSING CONVERTED XML FOR BYTE SEQUENCE " + bs.getURI() + ": " + e.getMessage());
-                e.printStackTrace();
-                return null;
-            }
-        }).filter(Objects::nonNull).collect(Collectors.toList());
+            return converted;
+        } catch (JAXBException | XMLStreamException e) {
+            logger.error("ERROR PARSING CONVERTED XML FOR BYTE SEQUENCE " + bs.getURI() + ": " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String jaxbObjectToXML(JAXBElement<?> elem) {
+        try {
+            //Create JAXB Context
+            JAXBContext jaxbContext = JAXBContext.newInstance(ByteSequenceType.class);
+
+            //Create Marshaller
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            //Required formatting??
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            //Print XML String to Console
+            StringWriter sw = new StringWriter();
+
+            //Write XML to StringWriter
+            jaxbMarshaller.marshal(elem, sw);
+
+
+            return sw.toString();
+
+        } catch (JAXBException e) {
+            logger.error("ERROR CONVERTING GENERIC JAXB ELEMENT TO XML : " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static BigInteger intToBigIntOrNull(Integer i) {
+        if (i == null) return null;
+        return new BigInteger(i.toString());
     }
 }

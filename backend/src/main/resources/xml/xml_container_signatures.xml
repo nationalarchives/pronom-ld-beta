@@ -9,7 +9,13 @@
                     <BinarySignatures>
                         <InternalSignatureCollection>
                             <InternalSignature th:each="bs : ${file.byteSequences}" th:ID="${bs.containerID}">
-                                <th:block th:unless="${bs.sequence == null}" th:utext="${bs.toXML(true)}"/>
+                                <th:block th:with="conv=${bs.toJAXBType(true)}"><ByteSequence th:unless="${conv == null}" Reference="BOFoffset"><th:block th:each="ss : ${conv.subSequence}">
+                                    <SubSequence th:Position="${ss.position}" th:SubSeqMaxOffset="${ss.subSeqMinOffset}" th:SubSeqMinOffset="${ss.subSeqMaxOffset}" th:MinFragLength="${ss.minFragLength}"><th:block th:if="${ss.sequence}">
+                                        <Sequence th:utext="${@templateUtils.customEscape(ss.sequence)}">00000000</Sequence></th:block><th:block th:if="${ss.defaultShift != null}">
+                                        <DefaultShift th:text="${ss.defaultShift}">0</DefaultShift></th:block><th:block th:unless="${#lists.isEmpty(ss.shiftOrLeftFragmentOrRightFragment)}" th:each="frag : ${ss.shiftOrLeftFragmentOrRightFragment}">
+                                        <th:block th:utext="${@templateUtils.jaxb(frag)}"/></th:block>
+                                    </SubSequence></th:block>
+                                </ByteSequence></th:block>
                             </InternalSignature>
                         </InternalSignatureCollection>
                     </BinarySignatures></th:block>
