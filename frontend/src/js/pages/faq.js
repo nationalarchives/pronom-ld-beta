@@ -11,6 +11,7 @@ const App = () => {
   $('.faq-questions button').on('click', function () {
     var selectedButton = this.id;
     var selectedP = this.id + 'text';
+    console.log(this.id);
     if ($("#" + selectedButton).hasClass("closed")) {
       // manage button
       // change aria-expanded for accessibility
@@ -31,13 +32,13 @@ const App = () => {
   // open all acccordions
   $('#openAllFAQ').on('click', function () {
     $('.faq-questions button').attr("aria-expanded", "true");
-    $('.faq-questions p').removeClass("hide");
+    $('.faq-questions .content').removeClass("hide");
   });
 
   // close all accordions
   $('#closeAllFAQ').on('click', function () {
     $('.faq-questions button').attr("aria-expanded", "false");
-    $('.faq-questions p').addClass("hide");
+    $('.faq-questions .content').addClass("hide");
   });
 
   //faq term filter

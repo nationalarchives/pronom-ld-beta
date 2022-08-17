@@ -154,3 +154,13 @@ main {
 .modal-container {
   min-width: 1600px;
 }
+
+.add-actor.development fieldset {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-gap: 10px;
+  align-items: flex-end;
+  button {
+    margin-bottom: 10px;
+  }
+}
