@@ -91,6 +91,7 @@ public class ByteSequence implements RDFWritable {
     }
 
     public boolean isBOFOffset() {
+        if(position == null) return false;
         return switch (position.getURI()) {
             case PRONOM.ByteSequence.AbsoluteFromBOF, PRONOM.ByteSequence.IndirectFromBOF -> true;
             default -> false;
@@ -98,6 +99,7 @@ public class ByteSequence implements RDFWritable {
     }
 
     public boolean isEOFOffset() {
+        if(position == null) return false;
         return switch (position.getURI()) {
             case PRONOM.ByteSequence.AbsoluteFromEOF, PRONOM.ByteSequence.IndirectFromEOF -> true;
             default -> false;

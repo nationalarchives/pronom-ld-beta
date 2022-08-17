@@ -9,11 +9,7 @@
                     <BinarySignatures>
                         <InternalSignatureCollection>
                             <InternalSignature th:each="bs : ${file.byteSequences}" th:ID="${bs.containerID}">
-                                <ByteSequence th:Endianness="${bs.byteOrderName}" th:Reference="${bs.reference}">
-                                    <SubSequence th:Position="1" th:SubSeqMaxOffset="${bs.maxOffset}" th:SubSeqMinOffset="${bs.offset}">
-                                        <Sequence th:utext="${@templateUtils.customEscape(bs.sequence)}">49492A00</Sequence>
-                                    </SubSequence>
-                                </ByteSequence>
+                                <th:block th:unless="${bs.sequence == null}" th:utext="${bs.toXML(true)}"/>
                             </InternalSignature>
                         </InternalSignatureCollection>
                     </BinarySignatures></th:block>

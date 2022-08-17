@@ -16,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
-import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -91,22 +91,26 @@ public class RESTController {
         return wrapper;
     }
 
-    @GetMapping(value = {"/container-signature.xml"}, produces = "text/xml")
-    public String xmlContainerSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
+    @GetMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
+    public ModelAndView xmlContainerSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("xml_container_signatures");
         ContainerSignatureDAO dao = new ContainerSignatureDAO();
         List<FileFormat> fs = dao.getAllFileFormats();
+        logger.trace("FORMATS: " + fs);
         List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
                 .filter(distinctByKey(ContainerSignature::getID))
                 .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
                 .collect(Collectors.toList());
+        logger.trace("SIGNATURES: " + signatures);
         List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
 
         fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
-        model.addAttribute("formats", fs);
-        model.addAttribute("containerSignatures", signatures);
-        model.addAttribute("containerTypes", cts);
-        model.addAttribute("dev", dev);
-        return "xml_container_signatures";
+        view.addObject("formats", fs);
+        view.addObject("containerSignatures", signatures);
+        view.addObject("containerTypes", cts);
+        view.addObject("dev", dev);
+        return view;
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {

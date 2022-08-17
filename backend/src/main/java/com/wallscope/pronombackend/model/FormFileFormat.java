@@ -3,6 +3,7 @@ package com.wallscope.pronombackend.model;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -227,6 +228,14 @@ public class FormFileFormat {
         this.references = references;
     }
 
+    public List<FormContainerSignature> getContainerSignatures() {
+        return containerSignatures;
+    }
+
+    public void setContainerSignatures(List<FormContainerSignature> containerSignatures) {
+        this.containerSignatures = containerSignatures;
+    }
+
     public FileFormat toObject(Integer puid, Resource puidType, Instant updated, List<LabeledURI> classifications) {
         Resource ffUri = makeResource(uri);
         return new FileFormat(ffUri,
@@ -251,14 +260,6 @@ public class FormFileFormat {
                 getHasRelationships().stream().map(FormFileFormatRelationship::toObject).collect(Collectors.toList()),
                 getFormatFamilies().stream().map(fff -> new LabeledURI(makeResource(fff.getUri()), fff.getLabel())).collect(Collectors.toList()),
                 getAliases().stream().map(FormAlias::toObject).collect(Collectors.toList()));
-    }
-
-    public List<FormContainerSignature> getContainerSignatures() {
-        return containerSignatures;
-    }
-
-    public void setContainerSignatures(List<FormContainerSignature> containerSignatures) {
-        this.containerSignatures = containerSignatures;
     }
 
     public void randomizeURIs() {
@@ -289,35 +290,6 @@ public class FormFileFormat {
         if (formatFamilies != null)
             formatFamilies.forEach(fff -> fff.setUri(PRONOM.FileFormatFamily.id + UUID.randomUUID()));
         if (aliases != null) aliases.forEach(fa -> fa.setUri(PRONOM.FormatAlias.id + UUID.randomUUID()));
-    }
-
-    @Override
-    public String toString() {
-        return "FormFileFormat{" +
-                "uri='" + uri + '\'' +
-                ", puid='" + puid + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
-                ", binaryFlag=" + binaryFlag +
-                ", withdrawnFlag=" + withdrawnFlag +
-                ", formatType='" + formatType + '\'' +
-                ", byteOrder='" + byteOrder + '\'' +
-                ", compressionType='" + compressionType + '\'' +
-                ", aliases=" + aliases +
-                ", identifiers=" + identifiers +
-                ", formatFamilies=" + formatFamilies +
-                ", classifications=" + classifications +
-                ", internalSignatures=" + internalSignatures +
-                ", externalSignatures=" + externalSignatures +
-                ", containerSignatures=" + containerSignatures +
-                ", developmentActors=" + developmentActors +
-                ", supportActors=" + supportActors +
-                ", hasPriorityOver=" + hasPriorityOver +
-                ", hasRelationships=" + hasRelationships +
-                ", submittedBy=" + submittedBy +
-                ", references=" + references +
-                '}';
     }
 
     public void removeEmpties() {
@@ -353,6 +325,48 @@ public class FormFileFormat {
                     .filter(a -> a.getUri() != null && !a.getUri().isBlank() && a.getUri().startsWith(PRONOM.FileFormatFamily.id))
                     .collect(Collectors.toList());
         if (aliases != null) aliases = aliases.stream().filter(FormAlias::isNotEmpty).collect(Collectors.toList());
+    }
+
+    public List<FormValidationException> validate(boolean isInternal) {
+        ArrayList<FormValidationException> errors = new ArrayList<>();
+        if (name == null || name.isBlank())
+            errors.add(new FormValidationException("The file format name can not be empty"));
+        if (description == null || description.isBlank())
+            errors.add(new FormValidationException("The file format description can not be empty"));
+        if (isInternal) {
+            if (formatType == null || formatType.isBlank())
+                errors.add(new FormValidationException("The file format type can not be empty"));
+        }
+        return errors;
+    }
+
+    @Override
+    public String toString() {
+        return "FormFileFormat{" +
+                "uri='" + uri + '\'' +
+                ", puid='" + puid + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                ", binaryFlag=" + binaryFlag +
+                ", withdrawnFlag=" + withdrawnFlag +
+                ", formatType='" + formatType + '\'' +
+                ", byteOrder='" + byteOrder + '\'' +
+                ", compressionType='" + compressionType + '\'' +
+                ", aliases=" + aliases +
+                ", identifiers=" + identifiers +
+                ", formatFamilies=" + formatFamilies +
+                ", classifications=" + classifications +
+                ", internalSignatures=" + internalSignatures +
+                ", externalSignatures=" + externalSignatures +
+                ", containerSignatures=" + containerSignatures +
+                ", developmentActors=" + developmentActors +
+                ", supportActors=" + supportActors +
+                ", hasPriorityOver=" + hasPriorityOver +
+                ", hasRelationships=" + hasRelationships +
+                ", submittedBy=" + submittedBy +
+                ", references=" + references +
+                '}';
     }
 
     public static FormFileFormat convert(FileFormat f) {

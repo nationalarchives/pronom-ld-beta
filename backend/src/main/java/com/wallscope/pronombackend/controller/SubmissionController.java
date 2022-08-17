@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -76,10 +75,16 @@ public class SubmissionController {
 
     @PostMapping("/contribute/form/new")
     public RedirectView newFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
-        logger.debug("FORM RECEIVED: "+ ff);
+        logger.debug("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.randomizeURIs();
         ff.removeEmpties();
+        List<FormValidationException> errors = ff.validate(false);
+        if (!errors.isEmpty()) {
+            redir.addFlashAttribute("errors", errors.stream().map(Exception::getMessage));
+            redir.addFlashAttribute("ff", ff);
+            return new RedirectView("/contribute/form/new");
+        }
         FileFormatDAO ffDao = new FileFormatDAO();
         List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
@@ -237,7 +242,7 @@ public class SubmissionController {
 
     @PostMapping("/editorial/form/new")
     public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
-        logger.debug("FORM RECEIVED: "+ ff);
+        logger.debug("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.randomizeURIs();
         ff.removeEmpties();
