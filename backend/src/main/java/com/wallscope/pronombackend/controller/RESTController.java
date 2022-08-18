@@ -9,7 +9,9 @@ import com.wallscope.pronombackend.model.InternalSignature;
 import com.wallscope.pronombackend.model.SearchResult;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.soap.SignatureFileWrapper;
+import com.wallscope.pronombackend.utils.ModelUtil;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -116,6 +120,40 @@ public class RESTController {
         view.addObject("containerTypes", cts);
         view.addObject("dev", dev);
         return view;
+    }
+
+    @GetMapping(value = {"/rdf/fmt/{puid}.{format}", "/rdf/x-fmt/{puid}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
+    @ResponseBody
+    public String rdfExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid, @PathVariable String format) {
+        logger.debug("REQUEST FOR RDF FORMAT: " + format);
+        Lang rdfLang = langFromFormat(format);
+        if (rdfLang == null) {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
+        }
+        response.setContentType(rdfLang.getHeaderString());
+        String[] parts = request.getRequestURI().split("/");
+        String puidType = parts[parts.length - 2];
+        FileFormatDAO dao = new FileFormatDAO();
+        FileFormat f = dao.getFileFormatByPuid(puid, puidType);
+        if (f == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
+        }
+        ModelUtil mu = new ModelUtil(f.toRDF());
+
+        return mu.toString(rdfLang);
+    }
+
+    private Lang langFromFormat(String format) {
+        return switch (format) {
+            // Frontend supported RDF formats
+            case "nt", "ntriples" -> Lang.NT;
+            case "ttl", "turtle" -> Lang.TTL;
+            case "rdf" -> Lang.RDFXML;
+            // Other Jena supported RDF formats
+            case "n3" -> Lang.N3;
+            case "jsonld" -> Lang.JSONLD;
+            default -> null;
+        };
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {

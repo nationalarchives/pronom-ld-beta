@@ -1,15 +1,17 @@
 .save-options
   label Save as
   .button-list
-    button.small.bordered-blue
-      | XML
-    button.small.bordered-blue
-      | CSV
+    a(th:href="'/'+${ff.formattedPuid}+'.xml'")
+      button.small.bordered-blue XML
+    a(th:href="'/'+${ff.formattedPuid}+'.csv'")
+      button.small.bordered-blue CSV
     .dropdown-group
-      button.small.bordered-blue
-        | RDF
-      label.sr-only(for="sort_by") Select RDF type
-      select(id="sort_by")
-        option(value='0') TTL
-        option(value='1') NT
-        option(value='2') RDF/XML
+      form(th:action="'/'+${ff.formattedPuid}", method="GET")
+        button.small.bordered-blue(type="submit") RDF
+        label.sr-only(for="format") Select RDF type
+        select(name="format" id="format")
+          option(value='ttl') TTL
+          option(value='nt') NT
+          option(value='rdf') RDF/XML
+          option(value='n3') N3
+          option(value='jsonld') JSON-LD

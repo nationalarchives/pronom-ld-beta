@@ -236,7 +236,7 @@ public class FormFileFormat {
         this.containerSignatures = containerSignatures;
     }
 
-    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, List<LabeledURI> classifications) {
+    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, Instant releaseDate, Instant withdrawnDate, List<LabeledURI> classifications) {
         Resource ffUri = makeResource(uri);
         return new FileFormat(ffUri,
                 puid,
@@ -245,6 +245,8 @@ public class FormFileFormat {
                 getName(),
                 getDescription(),
                 updated,
+                releaseDate,
+                withdrawnDate,
                 getVersion(),
                 getBinaryFlag(),
                 getWithdrawnFlag(),

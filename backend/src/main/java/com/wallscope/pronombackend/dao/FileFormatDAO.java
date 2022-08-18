@@ -62,6 +62,7 @@ public class FileFormatDAO {
               pr:fileFormatRelationship.Target ?fRelTarget ;
               .
               OPTIONAL { ?fRel pr:fileFormatRelationship.Note ?fRelNote . }#END OPTIONAL
+              OPTIONAL { ?fRel pr:fileFormatRelationship.Version ?fRelVersion . }#END OPTIONAL
               
               ?fRelSource rdfs:label ?fRelSourceName .
               ?fRelTarget rdfs:label ?fRelTargetName .
@@ -84,9 +85,14 @@ public class FileFormatDAO {
             OPTIONAL { ?f pr:fileFormat.Classification ?classification .
                ?classification rdfs:label ?classificationName .
             }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.ByteOrder ?byteOrder .
+               ?byteOrder rdfs:label ?byteOrderName .
+            }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.Version ?version . }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.BinaryFlag ?binaryFlag . }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.WithdrawnFlag ?withdrawn . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.ReleaseDate ?releaseDate . }#END OPTIONAL
+            OPTIONAL { ?f pr:fileFormat.WithdrawnDate ?withdrawnDate . }#END OPTIONAL
 
             # Format Identifiers
             OPTIONAL{

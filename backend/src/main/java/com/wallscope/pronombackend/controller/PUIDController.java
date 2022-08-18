@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +23,17 @@ public class PUIDController {
     Logger logger = LoggerFactory.getLogger(PUIDController.class);
 
     @GetMapping(value = {"/fmt/{puid}", "/x-fmt/{puid}"})
-    public String fileFormatHandler(Model model, HttpServletRequest request, @PathVariable(required = false) String puid) {
+    public String fileFormatHandler(Model model, HttpServletRequest request, @PathVariable(required = false) String puid, @RequestParam(required = false, name = "format") String ext) {
         String[] parts = request.getRequestURI().split("/");
         String puidType = parts[parts.length - 2];
+        // If there's a ?format= query param we append the file extension to the puid to be handled by the RDF matcher
+        if (ext != null && !ext.isBlank()) {
+            puid = puid + "." + ext;
+        }
+        // Respond to RDF request
+        if (puid.contains(".")) {
+            return "forward:/rdf/" + puidType + "/" + puid;
+        }
         FileFormatDAO dao = new FileFormatDAO();
         FileFormat f = dao.getFileFormatByPuid(puid, puidType);
         if (f == null) {
@@ -45,7 +54,7 @@ public class PUIDController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
         model.addAttribute("f", f);
-        return "xml_signatures";
+        return "xml_fileformat";
     }
 
     @GetMapping(value = {"/chr/{puid}", "/x-chr/{puid}", "/sfw/{puid}", "/x-sfw/{puid}", "/cmp/{puid}", "/x-cmp/{puid}"})

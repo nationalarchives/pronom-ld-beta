@@ -125,7 +125,7 @@ public class Documentation implements RDFWritable {
             String type = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.DocumentType)));
             Instant publicationDate = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.PublicationDate)));
             String identifiers = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.Identifiers)));
-            String note = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.comment)));
+            String note = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.Documentation.Note)));
             return new Documentation(uri, name, author, identifiers, publicationDate, type, note);
         }
     }
