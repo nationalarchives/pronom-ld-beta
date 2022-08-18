@@ -29,6 +29,10 @@ public class CustomErrorController implements ErrorController {
             modelAndView.addObject("code", 403);
             modelAndView.addObject("name", "Forbidden");
             modelAndView.addObject("message", "Your level of access does not allow you to see this page. Contact an administrator.");
+        } else if (response.getStatus() == HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()) {
+            modelAndView.addObject("code", 415);
+            modelAndView.addObject("name", "Unsupported media");
+            modelAndView.addObject("message", "Unsupported media. This usually happens when trying to export an unsupported RDF format. Try one of: .rdf .ttl .nt");
         } else if (response.getStatus() == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             modelAndView.addObject("code", 500);
             modelAndView.addObject("name", "Something went wrong");

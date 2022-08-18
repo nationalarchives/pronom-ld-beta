@@ -32,7 +32,7 @@ public class URIController {
             case "Actor":
                 return "redirect:/actor/" + id;
             default:
-                return "index";
+                return "forward:/generic-uri-handler/" + type + "/" + id;
         }
     }
 }
