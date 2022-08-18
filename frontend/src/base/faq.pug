@@ -33,7 +33,15 @@ block content
       h2(th:text="${cat.title}") Category 1
       ul.faq-questions 
         li(th:each="item, itemI : ${cat.items}")
-          button.closed(aria-expanded="false" th:id="|cat-${catI.index}-item-${itemI.index}|" th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )
+          //th:id="|cat-${catI.index}-item-${itemI.index}|"
+          button.closed(aria-expanded="false"  th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )
+            span(th:text="${item.title}") some title
+            i.fa-solid.fa-chevron-up(aria-hidden="true")
+          .content(th:id="|cat-${catI.index}-item-${itemI.index}|" role="region" th:aria-labeledby="|cat-${catI.index}-item-${itemI.index}|", th:utext="${@templateUtils.mdString(item.text)}") some text
+        
+        li(th:each="item, itemI : ${cat.items}")
+          //th:id="|cat-${catI.index}-item-${itemI.index}|"
+          button.closed(aria-expanded="false"  th:aria-controls="|cat-${catI.index}-item-${itemI.index}|" )
             span(th:text="${item.title}") some title
             i.fa-solid.fa-chevron-up(aria-hidden="true")
           .content(th:id="|cat-${catI.index}-item-${itemI.index}|" role="region" th:aria-labeledby="|cat-${catI.index}-item-${itemI.index}|", th:utext="${@templateUtils.mdString(item.text)}") some text
