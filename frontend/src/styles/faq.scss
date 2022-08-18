@@ -111,8 +111,10 @@
   display: none;
 }
 .faq-questions {
-  .content.hide {
-    display: none;
+  li.closed {
+    .content {
+      display: none;
+    }
   }
 }
 .noJS {

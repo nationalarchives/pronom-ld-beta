@@ -23,10 +23,10 @@
             </Files>
         </ContainerSignature></th:block>
     </ContainerSignatures>
-    <FileFormatMappings><th:block th:each="f : ${formats}">
-        <FileFormatMapping th:each="cSig : ${f.containerSignatures}" th:signatureId="${cSig.ID}" th:Puid="${f.formattedPuid}"/>
-    </th:block></FileFormatMappings>
-    <TriggerPuids><th:block th:each="ct : ${containerTypes}">
-        <TriggerPuid th:each="f : ${ct.fileFormats}" th:ContainerType="${ct.name}" th:Puid="${f.formattedPuid}"/>
-    </th:block></TriggerPuids>
+    <FileFormatMappings><th:block th:each="f : ${formats}"><th:block th:unless="${#lists.isEmpty(f.containerSignatures)}">
+        <FileFormatMapping th:each="cSig : ${f.containerSignatures}" th:signatureId="${cSig.ID}" th:Puid="${f.formattedPuid}"/></th:block></th:block>
+    </FileFormatMappings>
+    <TriggerPuids><th:block th:each="ct : ${containerTypes}"><th:block th:unless="${#lists.isEmpty(ct.fileFormats)}">
+        <TriggerPuid th:each="f : ${ct.fileFormats}" th:ContainerType="${ct.name}" th:Puid="${f.formattedPuid}"/></th:block></th:block>
+    </TriggerPuids>
 </ContainerSignatureMapping>
