@@ -3,6 +3,7 @@ package com.wallscope.pronombackend.utils;
 import com.github.rjeschke.txtmark.Processor;
 import com.wallscope.pronombackend.config.ApplicationConfig;
 import com.wallscope.pronombackend.model.MarkdownHelpers;
+import com.wallscope.pronombackend.soap.Converter;
 import org.apache.jena.rdf.model.Resource;
 import org.nibor.autolink.LinkExtractor;
 import org.nibor.autolink.LinkSpan;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.HtmlUtils;
 import org.thymeleaf.util.StringUtils;
 
+import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -130,6 +132,19 @@ public class TemplateUtils {
         return raw.replaceAll("&", "&amp;") // replace & characters
                 .replaceAll("<", "&lt;")   // replace < characters
                 .replaceAll(">", "&gt;");  // replace > characters
+    }
+
+    public String jaxb(JAXBElement<?> elem) {
+        String conv = Converter.jaxbObjectToXML(elem);
+        if (conv == null) return "";
+        return reverseEscape(conv.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n", ""));
+    }
+
+    // The JAXB converter will automatically escape single quotes ' as &apos; and double quotes " as &quot;
+    // This funciton reverts that for compatibility with the previously manually edited container signature file.
+    public String reverseEscape(String escaped) {
+        return escaped.replaceAll("&apos;", "'")
+                .replaceAll("&quot;", "\"");
     }
 
 

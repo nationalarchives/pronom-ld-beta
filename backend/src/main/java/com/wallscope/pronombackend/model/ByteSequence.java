@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import net.byteseek.compiler.CompileException;
 import org.apache.jena.rdf.model.Model;
@@ -11,10 +12,9 @@ import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceAnchor;
 import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceCompiler;
 import uk.gov.nationalarchives.droid.core.signature.compiler.ByteSequenceSerializer;
 import uk.gov.nationalarchives.droid.core.signature.compiler.SignatureType;
+import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.xml.bind.JAXBContext;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
@@ -91,7 +91,7 @@ public class ByteSequence implements RDFWritable {
     }
 
     public boolean isBOFOffset() {
-        if(position == null) return false;
+        if (position == null) return false;
         return switch (position.getURI()) {
             case PRONOM.ByteSequence.AbsoluteFromBOF, PRONOM.ByteSequence.IndirectFromBOF -> true;
             default -> false;
@@ -99,7 +99,7 @@ public class ByteSequence implements RDFWritable {
     }
 
     public boolean isEOFOffset() {
-        if(position == null) return false;
+        if (position == null) return false;
         return switch (position.getURI()) {
             case PRONOM.ByteSequence.AbsoluteFromEOF, PRONOM.ByteSequence.IndirectFromEOF -> true;
             default -> false;
@@ -130,11 +130,24 @@ public class ByteSequence implements RDFWritable {
 
     public String toXML(boolean isContainer) {
         try {
-            ByteSequenceAnchor a = isEOFOffset() ? ByteSequenceAnchor.EOFOffset : ByteSequenceAnchor.BOFOffset;
+            String sequence = getSequence();
+            if (sequence == null) return null;
+            ByteSequenceAnchor a = isEOFOffset() ? ByteSequenceAnchor.EOFOffset : isBOFOffset() ? ByteSequenceAnchor.BOFOffset : ByteSequenceAnchor.VariableOffset;
             SignatureType sigType = isContainer ? SignatureType.CONTAINER : SignatureType.BINARY;
-            return ByteSequenceSerializer.SERIALIZER.toXML(getSequence(), a, ByteSequenceCompiler.CompileType.PRONOM, sigType);
+            return ByteSequenceSerializer.SERIALIZER.toXML(sequence, a, ByteSequenceCompiler.CompileType.PRONOM, sigType);
         } catch (CompileException e) {
             logger.error("ERROR COMPILING BYTE SEQUENCE ID " + getURI() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public ByteSequenceType toJAXBType(boolean isContainer) {
+        try {
+            JAXBContext ctx = JAXBContext.newInstance(ByteSequenceType.class);
+            return Converter.convertByteSequence(this, ctx, isContainer);
+        } catch (Exception e) {
+            logger.error("ERROR CONVERTING BYTE SEQUENCE TO JAXB ID " + getURI() + ": " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
