@@ -105,7 +105,12 @@ public class RESTController {
         logger.trace("SIGNATURES: " + signatures);
         List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
 
-        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+        // Sort based on the ID of the container signature
+        fs.sort(Comparator.comparingInt(f -> {
+            if (f.getContainerSignatures() == null || f.getContainerSignatures().isEmpty()) return Integer.MAX_VALUE;
+            f.getContainerSignatures().sort(Comparator.comparingInt(cs -> Integer.parseInt(cs.getID())));
+            return Integer.parseInt(f.getContainerSignatures().get(0).getID());
+        }));
         view.addObject("formats", fs);
         view.addObject("containerSignatures", signatures);
         view.addObject("containerTypes", cts);
