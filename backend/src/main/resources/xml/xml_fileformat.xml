@@ -11,7 +11,7 @@
             <FormatDescription th:text="${f.description}">his</FormatDescription>
             <!-- Assumed as binaryFlag-->
             <BinaryFileFormat th:text="${f.binaryFlag}">Binary</BinaryFileFormat>
-            <ByteOrders><th:block th:text="${@templateUtils.getLabel(f.byteOrder.get(0))}">GIF (1987a)</th:block></ByteOrders>
+            <ByteOrders><th:block th:if="!${#lists.isEmpty(f.byteOrder)}"><th:block th:each="bo : ${f.byteOrder}"><th:block th:text="${@templateUtils.getLabel(bo)}">GIF (1987a)</th:block></th:block></th:block></ByteOrders>
             <ReleaseDate th:text="${@templateUtils.parseDate(f.releaseDate)}"> </ReleaseDate>
             <WithdrawnDate th:text="${@templateUtils.parseDate(f.withdrawnDate)}"> </WithdrawnDate>
             <LastUpdatedDate th:text="${@templateUtils.parseDate(f.getUpdated())}">02 Aug 2005</LastUpdatedDate>
