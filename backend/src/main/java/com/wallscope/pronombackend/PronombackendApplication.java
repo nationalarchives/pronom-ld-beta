@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend;
 
+import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,11 @@ public class PronombackendApplication {
     public TemplateUtils templateUtils() {
         return new TemplateUtils();
     }
-
+    // Needed for xml_fileformat.xml
+    @Bean(name = "fileFormatDAO")
+    public FileFormatDAO FileFormatDAO() {
+        return new FileFormatDAO();
+    }
     @Bean
     public ClassLoaderTemplateResolver htmlTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();

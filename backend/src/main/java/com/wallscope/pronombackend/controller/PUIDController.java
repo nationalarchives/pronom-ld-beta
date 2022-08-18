@@ -45,7 +45,7 @@ public class PUIDController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
         model.addAttribute("f", f);
-        return "xml_signatures";
+        return "xml_fileformat";
     }
 
     @GetMapping(value = {"/chr/{puid}", "/x-chr/{puid}", "/sfw/{puid}", "/x-sfw/{puid}", "/cmp/{puid}", "/x-cmp/{puid}"})

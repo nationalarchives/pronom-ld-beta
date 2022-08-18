@@ -204,6 +204,7 @@ public class RDFUtil {
             public static final String ExternalSignature = uri + "ExternalSignature";
             public static final String InFileFormatRelationship = uri + "In.FileFormatRelationship";
             public static final String ReleaseDate = uri + "ReleaseDate";
+            public static final String WithdrawnDate = uri + "WithdrawnDate";
             public static final String ContainerSignature = uri + "ContainerSignature";
             public static final String ByteOrder = uri + "ByteOrder";
             public static final String Documentation = uri + "Documentation";
@@ -290,6 +291,7 @@ public class RDFUtil {
             public static final String Target = uri + "Target";
             public static final String FileFormatRelationshipType = uri + "FileFormatRelationshipType";
             public static final String Note = uri + "Note";
+            public static final String Version = uri + "Version";
         }
 
         public static class FormatRelationshipType {

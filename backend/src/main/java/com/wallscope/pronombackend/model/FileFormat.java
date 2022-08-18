@@ -24,6 +24,8 @@ public class FileFormat implements RDFWritable {
     private final String name;
     private final String description;
     private final Instant updated;
+    private final Instant releaseDate;
+    private final Instant withdrawnDate;
     private final String version;
     private final Boolean binaryFlag;
     private final Boolean withdrawnFlag;
@@ -48,6 +50,8 @@ public class FileFormat implements RDFWritable {
             String name,
             String description,
             Instant updated,
+            Instant releaseDate,
+            Instant withdrawnDate,
             String version,
             Boolean binaryFlag,
             Boolean withdrawnFlag,
@@ -69,6 +73,8 @@ public class FileFormat implements RDFWritable {
         this.name = name;
         this.description = description;
         this.updated = updated;
+        this.releaseDate = releaseDate;
+        this.withdrawnDate = withdrawnDate;
         this.version = version;
         this.binaryFlag = binaryFlag;
         this.withdrawnFlag = withdrawnFlag;
@@ -122,6 +128,12 @@ public class FileFormat implements RDFWritable {
 
     public Instant getUpdated() {
         return updated;
+    }
+    public Instant getReleaseDate() {
+        return releaseDate;
+    }
+    public Instant getWithdrawnDate() {
+        return withdrawnDate;
     }
 
     public String getVersion() {
@@ -247,6 +259,8 @@ public class FileFormat implements RDFWritable {
         if (name != null) m.add(uri, makeProp(RDFS.label), makeLiteral(name));
         if (description != null) m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
         if (updated != null) m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
+        if (releaseDate != null) m.add(uri, makeProp(PRONOM.FileFormat.ReleaseDate), makeXSDDateTime(releaseDate));
+        if (withdrawnDate != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnDate), makeXSDDateTime(withdrawnDate));
         if (version != null) m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
         if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
@@ -331,6 +345,8 @@ public class FileFormat implements RDFWritable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", updated=" + updated +
+                ", releaseDate=" + releaseDate +
+                ", withdrawnDate=" + withdrawnDate +
                 ", version='" + version + '\'' +
                 ", binaryFlag=" + binaryFlag +
                 ", withdrawnFlag=" + withdrawnFlag +
@@ -375,6 +391,8 @@ public class FileFormat implements RDFWritable {
             String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
             String description = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.comment)));
             Instant updated = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate)));
+            Instant releaseDate = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.ReleaseDate)));
+            Instant withdrawnDate = safelyParseDateOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnDate)));
             String version = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Version)));
             Boolean binaryFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.BinaryFlag)));
             Boolean withdrawnFlag = safelyGetBooleanOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag)));
@@ -423,6 +441,8 @@ public class FileFormat implements RDFWritable {
                     name,
                     description,
                     updated,
+                    releaseDate,
+                    withdrawnDate,
                     version,
                     binaryFlag,
                     withdrawnFlag,

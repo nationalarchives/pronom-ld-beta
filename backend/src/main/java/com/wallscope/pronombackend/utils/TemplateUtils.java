@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -69,6 +74,10 @@ public class TemplateUtils {
         return Processor.process(md);
     }
 
+    public String parseDate(Instant ins) {
+        if (ins == null) return "";
+        return DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.UK).withZone(ZoneId.systemDefault()).format(ins);
+    }
     public String raw(String region) {
         try {
             File f = new File(mdDir, region + ".md");
