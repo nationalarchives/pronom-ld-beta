@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
+import com.wallscope.pronombackend.dao.GenericEntityDAO;
 import com.wallscope.pronombackend.dao.SearchDAO;
 import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.FileFormat;
@@ -14,6 +15,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -139,6 +141,22 @@ public class RESTController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
         ModelUtil mu = new ModelUtil(f.toRDF());
+
+        return mu.toString(rdfLang);
+    }
+
+    @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
+    @ResponseBody
+    public String genericRDFHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String type, @PathVariable String id, @PathVariable String format) {
+        logger.debug("REQUEST FOR GENERIC RDF ENTITY: " + type + '/' + id);
+        Lang rdfLang = langFromFormat(format);
+        if (rdfLang == null) {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
+        }
+        response.setContentType(rdfLang.getHeaderString());
+        Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
+        GenericEntityDAO dao = new GenericEntityDAO();
+        ModelUtil mu = new ModelUtil(dao.fetchForURI(uri));
 
         return mu.toString(rdfLang);
     }

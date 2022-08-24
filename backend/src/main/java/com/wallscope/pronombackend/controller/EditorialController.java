@@ -1,7 +1,7 @@
 package com.wallscope.pronombackend.controller;
 
 import com.wallscope.pronombackend.dao.ActorDAO;
-import com.wallscope.pronombackend.dao.FileFormatDAO;
+import com.wallscope.pronombackend.dao.GenericEntityDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.*;
 import org.apache.jena.rdf.model.Resource;
@@ -61,18 +61,32 @@ public class EditorialController {
     }
 
     @GetMapping("/editorial/id/{type}/{id}")
-    public String uriHandler(Model model, @PathVariable(required = true) String type, @PathVariable(required = true) String id) {
-        Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
-        switch (type) {
-            case "FileFormat":
-                FileFormatDAO dao = new FileFormatDAO();
-                PUID puid = dao.getPuidForURI(uri);
-                return "redirect:/editorial/form/" + puid.type.trim() + "/" + puid.puid;
-            case "Actor":
-                return "redirect:/editorial/actor/" + id;
-            default:
-                return "index";
+    public String uriHandler(Model model, @PathVariable String type, @PathVariable String id, @RequestParam(required = false, name = "format") String ext) {
+        if (ext != null && !ext.isBlank()) {
+            id = id + "." + ext;
         }
+        String formatExt = "";
+        if (id.contains(".")) {
+            String[] parts = id.split("\\.");
+            if (parts.length == 2) {
+                id = parts[0];
+                formatExt = "." + parts[1];
+            }
+        }
+        Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
+        List<String> puidTypes = List.of("FileFormat", "Software", "Encoding", "CompressionType");
+        if (puidTypes.contains(type)) {
+            GenericEntityDAO dao = new GenericEntityDAO();
+            PUID puid = dao.getPuidForURI(uri);
+            if (puid == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no entity with id: " + type + "/" + id);
+            }
+            return "redirect:/" + puid.type.trim() + "/" + puid.puid + formatExt;
+        }
+        if (!formatExt.isBlank()) {
+            return "forward:/rdf/generic/" + type + "/" + id + formatExt;
+        }
+        return "forward:/generic/" + type + "/" + id;
     }
 
     @PostMapping("/editorial/move-submission")
@@ -179,7 +193,7 @@ public class EditorialController {
 
     public User hydrateUser(Principal principal) {
         KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) principal;
-        if(keycloakAuthenticationToken == null) return null;
+        if (keycloakAuthenticationToken == null) return null;
         AccessToken accessToken = keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getToken();
         return new User(accessToken.getGivenName());
     }

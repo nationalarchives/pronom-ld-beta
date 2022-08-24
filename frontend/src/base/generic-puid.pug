@@ -2,14 +2,14 @@ extends /layouts/modal.pug
 
 block modalHeader
   div
-    h1
+    h1(th:if="${isPuid}", th:utext="'<span>'+${puid}+'</span>'+ ' '+${name}")
       span fmt/11
       | Microsoft Corporation
+    h1(th:unless="${isPuid}", th:text="${name}")
     .specs
-      p Category: Vendor
-      p Last updated: 12/06/2000
+      p(th:unless="${isPuid}", th:text="'Category: '+${type}") Category: Vendor
 block modalHeaderAdditionals
-  div.audit-trail
+  //- div.audit-trail
     .dropdown.audit
       button.medium.bordered-blue
         i.fa-regular.fa-clock
@@ -35,9 +35,9 @@ block modalHeaderAdditionals
           li
             p 01/04/2022
             p Some texte cones here
-  include ./partials/savingOptions.pug
+  //- include ./partials/savingOptions.pug
 block modalBody
-  .archived
+  .archived(th:if="${isPuid}")
     p.
       Please note that this entry is archived. 
       PRONOM is no longer maintaining this information.
@@ -46,113 +46,13 @@ block modalBody
   //- TABLE =========================================================================
   ul.table
     //- ROW
-    li.row
+    li.row(th:each="prop : ${props}", th:with="mapProp=${@templateUtils.getLabel(prop.key)}, mapValues=${prop.value}")
       .tooltip-container
         .label
-          p.label-text Organisation name
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
+          p.label-text(th:text="${#strings.isEmpty(mapProp) ? prop.key : mapProp}") Property name
+          span.tooltip-toggle(tabindex='0')
             .i-wrapper
               i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
       div
-        p Lorem ipsum dolor sit amet
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Name
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Some name
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Address
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Some address
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Address country
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text#vTelephone Telephone
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Support website
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Company website
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Contact
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Source
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Source date
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    //- ROW
-    li.row
-      .tooltip-container
-        .label
-          p.label-text Source description
-          span.tooltip-toggle(aria-label='Some explanation comes here' tabindex='0')
-            .i-wrapper
-              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-      div
-        p Lorem ipsum
-    
+        p(th:each="v : ${mapValues}", th:with="str=${@templateUtils.getLabel(v, extra)}")
+          span(th:utext="${#strings.isEmpty(str) ? @templateUtils.autolinker(''+v) : @templateUtils.autolinker(str)}")

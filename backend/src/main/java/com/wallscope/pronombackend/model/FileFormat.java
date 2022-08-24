@@ -267,7 +267,7 @@ public class FileFormat implements RDFWritable {
 
         if (byteOrder != null) byteOrder.forEach(bo -> m.add(uri, makeProp(PRONOM.FileFormat.ByteOrder), bo));
         if (classifications != null) {
-            classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getUri()));
+            classifications.forEach(c -> m.add(uri, makeProp(PRONOM.FileFormat.Classification), c.getURI()));
         }
 
         if (references != null) {
@@ -321,7 +321,7 @@ public class FileFormat implements RDFWritable {
             });
         }
         if (formatFamilies != null) {
-            formatFamilies.forEach(fam -> m.add(uri, makeProp(PRONOM.FileFormat.FormatFamily), fam.getUri()));
+            formatFamilies.forEach(fam -> m.add(uri, makeProp(PRONOM.FileFormat.FormatFamily), fam.getURI()));
         }
         if (aliases != null) {
             aliases.forEach(a -> {

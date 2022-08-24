@@ -1,8 +1,13 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.utils.ModelUtil;
+import com.wallscope.pronombackend.utils.RDFUtil;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 
-public class LabeledURI {
+import static com.wallscope.pronombackend.utils.RDFUtil.makeProp;
+
+public class LabeledURI implements RDFWritable {
     private final Resource uri;
     private final String label;
 
@@ -12,7 +17,8 @@ public class LabeledURI {
         this.label = label;
     }
 
-    public Resource getUri() {
+    @Override
+    public Resource getURI() {
         return uri;
     }
 
@@ -25,5 +31,24 @@ public class LabeledURI {
         flu.setUri(uri.getURI());
         flu.setLabel(label);
         return flu;
+    }
+
+    @Override
+    public Model toRDF() {
+        return null;
+    }
+
+    public static class Deserializer implements RDFDeserializer<LabeledURI> {
+        @Override
+        public Resource getRDFType() {
+            return null;
+        }
+
+        @Override
+        public LabeledURI fromModel(Resource uri, Model model) {
+            ModelUtil mu = new ModelUtil(model);
+            String label = mu.getOneObjectOrNull(uri, makeProp(RDFUtil.RDFS.label)).asLiteral().getString();
+            return new LabeledURI(uri, label);
+        }
     }
 }
