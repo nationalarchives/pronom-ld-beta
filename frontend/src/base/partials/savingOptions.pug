@@ -1,12 +1,12 @@
 .save-options
   label Save as
   .button-list
-    a(th:href="'/'+${ff.formattedPuid}+'.xml'")
+    a(target="_blank", th:href="'/'+${ff.formattedPuid}+'.xml'", download)
       button.small.bordered-blue XML
-    a(th:href="'/'+${ff.formattedPuid}+'.csv'")
+    a(target="_blank", th:href="'/'+${ff.formattedPuid}+'.csv'", download)
       button.small.bordered-blue CSV
     .dropdown-group
-      form(th:action="'/'+${ff.formattedPuid}", method="GET")
+      form(target="_blank", th:action="'/'+${ff.formattedPuid}", method="GET")
         button.small.bordered-blue(type="submit") RDF
         label.sr-only(for="format") Select RDF type
         select(name="format" id="format")

@@ -26,8 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 /*
  * This controller handles all calls to form submission related pages.
@@ -270,7 +269,7 @@ public class SubmissionController {
     // Helpers
     private void setFormOptions(Model model) {
         FormOptionsDAO dao = new FormOptionsDAO();
-        Map<String, List<FormOption>> options = dao.getOptionsOfType(List.of(
+        Map<String, List<LabeledURI>> options = dao.getOptionsOfType(List.of(
                 makeResource(PRONOM.Classification.type),
                 makeResource(PRONOM.ByteOrder.type),
                 makeResource(PRONOM.FormatIdentifierType.type),
@@ -282,9 +281,16 @@ public class SubmissionController {
         model.addAttribute("classificationOptions", options.get(PRONOM.Classification.type));
         model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
         model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
-        List<FormOption> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream().sorted(Comparator.comparing(FormOption::getValue)).collect(Collectors.toList());
+        List<LabeledURI> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream()
+                .sorted(Comparator.comparing(l -> safelyGetUriOrNull(l.getURI())))
+                .collect(Collectors.toList());
         model.addAttribute("positionTypeOptions", sortedPosTypes);
-        model.addAttribute("relationshipTypeOptions", options.get(PRONOM.FormatRelationshipType.type));
+        List<LabeledURI> relTypes = options.get(PRONOM.FormatRelationshipType.type);
+        model.addAttribute("relationshipTypeOptions", relTypes);
+        List<LabeledURI> noPriority = relTypes.stream()
+                .filter(o -> o != null && o.getURI() != null && !o.getURI().getURI().equals(PRONOM.FormatRelationshipType.PriorityOver))
+                .collect(Collectors.toList());
+        model.addAttribute("relationshipTypeNoPriorityOptions", noPriority);
         model.addAttribute("formatFamilyOptions", options.get(PRONOM.FileFormatFamily.type));
         model.addAttribute("compressionTypeOptions", options.get(PRONOM.CompressionType.type));
     }

@@ -60,11 +60,11 @@ section.form-part#relationships
             .input-group
               button.current Accept current
               select(th:id="${'relationshipType' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
-                option(th:each="rto : ${relationshipTypeOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
+                option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
               button.incoming Accept incoming
               select(th:id="${'relationshipType' + stat.index}")
-                option(th:each="rto : ${relationshipTypeOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
+                option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
 
           //- Related file format
           .form-row.rel-ff(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")

@@ -1,6 +1,6 @@
 package com.wallscope.pronombackend.dao;
 
-import com.wallscope.pronombackend.model.FormOption;
+import com.wallscope.pronombackend.model.LabeledURI;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.RDFUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
@@ -31,12 +31,12 @@ public class FormOptionsDAO {
                 """.replace("#TYPES#", types);
     }
 
-    public Map<String, List<FormOption>> getOptionsOfType(List<Resource> types) {
-        HashMap<String, List<FormOption>> map = new HashMap<>();
+    public Map<String, List<LabeledURI>> getOptionsOfType(List<Resource> types) {
+        HashMap<String, List<LabeledURI>> map = new HashMap<>();
         Model m = TriplestoreUtil.constructQuery(queryForTypes(types));
         ModelUtil mu = new ModelUtil(m);
         types.forEach(t -> {
-            List<FormOption> fos = mu.buildFromModel(new FormOption.Deserializer(), mu.getAllSubjects(makeProp(RDFUtil.RDF.type), t));
+            List<LabeledURI> fos = mu.buildFromModel(new LabeledURI.Deserializer(), mu.getAllSubjects(makeProp(RDFUtil.RDF.type), t));
             map.put(t.getURI(), fos);
         });
         return map;

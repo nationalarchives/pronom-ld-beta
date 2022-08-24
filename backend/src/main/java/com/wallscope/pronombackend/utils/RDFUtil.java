@@ -171,6 +171,7 @@ public class RDFUtil {
 
     public static class PRONOM {
         public static final String uri = "http://www.nationalarchives.gov.uk/PRONOM/";
+        public static final String id = uri + "id/";
 
         // Global sub
         public static class Global {
@@ -437,6 +438,7 @@ public class RDFUtil {
             public static final String Type = uri + "Type";
             public static final String Telephone = uri + "Telephone";
             public static final String Country = uri + "Country";
+            public static final String CountryId = uri + "CountryId";
             public static final String Support = uri + "Support";
             public static final String SourceId = uri + "SourceId";
             public static final String SourceDate = uri + "SourceDate";
@@ -450,6 +452,7 @@ public class RDFUtil {
             public static final String DevelopsCompressionType = uri + "Develops.CompressionType";
             public static final String MaintainsSoftware = uri + "Maintains.Software";
             public static final String PublishesDocument = uri + "Publishes.Document";
+            public static final String DevelopsSoftware = uri + "Develops.Software";
         }
 
         // Software sub
@@ -457,6 +460,15 @@ public class RDFUtil {
             public static final String type = PRONOM.uri + "Software";
             public static final String uri = PRONOM.uri + "software.";
             public static final String id = PRONOM.uri + "id/Software/";
+            public static final String LastUpdatedDate = uri + "LastUpdatedDate";
+            public static final String DevelopmentActor = uri + "Development.Actor";
+            public static final String Version = uri + "Version";
+            public static final String PuidTypeId = uri + "PuidTypeId";
+            public static final String ReleaseDate = uri + "ReleaseDate";
+            public static final String MaintenanceActor = uri + "Maintenance.Actor";
+            public static final String Puid = uri + "Puid";
+            public static final String SourceId = uri + "SourceId";
+            public static final String SourceDate = uri + "SourceDate";
         }
 
         // Character Encoding
@@ -465,9 +477,20 @@ public class RDFUtil {
             public static final String uri = PRONOM.uri + "characterEncoding.";
             public static final String id = PRONOM.uri + "id/CharacterEncoding/";
         }
+
+        // Classes only defined to reuse their RDF type
+        public static class ActorType {
+            public static final String type = PRONOM.uri + "ActorType";
+            public static final String uri = PRONOM.uri + "actorType.";
+            public static final String ActorType = uri + "ActorType";
+        }
+
+        public static class Country {
+            public static final String type = PRONOM.uri + "Country";
+        }
     }
 
-    public static final Map<String, String> labelMap = Map.ofEntries(
+    public static final Map<String, String> labelMap = Map.<String, String>ofEntries(
             // Byte orders
             Map.entry(PRONOM.ByteOrder.littleEndian, "Little-Endian"),
             Map.entry(PRONOM.ByteOrder.bigEndian, "Big-Endian"),
@@ -484,7 +507,52 @@ public class RDFUtil {
             Map.entry(PRONOM.FileFormat.type, "File Format"),
             Map.entry(PRONOM.CompressionType.type, "Compression"),
             Map.entry(PRONOM.Software.type, "Software"),
-            Map.entry(PRONOM.CharacterEncoding.type, "Character Encoding")
+            Map.entry(PRONOM.CharacterEncoding.type, "Character Encoding"),
+            // Generic entity Properties
+            // non-specific
+            Map.entry(RDF.type, "Type"),
+            Map.entry(RDFS.comment, "Description"),
+            Map.entry(RDFS.label, "Name"),
+            Map.entry(SKOS.notation, "Main Identifier"),
+            // PRONOM specific: Global
+            Map.entry(PRONOM.Global.Puid, "PUID"),
+            Map.entry(PRONOM.Global.PuidTypeId, "PUID Type"),
+            // PRONOM specific: Software
+            Map.entry(PRONOM.Software.LastUpdatedDate, "Last updated"),
+            Map.entry(PRONOM.Software.DevelopmentActor, "Developed by"),
+            Map.entry(PRONOM.Software.Version, "Version"),
+            Map.entry(PRONOM.Software.PuidTypeId, "PUID Type"),
+            Map.entry(PRONOM.Software.ReleaseDate, "Released"),
+            Map.entry(PRONOM.Software.MaintenanceActor, "Maintained by"),
+            Map.entry(PRONOM.Software.Puid, "PUID"),
+            Map.entry(PRONOM.Software.SourceId, "Source"),
+            Map.entry(PRONOM.Software.SourceDate, "Source date"),
+            // PRONOM specific: Actor
+            Map.entry(PRONOM.Actor.type, "Vendor"),
+            Map.entry(PRONOM.ActorType.type, "Type of actor"),
+            Map.entry(PRONOM.ActorType.ActorType, "Type of actor"),
+            Map.entry(PRONOM.Actor.OrganisationName, "Organisational Name"),
+            Map.entry(PRONOM.Actor.Email, "Email"),
+            Map.entry(PRONOM.Actor.Website, "Website"),
+            Map.entry(PRONOM.Actor.JobTitle, "Job title"),
+            Map.entry(PRONOM.Actor.Type, "Type"),
+            Map.entry(PRONOM.Actor.Telephone, "Telephone"),
+            Map.entry(PRONOM.Actor.Country, "Country"),
+            Map.entry(PRONOM.Actor.CountryId, "Country Identifier"),
+            Map.entry(PRONOM.Actor.Support, "Supports"),
+            Map.entry(PRONOM.Actor.SourceId, "Source"),
+            Map.entry(PRONOM.Actor.SourceDate, "Source date"),
+            Map.entry(PRONOM.Actor.LastUpdated, "Last updated"),
+            Map.entry(PRONOM.Actor.Provenance, "Provenance"),
+            Map.entry(PRONOM.Actor.Address, "Address"),
+            Map.entry(PRONOM.Actor.DevelopsFileFormat, "Developer of File Format(s)"),
+            Map.entry(PRONOM.Actor.SupportsFileFormat, "Supporter of File Format(s)"),
+            Map.entry(PRONOM.Actor.SupportWebsite, "Support Website"),
+            Map.entry(PRONOM.Actor.AuthorsDocument, "Author of Document"),
+            Map.entry(PRONOM.Actor.DevelopsCompressionType, "Developer of Compression Type"),
+            Map.entry(PRONOM.Actor.DevelopsSoftware, "Developer of Software"),
+            Map.entry(PRONOM.Actor.MaintainsSoftware, "Maintainer of Software"),
+            Map.entry(PRONOM.Actor.PublishesDocument, "Publisher of Document")
     );
 
     public static final String WITH_STATEMENT = "\nWITH<" + PRONOM.uri + ">\n";

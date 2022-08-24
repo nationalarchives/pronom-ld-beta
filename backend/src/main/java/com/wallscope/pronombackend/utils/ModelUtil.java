@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.RDF;
@@ -47,7 +46,7 @@ public class ModelUtil {
 
     public Resource getOneSubjectOrNull(Property p, RDFNode o) {
         try {
-            return this.m.listSubjectsWithProperty(p,o).nextResource();
+            return this.m.listSubjectsWithProperty(p, o).nextResource();
         } catch (NoSuchElementException e) {
             logger.trace("getOneSubjectOrNull: returning null for (" + p.getURI() + "," + o.toString() + ")");
             return null;
@@ -76,6 +75,19 @@ public class ModelUtil {
 
     public List<Statement> list(Resource s, Property p, RDFNode o) {
         return m.listStatements(s, p, o).toList();
+    }
+
+    public Map<String, List<RDFNode>> getPropertyMap(Resource subject) {
+        Map<String, List<RDFNode>> map = new HashMap<>();
+        this.list(subject, null, null).forEach(st -> {
+            String p = st.getPredicate().getURI();
+            if (!map.containsKey(p)) {
+                map.put(p, new ArrayList<>());
+            }
+            RDFNode obj = st.getObject();
+            map.get(p).add(obj);
+        });
+        return map;
     }
 
     public Model extractModel(Resource s, Property p, RDFNode o) {

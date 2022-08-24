@@ -193,7 +193,6 @@ public class FileFormatDAO {
             """.replaceAll("\\?fRelType", "<" + PRONOM.FormatRelationshipType.PriorityOver + ">");
 
     public static final String LABEL_TO_URI_QUERY = PREFIXES + "CONSTRUCT { ?s a ?type . } WHERE { ?s a ?type ; rdfs:label ?label . }";
-    public static final String PUID_QUERY = PREFIXES + "CONSTRUCT {?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName} WHERE{ ?f pr:fileFormat.Puid ?puid; pr:fileFormat.PuidTypeId ?type . ?type rdfs:label ?puidIdName }";
 
     public static String MULTIPLE_LABEL_TO_URI_QUERY(List<String> ls) {
         String values = ls.stream().map(x -> "(\"" + x + "\")").collect(Collectors.joining(" "));
@@ -261,28 +260,6 @@ public class FileFormatDAO {
         ResIterator subject = m.listSubjectsWithProperty(makeProp(RDF.type), deserializer.getRDFType());
         if (subject == null || !subject.hasNext()) return null;
         return deserializer.fromModel(subject.nextResource(), m);
-    }
-
-    public PUID getPuidForURI(Resource uri) {
-        Map<String, RDFNode> params = new HashMap<>();
-        params.put("f", uri);
-        Model m = TriplestoreUtil.constructQuery(PUID_QUERY, params);
-        ModelUtil mu = new ModelUtil(m);
-        Integer puid = safelyGetIntegerOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.FileFormat.Puid)));
-        if (puid == null) return null;
-        String puidType = safelyGetStringOrNull(mu.getOneObjectOrNull(null, makeProp(RDFS.label)));
-        return new PUID(uri, puid, puidType);
-    }
-
-    public PUID getURIforPuid(String puidType, Integer puid) {
-        Map<String, RDFNode> params = new HashMap<>();
-        Literal puidLit = makeLiteral(puid.toString(), XSDDatatype.XSDinteger);
-        params.put("puid", puidLit);
-        params.put("puidIdName", makeLiteral(puidType));
-        Model m = TriplestoreUtil.constructQuery(PUID_QUERY, params);
-        ModelUtil mu = new ModelUtil(m);
-        Resource uri = mu.getOneSubjectOrNull(makeProp(PRONOM.FileFormat.Puid), puidLit);
-        return new PUID(uri, puid, puidType.trim());
     }
 
     public List<FileFormat> getAll() {

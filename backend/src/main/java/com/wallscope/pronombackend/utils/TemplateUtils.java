@@ -4,6 +4,7 @@ import com.github.rjeschke.txtmark.Processor;
 import com.wallscope.pronombackend.config.ApplicationConfig;
 import com.wallscope.pronombackend.model.MarkdownHelpers;
 import com.wallscope.pronombackend.soap.Converter;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.nibor.autolink.LinkExtractor;
 import org.nibor.autolink.LinkSpan;
@@ -20,14 +21,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,13 +42,34 @@ public class TemplateUtils {
         logger.info("loading markdown directory: " + mdDir);
     }
 
+    public String getLabel(RDFNode n) {
+        return getLabel(n, null);
+    }
+
+    public String getLabel(RDFNode n, Map<String, String> extra) {
+        if (n == null) return "";
+        if (n.isLiteral()) return n.asLiteral().getString();
+        return getLabel(safelyGetUriOrNull(n), extra);
+    }
+
     public String getLabel(Resource uri) {
-        return getLabel(safelyGetUriOrNull(uri));
+        return getLabel(safelyGetUriOrNull(uri), null);
+    }
+
+    public String getLabel(Resource uri, Map<String, String> extra) {
+        return getLabel(safelyGetUriOrNull(uri), extra);
     }
 
     public String getLabel(String uri) {
+        return getLabel(uri, null);
+    }
+
+    public String getLabel(String uri, Map<String, String> extra) {
         if (uri == null) return "";
         String label = labelMap.getOrDefault(uri, null);
+        if (extra != null) {
+            label = extra.getOrDefault(uri, null);
+        }
         if (label == null) {
             logger.debug("LABEL MAP: No label for URI: " + uri);
             return "";
@@ -78,6 +95,7 @@ public class TemplateUtils {
         if (ins == null) return "";
         return DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.UK).withZone(ZoneId.systemDefault()).format(ins);
     }
+
     public String raw(String region) {
         try {
             File f = new File(mdDir, region + ".md");
@@ -120,9 +138,10 @@ public class TemplateUtils {
                 // span is a URL
                 sb.append("<a class=\"autolink\" target=\"_blank\" href=\"");
 
-                sb.append(HtmlUtils.htmlEscape(text));
+                // The replace here makes PRONOM/id/ links relative
+                sb.append(HtmlUtils.htmlEscape(text).replace(RDFUtil.PRONOM.uri, "/"));
                 sb.append("\">");
-                sb.append(HtmlUtils.htmlEscape(text));
+                sb.append(HtmlUtils.htmlEscape(text.replace(RDFUtil.PRONOM.id, "")));
                 sb.append("</a>");
             } else {
                 // span is plain text before/after link
