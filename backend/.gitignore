@@ -6,6 +6,7 @@
 /src/main/resources/static/
 /src/test/resources/
 /md/
+/sig/
 *.iml
 *.ipr
 *.iws

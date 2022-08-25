@@ -1,6 +1,7 @@
 package com.wallscope.pronombackend;
 
 import com.wallscope.pronombackend.dao.FileFormatDAO;
+import com.wallscope.pronombackend.utils.SignatureStorageManager;
 import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -75,6 +76,7 @@ public class PronombackendApplication {
             System.exit(0);
         } else {
             ApplicationContext ctx = SpringApplication.run(PronombackendApplication.class, args);
+            SignatureStorageManager.init();
         }
     }
 }

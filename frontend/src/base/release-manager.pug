@@ -1,0 +1,37 @@
+extends /layouts/internalLayout.pug
+
+block vars
+  - var currentUrl = "/editorial/releases"
+  - var breadcrumbs = {'Home':"/", "Release Manager": "/editorial/releases"}
+
+block pageTitle
+  h1.internal-title(th:utext="${@templateUtils.md('release-manager_accessibility-title')}") Edit signature releases
+
+block content
+  .unique-page-content#release-manager
+    .releases
+      h3 Binary Signatures
+      .release.binary(th:each="file : ${binary}")
+        .form-group
+          form(th:action="@{/editorial/releases/rename-release/binary/} + ${file}", method="post")
+            input(name="filename", th:id="${file}", th:value="${file}")
+            button.small.bordered-blue(type="submit") Rename
+          form(th:action="@{/editorial/releases/delete-release/binary/} + ${file}", method="post")
+            button.small.bordered-red(type="submit") Delete
+      h3 Container Signatures
+      .release.container(th:each="file : ${container}")
+        .form-group
+          form(th:action="@{/editorial/releases/rename-release/container/} + ${file}", method="post")
+            input(name="filename", th:id="${file}", th:value="${file}")
+            button.small.bordered-blue(type="submit") Rename
+          form(th:action="@{/editorial/releases/delete-release/container/} + ${file}", method="post")
+            button.small.bordered-red(type="submit") Delete
+    .new-release
+      h3 Upload a new signature
+      form(th:action="@{/editorial/releases/new}", method="post", enctype="multipart/form-data")
+        input(type="file", name="file")
+        label(for="isContainer") Container Signature file
+        input(id="isContainer", type="checkbox", name="container")
+        button.small.bordered-blue(type="submit") Upload
+  include ./partials/feedback.pug
+      
