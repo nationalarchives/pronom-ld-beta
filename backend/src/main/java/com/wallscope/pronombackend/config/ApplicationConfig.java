@@ -17,5 +17,6 @@ public class ApplicationConfig {
     }
 
     public static final String MARKDOWN_DIR = getEnvOr("MARKDOWN_DIR", "/md");
+    public static final String SIGNATURE_DIR = getEnvOr("SIGNATURE_DIR", "/sig");
     public static final String TRIPLESTORE = getEnvOr("TRIPLESTORE", "http://localhost:3030/ds");
 }
