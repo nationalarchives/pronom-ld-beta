@@ -21,11 +21,11 @@ public class FormFileFormat {
     private Boolean withdrawnFlag;
     private String formatType;
     private String byteOrder;
-    private String compressionType;
     private List<FormAlias> aliases;
     private List<FormFormatIdentifier> identifiers;
     private List<FormLabeledURI> formatFamilies;
     private List<String> classifications;
+    private List<String> compressionTypes;
     private List<FormInternalSignature> internalSignatures;
     private List<FormExternalSignature> externalSignatures;
     private List<FormContainerSignature> containerSignatures;
@@ -212,12 +212,12 @@ public class FormFileFormat {
         this.byteOrder = byteOrder;
     }
 
-    public String getCompressionType() {
-        return compressionType;
+    public List<String> getCompressionTypes() {
+        return compressionTypes;
     }
 
-    public void setCompressionType(String compressionType) {
-        this.compressionType = compressionType;
+    public void setCompressionTypes(List<String> compressionTypes) {
+        this.compressionTypes = compressionTypes;
     }
 
     public List<FormDocumentation> getReferences() {
@@ -236,7 +236,7 @@ public class FormFileFormat {
         this.containerSignatures = containerSignatures;
     }
 
-    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, Instant releaseDate, Instant withdrawnDate, List<LabeledURI> classifications) {
+    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, Instant releaseDate, Instant withdrawnDate, List<CompressionType> compressionTypes, List<LabeledURI> classifications) {
         Resource ffUri = makeResource(uri);
         return new FileFormat(ffUri,
                 puid,
@@ -261,6 +261,7 @@ public class FormFileFormat {
                 getSupportActors().stream().map(FormActor::toObject).collect(Collectors.toList()),
                 getHasRelationships().stream().map(FormFileFormatRelationship::toObject).collect(Collectors.toList()),
                 getFormatFamilies().stream().map(fff -> new LabeledURI(makeResource(fff.getUri()), fff.getLabel())).collect(Collectors.toList()),
+                compressionTypes,
                 getAliases().stream().map(FormAlias::toObject).collect(Collectors.toList()));
     }
 
@@ -299,6 +300,8 @@ public class FormFileFormat {
             byteOrder = List.of(PRONOM.ByteOrder.littleEndian, PRONOM.ByteOrder.bigEndian).contains(byteOrder) ? byteOrder : null;
         if (classifications != null)
             classifications = classifications.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());
+        if (compressionTypes != null)
+            compressionTypes = compressionTypes.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());
         if (internalSignatures != null) internalSignatures = internalSignatures.stream().filter(is -> {
             is.removeEmpties();
             return is.isNotEmpty();
@@ -354,7 +357,7 @@ public class FormFileFormat {
                 ", withdrawnFlag=" + withdrawnFlag +
                 ", formatType='" + formatType + '\'' +
                 ", byteOrder='" + byteOrder + '\'' +
-                ", compressionType='" + compressionType + '\'' +
+                ", compressionTypes='" + compressionTypes + '\'' +
                 ", aliases=" + aliases +
                 ", identifiers=" + identifiers +
                 ", formatFamilies=" + formatFamilies +
@@ -381,6 +384,7 @@ public class FormFileFormat {
         ff.setBinaryFlag(f.isBinaryFlag());
         ff.setWithdrawnFlag(f.isWithdrawnFlag());
         ff.setClassifications(f.getClassifications().stream().map(LabeledURI::getLabel).collect(Collectors.toList()));
+        ff.setCompressionTypes(f.getCompressionTypes().stream().map(CompressionType::getName).collect(Collectors.toList()));
         // Internal Signatures
         ff.setInternalSignatures(f.getInternalSignatures().stream().map(is -> {
             FormInternalSignature fis = FormInternalSignature.convert(is);

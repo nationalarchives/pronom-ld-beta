@@ -87,7 +87,7 @@ public class SubmissionController {
         FileFormatDAO ffDao = new FileFormatDAO();
         List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, cs);
+        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null, cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         Contributor contributor = submitter.toObject(false);
         SubmissionDAO subDao = new SubmissionDAO();
@@ -121,7 +121,7 @@ public class SubmissionController {
 
         List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), Instant.now(), null, cs);
+        FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), Instant.now(), null, null, cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
         SubmissionDAO subDao = new SubmissionDAO();
@@ -193,7 +193,7 @@ public class SubmissionController {
                 sub.getSubmitter(),
                 reviewer,
                 sub.getSource(),
-                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), Instant.now(), null, cs)),
+                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), Instant.now(), null, null, cs)),
                 sub.getCreated(),
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());
@@ -248,7 +248,7 @@ public class SubmissionController {
         FileFormatDAO ffDao = new FileFormatDAO();
         List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, cs);
+        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null, cs);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         SubmissionDAO subDao = new SubmissionDAO();
         // source == null because it's a new file format therefore there is no existing one to compare

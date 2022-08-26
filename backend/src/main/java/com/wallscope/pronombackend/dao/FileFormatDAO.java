@@ -38,6 +38,20 @@ public class FileFormatDAO {
             OPTIONAL{ ?fDocumentation pr:documentation.DocumentType ?fDocumentationType . }#END OPTIONAL
             OPTIONAL{ ?fDocumentation pr:documentation.Note ?fDocumentationNote . }#END OPTIONAL
             """;
+
+    public static final String COMPRESSION_TYPES_SUB_QUERY = """
+            ?f pr:fileFormat.CompressionType ?fCompressionType .
+            
+            ?fCompressionType a pr:CompressionType ;
+              rdfs:label ?fCompressionTypeLabel ;
+              .
+            OPTIONAL{ ?fCompressionType pr:compressionType.Lossiness ?fCompressionTypeLossiness .
+              OPTIONAL { ?fCompressionTypeLossiness rdfs:label ?fCompressionTypeLossinessLabel . }#END OPTIONAL
+            }#END OPTIONAL
+            
+            OPTIONAL{ ?fCompressionType rdfs:comment ?fCompressionTypeDescription . }#END OPTIONAL
+            OPTIONAL{ ?fCompressionType pr:compressionType.ReleaseDate ?fCompressionTypeReleaseDate . }#END OPTIONAL
+            """;
     public static final String FORMAT_IDENTIFIER_SUB_QUERY = """
             ?fId a pr:FormatIdentifier ; pr:formatIdentifier.FileFormat ?f .
             ?fId rdfs:label ?fIdName ; pr:formatIdentifier.FormatIdentifierType ?fIdType .
@@ -94,6 +108,10 @@ public class FileFormatDAO {
             OPTIONAL { ?f pr:fileFormat.ReleaseDate ?releaseDate . }#END OPTIONAL
             OPTIONAL { ?f pr:fileFormat.WithdrawnDate ?withdrawnDate . }#END OPTIONAL
 
+            # Compression Types
+            OPTIONAL{
+               """ + COMPRESSION_TYPES_SUB_QUERY + """
+            }#END OPTIONAL
             # Format Identifiers
             OPTIONAL{
                """ + FORMAT_IDENTIFIER_SUB_QUERY + """

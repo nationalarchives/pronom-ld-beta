@@ -212,6 +212,7 @@ public class RDFUtil {
             public static final String DevelopedBy = uri + "DevelopedBy.Actor";
             public static final String SupportedBy = uri + "SupportedBy.Actor";
             public static final String FormatFamily = uri + "FormatFamily";
+            public static final String CompressionType = uri + "CompressionType";
             public static final String Alias = uri + "Alias";
         }
 
@@ -406,6 +407,8 @@ public class RDFUtil {
             public static final String id = PRONOM.uri + "id/CompressionType/";
             public static final String type = PRONOM.uri + "CompressionType";
             public static final String uri = PRONOM.uri + "compressionType.";
+            public static final String ReleaseDate = uri + "ReleaseDate";
+            public static final String Lossiness = uri + "Lossiness";
         }
 
         // FormatIdentifier
