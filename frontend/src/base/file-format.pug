@@ -75,7 +75,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:text="${ff.name}") Lorem ipsum dolor sit amet
+            p(th:text="${ff.name}") Format name
         //- ROW
         li.row
           .tooltip-container
@@ -85,7 +85,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.version ?: '---'}") 1.0
+            p( th:text="${ff.version ?: '---'}") Version
         //- ROW
         li.row
           .tooltip-container
@@ -95,7 +95,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.firstExtension ?: '---'}") PLACEHOLDER(1.0)
+            p( th:text="${ff.firstExtension ?: '---'}") Extension
         //- ROW
         li.row
           .tooltip-container
@@ -105,7 +105,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:text="${ff.MIMETypeList}") NOT IMPLEMENTED
+            p(th:text="${ff.MIMETypeList}") Media Type
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
@@ -128,7 +128,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(th:text="${ff.formattedPuid}") fmt/11
+                p(th:text="${ff.formattedPuid}") PUID
             //- ROW
             li.row
               .tooltip-container
@@ -138,17 +138,17 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p(th:text="${ff.MIMETypeList}") NOT IMPLEMENTED
+                p(th:text="${ff.MIMETypeList}") MIME
             //- ROW
             li.row(th:each="otherId : ${ff.otherIdentifiers}")
               .tooltip-container
                 .label
-                  p.label-text(th:text="${otherId?.typeName}") Other
+                  p.label-text(th:text="${otherId?.typeName}") Type Name
                   span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.5') tabindex='0')
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${otherId?.name}") NOT IMPLEMENTED
+                p( th:text="${otherId?.name}") Type Name
           //- ROW
           //- TODO - tooltip not available
         li.row
@@ -159,7 +159,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${ff.classificationsListString}") audio
+            p( th:text="${ff.classificationsListString}") Classification
         //- ROW
         li.row
           .tooltip-container
@@ -169,7 +169,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:utext="${@templateUtils.autolinker(ff.description)}") audio
+            p(th:utext="${@templateUtils.autolinker(ff.description)}") Description
         //- ROW
         li.row
           .tooltip-container
@@ -179,7 +179,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") NOT IMPLEMENTED
+            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasRelationships}" th:text="|${prRel.relationshipTypeName} ${prRel.targetName}|") Related file formats
         //- ROW
         li.row
           .tooltip-container
@@ -189,7 +189,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") NOT IMPLEMENTED
+            a( th:href="@{/id/FileFormat/{target}(target=${prRel.targetID})}" th:each="prRel : ${ff.hasPriorityOver}" th:text="${prRel.targetName}") Priority over
       
       
       
@@ -268,7 +268,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:text="${extSig.name}") Lorem ipsum dolor sit amet
+            p(th:text="${extSig.name}") Name
         //- ROW
         li.row
           .tooltip-container
@@ -278,7 +278,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${extSig.signatureType}") Lorem ipsum dolor sit amet
+            p( th:text="${extSig.signatureType}") Type
 
 
 
@@ -297,7 +297,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:text="${intSig.name}") Lorem ipsum dolor sit amet
+            p(th:text="${intSig.name}") Name
         //- ROW
         li.row
           .tooltip-container
@@ -307,7 +307,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p( th:text="${intSig.note ?: '---'}") Lorem ipsum dolor sit amet
+            p( th:text="${intSig.note ?: '---'}") Description
         //- NESTED ROW
         li.row-nested
           .tooltip-container.row-nested-title
@@ -340,7 +340,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.offset} ?: '---'") Lorem ipsum
+                p( th:text="${byteSeq.offset} ?: '---'") Min Offset
             //- ROW
             li.row
               .tooltip-container
@@ -350,7 +350,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.maxOffset} ?: '---'") Lorem ipsum
+                p( th:text="${byteSeq.maxOffset} ?: '---'") Max offset
             //- ROW
             li.row
               .tooltip-container
@@ -360,7 +360,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${@templateUtils.getLabel(byteSeq.byteOrder)} ?: '---'") Lorem ipsum
+                p( th:text="${@templateUtils.getLabel(byteSeq.byteOrder)} ?: '---'") Byte order
             //- ROW
             //- TODO - tooltip not available
             li.row
@@ -371,7 +371,7 @@ block modalBody
                     .i-wrapper
                       i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
               div
-                p( th:text="${byteSeq.sequence}") Lorem ipsum
+                p( th:text="${byteSeq.sequence}") Value
 
 
 
@@ -388,7 +388,7 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p
-              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.getLabel(bo)}") NOT IMPLEMENTED
+              span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.getLabel(bo)}") Byte order
         //- ROW
         li.row
           .tooltip-container
@@ -409,7 +409,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p(th:text="${#temporals.format(ff?.releaseDate, 'dd/MM/yyyy')}") Release Date
+            p(th:text="${#temporals.format(ff?.releaseDate, 'dd/MM/yyyy')}") Released
         //- ROW
         li.row
           .tooltip-container
