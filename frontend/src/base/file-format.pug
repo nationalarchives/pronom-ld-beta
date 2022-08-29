@@ -390,17 +390,6 @@ block modalBody
             p
               span(th:each="bo : ${ff?.byteOrder}", th:text="${@templateUtils.getLabel(bo)}") NOT IMPLEMENTED
         //- ROW
-        //- TODO - tooltip not available
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Orientation
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
         li.row
           .tooltip-container
             .label
@@ -420,7 +409,7 @@ block modalBody
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${#temporals.format(ff?.releaseDate, 'dd/MM/yyyy')}") Release Date
         //- ROW
         li.row
           .tooltip-container
@@ -441,428 +430,50 @@ block modalBody
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
             p(th:text="${ff?.supportActorsList}") Support actors
-        //- ROW
-        //- TODO - tooltip not available
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Supported until
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Technical enviroment
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.3.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-
-
 
       h2#compression Compression
       //- TABLE =========================================================================
-      ul.table
+      ul.table(th:if="${#lists.isEmpty(ff?.compressionTypes ?: {})}")
+        li.row
+          p No Compression types
+      ul.table(th:each="ct : ${ff.compressionTypes}")
         //- ROW
         li.row
           .tooltip-container
             .label
               p.label-text Name
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.1') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${ct?.name}") Name
         //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Other names
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Identifier(s)
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Family
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.3.3') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
+        li.row(th:if="${ct.description}")
           .tooltip-container
             .label
               p.label-text Description
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.4') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${ct?.description}") Description
         //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Lossiness
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
+        li.row(th:if="${ct.releaseDate}")
           .tooltip-container
             .label
               p.label-text Released
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.6') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
+            p(th:text="${#temporals.format(ct?.releaseDate, 'dd/MM/yyyy')}") Released
         //- ROW
-        li.row
+        li.row(th:if="${ct.lossiness}")
           .tooltip-container
             .label
-              p.label-text Withdrawn
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.6') tabindex='0')
+              p.label-text Lossiness
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.7') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
           div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Developed by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.2.1') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Supported by
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '5.2.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Documentation
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '1.2.3') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Rights
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Note
-              //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" )
-          div
-            p NOT IMPLEMENTED
-
-
-
-      h2#characterEncoding Character encoding
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Encoding name
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Encoding text
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Note
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Provenance text
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text PUID TYPE ID
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text PUID value
-              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '3.2.3.2') tabindex='0')
-                .i-wrapper
-                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-          div
-            p NOT IMPLEMENTED
-
-
-
-      h2#properties Properties
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Compression Type
-              
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-            
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Compression Level
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-             
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Image Width
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-             
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Image Height
-              
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-             
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Color Space
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-             
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Sampling Frequency Unit
-              
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-              
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text X Sampling Frequency
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-              
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Bits Per Sample
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-             
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Sample Per Pixel
-             
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-              
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Byte Order
-              
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-            
-          div
-            p NOT IMPLEMENTED
-      //- TABLE =========================================================================
-      ul.table
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Comments
-              
-          div
-            p NOT IMPLEMENTED
-        //- ROW
-        li.row
-          .tooltip-container
-            .label
-              p.label-text Description
-            
-          div
-            p NOT IMPLEMENTED
+            p(th:text="${ct?.lossiness.getLocalName()}") Lossiness
