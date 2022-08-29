@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -45,7 +42,7 @@ public class ReleaseController {
         return "release-manager";
     }
 
-    @PostMapping("/editorial/releases/new") // //new annotation since 4.3
+    @PostMapping("/editorial/releases/new")
     public String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam(defaultValue = "false") Boolean container, RedirectAttributes redirectAttributes) {
         try {
             if (file == null || file.getOriginalFilename() == null || !file.getOriginalFilename().endsWith(".xml")) {
@@ -113,6 +110,32 @@ public class ReleaseController {
         }
 
         return "redirect:/editorial/releases";
+    }
 
+    @GetMapping(value = "/editorial/releases/download/{type}/{file}", produces = "application/xml")
+    public @ResponseBody
+    byte[] downloadRelease(@PathVariable String type, @PathVariable String file) throws IOException {
+        try {
+            if (!file.endsWith(".xml")) {
+                file = file + ".xml";
+            }
+            if (!List.of("container", "binary").contains(type)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature type: " + type);
+            }
+            Path dir = SignatureStorageManager.getBinaryDir();
+            if (type.equals("container")) {
+                dir = SignatureStorageManager.getContainerDir();
+            }
+            Path download = Paths.get(dir.toString(), file);
+            File f = download.toFile();
+            if (!f.isFile()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Targeted file doesn't exist: " + file);
+            }
+            return Files.readAllBytes(download);
+        } catch (IOException e) {
+            logger.debug("FAILED TO RETURN FILE: " + file);
+            e.printStackTrace();
+            return null;
+        }
     }
 }

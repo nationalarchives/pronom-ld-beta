@@ -1,7 +1,6 @@
 package com.wallscope.pronombackend.utils;
 
 import com.wallscope.pronombackend.config.ApplicationConfig;
-import com.wallscope.pronombackend.controller.SubmissionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,15 +16,21 @@ public class SignatureStorageManager {
     public static void init() {
         if (!Files.exists(sigRoot)) {
             logger.debug("CREATING SIGNATURE ROOT DIRECTORY");
-            sigRoot.toFile().mkdir();
+            if(sigRoot.toFile().mkdir()){
+                logger.debug("SIGNATURE ROOT DIRECTORY CREATED SUCCESSFULLY");
+            }
         }
         if (!Files.exists(container)) {
             logger.debug("CREATING SIGNATURE CONTAINER DIRECTORY");
-            container.toFile().mkdir();
+            if(container.toFile().mkdir()){
+                logger.debug("SIGNATURE CONTAINER DIRECTORY CREATED SUCCESSFULLY");
+            }
         }
         if (!Files.exists(binary)) {
             logger.debug("CREATING SIGNATURE BINARY DIRECTORY");
-            binary.toFile().mkdir();
+            if(binary.toFile().mkdir()){
+                logger.debug("SIGNATURE BINARY DIRECTORY CREATED SUCCESSFULLY");
+            }
         }
     }
 
