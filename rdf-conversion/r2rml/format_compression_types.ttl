@@ -8,7 +8,7 @@
  		rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/FileFormat/{file_format_id}";
  	];
  	rr:predicateObjectMap [
-        rr:predicate pr:fileFormat.Compression;
+        rr:predicate pr:fileFormat.CompressionType;
         rr:objectMap [ rr:template "http://www.nationalarchives.gov.uk/PRONOM/id/CompressionType/{compression_id}" ];
     ];
  	.

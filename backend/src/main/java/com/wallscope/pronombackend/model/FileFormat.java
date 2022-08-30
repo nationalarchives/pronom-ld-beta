@@ -40,6 +40,7 @@ public class FileFormat implements RDFWritable {
     private final List<Actor> supportActors;
     private final List<FileFormatRelationship> hasRelationships;
     private final List<LabeledURI> formatFamilies;
+    private final List<CompressionType> compressionTypes;
     private final List<FormatAlias> aliases;
 
     public FileFormat(
@@ -65,7 +66,9 @@ public class FileFormat implements RDFWritable {
             List<Actor> developmentActors,
             List<Actor> supportActors,
             List<FileFormatRelationship> hasRelationships,
-            List<LabeledURI> formatFamilies, List<FormatAlias> aliases) {
+            List<LabeledURI> formatFamilies,
+            List<CompressionType> compressionTypes,
+            List<FormatAlias> aliases) {
         this.uri = uri;
         this.puid = puid;
         this.puidType = puidType;
@@ -89,6 +92,7 @@ public class FileFormat implements RDFWritable {
         this.supportActors = supportActors;
         this.hasRelationships = hasRelationships;
         this.formatFamilies = formatFamilies;
+        this.compressionTypes = compressionTypes;
         this.aliases = aliases;
     }
 
@@ -237,6 +241,10 @@ public class FileFormat implements RDFWritable {
         return formatFamilies;
     }
 
+    public List<CompressionType> getCompressionTypes() {
+        return compressionTypes;
+    }
+
     public List<FormatAlias> getAliases() {
         return aliases;
     }
@@ -323,6 +331,9 @@ public class FileFormat implements RDFWritable {
         if (formatFamilies != null) {
             formatFamilies.forEach(fam -> m.add(uri, makeProp(PRONOM.FileFormat.FormatFamily), fam.getURI()));
         }
+        if (compressionTypes != null) {
+            compressionTypes.forEach(x -> m.add(uri, makeProp(PRONOM.FileFormat.CompressionType), x.getURI()));
+        }
         if (aliases != null) {
             aliases.forEach(a -> {
                 m.add(uri, makeProp(PRONOM.FileFormat.Alias), a.getURI());
@@ -361,6 +372,7 @@ public class FileFormat implements RDFWritable {
                 ", supportActors=" + supportActors +
                 ", hasRelationships=" + hasRelationships +
                 ", formatFamilies=" + formatFamilies +
+                ", compressionTypes=" + compressionTypes +
                 ", aliases=" + aliases +
                 '}';
     }
@@ -431,6 +443,9 @@ public class FileFormat implements RDFWritable {
             List<LabeledURI> formatFamilies = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.FormatFamily)).stream()
                     .map(n -> new LabeledURI(n.asResource(), safelyGetStringOrNull(mu.getOneObjectOrNull(n.asResource(), makeProp(RDFS.label)))))
                     .collect(Collectors.toList());
+            // Compression types
+            List<Resource> compTypesSubs = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.CompressionType)).stream().map(RDFNode::asResource).collect(Collectors.toList());
+            List<CompressionType> compressionTypes = mu.buildFromModel(new CompressionType.Deserializer(), compTypesSubs);
             // Format Aliases
             List<Resource> aliasSubjects = mu.getAllObjects(uri, makeProp(PRONOM.FileFormat.Alias)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<FormatAlias> aliases = mu.buildFromModel(new FormatAlias.Deserializer(), aliasSubjects);
@@ -457,6 +472,7 @@ public class FileFormat implements RDFWritable {
                     supportActors,
                     hasRelationships,
                     formatFamilies,
+                    compressionTypes,
                     aliases);
         }
     }
