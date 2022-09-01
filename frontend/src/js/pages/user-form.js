@@ -13,6 +13,7 @@ import {
   setupForm,
   setupReferenceMultifield,
   setupReviewFields,
+  setupContainerAddPath,
 } from '../lib/jqueryUtils'
 
 window.$ = $;
@@ -40,6 +41,7 @@ const App = () => {
     // setupFormNavigation();
     setupReferenceMultifield();
     setupReviewFields();
+    setupContainerAddPath();
     // checkReviewIndicators();
     // closeAccordions();
     if ($(window).width() < 1200) {
@@ -52,17 +54,6 @@ const App = () => {
     if ($(window).width() < 1200) {
       $(".form-partial-content").addClass('hide');
     }
-  });
-
-  // path
-  $('.add-path').on('click', function (evt) {
-    evt.preventDefault();
-    var $container = $(this).closest('.paths-list-container').find('.paths-list');
-    $('.holder .path:last').clone(true).appendTo($container).find("input").val("").end();
-  });
-  $('.delete-path').on('click', function (evt) {
-    evt.preventDefault();
-    $(this).closest(".path").remove();
   });
 
   // collapse-all
@@ -188,7 +179,6 @@ const App = () => {
     formStep = formParts.indexOf(currentFormPart);
     $( currentBtn ).addClass('active');
     $(formParts[formStep]).addClass('show');
-    console.log(formStep);
     if(formStep === 2){
       $('#prioritySubBtn').closest('li').addClass('active');
     }

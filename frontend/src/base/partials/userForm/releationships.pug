@@ -60,7 +60,7 @@ section.form-part#relationships
             .input-group
               button.current Accept current
               select(th:id="${'relationshipType' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
-                option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${rto.value}", th:text="${rto.label}") option 1
+                option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${rto.URI}", th:text="${rto.label}") option 1
             .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
               button.incoming Accept incoming
               select(th:id="${'relationshipType' + stat.index}")
@@ -100,14 +100,14 @@ section.form-part#relationships
           | Add relationship
 
     //- Format families
-    fieldset.format-families(th:each="fam, stat : *{formatFamilies}", ,th:with="compareSize=${#lists.size(compare?.formatFamilies ?: {})}, compareFam=${compareSize > stat.index} ? ${compare.formatFamilies.get(__${stat.index}__)} : null")
-      input(type="hidden", th:field="*{formatFamilies[__${stat.index}__].uri}")
-      .form-row(th:classappend="${compareFam?.uri} ? 'before-review' : ''")
-        p.inputType(th:text="${#strings.isEmpty(fam?.uri) ? 'New content' : 'Edited content'}") New content
+    fieldset.format-families
+      input(type="hidden", th:field="*{formatFamilies}")
+      .form-row(th:classappend="${compare?.formatFamilies} ? 'before-review' : ''")
+        p.inputType(th:text="${#lists.isEmpty(ff?.formatFamilies) ? 'New content' : 'Edited content'}") New content
         .tooltipPlusAction
           .tooltip-container
             .label
-              label(th:for="${'formatFamilies' + stat.index}") Format families
+              label(for="formatFamilies") Format families
               span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '3.3.3') tabindex='0')
                 .i-wrapper
                   i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -120,11 +120,11 @@ section.form-part#relationships
               p Reviewed
         .input-group
           button.current Accept current
-          select(th:id="${'formatFamilies' + stat.index}", th:field="*{formatFamilies[__${stat.index}__].uri}")
+          select(id="formatFamilies", th:field="*{formatFamilies}", multiple="multiple", size="5")
             option(th:value="null") None
-            option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.value}", th:text="${ffo.label}") option 1
-        .input-group(th:if="${compareFam?.uri}")
+            option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.URI}", th:text="${ffo.label}") option 1
+        .input-group(th:if="${compare?.formatFamilies}")
           button.incoming Accept incoming
-          select(th:id="${'formatFamilies' + stat.index}")
+          select(id="formatFamilies", th:value="${compare.formatFamilies}", multiple="multiple", size="5")
             option(th:value="null") None
-            option(th:each="ffo : ${formatFamilyOptions}", th:value="${compareFam.uri}", th:text="${ffo.label}") option 1
+            option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.URI}", th:text="${ffo.label}") option 1

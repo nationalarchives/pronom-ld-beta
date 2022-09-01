@@ -149,11 +149,11 @@ function reviewFieldsInner() {
   });
   // relationships
   const $relContainer = $revContainer.find('#review-relationships:visible');
-  $('fieldset.relationships').each((i, r) => {  
+  $('fieldset.relationships').each((i, r) => {
     if (i === 0) {
       // cleanup prev instances
       $relContainer.find('.two').remove();
-    }  
+    }
     const $rel = $(r);
     const type = $rel.find('.rel-type .input-group:first option:selected').text() || '---';
     const ff = $rel.find('.rel-ff .input-group:first input.label').val() || '---';
@@ -182,9 +182,9 @@ function reviewFieldsInner() {
     const fam = $fam.find('.input-group:first option:selected').text() || '---';
 
     const element = $('<div>', { class: 'element' }).append(
-        $('<p>', { class: 'label' }).text("Format family"),
-        $('<p>', { class: 'value' }).text(fam)
-      );
+      $('<p>', { class: 'label' }).text("Format family"),
+      $('<p>', { class: 'value' }).text(fam)
+    );
     $ffContainer.append(element);
   });
 
@@ -242,33 +242,112 @@ export function optionWorkaround() {
   });
 }
 
+function refreshIndices($elem, field) {
+  $elem.each(function (idx) {
+    $(this).find(':input').each(function () {
+      const $this = $(this);
+      // ignore buttons which get caught by :input as well
+      if ($this.is('button')) return;
+      const newName = $this.attr('name').replace(new RegExp(`${field}\\[\\d+\\]`), `${field}[${idx}]`);
+      $this.attr('name', newName);
+    });
+  });
+}
+
+function replaceAllNames($elem, oldName, newName) {
+  $elem.find(':input').each(function () {
+    const $this = $(this);
+    // ignore buttons which get caught by :input as well
+    if ($this.is('button')) return;
+    $this.attr('name', $this.attr('name').replace(oldName, newName));
+  });
+}
+
+function enableFields($elem) {
+  $elem.find(':input').each(function () {
+    const $this = $(this);
+    // ignore buttons which get caught by :input as well
+    if ($this.is('button')) return;
+    $this.prop('disabled', false);
+  });
+}
+
 export function setupSignatureMultifield() {
   $('#add-signature').on('click', function (evt) {
     evt.preventDefault();
     // Clone using array syntax like thymeleaf does: name="internalSignatures[0].name"
     // name="internalSignatures[0].byteSequences[0].signature"
-    const lastSig = $('#signature-container .signature:last');
-    const name = $(lastSig).find('input:first').attr('name');
-    const lastIndexRg = /internalSignatures\[(\d+)\]/.exec(name);
-    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
     const type = $('#select-signature-type').val() == 'signature' ? 'signature' : 'container-signature';
     const clone = $(`.holder .${type}:last`).clone(true);
-    clone.find(':input').each(function () {
-      const $this = $(this);
-      // ignore buttons which get caught by :input as well
-      if ($this.is('button')) return;
-      $this.attr('name', $this.attr('name').replace(/internalSignatures\[\d+\]/, `internalSignatures[${newIndex}]`));
-      $this.prop('disabled', false);
-    });
+    clone.removeClass('template');
+    enableFields(clone);
     clone.appendTo('#signature-container');
+    // Refresh indices
+    const field = type == 'signature' ? 'internalSignatures' : 'containerSignatures'
+    refreshIndices($(`#signature-container .${type}:not(.template)`), field);
   });
   $('.delete-signature').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".signature").remove();
+    refreshIndices($(`#signature-container .signature:not(.template)`), 'internalSignatures');
   });
   $('.delete-container-signature').on('click', function (evt) {
     evt.preventDefault();
     $(this).closest(".container-signature").remove();
+    refreshIndices($(`#signature-container .container-signature:not(.template)`), 'containerSignatures');
+  });
+}
+
+export function setupContainerAddPath() {
+  $('.add-path').on('click', function (evt) {
+    evt.preventDefault();
+    const $container = $(this).closest('.paths-list-container').find('.paths-list');
+    const clone = $('.holder .path:last').clone(true);
+    clone.removeClass('template');
+    enableFields(clone);
+    const parentName = $container.parentsUntil('fieldset').find('textarea').attr('name').split('.').find(x => !!x);
+    replaceAllNames(clone, 'containerSignatures[0]', parentName);
+    clone.appendTo($container);
+    refreshIndices($container.find('.path:not(.template)'), 'files');
+  });
+
+  $('.delete-path').on('click', function (evt) {
+    evt.preventDefault();
+    const $container = $(this).closest('.paths-list-container').find('.paths-list');
+    $(this).closest(".path").remove();
+    refreshIndices($container.find('.path:not(.template)'), 'files');
+  });
+}
+
+export function setupByteSeqMultifield() {
+  // TODO: make this work with container signatures and make the Path work as well
+  $('.add-byte-sequence').on('click', function (evt) {
+    evt.preventDefault();
+    const $signature = $(this).parentsUntil('#signature-container').last();
+    const $container = $(this).parentsUntil('.byte-sequence-list').last().siblings('.list');
+    const type = $signature.hasClass('container-signature') ? 'files' : 'internalSignatures';
+
+    const clone = $('.holder .byte-sequence:last').clone(true)
+    clone.removeClass('template');
+    enableFields(clone);
+    let parentName;
+    if (type == 'internalSignatures') {
+      parentName = $container.parentsUntil('fieldset').find('textarea').attr('name').split('.').find(x => !!x);
+    } else {
+      const split = $container.parentsUntil('.path').last().siblings('.form-row').find('input').attr('name').split('.')
+      split.pop();
+      parentName = split.join('.');
+    }
+    replaceAllNames(clone, 'internalSignatures[0]', parentName);
+    clone.appendTo($container);
+    refreshIndices($container.find('.byte-sequence'), 'byteSequences');
+  });
+  $('.delete-byte-sequence').on('click', function (evt) {
+    evt.preventDefault();
+    const $container = $(this).parentsUntil(".byte-sequence-list").last()
+    $(this).closest(".byte-sequence").remove();
+    const $byteSeqs = $container.find('.byte-sequence:not(.template)')
+    refreshIndices($byteSeqs, 'byteSequences');
   });
 }
 
@@ -320,30 +399,6 @@ export function setupRelationshipMultifield() {
   });
 }
 
-export function setupByteSeqMultifield() {
-  $('.add-byte-sequence').on('click', function (evt) {
-    evt.preventDefault();
-    const $container = $(this).closest('.byte-sequence-list').find('.list');
-    const lastSeq = $container.find('.byte-sequence:last');
-    const name = $(lastSeq).find('input:first').attr('name');
-    const lastIndexRg = /byteSequences\[(\d+)\]/.exec(name)
-    const newIndex = lastIndexRg ? parseInt(lastIndexRg[1]) + 1 : 0;
-    const clone = $('.holder .byte-sequence:last').clone(true)
-    clone.find(':input').each(function () {
-      const $this = $(this);
-      // ignore buttons which get caught by :input as well
-      if ($this.is('button')) return;
-      $this.attr('name', $this.attr('name').replace(/byteSequences\[\d+\]/, `byteSequences[${newIndex}]`));
-      $this.prop('disabled', false);
-    });
-    clone.appendTo($container);
-  });
-  $('.delete-byte-sequence').on('click', function (evt) {
-    evt.preventDefault();
-    $(this).closest(".byte-sequence").remove();
-  });
-}
-
 export function setupReferenceMultifield() {
   $('#add-reference').on('click', function (evt) {
     evt.preventDefault();
@@ -391,83 +446,83 @@ export function setupReferenceMultifield() {
 //       $(formMenuButtons[formStep]).addClass("active");
 //     }
 //   });
-  // Whenever .prev is clicked return a step ========= PREV
-  // $('.prev').on('click', (evt) => {
-  //   evt.preventDefault();
-  //   $(formParts[formStep]).removeClass('show');
-  //   $('.main-nav li').removeClass("active");
-  //   formStep--;
-  //   $(formParts[formStep]).addClass('show');
-  //   if (1 < formStep && formStep < 6) {
-  //     $(formMenuButtons[2]).addClass("active");
-  //   } else {
-  //     $(formMenuButtons[formStep]).addClass("active");
-  //   }
-  // });
-  // Whenever skipping 3 steps forwards (only aplied to More intormation in external interface) ========= NEXT + 3
-  // $('.nextSkip').on('click', (evt) => {
-  //   evt.preventDefault();
-  //   $(formParts[formStep]).removeClass('show');
-  //   $('.main-nav li').removeClass("active");
-  //   if (1 < formStep && formStep < 6) {
-  //     $(formMenuButtons[2]).addClass("active");
-  //   } else {
-  //     $('.main-nav li').removeClass("active");
-  //     formStep = 6
-  //     $(formMenuButtons[formStep]).addClass("active");
-  //   }
-  //   $('.main-nav li').removeClass("active");
-  //   formStep = 6
-  //   $(formMenuButtons[formStep]).addClass("active");
-  //   $(formParts[formStep]).addClass('show');
+// Whenever .prev is clicked return a step ========= PREV
+// $('.prev').on('click', (evt) => {
+//   evt.preventDefault();
+//   $(formParts[formStep]).removeClass('show');
+//   $('.main-nav li').removeClass("active");
+//   formStep--;
+//   $(formParts[formStep]).addClass('show');
+//   if (1 < formStep && formStep < 6) {
+//     $(formMenuButtons[2]).addClass("active");
+//   } else {
+//     $(formMenuButtons[formStep]).addClass("active");
+//   }
+// });
+// Whenever skipping 3 steps forwards (only aplied to More intormation in external interface) ========= NEXT + 3
+// $('.nextSkip').on('click', (evt) => {
+//   evt.preventDefault();
+//   $(formParts[formStep]).removeClass('show');
+//   $('.main-nav li').removeClass("active");
+//   if (1 < formStep && formStep < 6) {
+//     $(formMenuButtons[2]).addClass("active");
+//   } else {
+//     $('.main-nav li').removeClass("active");
+//     formStep = 6
+//     $(formMenuButtons[formStep]).addClass("active");
+//   }
+//   $('.main-nav li').removeClass("active");
+//   formStep = 6
+//   $(formMenuButtons[formStep]).addClass("active");
+//   $(formParts[formStep]).addClass('show');
 
-  // });
+// });
 
-  // Navigation bar
+// Navigation bar
 
-  // Main menu buttons
-  // $('.segment').on('click', function () {
-  //   $('.main-nav li').removeClass("active");
-  //   $('.side-menu li').removeClass("active");
-  //   $('.form-part').removeClass('show');
-  //   var currentBtn = ('#' + $(this).closest('li').attr('id'));
-  //   var currentFormPart = currentBtn.replace('Btn', '');
-  //   formStep = formParts.indexOf(currentFormPart);
-  //   $(currentBtn).addClass('active');
-  //   $(formParts[formStep]).addClass('show');
-  //   if (formStep === 2) {
-  //     $('#prioritySubBtn').closest('li').addClass('active');
-  //   }
-  // });
+// Main menu buttons
+// $('.segment').on('click', function () {
+//   $('.main-nav li').removeClass("active");
+//   $('.side-menu li').removeClass("active");
+//   $('.form-part').removeClass('show');
+//   var currentBtn = ('#' + $(this).closest('li').attr('id'));
+//   var currentFormPart = currentBtn.replace('Btn', '');
+//   formStep = formParts.indexOf(currentFormPart);
+//   $(currentBtn).addClass('active');
+//   $(formParts[formStep]).addClass('show');
+//   if (formStep === 2) {
+//     $('#prioritySubBtn').closest('li').addClass('active');
+//   }
+// });
 
-  // Side menu buttons (More information)
-  // $('.segment-sub').on('click', function () {
-  //   $('.form-part').removeClass('show');
-  //   $('.side-menu li').removeClass("active");
-  //   var currentBtn = ('#' + $(this).closest('li').attr('id'));
-  //   var currentFormPart = currentBtn.replace('SubBtn', '');
-  //   formStep = formParts.indexOf(currentFormPart);
-  //   $(formParts[formStep]).addClass('show');
-  //   $(currentBtn).closest('li').addClass('active');
-  // });
+// Side menu buttons (More information)
+// $('.segment-sub').on('click', function () {
+//   $('.form-part').removeClass('show');
+//   $('.side-menu li').removeClass("active");
+//   var currentBtn = ('#' + $(this).closest('li').attr('id'));
+//   var currentFormPart = currentBtn.replace('SubBtn', '');
+//   formStep = formParts.indexOf(currentFormPart);
+//   $(formParts[formStep]).addClass('show');
+//   $(currentBtn).closest('li').addClass('active');
+// });
 
 
 
-  // Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
-  // $('.prevSkip').on('click', (evt) => {
-  //   evt.preventDefault();
-  //   $(formParts[formStep]).removeClass('show');
-  //   $('.main-nav li').removeClass("active");
-  //   if (1 < formStep && formStep < 6) {
-  //     formStep = 1;
-  //     $(formMenuButtons[formStep]).addClass("active");
-  //   } else {
-  //     $('.main-nav li').removeClass("active");
-  //     formStep--;
-  //     $(formMenuButtons[formStep]).addClass("active");
-  //   }
-  //   $(formParts[formStep]).addClass('show');
-  // });
+// Whenever skipping 3 steps backwards (only aplied to More intormation in external interface) ========= PREV + 3
+// $('.prevSkip').on('click', (evt) => {
+//   evt.preventDefault();
+//   $(formParts[formStep]).removeClass('show');
+//   $('.main-nav li').removeClass("active");
+//   if (1 < formStep && formStep < 6) {
+//     formStep = 1;
+//     $(formMenuButtons[formStep]).addClass("active");
+//   } else {
+//     $('.main-nav li').removeClass("active");
+//     formStep--;
+//     $(formMenuButtons[formStep]).addClass("active");
+//   }
+//   $(formParts[formStep]).addClass('show');
+// });
 // }
 
 

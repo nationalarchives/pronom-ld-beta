@@ -85,9 +85,8 @@ public class SubmissionController {
             return new RedirectView("/contribute/form/new");
         }
         FileFormatDAO ffDao = new FileFormatDAO();
-        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null, cs);
+        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         Contributor contributor = submitter.toObject(false);
         SubmissionDAO subDao = new SubmissionDAO();
@@ -118,10 +117,8 @@ public class SubmissionController {
         if (existing == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
         }
-
-        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), Instant.now(), null, null, cs);
+        FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
         SubmissionDAO subDao = new SubmissionDAO();
@@ -185,7 +182,6 @@ public class SubmissionController {
                 "",
                 false,
                 true);
-        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         FileFormat old = sub.getFormat();
         Submission newSub = new Submission(sub.getURI(),
                 makeResource(PRONOM.Submission.InternalSubmission),
@@ -193,7 +189,7 @@ public class SubmissionController {
                 sub.getSubmitter(),
                 reviewer,
                 sub.getSource(),
-                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), Instant.now(), null, null, cs)),
+                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), Instant.now(), null, null)),
                 sub.getCreated(),
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());
@@ -246,9 +242,8 @@ public class SubmissionController {
         ff.randomizeURIs();
         ff.removeEmpties();
         FileFormatDAO ffDao = new FileFormatDAO();
-        List<LabeledURI> cs = ffDao.getClassifications(ff.getClassifications());
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null, cs);
+        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         SubmissionDAO subDao = new SubmissionDAO();
         // source == null because it's a new file format therefore there is no existing one to compare

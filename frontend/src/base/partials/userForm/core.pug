@@ -99,16 +99,16 @@ section.form-part#core
             textarea.medium-short(th:value="${compare.description}" cols="30" rows="10" name="description" id="description")
 
         //- Format type
-        .form-row.format-type-container(th:classappend="${compare?.formatType} ? 'before-review' : ''")
-          p.inputType(th:text="${#strings.isEmpty(ff?.formatType) ? 'New content' : 'Edited content'}") Edited content
+        .form-row.format-type-container(th:classappend="${compare?.formatTypes} ? 'before-review' : ''")
+          p.inputType(th:text="${#strings.isEmpty(ff?.formatTypes) ? 'New content' : 'Edited content'}") Edited content
           .tooltipPlusAction
             fieldset
               legend.sr-only Select format type
               div
                 .tooltip-container
                   .label
-                    label.from-external-only(for="formatType") Format type
-                    label.from-internal-only(for="formatType") Format type (required)
+                    label.from-external-only(for="formatTypes") Format type
+                    label.from-internal-only(for="formatTypes") Format type (required)
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.1.4') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -121,12 +121,12 @@ section.form-part#core
                 p Reviewed
           .input-group
             button.current Accept current
-            select(id="formatType", name="formatType" th:field="*{formatType}")
-              option(th:each="co : ${classificationOptions}", th:value="${co.value}", th:text="${co.label}") option 1
-          .input-group
+            select(id="formatTypes", th:field="*{formatTypes}", multiple="multiple", size="5")
+              option(th:each="co : ${classificationOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
+          .input-group(th:if="${compare?.formatTypes}")
             button.incoming Accept incoming
-            select(th:if="${compare?.formatType}" id="formatType" name="formatType")
-              option(th:each="co : ${classificationOptions}", th:value="${co.value}", th:text="${co.label}") option 1
+            select(th:if="${compare?.formatTypes}", id="formatType", multiple="multiple", size="5")
+              option(th:each="co : ${classificationOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
         .from-internal-only(th:if="${editorial}")
           include ./priority-over.pug
 

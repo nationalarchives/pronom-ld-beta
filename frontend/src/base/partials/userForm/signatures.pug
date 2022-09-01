@@ -29,7 +29,7 @@ section.form-part#signatures
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                 div
                   select(id="select-signature-type")
-                    option(value='signature') Signature
+                    option(value='signature') Binary Signature
                     option(value='container-signature') Container Signature
               .button-container
                 button.black.small#add-signature
@@ -44,7 +44,7 @@ section.form-part#signatures
         //- Signature 
         #signature-container
           .holder
-            .row-group-inner1.path
+            .row-group-inner1.path.template
               .button-container 
                 button.bordered-red.small.push-right.delete-path
                   | Delete path
@@ -58,7 +58,7 @@ section.form-part#signatures
                     span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.7') tabindex='0')
                       .i-wrapper
                         i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                input(id="Path" disabled)
+                input(id="Path", name="containerSignatures[0].files[0].path" disabled)
               .byte-sequence-list
                 .list
                 .button-container
@@ -209,7 +209,7 @@ section.form-part#signatures
                               i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                       select(name="internalSignatures[0].byteOrder", id="endianess")
                         option(th:value="null") None
-                        option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+                        option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
 
                     //- Description
                     .form-row.signature-description
@@ -284,7 +284,7 @@ section.form-part#signatures
                             .input-group
                               button Accept current
                               select(name="internalSignatures[0].byteSequences[0].position", id="positionType", disabled)
-                                option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
+                                option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
 
                           //- Min offset
                           .form-row.min-offset
@@ -510,12 +510,12 @@ section.form-part#signatures
                         //-     button Accept current
                         //-     select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
                         //-       option(value='null') None
-                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
                         //-   .input-group(th:if="${compareByteSeq?.byteOrder}")
                         //-     button.incoming Accept incoming
                         //-     select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
                         //-       option(value='null') None
-                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.value}", th:text="${bo.label}") option 1
+                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
 
                         //- Position type
                         .form-row.position-type(th:classappend="${compareByteSeq?.position} ? 'before-review' : ''")
@@ -538,11 +538,11 @@ section.form-part#signatures
                           .input-group
                             button Accept current
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
-                              option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
+                              option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
                           .input-group(th:if="${compareByteSeq?.position}")
                             button.incoming Accept incoming
                             select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
-                              option(th:each="po : ${positionTypeOptions}", th:value="${po.value}", th:text="${po.label}") option 1
+                              option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
 
                         //- Min offset
                         .form-row.min-offset(th:classappend="${compareByteSeq?.offset} ? 'before-review' : ''")

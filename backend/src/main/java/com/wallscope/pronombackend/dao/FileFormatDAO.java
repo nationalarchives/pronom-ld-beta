@@ -299,9 +299,4 @@ public class FileFormatDAO {
         logger.debug("file formats built for signature generation");
         return fs;
     }
-
-    public List<LabeledURI> getClassifications(List<String> ls) {
-        Map<Resource, String> map = getURIsFromLabels(ls, makeResource(PRONOM.Classification.type));
-        return map.entrySet().stream().map(entry -> new LabeledURI(entry.getKey(), entry.getValue())).collect(Collectors.toList());
-    }
 }

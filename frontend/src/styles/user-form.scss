@@ -837,6 +837,11 @@ fieldset {
     display: block;
   }
 }
+
+select[multiple] {
+  height: auto;
+}
+
 select {
   display: block;
   min-width: 300px;
