@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class FormInternalSignature {
     private Boolean genericFlag;
     private String provenance;
     private String fileFormat;
-    private List<FormByteSequence> byteSequences;
+    private ArrayList<FormByteSequence> byteSequences;
 
     public FormInternalSignature() {
     }
@@ -74,11 +75,11 @@ public class FormInternalSignature {
         this.fileFormat = fileFormat;
     }
 
-    public List<FormByteSequence> getByteSequences() {
+    public ArrayList<FormByteSequence> getByteSequences() {
         return byteSequences;
     }
 
-    public void setByteSequences(List<FormByteSequence> byteSequences) {
+    public void setByteSequences(ArrayList<FormByteSequence> byteSequences) {
         this.byteSequences = byteSequences;
     }
 
@@ -108,7 +109,7 @@ public class FormInternalSignature {
             FormByteSequence fbs = FormByteSequence.convert(bs);
             fbs.setSignature(is.getURI().getURI());
             return fbs;
-        }).sorted(Comparator.comparing(FormByteSequence::getSequence)).collect(Collectors.toList()));
+        }).sorted(Comparator.comparing(FormByteSequence::getSequence)).collect(Collectors.toCollection(ArrayList::new)));
         return fis;
     }
 
@@ -144,6 +145,6 @@ public class FormInternalSignature {
 
     public void removeEmpties() {
         if (byteSequences != null)
-            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toList());
+            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toCollection(ArrayList::new));
     }
 }

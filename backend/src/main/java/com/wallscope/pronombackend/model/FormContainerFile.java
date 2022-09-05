@@ -2,17 +2,17 @@ package com.wallscope.pronombackend.model;
 
 import org.apache.jena.rdf.model.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.utils.RDFUtil.PRONOM;
-import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FormContainerFile {
     private String uri;
     private String signature;
     private String path;
-    private List<FormByteSequence> byteSequences;
+    private ArrayList<FormByteSequence> byteSequences;
 
     public FormContainerFile() {
     }
@@ -45,20 +45,20 @@ public class FormContainerFile {
         return byteSequences;
     }
 
-    public void setByteSequences(List<FormByteSequence> byteSequences) {
+    public void setByteSequences(ArrayList<FormByteSequence> byteSequences) {
         this.byteSequences = byteSequences;
     }
 
     public static FormContainerFile convert(ContainerFile cf) {
         FormContainerFile fcf = new FormContainerFile();
-        fcf.setUri(cf.getID());
+        fcf.setUri(safelyGetUriOrNull(cf.getURI()));
         fcf.setPath(cf.getPath());
         // signature field is set at the parent
         fcf.setByteSequences(cf.getByteSequences().stream().map(bs -> {
             FormByteSequence fbs = FormByteSequence.convert(bs);
-            fbs.setSignature(cf.getID());
+            fbs.setSignature(safelyGetUriOrNull(cf.getURI()));
             return fbs;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toCollection(ArrayList::new)));
         return fcf;
     }
 
@@ -69,7 +69,7 @@ public class FormContainerFile {
 
     public void removeEmpties() {
         if (byteSequences != null)
-            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toList());
+            byteSequences = byteSequences.stream().filter(FormByteSequence::isNotEmpty).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public boolean isNotEmpty() {

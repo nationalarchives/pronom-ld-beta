@@ -2,6 +2,7 @@ package com.wallscope.pronombackend.model;
 
 import org.apache.jena.rdf.model.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ public class FormContainerSignature {
     private String name;
     private String containerType;
     private String fileFormat;
-    private List<FormContainerFile> files;
+    private ArrayList<FormContainerFile> files;
 
     public FormContainerSignature() {
     }
@@ -33,11 +34,11 @@ public class FormContainerSignature {
         this.containerType = containerType;
     }
 
-    public List<FormContainerFile> getFiles() {
+    public ArrayList<FormContainerFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<FormContainerFile> files) {
+    public void setFiles(ArrayList<FormContainerFile> files) {
         this.files = files;
     }
 
@@ -66,7 +67,7 @@ public class FormContainerSignature {
             FormContainerFile fcf = FormContainerFile.convert(f);
             fcf.setSignature(cs.getURI().getURI());
             return fcf;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toCollection(ArrayList::new)));
         return fcs;
     }
 
@@ -84,7 +85,7 @@ public class FormContainerSignature {
         if (files != null) files = files.stream().filter(cf -> {
             cf.removeEmpties();
             return cf.isNotEmpty();
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toCollection(ArrayList::new));
 
     }
 

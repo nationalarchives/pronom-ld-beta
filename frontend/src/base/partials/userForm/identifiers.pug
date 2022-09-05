@@ -60,11 +60,11 @@ section.form-part#identifiers
               .input-group
                 button.current Accept current
                 select(th:id="${'identifierType' + stat.index}", th:field="*{identifiers[__${stat.index}__].type}")
-                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.URI}", th:text="${fio.label}") option 1
               .input-group
                 button.incoming Accept incoming
                 select(th:id="${'identifierType' + stat.index}", th:if="${compare?.identifiers?.get(__${stat.index}__)?.type}")
-                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.value}", th:text="${fio.label}") option 1
+                  option(th:each="fio : ${formatIdentifierOptions}", th:value="${fio.URI}", th:text="${fio.label}") option 1
 
             //- Identifier
             .form-row.identifier-container(th:classappend="${compare?.identifiers?.get(__${stat.index}__)?.name} ? 'before-review' : ''")

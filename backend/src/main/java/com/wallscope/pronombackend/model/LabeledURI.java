@@ -28,7 +28,7 @@ public class LabeledURI implements RDFWritable {
 
     public FormLabeledURI convert() {
         FormLabeledURI flu = new FormLabeledURI();
-        flu.setUri(uri.getURI());
+        flu.setURI(uri.getURI());
         flu.setLabel(label);
         return flu;
     }
