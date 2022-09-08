@@ -87,7 +87,8 @@ public class FormByteSequence {
     @Override
     public String toString() {
         return "FormByteSequence{" +
-                "signature='" + signature + '\'' +
+                "uri='" + uri + '\'' +
+                ", signature='" + signature + '\'' +
                 ", position='" + position + '\'' +
                 ", offset=" + offset +
                 ", sequence='" + sequence + '\'' +
@@ -138,6 +139,9 @@ public class FormByteSequence {
         boolean val = uri != null && !uri.isBlank()
                 && sequence != null && !sequence.isBlank();
         logger.debug("EMPTY CHECK BYTE SEQUENCE ("+val+"): "+ uri);
+        if(!val){
+            logger.debug("EMPTY BYTESEQ: "+this);
+        }
         return val;
     }
 }

@@ -864,6 +864,27 @@ select:focus {
   outline: 5px solid #8EC0EC;
 }
 
+
+.puid-holder {
+  display: flex;
+  flex-direction: row;
+  .file-format-puid {
+    .tooltipPlusAction {
+      margin-bottom: 13px;
+    }
+  }
+  .next-puid {
+    margin-bottom: 10px;
+  }
+  .puid-valid, .puid-exists {
+    display: none;
+  }
+  .next-puid, .puid-exists, .puid-valid {
+    margin-left: 22px;
+    line-height: 80px;
+  }
+}
+
 // Priority =======================================
 .priority-list {
   .priority-group {

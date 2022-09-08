@@ -1,6 +1,7 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
-public class InternalSignature implements RDFWritable {
+public class InternalSignature implements RDFWritable, Comparable<InternalSignature> {
     private final Resource uri;
     private final String name;
     private final String note;
@@ -39,6 +40,7 @@ public class InternalSignature implements RDFWritable {
     }
 
     public String getSpecificity() {
+        if(genericFlag == null) return "Generic";
         return genericFlag ? "Generic" : "Specific";
     }
 
@@ -105,6 +107,23 @@ public class InternalSignature implements RDFWritable {
                 ", fileFormat=" + fileFormat +
                 ", byteSequences=" + byteSequences +
                 '}';
+    }
+
+    @Override
+    public int compareTo(InternalSignature b) {
+        boolean aNull = this.getURI() == null;
+        boolean bNull = b.getURI() == null;
+        if(aNull && !bNull){
+            return -1;
+        }else if(bNull && !aNull){
+            return 1;
+        }else if(aNull && bNull){
+            return 0;
+        }
+
+        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), -1);
+        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), -1);
+        return aInt - bInt;
     }
 
     public static class Deserializer implements RDFDeserializer<InternalSignature> {

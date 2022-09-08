@@ -1,20 +1,27 @@
 package com.wallscope.pronombackend.dao;
 
+import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.Submission;
+import com.wallscope.pronombackend.model.TentativeFileFormat;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.dao.FileFormatDAO.FILE_FORMAT_SUB_QUERY;
+import static com.wallscope.pronombackend.dao.ContainerSignatureDAO.CONTAINER_SIG_SUB_QUERY;
+import static com.wallscope.pronombackend.dao.FileFormatDAO.*;
+import static com.wallscope.pronombackend.dao.InternalSignatureDAO.INTERNAL_SIG_SUB_QUERY;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class SubmissionDAO {
@@ -60,10 +67,10 @@ public class SubmissionDAO {
             .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat")
             .replaceAll("\\?f rdfs:label \\?label \\.", "OPTIONAL { ?f rdfs:label ?label . }#END OPTIONAL")
             .replaceAll("\\?f rdfs:comment \\?comment \\.", "OPTIONAL { ?f rdfs:comment ?comment . }#END OPTIONAL")
-            .replaceAll("\\?f pr:fileFormat.Puid \\?puid \\.", "OPTIONAL { ?f pr:fileFormat.Puid ?puid . }#END OPTIONAL")
-            .replaceAll("\\?f pr:fileFormat.PuidTypeId \\?puidType \\.", "OPTIONAL { ?f pr:fileFormat.PuidTypeId ?puidType . ?puidType rdfs:label ?puidTypeName . }#END OPTIONAL")
-            .replaceAll("# Links\\n\\?puidType rdfs:label \\?puidTypeName .\\n", "")
-            .replaceAll("\\?f pr:fileFormat.LastUpdatedDate \\?updated \\.", "OPTIONAL { ?f pr:fileFormat.LastUpdatedDate ?updated . }#END OPTIONAL")
+            .replaceAll("\\?f pr:fileFormat\\.Puid \\?puid \\.", "OPTIONAL { ?f pr:fileFormat.Puid ?puid . }#END OPTIONAL")
+            .replaceAll("\\?f pr:fileFormat\\.PuidTypeId \\?puidType \\.", "OPTIONAL { ?f pr:fileFormat.PuidTypeId ?puidType . ?puidType rdfs:label ?puidTypeName . }#END OPTIONAL")
+            .replaceAll("# Links\\n\\?puidType rdfs:label \\?puidTypeName \\.\\n", "")
+            .replaceAll("\\?f pr:fileFormat\\.LastUpdatedDate \\?updated \\.", "OPTIONAL { ?f pr:fileFormat.LastUpdatedDate ?updated . }#END OPTIONAL")
             + """
                         
             """;
@@ -74,6 +81,104 @@ public class SubmissionDAO {
             """ + SUBMISSION_SUB_QUERY + """
             }
             """;
+    public static final String SUBMISSION_SIG_GEN_QUERY = PREFIXES + """
+            CONSTRUCT {
+            # Submission link
+            ?sub a pr:Submission ;
+               pr:submission.SubmissionStatus ?subStatus ;
+               pr:submission.FileFormat ?f ;
+               .
+            # File format representation
+            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY)
+            .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat")
+            .replaceAll("\\?f ff:PuidTypeId/rdfs:label \\?puidTypeName \\.", "?fPuidType rdfs:label ?puidTypeName .") + """
+            # Binary signatures
+              """ + trimOptionals(INTERNAL_SIG_SUB_QUERY) + """
+            # Link File Format
+            ?f pr:fileFormat.InternalSignature ?sig .
+            # Byte Sequences
+            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
+            # Format Identifiers
+            ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
+            """ + trimOptionals(FORMAT_RELATIONSHIPS_SUB_QUERY) + """
+                        
+            """ + trimOptionals(EXTERNAL_SIGNATURE_SUB_QUERY) + """
+                        
+            """ + trimOptionals(FORMAT_IDENTIFIER_SUB_QUERY) + """
+            } WHERE {
+            VALUES (?subStatus) {
+              #STATUS#
+            }
+            # Submission link
+            ?sub a pr:Submission ;
+               pr:submission.SubmissionStatus ?subStatus ;
+               pr:submission.FileFormat ?f ;
+               .
+            # File format representation
+            """ + MINIMAL_FILE_FORMAT_SUB_QUERY
+            .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat") + """
+            OPTIONAL { ?f pr:fileFormat.InternalSignature ?sig .
+              """ + INTERNAL_SIG_SUB_QUERY + """
+            # Byte Sequences
+            OPTIONAL {
+                """ + BYTE_SEQUENCE_SUB_QUERY + """
+                }#END OPTIONAL
+            }#END OPTIONAL
+            # Format identifiers
+            OPTIONAL { ?f pr:fileFormat.In.FileFormatRelationship ?fRel .
+            """ + FORMAT_RELATIONSHIPS_SUB_QUERY + """
+            }#END OPTIONAL
+            # External Signatures
+            OPTIONAL {
+            """ + EXTERNAL_SIGNATURE_SUB_QUERY + """
+            }#END OPTIONAL
+            # Format Identifiers
+            OPTIONAL{
+               """ + FORMAT_IDENTIFIER_SUB_QUERY + """
+            }#END OPTIONAL
+            }
+            """.replaceAll("\\?fRelType", "<" + PRONOM.FormatRelationshipType.PriorityOver + ">");
+
+    public static final String SUBMISSION_CONTAINER_SIG_GEN_QUERY = PREFIXES + """
+            CONSTRUCT {
+            # Submission link
+            ?sub a pr:Submission ;
+               pr:submission.SubmissionStatus ?subStatus ;
+               pr:submission.FileFormat ?f ;
+               .
+            # File format representation
+            """ + trimOptionals(MINIMAL_FILE_FORMAT_SUB_QUERY)
+            .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat")
+            .replaceAll("\\?f ff:PuidTypeId/rdfs:label \\?puidTypeName \\.", "?fPuidType rdfs:label ?puidTypeName .") + """
+            # Container signatures
+            """ + trimOptionals(CONTAINER_SIG_SUB_QUERY) + """
+            # Link File Format
+            ?f pr:fileFormat.ContainerSignature ?contSig .
+            # Byte Sequences
+            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
+            } WHERE {
+            VALUES (?subStatus) {
+              #STATUS#
+            }
+            # Submission link
+            ?sub a pr:Submission ;
+               pr:submission.SubmissionStatus ?subStatus ;
+               pr:submission.FileFormat ?f ;
+               .
+            # File format representation
+            """ + MINIMAL_FILE_FORMAT_SUB_QUERY
+            .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat") + """
+            # Link File Format
+            ?f pr:fileFormat.ContainerSignature ?contSig .
+            # Container signatures
+            """ + CONTAINER_SIG_SUB_QUERY + """
+            # Byte Sequences
+              OPTIONAL {
+              """ + BYTE_SEQUENCE_SUB_QUERY + """
+              }#END OPTIONAL
+            }
+            """;
+
     public static final String MOVE_SUBMISSION_QUERY = PREFIXES + WITH_STATEMENT + """
             DELETE { ?sub pr:submission.SubmissionStatus ?subStatus }
             INSERT { ?sub pr:submission.SubmissionStatus ?newSubStatus }
@@ -102,6 +207,39 @@ public class SubmissionDAO {
     public List<Submission> getAllSubmissions() {
         logger.debug("fetching all submissions");
         Model m = TriplestoreUtil.constructQuery(MINIMAL_SUBMISSION_QUERY);
+        ModelUtil mu = new ModelUtil(m);
+        logger.debug("building submission objects");
+        List<Submission> subs = mu.buildAllFromModel(new Submission.Deserializer());
+        logger.debug("submissions built");
+        return subs;
+    }
+
+    public List<FileFormat> getForBinarySignature(List<String> statuses) {
+        logger.debug("fetching file formats for signature generation with statuses: " + statuses);
+        String statusStr = statuses.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
+        Model m = TriplestoreUtil.constructQuery(SUBMISSION_SIG_GEN_QUERY.replace("#STATUS#", statusStr));
+        ModelUtil mu = new ModelUtil(m);
+        logger.debug("building file format objects for signature generation");
+        List<FileFormat> fs = mu.buildAllFromModel(new TentativeFileFormat.Deserializer());
+        logger.debug("MODEL: \n" + mu.toString(Lang.TTL));
+        logger.debug("file formats built for signature generation");
+        return fs;
+    }
+
+    public List<FileFormat> getForContainerSignature(List<String> statuses) {
+        logger.debug("fetching file formats for container signature generation with statuses: " + statuses);
+        String statusStr = statuses.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
+        Model m = TriplestoreUtil.constructQuery(SUBMISSION_CONTAINER_SIG_GEN_QUERY.replace("#STATUS#", statusStr));
+        ModelUtil mu = new ModelUtil(m);
+        logger.debug("building file format objects for signature generation");
+        List<FileFormat> fs = mu.buildAllFromModel(new TentativeFileFormat.Deserializer());
+        logger.debug("file formats built for signature generation");
+        return fs;
+    }
+
+    public List<Submission> getSubmissionsByStatus(Resource status) {
+        logger.debug("fetching submissions with status: " + status);
+        Model m = TriplestoreUtil.constructQuery(SUBMISSION_QUERY, Map.of("subStatus", status));
         ModelUtil mu = new ModelUtil(m);
         logger.debug("building submission objects");
         List<Submission> subs = mu.buildAllFromModel(new Submission.Deserializer());
@@ -138,5 +276,17 @@ public class SubmissionDAO {
         ResIterator subject = m.listSubjectsWithProperty(makeProp(RDF.type), deserializer.getRDFType());
         if (subject == null || !subject.hasNext()) return null;
         return deserializer.fromModel(subject.nextResource(), m);
+    }
+
+    public static final List<String> statuses = List.of(
+            PRONOM.Submission.StatusWaiting,
+            PRONOM.Submission.StatusNextRelease,
+            PRONOM.Submission.StatusWIP,
+            PRONOM.Submission.StatusTesting,
+            PRONOM.Submission.StatusReady);
+
+    public static List<String> statusList(String status) {
+        if (!statuses.contains(status)) return Collections.emptyList();
+        return statuses.subList(statuses.indexOf(status), statuses.size());
     }
 }

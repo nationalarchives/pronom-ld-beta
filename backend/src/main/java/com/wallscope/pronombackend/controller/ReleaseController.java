@@ -1,7 +1,15 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
+import com.wallscope.pronombackend.dao.FileFormatDAO;
+import com.wallscope.pronombackend.dao.SubmissionDAO;
+import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.Feedback;
+import com.wallscope.pronombackend.model.FileFormat;
+import com.wallscope.pronombackend.model.InternalSignature;
+import com.wallscope.pronombackend.utils.RDFUtil;
 import com.wallscope.pronombackend.utils.SignatureStorageManager;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,15 +20,23 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.wallscope.pronombackend.controller.RESTController.distinctByKey;
+import static com.wallscope.pronombackend.dao.SubmissionDAO.statusList;
+import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 @Controller
 public class ReleaseController {
@@ -137,5 +153,48 @@ public class ReleaseController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @PostMapping("/editorial/releases/create-release")
+    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("filename") String filename) throws DatatypeConfigurationException, JAXBException {
+        // TODO: Generate XML file and store it alongside others when it's an actual release
+        if (!List.of("release", "test").contains(target)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid release type: " + target);
+        }
+        if (!List.of("container", "binary").contains(type)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature type: " + type);
+        }
+        if (target.equals("release")) {
+            FileFormatDAO dao = new FileFormatDAO();
+            dao.publishRelease();
+            return "redirect:/editorial/releases/download/" + type + "/" + filename;
+        }
+        Resource minStatus = makeResource(RDFUtil.PRONOM.Submission.statusId + status);
+        if (!SubmissionDAO.statuses.contains(minStatus.getURI())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature status: " + status);
+        }
+        SubmissionDAO dao = new SubmissionDAO();
+        if (type.equals("binary")) {
+            List<FileFormat> fs = dao.getForBinarySignature(statusList(minStatus.getURI()));
+            List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
+                    .filter(distinctByKey(InternalSignature::getID))
+                    .sorted(InternalSignature::compareTo)
+                    .collect(Collectors.toList());
+
+            fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+            request.setAttribute("formats", fs);
+            request.setAttribute("signatures", signatures);
+            return "forward:/signature.xml";
+        }
+        List<FileFormat> fs = dao.getForContainerSignature(statusList(minStatus.getURI()));
+        List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
+                .filter(distinctByKey(ContainerSignature::getID))
+                .sorted(ContainerSignature::compareTo)
+                .collect(Collectors.toList());
+
+        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+        request.setAttribute("formats", fs);
+        request.setAttribute("signatures", signatures);
+        return "forward:/container-signature.xml";
     }
 }

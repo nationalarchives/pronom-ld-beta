@@ -3,8 +3,8 @@ extends /layouts/internalLayout.pug
 block pageTitle
   h1.internal-title Dashboard
 block content
-  - var status = {"Waiting": "Contributions", "NextRelease": "Next release plan", "WIP": "Work in progress", "Testing": "In testing" }
-  - var kanban = {"NextRelease": "Next release plan", "WIP": "Work in progress", "Testing": "In testing" }
+  - var status = {"Waiting": "Contributions", "NextRelease": "Next release plan", "Testing": "In testing", "Ready": "Ready for release" }
+  - var kanban = {"NextRelease": "Next release plan", "Testing": "In testing", "Ready": "Ready for release" }
   //- contributions
   .collapse-container#contributions-wrapper
     button.collapse-button
@@ -217,25 +217,30 @@ block content
       div
         div
         div
-          #make-a-release
-            h3 Make a release
+          form(id="make-a-release", th:action="@{/editorial/releases/create-release}", method="POST", target="_blank")
+            h3 Generate a signature file
             div
               fieldset
                 legend.sr-only Select filter
-                .selected
-                  input.check#currentPlan(type='radio' name='plan' value='currentPlan' checked="true") 
-                  label.stretch(for='currentPlan') Current release plan
-                .selected
-                  label.sr-only(for='otherPlan') Check if releasing to other release plan than current
-                  input.check#otherPlan(type='radio' name='plan' value='otherPlan')
-                  label(for='selectRelease') Other
+                label(for='selectType') Signature type
                   fieldset
-                    legend.sr-only Select previous relese to pusblish into PRONOM
-                    select#selectRelease
-                      option(value='0') Select
-                      option(value='1') release 2
-                      option(value='2') release 3
-                      option(value='2') release 4
+                    legend.sr-only Select signature type
+                    select#selectType(name="type")
+                      option(value="binary") Binary signature
+                      option(value="container") Container signature
+                .selected
+                  input.check#currentPlan(type='radio' name='target' value='release' checked="true") 
+                  label(for='currentPlan') Publish current release plan. Filename:
+                  input(name="filename")
+                .selected
+                  label.sr-only(for='otherPlan') Generate test siganture
+                  input.check#otherPlan(type='radio' name='target' value='test')
+                  label(for='selectRelease') Generate test signature. Release stage:
+                  fieldset
+                    legend.sr-only Select release stage
+                    select#selectRelease(name="status")
+                      each name, val in status
+                        option(value=val)=name
             div
               button.blue.medium
                 i.fa-solid.fa-rocket
@@ -297,7 +302,7 @@ block content
             p Johnathan McDonald
             p Some action description comes here
             p file format name
-  //- include ./partials/feedback.pug
+  include ./partials/feedback.pug
 
 
 

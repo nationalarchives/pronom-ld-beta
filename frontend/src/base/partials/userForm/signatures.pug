@@ -185,16 +185,6 @@ section.form-part#signatures
                             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
                     input(name="internalSignatures[0].name", id="signatureName", disabled)
 
-                  //- Signature note
-                  .form-row.signature-note
-                    .tooltip-container
-                      .label
-                        label(for="signatureNote") Signature note
-                        span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.2.2') tabindex='0')
-                          .i-wrapper
-                            i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                    input(name="internalSignatures[0].note", id="signatureNote", disabled)
-
                   h3 Byte Sequences
                   .part
 
@@ -390,7 +380,7 @@ section.form-part#signatures
                           | Add path
           
           //- simple signature templated output:
-          //- fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
+          fieldset.signature.collapse-content-container(th:each="sig, stat : *{internalSignatures}", th:with="compareSize=${#lists.size(compare?.internalSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.internalSignatures.get(__${stat.index}__)} : null")
             input(type="hidden", th:field="*{internalSignatures[__${stat.index}__].uri}")
             legend.sr-only Fill up information about signature
             .row-group
@@ -489,33 +479,33 @@ section.form-part#signatures
                             input(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
 
                         //- Byte Order
-                        //- .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder} ? 'before-review' : ''")
-                        //-   p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.byteOrder) ? 'New content' : 'Edited content'}") Edited content
-                        //-   .tooltipPlusAction
-                        //-     .tooltip-container
-                        //-       .label
-                        //-         label.from-external-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type
-                        //-         label.from-internal-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type (required)
-                        //-         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.4') tabindex='0')
-                        //-           .i-wrapper
-                        //-             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
-                        //-     .action-monitoring
-                        //-       .review-type
-                        //-         i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
-                        //-         p Require reviewing
-                        //-       .review-type
-                        //-         i.fa-solid.fa-square-check
-                        //-         p Reviewed
-                        //-   .input-group
-                        //-     button Accept current
-                        //-     select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
-                        //-       option(value='null') None
-                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
-                        //-   .input-group(th:if="${compareByteSeq?.byteOrder}")
-                        //-     button.incoming Accept incoming
-                        //-     select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
-                        //-       option(value='null') None
-                        //-       option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
+                        .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.byteOrder) ? 'New content' : 'Edited content'}") Edited content
+                          .tooltipPlusAction
+                            .tooltip-container
+                              .label
+                                label.from-external-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type
+                                label.from-internal-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type (required)
+                                span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.4') tabindex='0')
+                                  .i-wrapper
+                                    i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                            .action-monitoring
+                              .review-type
+                                i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                p Require reviewing
+                              .review-type
+                                i.fa-solid.fa-square-check
+                                p Reviewed
+                          .input-group
+                            button Accept current
+                            select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
+                              option(value='null') None
+                              option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
+                          .input-group(th:if="${compareByteSeq?.byteOrder}")
+                            button.incoming Accept incoming
+                            select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
+                              option(value='null') None
+                              option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
 
                         //- Position type
                         .form-row.position-type(th:classappend="${compareByteSeq?.position} ? 'before-review' : ''")

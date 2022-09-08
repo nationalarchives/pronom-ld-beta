@@ -13,19 +13,79 @@ section.form-part#core
           i.fa-solid.fa-angles-right
   .form-partial-content
     
-    //- TODO make sure to display only if editing file format (var formAction = 'edit')
     if(formAction === 'edit')
       .part(th:if="${edit}")
         include ./searchPUID.pug  
     h3 Main
     .part
       fieldset
-        //- TODO - read INFO : 
+        //- INFO : 
         //- 1) each .form-row has unique id with dashes (inside is input with same name and id just cammel case)
         //- 2) if element is to be reviewed add class '.before-review' or 'after-review'
 
         //- File format URI (hidden field)
         input(type="hidden", th:field="*{uri}")
+        //- PUID
+        .puid-holder(th:if="${editorial}")
+          //- File format PUID type
+          .form-row.puid-type-container(th:classappend="${compare?.formatTypes} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(ff?.puidType) ? 'New content' : 'Edited content'}") Edited content
+            .tooltipPlusAction
+              fieldset
+                legend.sr-only Select PUID type
+                div
+                  .tooltip-container
+                    .label
+                      label.from-internal-only(for="puidType") PUID type (required)
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.1.4') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button.current Accept current
+              select(id="puidType", th:field="*{puidType}")
+                option(th:each="co : ${puidTypeOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
+            .input-group(th:if="${compare?.puidType}")
+              button.incoming Accept incoming
+              select(th:if="${compare?.puidType}", id="puidType")
+                option(th:each="co : ${puidTypeOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
+
+          //- File format PUID
+          .form-row.file-format-puid(th:classappend="${compare?.puid} ? 'before-review' : ''")
+            p.inputType(th:text="${#strings.isEmpty(ff?.puid) ? 'New content' : 'Edited content'}") New content
+            .tooltipPlusAction
+              .tooltip-container
+                .label
+                  label(for="FileFormatName") PUID (required)
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '1.1.1') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              .action-monitoring
+                .review-type
+                  i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                  p Require reviewing
+                .review-type
+                  i.fa-solid.fa-square-check
+                  p Reviewed
+            .input-group
+              button Accept current
+              input(id="FileFormatPUID" th:field="*{puid}", th:data-undo="${ff?.puid}")
+            .input-group(th:if="${compare?.puid}")
+              button.incoming Accept incoming
+              input(th:value="${compare.puid}" id="FileFormatPuid" )
+          p.next-puid
+          p.puid-exists
+            i.fa-solid.fa-triangle-exclamation
+            | This PUID already exists.
+          p.puid-valid
+            i.fa-solid.fa-circle-check
+            | This PUID is valid.
         //- File format name
         .form-row.file-format-name(th:classappend="${compare?.name} ? 'before-review' : ''")
           p.inputType(th:text="${#strings.isEmpty(ff?.name) ? 'New content' : 'Edited content'}") New content

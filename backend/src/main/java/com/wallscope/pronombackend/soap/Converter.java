@@ -1,9 +1,6 @@
 package com.wallscope.pronombackend.soap;
 
-import com.wallscope.pronombackend.model.ByteSequence;
-import com.wallscope.pronombackend.model.ExternalSignature;
-import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.InternalSignature;
+import com.wallscope.pronombackend.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.nationalarchives.pronom.signaturefile.*;
@@ -32,17 +29,17 @@ public class Converter {
         List<FileFormatType> listRef = collection.getFileFormat();
         ffs.forEach(ff -> {
             FileFormatType conv = new FileFormatType();
-            conv.setID(new BigInteger(ff.getID()));
+            conv.setID(ff.getID());
             conv.setMIMEType(ff.getMIMETypeList());
             conv.setName(ff.getName());
             conv.setPUID(ff.getFormattedPuid());
             conv.setVersion(ff.getVersion());
-            List<JAXBElement<? extends Serializable>> children = conv.getInternalSignatureIDOrExtensionOrHasPriorityOverFileFormatID();
+            List<JAXBElement<String>> children = conv.getInternalSignatureIDOrExtensionOrHasPriorityOverFileFormatID();
             // Add InternalSignatureID elements
             QName isID = new QName("InternalSignatureID");
-            List<JAXBElement<BigInteger>> isIDs = ff.getInternalSignatures().stream()
-                    .sorted(Comparator.comparingInt(s -> Integer.parseInt(s.getID())))
-                    .map(is -> new JAXBElement<>(isID, BigInteger.class, new BigInteger(is.getID())))
+            List<JAXBElement<String>> isIDs = ff.getInternalSignatures().stream()
+                    .sorted(InternalSignature::compareTo)
+                    .map(is -> new JAXBElement<>(isID, String.class, is.getID()))
                     .collect(Collectors.toList());
             children.addAll(isIDs);
             // Add Extension (External signatures) elements
@@ -56,9 +53,9 @@ public class Converter {
             children.addAll(exts);
             // Add PriorityOver elements
             QName pID = new QName("HasPriorityOverFileFormatID");
-            List<JAXBElement<BigInteger>> pIDs = ff.getHasPriorityOver().stream()
-                    .sorted(Comparator.comparingInt(p -> Integer.parseInt(p.getTargetID())))
-                    .map(ps -> new JAXBElement<>(pID, BigInteger.class, new BigInteger(ps.getTargetID())))
+            List<JAXBElement<String>> pIDs = ff.getHasPriorityOver().stream()
+                    .sorted(Comparator.comparing(FileFormatRelationship::getTargetID))
+                    .map(ps -> new JAXBElement<>(pID, String.class, ps.getTargetID()))
                     .collect(Collectors.toList());
             children.addAll(pIDs);
 
@@ -76,7 +73,7 @@ public class Converter {
         List<InternalSignatureType> listRef = collection.getInternalSignature();
         iss.forEach(is -> {
             InternalSignatureType conv = new InternalSignatureType();
-            conv.setID(new BigInteger(is.getID()));
+            conv.setID(is.getID());
             conv.setSpecificity(is.getSpecificity());
             List<ByteSequenceType> bsList = conv.getByteSequence();
 

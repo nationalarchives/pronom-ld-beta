@@ -270,7 +270,7 @@ public class RDFUtil {
             public static final String UserSubmission = typeId + "UserSubmission";
             public static final String InternalSubmission = typeId + "InternalSubmission";
             public static final String SubmissionStatus = uri + "SubmissionStatus";
-            private static final String statusId = PRONOM.uri + "id/SubmissionStatus/";
+            public static final String statusId = PRONOM.uri + "id/SubmissionStatus/";
             public static final String StatusWaiting = statusId + "Waiting";
             public static final String StatusNextRelease = statusId + "NextRelease";
             public static final String StatusWIP = statusId + "WIP";
@@ -499,7 +499,7 @@ public class RDFUtil {
             Map.entry(PRONOM.ByteOrder.bigEndian, "Big-Endian"),
             // Submissions status
             Map.entry(PRONOM.Submission.StatusNextRelease, "Next Release"),
-            Map.entry(PRONOM.Submission.StatusReady, "Ready for Release"),
+            Map.entry(PRONOM.Submission.StatusReady, "Ready"),
             Map.entry(PRONOM.Submission.StatusWaiting, "Waiting"),
             Map.entry(PRONOM.Submission.StatusWIP, "Work in progress"),
             Map.entry(PRONOM.Submission.StatusTesting, "Testing"),

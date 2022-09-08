@@ -11,16 +11,17 @@ import com.wallscope.pronombackend.model.SearchResult;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.soap.SignatureFileWrapper;
 import com.wallscope.pronombackend.utils.ModelUtil;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,17 +70,55 @@ public class RESTController {
         }).collect(Collectors.toList());
     }
 
-    @GetMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
+    @GetMapping(value = "/next-puid/{type}", produces = "text/plain")
     @ResponseBody
-    public SignatureFileWrapper xmlAllSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) throws DatatypeConfigurationException, JAXBException {
-        FileFormatDAO dao = new FileFormatDAO();
-        List<FileFormat> fs = dao.getAllForSignature();
-        List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
-                .filter(distinctByKey(InternalSignature::getID))
-                .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
-                .collect(Collectors.toList());
+    public String nextAvailablePuid(Model model, @PathVariable(required = false) String type) {
+        if (!type.matches("(?:x-)?(?:chr|cmp|fmt|hdw|sfw)")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid puid type: " + type);
+        }
+        GenericEntityDAO dao = new GenericEntityDAO();
+        Integer nextPuid = dao.nextAvailablePuid(type);
+        // This is null when there is no value returned, meaning there's no puids for this.
+        // At the time of writing this happens for cmp. All the compression types are under x-cmp
+        if (nextPuid == null) {
+            return "1";
+        }
+        return "" + nextPuid;
+    }
 
-        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+    @GetMapping(value = "/puid-exists/{type}/{puid}", produces = "text/plain")
+    @ResponseBody
+    public String puidExists(Model model, @PathVariable(required = false) String type, @PathVariable(required = false) String puid) {
+        if (!type.matches("(?:x-)?(?:chr|cmp|fmt|hdw|sfw)")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid puid type: " + type);
+        }
+        GenericEntityDAO dao = new GenericEntityDAO();
+        Integer puidInt = null;
+        try {
+            puidInt = Integer.parseInt(puid);
+        } catch (Exception ignored) {
+        }
+        if (puidInt == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot parse puid as Integer: " + puid);
+        }
+        boolean nextPuid = dao.puidExists(type, puidInt);
+        return "" + nextPuid;
+    }
+
+    @PostMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
+    @ResponseBody
+    public SignatureFileWrapper xmlAllSignatureHandler(Model model, HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.debug("FORMATS: " + fs);
+
+        @SuppressWarnings("unchecked")
+        List<InternalSignature> signatures = (List<InternalSignature>) request.getAttribute("signatures");
+        logger.debug("FORMATS: " + signatures);
+
+        if (fs == null || signatures == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
+        }
 
         SignatureFileWrapper wrapper = new SignatureFileWrapper();
         // Set Version: for now we hardcode at 100 which is what the data is based off of
@@ -97,30 +136,32 @@ public class RESTController {
         return wrapper;
     }
 
-    @GetMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
-    public ModelAndView xmlContainerSignatureHandler(Model model, @RequestParam(required = false) Boolean dev) {
+    @PostMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
+    public ModelAndView xmlContainerSignatureHandler(Model model, RedirectAttributes redir) {
         ModelAndView view = new ModelAndView();
         view.setViewName("xml_container_signatures");
+        Map<String, ?> inputFlashMap = redir.getFlashAttributes();
+        logger.debug("CONTAINER SIG FLASH MAP: " + inputFlashMap);
+        if (!inputFlashMap.containsKey("formats") || !inputFlashMap.containsKey("signatures")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
+        }
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) inputFlashMap.getOrDefault("formats", null);
+        @SuppressWarnings("unchecked")
+        List<InternalSignature> signatures = (List<InternalSignature>) inputFlashMap.getOrDefault("signatures", null);
+
         ContainerSignatureDAO dao = new ContainerSignatureDAO();
-        List<FileFormat> fs = dao.getAllFileFormats();
-        logger.trace("FORMATS: " + fs);
-        List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
-                .filter(distinctByKey(ContainerSignature::getID))
-                .sorted(Comparator.comparingInt(f -> Integer.parseInt(f.getID())))
-                .collect(Collectors.toList());
-        logger.trace("SIGNATURES: " + signatures);
         List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
 
         // Sort based on the ID of the container signature
         fs.sort(Comparator.comparingInt(f -> {
             if (f.getContainerSignatures() == null || f.getContainerSignatures().isEmpty()) return Integer.MAX_VALUE;
-            f.getContainerSignatures().sort(Comparator.comparingInt(cs -> Integer.parseInt(cs.getID())));
-            return Integer.parseInt(f.getContainerSignatures().get(0).getID());
+            f.getContainerSignatures().sort(ContainerSignature::compareTo);
+            return NumberUtils.toInt(f.getContainerSignatures().get(0).getID(), -1);
         }));
         view.addObject("formats", fs);
         view.addObject("containerSignatures", signatures);
         view.addObject("containerTypes", cts);
-        view.addObject("dev", dev);
         return view;
     }
 

@@ -126,7 +126,7 @@ public class Submission implements RDFWritable {
 
         @Override
         public Resource getRDFType() {
-            return makeResource(RDFUtil.PRONOM.Submission.type);
+            return makeResource(PRONOM.Submission.type);
         }
 
         @Override

@@ -660,4 +660,34 @@ function revertChanges($this) {
   // change button text
   $this.text('Accept incoming');
 }
+
+export function setupPuidValidation(){
+  $('.puid-type-container #puidType').on('change', function(){
+    $(".puid-holder .next-puid").text(" ");
+    const $this = $(this);
+    const selected = $this.find("option:selected").text();
+    $.ajax({ url: `/next-puid/${selected}`, success: function(result){
+      $(".puid-holder .next-puid").text(`Next available PUID: ${result}`);
+    }});
+  });
+  $('.puid-type-container #puidType').trigger('change');
+
+  $('.file-format-puid #FileFormatPUID').on('input', function(){
+    const $this = $(this);
+    if($this.val() == "") return;
+    const type = $(".puid-type-container #puidType option:selected").text();
+    const puid = `${type}/${$this.val()}`;
+    $.ajax({ url: `/puid-exists/${puid}`, success: function(result){
+      if(result == "true"){
+        $('.puid-valid').hide();
+        $('.puid-exists').show();
+      }else{
+        $('.puid-valid').show();
+        $('.puid-exists').hide();
+      }
+    }});
+  });
+  $('.file-format-puid #FileFormatPUID').trigger('input');
+}
+
 export default { autocomplete }

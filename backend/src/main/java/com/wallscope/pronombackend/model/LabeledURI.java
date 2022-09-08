@@ -34,6 +34,14 @@ public class LabeledURI implements RDFWritable {
     }
 
     @Override
+    public String toString() {
+        return "LabeledURI{" +
+                "uri=" + uri +
+                ", label='" + label + '\'' +
+                '}';
+    }
+
+    @Override
     public Model toRDF() {
         return null;
     }

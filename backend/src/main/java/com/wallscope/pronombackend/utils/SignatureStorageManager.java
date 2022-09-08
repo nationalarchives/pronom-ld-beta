@@ -16,19 +16,19 @@ public class SignatureStorageManager {
     public static void init() {
         if (!Files.exists(sigRoot)) {
             logger.debug("CREATING SIGNATURE ROOT DIRECTORY");
-            if(sigRoot.toFile().mkdir()){
+            if (sigRoot.toFile().mkdir()) {
                 logger.debug("SIGNATURE ROOT DIRECTORY CREATED SUCCESSFULLY");
             }
         }
         if (!Files.exists(container)) {
             logger.debug("CREATING SIGNATURE CONTAINER DIRECTORY");
-            if(container.toFile().mkdir()){
+            if (container.toFile().mkdir()) {
                 logger.debug("SIGNATURE CONTAINER DIRECTORY CREATED SUCCESSFULLY");
             }
         }
         if (!Files.exists(binary)) {
             logger.debug("CREATING SIGNATURE BINARY DIRECTORY");
-            if(binary.toFile().mkdir()){
+            if (binary.toFile().mkdir()) {
                 logger.debug("SIGNATURE BINARY DIRECTORY CREATED SUCCESSFULLY");
             }
         }

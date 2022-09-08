@@ -149,13 +149,13 @@ section.form-part#additionalProperties
                           i.fa-solid.fa-square-check
                           p Reviewed
                     .input-group
-                  button Accept current
-                  input(type="hidden", th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}")
-                  input.label(th:id="${'supportActorsName' + stat.index}", th:field="*{supportActors[__${stat.index}__].name}", th:data-undo="${sup?.name}")
-                .input-group(th:if="${compareSup?.uri}")
-                  button.incoming Accept incoming
-                  input(type="hidden", th:id="${'supportActors' + stat.index}", th:value="${compareSup?.uri}")
-                  input(th:id="${'supportActors' + stat.index}", th:value="${compareSup?.name}")
+                      button Accept current
+                      input(type="hidden", th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}")
+                      input.label(th:id="${'supportActorsName' + stat.index}", th:field="*{supportActors[__${stat.index}__].name}", th:data-undo="${sup?.name}")
+                    .input-group(th:if="${compareSup?.uri}")
+                      button.incoming Accept incoming
+                      input(type="hidden", th:id="${'supportActors' + stat.index}", th:value="${compareSup?.uri}")
+                      input(th:id="${'supportActors' + stat.index}", th:value="${compareSup?.name}")
                   p.from-internal-only or
                   button.black.small.from-internal-only.add-actor-button.noJS
                     | Add institutional actor

@@ -61,7 +61,7 @@ public class EditorialController {
     }
 
     @GetMapping("/editorial/id/{type}/{id}")
-    public String uriHandler(Model model, @PathVariable String type, @PathVariable String id, @RequestParam(required = false, name = "format") String ext) {
+    public String uriHandler(Model model, @PathVariable String type, @PathVariable String id, @RequestParam(required = false, name = "format") String ext, Principal principal) {
         if (ext != null && !ext.isBlank()) {
             id = id + "." + ext;
         }
@@ -86,11 +86,12 @@ public class EditorialController {
         if (!formatExt.isBlank()) {
             return "forward:/rdf/generic/" + type + "/" + id + formatExt;
         }
+        model.addAttribute("user", hydrateUser(principal));
         return "forward:/generic/" + type + "/" + id;
     }
 
     @PostMapping("/editorial/move-submission")
-    public String moveSubmission(Model model, @RequestParam String uri, @RequestParam String to) {
+    public RedirectView moveSubmission(Model model, @RequestParam String uri, @RequestParam String to, RedirectAttributes redir, Principal principal) {
         if (!uri.startsWith(PRONOM.Submission.id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission uri: " + uri);
         }
@@ -106,8 +107,23 @@ public class EditorialController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid status: " + to);
         }
         SubmissionDAO dao = new SubmissionDAO();
+        if(statusUri.equals(PRONOM.Submission.StatusReady)){
+            Submission sub = dao.getSubmissionByURI(makeResource(uri));
+            if(sub == null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission: " + uri);
+            }
+            TentativeFileFormat tff = sub.getFormat();
+            if(tff == null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission: " + uri);
+            }
+            if(tff.getFormattedPuid() == null){
+                redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.ERROR, "A file format needs a PUID before it can be marked as Ready"));
+                return new RedirectView("/editorial");
+            }
+        }
         dao.moveSubmission(makeResource(uri), makeResource(statusUri));
-        return "redirect:/editorial";
+        model.addAttribute("user", hydrateUser(principal));
+        return new RedirectView("/editorial");
     }
 
     @PostMapping("/editorial/delete-submission")
@@ -123,6 +139,8 @@ public class EditorialController {
     @GetMapping("/editorial")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
+        logger.debug("PRINCIPAL: "+principal);
+        logger.debug("HYDRATED: "+hydrateUser(principal));
         SubmissionDAO dao = new SubmissionDAO();
         List<Submission> subs = dao.getAllSubmissions();
         Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
@@ -191,7 +209,7 @@ public class EditorialController {
         }
     }
 
-    public User hydrateUser(Principal principal) {
+    public static User hydrateUser(Principal principal) {
         KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) principal;
         if (keycloakAuthenticationToken == null) return null;
         AccessToken accessToken = keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getToken();
