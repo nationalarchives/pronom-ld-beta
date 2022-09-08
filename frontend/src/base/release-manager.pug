@@ -31,7 +31,7 @@ block content
           form(th:action="@{/editorial/releases/delete-release/container/} + ${file}", method="post")
             button.small.bordered-red(type="submit") Delete
     .new-release
-      h3 Upload a new signature
+      h3 Upload a legacy signature
       form(th:action="@{/editorial/releases/new}", method="post", enctype="multipart/form-data")
         input(type="file", name="file")
         label(for="isContainer") Container Signature file
