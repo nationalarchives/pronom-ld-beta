@@ -13,12 +13,7 @@ import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -72,7 +67,7 @@ public class TriplestoreUtil {
     public static String sanitiseLiteral(String input) {
         // I know this looks weird, this explains it: https://stackoverflow.com/a/51057519/2614483
         String out = input.replaceAll("\"", "\\\\\\\"")
-                .replaceAll("/","\\\\/");
+                .replaceAll("/", "\\\\/");
         logger.debug("SANITISING, in=[" + input + "], out=[" + out + "]");
 
         return out;
@@ -108,6 +103,22 @@ public class TriplestoreUtil {
 
     public static void updateQuery(String query) {
         updateQuery(query, null);
+    }
+
+    public static boolean askQuery(String query, Map<String, RDFNode> params) {
+        ParameterizedSparqlString q = new ParameterizedSparqlString();
+        q.setCommandText(query);
+        if (params != null) {
+            for (Map.Entry<String, RDFNode> entry : params.entrySet()) {
+                q.setParam(entry.getKey(), entry.getValue());
+            }
+        }
+        logger.debug("sending ask: " + q);
+        return conn.build().queryAsk(q.asQuery());
+    }
+
+    public static boolean askQuery(String query) {
+        return askQuery(query, null);
     }
 
     public static void load(Model m) {

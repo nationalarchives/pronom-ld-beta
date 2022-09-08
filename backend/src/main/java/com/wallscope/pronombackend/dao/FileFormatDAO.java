@@ -1,8 +1,7 @@
 package com.wallscope.pronombackend.dao;
 
 import com.wallscope.pronombackend.model.FileFormat;
-import com.wallscope.pronombackend.model.LabeledURI;
-import com.wallscope.pronombackend.model.PUID;
+import com.wallscope.pronombackend.model.Submission;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TriplestoreUtil;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -41,14 +40,14 @@ public class FileFormatDAO {
 
     public static final String COMPRESSION_TYPES_SUB_QUERY = """
             ?f pr:fileFormat.CompressionType ?fCompressionType .
-            
+                        
             ?fCompressionType a pr:CompressionType ;
               rdfs:label ?fCompressionTypeLabel ;
               .
             OPTIONAL{ ?fCompressionType pr:compressionType.Lossiness ?fCompressionTypeLossiness .
               OPTIONAL { ?fCompressionTypeLossiness rdfs:label ?fCompressionTypeLossinessLabel . }#END OPTIONAL
             }#END OPTIONAL
-            
+                        
             OPTIONAL{ ?fCompressionType rdfs:comment ?fCompressionTypeDescription . }#END OPTIONAL
             OPTIONAL{ ?fCompressionType pr:compressionType.ReleaseDate ?fCompressionTypeReleaseDate . }#END OPTIONAL
             """;
@@ -298,5 +297,26 @@ public class FileFormatDAO {
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
         logger.debug("file formats built for signature generation");
         return fs;
+    }
+
+    public void saveFormat(FileFormat ff) {
+        logger.debug("saving FileFormat: " + ff.getURI());
+        TriplestoreUtil.load(ff.toRDF());
+    }
+
+    public void saveAllFormats(List<FileFormat> ffs) {
+        Model m = ModelFactory.createDefaultModel();
+        ffs.forEach(ff ->m.add(ff.toRDF()));
+        TriplestoreUtil.load(m);
+    }
+
+    public void publishRelease() {
+        SubmissionDAO subDao = new SubmissionDAO();
+        List<Submission> readySubmissions = subDao.getSubmissionsByStatus(makeResource(PRONOM.Submission.StatusReady));
+        List<FileFormat> ffs = readySubmissions.stream().map(s -> {
+            subDao.deleteSubmission(s.getURI());
+            return s.getFormat().convertToFileFormat();
+        }).collect(Collectors.toList());
+        saveAllFormats(ffs);
     }
 }

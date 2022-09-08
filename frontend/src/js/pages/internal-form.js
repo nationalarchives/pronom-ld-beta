@@ -14,6 +14,7 @@ import {
   setupReferenceMultifield,
   setupAddActorModal,
   setupReviewFields,
+  setupPuidValidation,
 } from '../lib/jqueryUtils'
 
 window.formStep = 0;
@@ -45,6 +46,7 @@ const App = () => {
       $(".form-partial-content").addClass('hide');
     }
     setupReviewFields();
+    setupPuidValidation();
   });
 
   // path

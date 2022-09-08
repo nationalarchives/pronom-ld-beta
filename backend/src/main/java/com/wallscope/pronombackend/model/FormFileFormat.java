@@ -13,7 +13,8 @@ import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 public class FormFileFormat {
     private String uri;
-    private String puid;
+    private Integer puid;
+    private String puidType;
     private String name;
     private String description;
     private String version;
@@ -37,9 +38,9 @@ public class FormFileFormat {
 
     public FormFileFormat() {
         // We must initialise the nested fields otherwise we get null pointer exceptions in the template rendering
-        internalSignatures = new ArrayList<>(List.of(new FormInternalSignature()));
+        internalSignatures = new ArrayList<>();
+        containerSignatures = new ArrayList<>();
         externalSignatures = new ArrayList<>(List.of(new FormExternalSignature()));
-        containerSignatures = new ArrayList<>(List.of());
         aliases = new ArrayList<>(List.of(new FormAlias()));
         identifiers = new ArrayList<>(List.of(new FormFormatIdentifier()));
         developmentActors = new ArrayList<>(List.of(new FormActor()));
@@ -50,11 +51,11 @@ public class FormFileFormat {
         references = new ArrayList<>(List.of(new FormDocumentation()));
     }
 
-    public String getPuid() {
+    public Integer getPuid() {
         return puid;
     }
 
-    public void setPuid(String puid) {
+    public void setPuid(Integer puid) {
         this.puid = puid;
     }
 
@@ -226,11 +227,11 @@ public class FormFileFormat {
         this.containerSignatures = containerSignatures;
     }
 
-    public FileFormat toObject(Integer puid, Resource puidType, Instant updated, Instant releaseDate, Instant withdrawnDate, List<CompressionType> compressionTypes) {
+    public FileFormat toObject(Instant updated, Instant releaseDate, Instant withdrawnDate, List<CompressionType> compressionTypes) {
         Resource ffUri = makeResource(uri);
         return new FileFormat(ffUri,
-                puid,
-                puidType,
+                getPuid(),
+                makeResource(getPuidType()),
                 null,
                 getName(),
                 getDescription(),
@@ -255,32 +256,66 @@ public class FormFileFormat {
                 getAliases().stream().map(FormAlias::toObject).collect(Collectors.toList()));
     }
 
-    public void randomizeURIs() {
+    public void fillURIs() {
         // Set own URI
-        setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
-        if (submittedBy != null) submittedBy.setUri(PRONOM.Contributor.id + UUID.randomUUID());
+        if (uri == null || uri.isBlank())
+            setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
+
+        if (submittedBy != null && (submittedBy.getUri() == null || submittedBy.getUri().isBlank()))
+            submittedBy.setUri(PRONOM.Contributor.id + UUID.randomUUID());
+
         if (internalSignatures != null) internalSignatures.forEach(fis -> {
-            fis.setUri(PRONOM.InternalSignature.id + UUID.randomUUID());
+            if (fis.getUri() == null || fis.getUri().isBlank())
+                fis.setUri(PRONOM.InternalSignature.id + UUID.randomUUID());
+
             if (fis.getByteSequences() != null)
-                fis.getByteSequences().forEach(fbs -> fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID()));
+                fis.getByteSequences().forEach(fbs -> {
+                    if (fbs.getUri() == null || fbs.getUri().isBlank())
+                        fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID());
+                });
         });
         if (containerSignatures != null) containerSignatures.forEach(fcs -> {
-            fcs.setUri(PRONOM.ContainerSignature.id + UUID.randomUUID());
+            if (fcs.getUri() == null || fcs.getUri().isBlank())
+                fcs.setUri(PRONOM.ContainerSignature.id + UUID.randomUUID());
+
             if (fcs.getFiles() != null) fcs.getFiles().forEach(fcf -> {
-                fcf.setUri(PRONOM.ContainerFile.id + UUID.randomUUID());
+                if (fcf.getUri() == null || fcf.getUri().isBlank())
+                    fcf.setUri(PRONOM.ContainerFile.id + UUID.randomUUID());
+
                 if (fcf.getByteSequences() != null)
-                    fcf.getByteSequences().forEach(fbs -> fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID()));
+                    fcf.getByteSequences().forEach(fbs -> {
+                        if (fbs.getUri() == null || fbs.getUri().isBlank())
+                            fbs.setUri(PRONOM.ByteSequence.id + UUID.randomUUID());
+                    });
             });
         });
         if (externalSignatures != null)
-            externalSignatures.forEach(fes -> fes.setUri(PRONOM.ExternalSignature.id + UUID.randomUUID()));
-        if (identifiers != null) identifiers.forEach(ffi -> ffi.setUri(PRONOM.FormatIdentifier.id + UUID.randomUUID()));
+            externalSignatures.forEach(fes -> {
+                if (fes.getUri() == null || fes.getUri().isBlank())
+                    fes.setUri(PRONOM.ExternalSignature.id + UUID.randomUUID());
+            });
+
+        if (identifiers != null) identifiers.forEach(ffi -> {
+            if (ffi.getUri() == null || ffi.getUri().isBlank())
+                ffi.setUri(PRONOM.FormatIdentifier.id + UUID.randomUUID());
+        });
         if (hasPriorityOver != null)
-            hasPriorityOver.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
+            hasPriorityOver.forEach(fhr -> {
+                if (fhr.getUri() == null || fhr.getUri().isBlank())
+                    fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID());
+            });
+
         if (hasRelationships != null)
-            hasRelationships.forEach(fhr -> fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID()));
-        if (references != null) references.forEach(fr -> fr.setUri(PRONOM.Documentation.id + UUID.randomUUID()));
-        if (aliases != null) aliases.forEach(fa -> fa.setUri(PRONOM.FormatAlias.id + UUID.randomUUID()));
+            hasRelationships.forEach(fhr -> {
+                if (fhr.getUri() == null || fhr.getUri().isBlank())
+                    fhr.setUri(PRONOM.FileFormatRelationship.id + UUID.randomUUID());
+            });
+        if (references != null) references.forEach(fr -> {
+            if (fr.getUri() == null || fr.getUri().isBlank()) fr.setUri(PRONOM.Documentation.id + UUID.randomUUID());
+        });
+        if (aliases != null) aliases.forEach(fa -> {
+            if (fa.getUri() == null || fa.getUri().isBlank()) fa.setUri(PRONOM.FormatAlias.id + UUID.randomUUID());
+        });
     }
 
     public void removeEmpties() {
@@ -364,7 +399,8 @@ public class FormFileFormat {
     public static FormFileFormat convert(FileFormat f) {
         FormFileFormat ff = new FormFileFormat();
         ff.setUri(safelyGetUriOrNull(f.getURI()));
-        ff.setPuid(f.getFormattedPuid());
+        ff.setPuid(f.getPuid());
+        ff.setPuidType(safelyGetUriOrNull(f.getPuidType()));
         ff.setName(f.getName());
         ff.setDescription(f.getDescription());
         ff.setVersion(f.getVersion());
@@ -420,5 +456,13 @@ public class FormFileFormat {
             ff.setAliases(new ArrayList<>(List.of(new FormAlias())));
         }
         return ff;
+    }
+
+    public String getPuidType() {
+        return puidType;
+    }
+
+    public void setPuidType(String puidType) {
+        this.puidType = puidType;
     }
 }

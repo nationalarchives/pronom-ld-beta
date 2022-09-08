@@ -106,11 +106,11 @@
 
             <xs:complexType name="FileFormatType">
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="InternalSignatureID" type="xs:nonNegativeInteger"/>
+                    <xs:element name="InternalSignatureID" type="xs:string"/>
                     <xs:element name="Extension" type="tns:NonEmptyString"/>
-                    <xs:element name="HasPriorityOverFileFormatID" type="xs:nonNegativeInteger"/>
+                    <xs:element name="HasPriorityOverFileFormatID" type="xs:string"/>
                 </xs:choice>
-                <xs:attribute name="ID" type="xs:nonNegativeInteger" use="required"/>
+                <xs:attribute name="ID" type="xs:string" use="required"/>
                 <xs:attribute name="Name" type="tns:String100" use="required"/>
                 <xs:attribute name="Version" type="tns:String50" use="optional"/>
                 <xs:attribute name="PUID" type="tns:String150" use="optional"/>
@@ -121,7 +121,7 @@
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="ByteSequence" type="tns:ByteSequenceType"/>
                 </xs:choice>
-                <xs:attribute name="ID" type="xs:nonNegativeInteger" use="required"/>
+                <xs:attribute name="ID" type="xs:string" use="required"/>
                 <xs:attribute name="Specificity" use="required">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">

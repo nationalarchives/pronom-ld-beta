@@ -22,6 +22,9 @@ const App = () => {
     let feedbackBarHight = $('.feedback-inner').height();
     $('.feedback-container').css('top','calc(100vh - '+ (feedbackBarHight + 35) +'px)');
     $('.feedback-container').css('height','auto');
+
+    $('#releaseName').on('focus', () => $('#currentPlan').trigger('click'));
+    $('#selectRelease').on('change', () => $('#otherPlan').trigger('click'));
 }
 
 App()

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.controller.EditorialController.hydrateUser;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 /*
@@ -76,7 +78,7 @@ public class SubmissionController {
     public RedirectView newFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
         logger.debug("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
-        ff.randomizeURIs();
+        ff.fillURIs();
         ff.removeEmpties();
         List<FormValidationException> errors = ff.validate(false);
         if (!errors.isEmpty()) {
@@ -86,7 +88,7 @@ public class SubmissionController {
         }
         FileFormatDAO ffDao = new FileFormatDAO();
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null);
+        FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         Contributor contributor = submitter.toObject(false);
         SubmissionDAO subDao = new SubmissionDAO();
@@ -108,7 +110,7 @@ public class SubmissionController {
     @PostMapping("/contribute/form/{puidType}/{puid}")
     public RedirectView formSubmission(Model model, @ModelAttribute FormFileFormat ff, @PathVariable String puidType, @PathVariable String puid, RedirectAttributes redir) {
         ff.setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
-        ff.randomizeURIs();
+        ff.fillURIs();
         ff.removeEmpties();
         FileFormatDAO ffDao = new FileFormatDAO();
         // For existing file formats get the current object
@@ -118,12 +120,12 @@ public class SubmissionController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
         }
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(existing.getPuid(), existing.getPuidType(), Instant.now(), Instant.now(), null, null);
+        FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
         submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
         SubmissionDAO subDao = new SubmissionDAO();
         Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
-                makeResource(PRONOM.Submission.UserSubmission),
+                makeResource(PRONOM.Submission.InternalSubmission),
                 makeResource(PRONOM.Submission.StatusWaiting),
                 submitter.toObject(false),
                 null,
@@ -166,6 +168,7 @@ public class SubmissionController {
 
     @PostMapping("/editorial/form/{submission}")
     public String submissionForm(Model model, @PathVariable String submission, @ModelAttribute FormFileFormat ff) {
+        ff.fillURIs();
         ff.removeEmpties();
         SubmissionDAO subDao = new SubmissionDAO();
         Resource submissionUri = makeResource(PRONOM.Submission.id + submission);
@@ -189,7 +192,7 @@ public class SubmissionController {
                 sub.getSubmitter(),
                 reviewer,
                 sub.getSource(),
-                new TentativeFileFormat(old.getURI(), ff.toObject(old.getPuid(), old.getPuidType(), Instant.now(), Instant.now(), null, null)),
+                new TentativeFileFormat(old.getURI(), ff.toObject(Instant.now(), Instant.now(), null, null)),
                 sub.getCreated(),
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());
@@ -216,7 +219,7 @@ public class SubmissionController {
     @PostMapping("/editorial/form/{puidType}/{puid}")
     public String editorialFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
         logger.debug("Received FormFileFormat:\n" + ff);
-        return "redirect: /editorial/form";
+        return "redirect:/editorial/form";
     }
 
     @GetMapping("/editorial/form/new")
@@ -236,21 +239,30 @@ public class SubmissionController {
     }
 
     @PostMapping("/editorial/form/new")
-    public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
+    public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir, Principal principal) {
+        EditorialController.User user = hydrateUser(principal);
         logger.debug("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
-        ff.randomizeURIs();
+        ff.fillURIs();
         ff.removeEmpties();
-        FileFormatDAO ffDao = new FileFormatDAO();
+        ff.validate(true);
         // Convert to a FileFormat object
-        FileFormat f = ff.toObject(null, null, Instant.now(), Instant.now(), null, null);
-        FormSubmittedBy submitter = ff.getSubmittedBy();
+        FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
+        Contributor contrib = new Contributor(
+                makeResource("mailto:default-user@tna.com"),
+                "TNA default user",
+                "TNA",
+                "mailto:default-user@tna.com",
+                null,
+                null,
+                false,
+                true);
         SubmissionDAO subDao = new SubmissionDAO();
         // source == null because it's a new file format therefore there is no existing one to compare
         Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
                 makeResource(PRONOM.Submission.InternalSubmission),
                 makeResource(PRONOM.Submission.StatusWaiting),
-                submitter.toObject(true),
+                contrib,
                 null,
                 null,
                 new TentativeFileFormat(f.getURI(), f),
@@ -271,22 +283,29 @@ public class SubmissionController {
                 makeResource(PRONOM.ByteSequence.BSPType),
                 makeResource(PRONOM.FormatRelationshipType.type),
                 makeResource(PRONOM.FileFormatFamily.type),
-                makeResource(PRONOM.CompressionType.type)
+                makeResource(PRONOM.CompressionType.type),
+                makeResource(PRONOM.PuidType.type)
         ));
-        model.addAttribute("classificationOptions", options.get(PRONOM.Classification.type));
-        model.addAttribute("byteOrderOptions", options.get(PRONOM.ByteOrder.type));
-        model.addAttribute("formatIdentifierOptions", options.get(PRONOM.FormatIdentifierType.type));
+        model.addAttribute("classificationOptions", sortOptions(options.get(PRONOM.Classification.type)));
+        model.addAttribute("byteOrderOptions", sortOptions(options.get(PRONOM.ByteOrder.type)));
+        model.addAttribute("formatIdentifierOptions", sortOptions(options.get(PRONOM.FormatIdentifierType.type)));
         List<LabeledURI> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream()
                 .sorted(Comparator.comparing(l -> safelyGetUriOrNull(l.getURI())))
                 .collect(Collectors.toList());
         model.addAttribute("positionTypeOptions", sortedPosTypes);
-        List<LabeledURI> relTypes = options.get(PRONOM.FormatRelationshipType.type);
+        List<LabeledURI> relTypes = sortOptions(options.get(PRONOM.FormatRelationshipType.type));
         model.addAttribute("relationshipTypeOptions", relTypes);
         List<LabeledURI> noPriority = relTypes.stream()
                 .filter(o -> o != null && o.getURI() != null && !o.getURI().getURI().equals(PRONOM.FormatRelationshipType.PriorityOver))
                 .collect(Collectors.toList());
         model.addAttribute("relationshipTypeNoPriorityOptions", noPriority);
-        model.addAttribute("formatFamilyOptions", options.get(PRONOM.FileFormatFamily.type));
-        model.addAttribute("compressionTypeOptions", options.get(PRONOM.CompressionType.type));
+        model.addAttribute("formatFamilyOptions", sortOptions(options.get(PRONOM.FileFormatFamily.type)));
+        model.addAttribute("compressionTypeOptions", sortOptions(options.get(PRONOM.CompressionType.type)));
+        List<LabeledURI> onlyFmt = options.get(PRONOM.PuidType.type).stream().filter(l -> l.getLabel().contains("fmt")).collect(Collectors.toList());
+        model.addAttribute("puidTypeOptions", sortOptions(onlyFmt));
+    }
+
+    private List<LabeledURI> sortOptions(List<LabeledURI> list) {
+        return list.stream().sorted(Comparator.comparing(LabeledURI::getLabel)).collect(Collectors.toList());
     }
 }

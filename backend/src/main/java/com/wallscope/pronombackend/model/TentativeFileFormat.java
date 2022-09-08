@@ -24,4 +24,24 @@ public class TentativeFileFormat extends FileFormat {
         m.add(super.getURI(), makeProp(RDF.type), makeResource(PRONOM.TentativeFileFormat.type));
         return m;
     }
+
+    public FileFormat convertToFileFormat() {
+        Resource newUri = makeResource(PRONOM.FileFormat.id + getURI().getLocalName());
+        return new FileFormat(newUri, getPuid(), getPuidType(), getPuidTypeName(), getName(), getDescription(), getUpdated(), getReleaseDate(), getWithdrawnDate(), getVersion(), isBinaryFlag(), isWithdrawnFlag(), getByteOrder(), getReferences(), getClassifications(), getInternalSignatures(), getExternalSignatures(), getContainerSignatures(), getFormatIdentifiers(), getDevelopmentActors(), getSupportActors(), getHasRelationships(), getFormatFamilies(), getCompressionTypes(), getAliases());
+    }
+
+    public static class Deserializer extends FileFormat.Deserializer {
+
+        @Override
+        public Resource getRDFType() {
+            return makeResource(PRONOM.TentativeFileFormat.type);
+        }
+
+        @Override
+        public FileFormat fromModel(Resource uri, Model model) {
+            model.removeAll(uri, makeProp(RDF.type), getRDFType());
+            model.add(uri, makeProp(RDF.type), makeResource(PRONOM.FileFormat.type));
+            return super.fromModel(uri, model);
+        }
+    }
 }

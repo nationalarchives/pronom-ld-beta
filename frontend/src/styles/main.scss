@@ -194,6 +194,10 @@ select {
     background: white;
     color: black;
   }
+  option[selected] {
+    background: #0f528d;
+    color: #ffffff;
+}
   &.blue {
     background: #0f528d;
     color: white; 
@@ -1413,6 +1417,14 @@ h1.internal-title {
   grid-gap: 15px;
   margin-bottom: 20px;
 }
+
+.four-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 15px;
+  margin-bottom: 20px;
+}
+
 .table-wrapper {
   background: #F8F8F8;
   border:2px solid #D2D2D2;
@@ -1489,9 +1501,9 @@ h1.internal-title {
   }
   .selected {
     border-bottom: 2px solid black;
-    width: 280px;
+    width: 500px;
     display: grid;
-    grid-template-columns: auto 50px 1fr;
+    grid-template-columns: auto 300px 1fr;
     align-items: center;
     grid-gap: 5px;
     min-height: 50px;
