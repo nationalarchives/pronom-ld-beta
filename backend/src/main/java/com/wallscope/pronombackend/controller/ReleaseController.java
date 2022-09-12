@@ -1,6 +1,5 @@
 package com.wallscope.pronombackend.controller;
 
-import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.ContainerSignature;
@@ -30,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -174,7 +174,7 @@ public class ReleaseController {
         if (target.equals("release")) {
             FileFormatDAO ffDao = new FileFormatDAO();
             ffDao.publishRelease();
-            if(type.equals("binary")){
+            if (type.equals("binary")) {
                 FileFormatDAO dao = new FileFormatDAO();
                 List<FileFormat> fs = dao.getAllForSignature();
                 List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
@@ -184,13 +184,18 @@ public class ReleaseController {
                 fs.sort(FileFormat::compareTo);
                 request.setAttribute("formats", fs);
                 request.setAttribute("signatures", signatures);
-                SignatureFileWrapper wrapper = new RESTController().xmlBinarySignatureHandler(request);
+                SignatureFileWrapper signature = new RESTController().xmlBinarySignatureHandler(request);
+                String version = "0";
+                if (filename.matches(".*V\\d+.*")) {
+                    version = filename.replaceAll(".*V(\\d+).*", "$1");
+                }
+                signature.setVersion(new BigInteger(version));
                 JAXBContext ctx = JAXBContext.newInstance(SignatureFileWrapper.class);
                 Marshaller marshaller = ctx.createMarshaller();
                 marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
                 marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-                File xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(),filename).toFile();
-                marshaller.marshal(wrapper, new FileOutputStream(xml));
+                File xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
+                marshaller.marshal(signature, new FileOutputStream(xml));
             }
             return "redirect:/editorial/releases/download/" + type + "/" + filename;
         }
