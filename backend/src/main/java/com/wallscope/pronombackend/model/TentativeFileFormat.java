@@ -5,6 +5,7 @@ import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
@@ -26,8 +27,10 @@ public class TentativeFileFormat extends FileFormat {
     }
 
     public FileFormat convertToFileFormat() {
-        Resource newUri = makeResource(PRONOM.FileFormat.id + getURI().getLocalName());
-        return new FileFormat(newUri, getPuid(), getPuidType(), getPuidTypeName(), getName(), getDescription(), getUpdated(), getReleaseDate(), getWithdrawnDate(), getVersion(), isBinaryFlag(), isWithdrawnFlag(), getByteOrder(), getReferences(), getClassifications(), getInternalSignatures(), getExternalSignatures(), getContainerSignatures(), getFormatIdentifiers(), getDevelopmentActors(), getSupportActors(), getHasRelationships(), getFormatFamilies(), getCompressionTypes(), getAliases());
+        Resource newUri = makeResource(PRONOM.FileFormat.id + getID());
+        List<InternalSignature> newSigs = getInternalSignatures().stream().map(x -> x.replaceFileFormat(newUri)).collect(Collectors.toList());
+        List<ContainerSignature> newContainerSigs = getContainerSignatures().stream().map(x -> x.replaceFileFormat(newUri)).collect(Collectors.toList());
+        return new FileFormat(newUri, getPuid(), getPuidType(), getPuidTypeName(), getName(), getDescription(), getUpdated(), getReleaseDate(), getWithdrawnDate(), getVersion(), isBinaryFlag(), isWithdrawnFlag(), getByteOrder(), getReferences(), getClassifications(), newSigs, getExternalSignatures(), newContainerSigs, getFormatIdentifiers(), getDevelopmentActors(), getSupportActors(), getHasRelationships(), getFormatFamilies(), getCompressionTypes(), getAliases());
     }
 
     public static class Deserializer extends FileFormat.Deserializer {

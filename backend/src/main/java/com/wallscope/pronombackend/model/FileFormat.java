@@ -1,6 +1,7 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
-public class FileFormat implements RDFWritable {
+public class FileFormat implements RDFWritable, Comparable<FileFormat> {
     Logger logger = LoggerFactory.getLogger(FileFormat.class);
     private final Resource uri;
     private final Integer puid;
@@ -344,7 +345,22 @@ public class FileFormat implements RDFWritable {
     }
 
     // Boilerplate
+    @Override
+    public int compareTo(FileFormat b) {
+        boolean aNull = this.getURI() == null;
+        boolean bNull = b.getURI() == null;
+        if(aNull && !bNull){
+            return -1;
+        }else if(bNull && !aNull){
+            return 1;
+        }else if(aNull && bNull){
+            return 0;
+        }
 
+        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), -1);
+        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), -1);
+        return aInt - bInt;
+    }
 
     @Override
     public String toString() {

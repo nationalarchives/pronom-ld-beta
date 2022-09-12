@@ -305,6 +305,7 @@ public class FileFormatDAO {
     }
 
     public void saveAllFormats(List<FileFormat> ffs) {
+        if(ffs.isEmpty()) return;
         Model m = ModelFactory.createDefaultModel();
         ffs.forEach(ff ->m.add(ff.toRDF()));
         TriplestoreUtil.load(m);
@@ -313,10 +314,12 @@ public class FileFormatDAO {
     public void publishRelease() {
         SubmissionDAO subDao = new SubmissionDAO();
         List<Submission> readySubmissions = subDao.getSubmissionsByStatus(makeResource(PRONOM.Submission.StatusReady));
+        // Delete submissions and convert file formats
         List<FileFormat> ffs = readySubmissions.stream().map(s -> {
             subDao.deleteSubmission(s.getURI());
             return s.getFormat().convertToFileFormat();
         }).collect(Collectors.toList());
+        // Save formats in triplestore
         saveAllFormats(ffs);
     }
 }

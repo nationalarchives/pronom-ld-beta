@@ -38,6 +38,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.dao.SubmissionDAO.statusList;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 /*
@@ -107,7 +108,7 @@ public class RESTController {
 
     @PostMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
     @ResponseBody
-    public SignatureFileWrapper xmlAllSignatureHandler(Model model, HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
+    public SignatureFileWrapper xmlBinarySignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
         @SuppressWarnings("unchecked")
         List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
         logger.debug("FORMATS: " + fs);
@@ -119,7 +120,6 @@ public class RESTController {
         if (fs == null || signatures == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
         }
-
         SignatureFileWrapper wrapper = new SignatureFileWrapper();
         // Set Version: for now we hardcode at 100 which is what the data is based off of
         wrapper.setVersion(BigInteger.valueOf(100));
@@ -141,7 +141,7 @@ public class RESTController {
         ModelAndView view = new ModelAndView();
         view.setViewName("xml_container_signatures");
         Map<String, ?> inputFlashMap = redir.getFlashAttributes();
-        logger.debug("CONTAINER SIG FLASH MAP: " + inputFlashMap);
+        logger.trace("CONTAINER SIG FLASH MAP: " + inputFlashMap);
         if (!inputFlashMap.containsKey("formats") || !inputFlashMap.containsKey("signatures")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
         }

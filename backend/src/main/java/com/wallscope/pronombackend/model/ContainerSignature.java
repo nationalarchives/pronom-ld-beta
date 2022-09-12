@@ -88,17 +88,21 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
     public int compareTo(ContainerSignature b) {
         boolean aNull = this.getURI() == null;
         boolean bNull = b.getURI() == null;
-        if(aNull && !bNull){
+        if (aNull && !bNull) {
             return -1;
-        }else if(bNull && !aNull){
+        } else if (bNull && !aNull) {
             return 1;
-        }else if(aNull && bNull){
+        } else if (aNull && bNull) {
             return 0;
         }
 
         int aInt = NumberUtils.toInt(this.getURI().getLocalName(), -1);
         int bInt = NumberUtils.toInt(b.getURI().getLocalName(), -1);
         return aInt - bInt;
+    }
+
+    public ContainerSignature replaceFileFormat(Resource newUri) {
+        return new ContainerSignature(uri, name, containerType, newUri, files);
     }
 
     public static class Deserializer implements RDFDeserializer<ContainerSignature> {
