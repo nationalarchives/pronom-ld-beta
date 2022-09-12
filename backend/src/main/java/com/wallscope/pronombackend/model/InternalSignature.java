@@ -40,7 +40,7 @@ public class InternalSignature implements RDFWritable, Comparable<InternalSignat
     }
 
     public String getSpecificity() {
-        if(genericFlag == null) return "Generic";
+        if (genericFlag == null) return "Generic";
         return genericFlag ? "Generic" : "Specific";
     }
 
@@ -113,17 +113,21 @@ public class InternalSignature implements RDFWritable, Comparable<InternalSignat
     public int compareTo(InternalSignature b) {
         boolean aNull = this.getURI() == null;
         boolean bNull = b.getURI() == null;
-        if(aNull && !bNull){
+        if (aNull && !bNull) {
             return -1;
-        }else if(bNull && !aNull){
+        } else if (bNull && !aNull) {
             return 1;
-        }else if(aNull && bNull){
+        } else if (aNull && bNull) {
             return 0;
         }
 
         int aInt = NumberUtils.toInt(this.getURI().getLocalName(), -1);
         int bInt = NumberUtils.toInt(b.getURI().getLocalName(), -1);
         return aInt - bInt;
+    }
+
+    public InternalSignature replaceFileFormat(Resource newUri) {
+        return new InternalSignature(uri, name, note, updated, genericFlag, provenance, newUri, byteSequences);
     }
 
     public static class Deserializer implements RDFDeserializer<InternalSignature> {

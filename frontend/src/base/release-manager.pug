@@ -15,7 +15,7 @@ block content
         .form-group
           form(th:action="@{/editorial/releases/rename-release/binary/} + ${file}", method="post")
             input(name="filename", th:id="${file}", th:value="${file}")
-            a(th:href="@{/editorial/releases/rename-release/binary/} + ${file}")
+            a(th:href="@{/editorial/releases/download/binary/} + ${file}")
               button.small.bordered-blue(type="button") Download
             button.small.bordered-blue(type="submit") Rename
           form(th:action="@{/editorial/releases/delete-release/binary/} + ${file}", method="post")
@@ -25,7 +25,7 @@ block content
         .form-group
           form(th:action="@{/editorial/releases/rename-release/container/} + ${file}", method="post")
             input(name="filename", th:id="${file}", th:value="${file}")
-            a(th:href="@{/editorial/releases/rename-release/container/} + ${file}")
+            a(th:href="@{/editorial/releases/download/container/} + ${file}")
               button.small.bordered-blue(type="button") Download
             button.small.bordered-blue(type="submit") Rename
           form(th:action="@{/editorial/releases/delete-release/container/} + ${file}", method="post")

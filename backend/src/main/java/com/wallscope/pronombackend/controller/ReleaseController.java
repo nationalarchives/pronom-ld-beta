@@ -1,12 +1,12 @@
 package com.wallscope.pronombackend.controller;
 
-import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.Feedback;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
+import com.wallscope.pronombackend.soap.SignatureFileWrapper;
 import com.wallscope.pronombackend.utils.RDFUtil;
 import com.wallscope.pronombackend.utils.SignatureStorageManager;
 import org.apache.jena.rdf.model.Resource;
@@ -21,10 +21,15 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -156,17 +161,42 @@ public class ReleaseController {
     }
 
     @PostMapping("/editorial/releases/create-release")
-    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("filename") String filename) throws DatatypeConfigurationException, JAXBException {
-        // TODO: Generate XML file and store it alongside others when it's an actual release
+    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("filename") String filename) throws DatatypeConfigurationException, JAXBException, FileNotFoundException {
         if (!List.of("release", "test").contains(target)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid release type: " + target);
         }
         if (!List.of("container", "binary").contains(type)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature type: " + type);
         }
+        if (!filename.endsWith(".xml")) {
+            filename = filename + ".xml";
+        }
         if (target.equals("release")) {
-            FileFormatDAO dao = new FileFormatDAO();
-            dao.publishRelease();
+            FileFormatDAO ffDao = new FileFormatDAO();
+            ffDao.publishRelease();
+            if (type.equals("binary")) {
+                FileFormatDAO dao = new FileFormatDAO();
+                List<FileFormat> fs = dao.getAllForSignature();
+                List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
+                        .filter(distinctByKey(InternalSignature::getID))
+                        .sorted(InternalSignature::compareTo)
+                        .collect(Collectors.toList());
+                fs.sort(FileFormat::compareTo);
+                request.setAttribute("formats", fs);
+                request.setAttribute("signatures", signatures);
+                SignatureFileWrapper signature = new RESTController().xmlBinarySignatureHandler(request);
+                String version = "0";
+                if (filename.matches(".*V\\d+.*")) {
+                    version = filename.replaceAll(".*V(\\d+).*", "$1");
+                }
+                signature.setVersion(new BigInteger(version));
+                JAXBContext ctx = JAXBContext.newInstance(SignatureFileWrapper.class);
+                Marshaller marshaller = ctx.createMarshaller();
+                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
+                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+                File xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
+                marshaller.marshal(signature, new FileOutputStream(xml));
+            }
             return "redirect:/editorial/releases/download/" + type + "/" + filename;
         }
         Resource minStatus = makeResource(RDFUtil.PRONOM.Submission.statusId + status);
