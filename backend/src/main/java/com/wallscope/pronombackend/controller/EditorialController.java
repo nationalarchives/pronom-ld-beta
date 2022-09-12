@@ -5,6 +5,7 @@ import com.wallscope.pronombackend.dao.GenericEntityDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.*;
 import org.apache.jena.rdf.model.Resource;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
@@ -107,16 +108,16 @@ public class EditorialController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid status: " + to);
         }
         SubmissionDAO dao = new SubmissionDAO();
-        if(statusUri.equals(PRONOM.Submission.StatusReady)){
+        if (statusUri.equals(PRONOM.Submission.StatusReady)) {
             Submission sub = dao.getSubmissionByURI(makeResource(uri));
-            if(sub == null){
+            if (sub == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission: " + uri);
             }
             TentativeFileFormat tff = sub.getFormat();
-            if(tff == null){
+            if (tff == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid submission: " + uri);
             }
-            if(tff.getFormattedPuid() == null){
+            if (tff.getFormattedPuid() == null) {
                 redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.ERROR, "A file format needs a PUID before it can be marked as Ready"));
                 return new RedirectView("/editorial");
             }
@@ -139,8 +140,8 @@ public class EditorialController {
     @GetMapping("/editorial")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
-        logger.debug("PRINCIPAL: "+principal);
-        logger.debug("HYDRATED: "+hydrateUser(principal));
+        logger.debug("PRINCIPAL: " + principal);
+        logger.debug("HYDRATED: " + hydrateUser(principal));
         SubmissionDAO dao = new SubmissionDAO();
         List<Submission> subs = dao.getAllSubmissions();
         Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
@@ -204,15 +205,43 @@ public class EditorialController {
             this.name = name;
         }
 
+        protected User(AccessToken token) {
+            if (!token.getGivenName().isBlank() && !token.getFamilyName().isBlank()) {
+                this.name = token.getGivenName() + " " + token.getFamilyName();
+                return;
+            }
+            if (!token.getName().isBlank()) {
+                this.name = token.getName();
+                return;
+            }
+            if (!token.getPreferredUsername().isBlank()) {
+                this.name = token.getPreferredUsername();
+                return;
+            }
+            if (!token.getEmail().isBlank()) {
+                this.name = token.getEmail();
+                return;
+            }
+            this.name = "Unknown";
+        }
+
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "name='" + name + '\'' +
+                    '}';
         }
     }
 
     public static User hydrateUser(Principal principal) {
-        KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) principal;
-        if (keycloakAuthenticationToken == null) return null;
-        AccessToken accessToken = keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getToken();
-        return new User(accessToken.getGivenName());
+        KeycloakAuthenticationToken auth = (KeycloakAuthenticationToken) principal;
+        if (auth == null) return null;
+        SimpleKeycloakAccount account = (SimpleKeycloakAccount) auth.getDetails();
+        AccessToken token = account.getKeycloakSecurityContext().getToken();
+        return new User(token);
     }
 }
