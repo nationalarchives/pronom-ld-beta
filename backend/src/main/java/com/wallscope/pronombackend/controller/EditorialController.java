@@ -206,19 +206,19 @@ public class EditorialController {
         }
 
         protected User(AccessToken token) {
-            if (!token.getGivenName().isBlank() && !token.getFamilyName().isBlank()) {
+            if (token.getGivenName() != null && !token.getGivenName().isBlank() && token.getFamilyName() != null && !token.getFamilyName().isBlank()) {
                 this.name = token.getGivenName() + " " + token.getFamilyName();
                 return;
             }
-            if (!token.getName().isBlank()) {
+            if (token.getName() != null && !token.getName().isBlank()) {
                 this.name = token.getName();
                 return;
             }
-            if (!token.getPreferredUsername().isBlank()) {
+            if (token.getPreferredUsername() != null && !token.getPreferredUsername().isBlank()) {
                 this.name = token.getPreferredUsername();
                 return;
             }
-            if (!token.getEmail().isBlank()) {
+            if (token.getEmail() != null && !token.getEmail().isBlank()) {
                 this.name = token.getEmail();
                 return;
             }
