@@ -15,6 +15,7 @@ import {
   setupAddActorModal,
   setupReviewFields,
   setupPuidValidation,
+  setupContainerAddPath,
 } from '../lib/jqueryUtils'
 
 window.formStep = 0;
@@ -47,17 +48,7 @@ const App = () => {
     }
     setupReviewFields();
     setupPuidValidation();
-  });
-
-  // path
-  $('.add-path').on('click', function (evt) {
-    evt.preventDefault();
-    var $container = $(this).closest('.paths-list-container').find('.paths-list');
-    $('.holder .path:last').clone(true).appendTo($container).find("input").val("").end();
-  });
-  $('.delete-path').on('click', function (evt) {
-    evt.preventDefault();
-    $(this).closest(".path").remove();
+    setupContainerAddPath();
   });
 
   // collapse-all

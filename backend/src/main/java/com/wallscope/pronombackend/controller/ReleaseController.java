@@ -1,17 +1,20 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.Feedback;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
-import com.wallscope.pronombackend.soap.SignatureFileWrapper;
+import com.wallscope.pronombackend.soap.BinarySignatureFileWrapper;
+import com.wallscope.pronombackend.soap.ContainerSignatureFileWrapper;
 import com.wallscope.pronombackend.utils.RDFUtil;
 import com.wallscope.pronombackend.utils.SignatureStorageManager;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,20 +22,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +50,9 @@ import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 @Controller
 public class ReleaseController {
     Logger logger = LoggerFactory.getLogger(ReleaseController.class);
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @GetMapping("/editorial/releases")
     public String index(Model model) {
@@ -150,7 +157,7 @@ public class ReleaseController {
             Path download = Paths.get(dir.toString(), file);
             File f = download.toFile();
             if (!f.isFile()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Targeted file doesn't exist: " + file);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Targeted file doesn't exist: " + file);
             }
             return Files.readAllBytes(download);
         } catch (IOException e) {
@@ -160,20 +167,25 @@ public class ReleaseController {
         }
     }
 
-    @PostMapping("/editorial/releases/create-release")
-    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("filename") String filename) throws DatatypeConfigurationException, JAXBException, FileNotFoundException {
+    @PostMapping(value = {"/editorial/releases/create-release"}, produces = "application/xml")
+    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("version") String vStr) throws Exception {
         if (!List.of("release", "test").contains(target)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid release type: " + target);
         }
         if (!List.of("container", "binary").contains(type)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature type: " + type);
         }
-        if (!filename.endsWith(".xml")) {
-            filename = filename + ".xml";
+        int version = 0;
+        if (!vStr.isBlank()) {
+            try {
+                version = Integer.parseInt(vStr);
+            } catch (Exception ignored) {
+            }
         }
         if (target.equals("release")) {
             FileFormatDAO ffDao = new FileFormatDAO();
             ffDao.publishRelease();
+            String filename = "";
             if (type.equals("binary")) {
                 FileFormatDAO dao = new FileFormatDAO();
                 List<FileFormat> fs = dao.getAllForSignature();
@@ -184,18 +196,53 @@ public class ReleaseController {
                 fs.sort(FileFormat::compareTo);
                 request.setAttribute("formats", fs);
                 request.setAttribute("signatures", signatures);
-                SignatureFileWrapper signature = new RESTController().xmlBinarySignatureHandler(request);
-                String version = "0";
-                if (filename.matches(".*V\\d+.*")) {
-                    version = filename.replaceAll(".*V(\\d+).*", "$1");
-                }
-                signature.setVersion(new BigInteger(version));
-                JAXBContext ctx = JAXBContext.newInstance(SignatureFileWrapper.class);
+                BinarySignatureFileWrapper signature = new RESTController().xmlBinarySignatureHandler(request);
+                filename = "DROID_SignatureFile_V" + version + ".xml";
+                signature.setVersion(new BigInteger("" + version));
+                JAXBContext ctx = JAXBContext.newInstance(BinarySignatureFileWrapper.class);
                 Marshaller marshaller = ctx.createMarshaller();
                 marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
                 marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
                 File xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
                 marshaller.marshal(signature, new FileOutputStream(xml));
+            } else {
+                ContainerSignatureDAO dao = new ContainerSignatureDAO();
+                List<FileFormat> fs = dao.getAllForContainerSignature();
+                List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
+                        .filter(distinctByKey(ContainerSignature::getID))
+                        .sorted(ContainerSignature::compareTo)
+                        .collect(Collectors.toList());
+                fs.sort(FileFormat::compareTo);
+                request.setAttribute("formats", fs);
+                request.setAttribute("signatures", signatures);
+                String datePattern = "yyyyMMdd";
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
+                filename = "container-signature-" + dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))) + ".xml";
+                ContainerSignatureFileWrapper signature = new RESTController().xmlContainerSignatureHandler(request);
+                signature.setVersion(new BigInteger("" + version));
+                JAXBContext ctx = JAXBContext.newInstance(ContainerSignatureFileWrapper.class);
+                Marshaller marshaller = ctx.createMarshaller();
+                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
+                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+                logger.debug("SIGNATURE OBJ: " + signature);
+                logger.debug("FILENAME: " + filename);
+                File xml = Paths.get(SignatureStorageManager.getContainerDir().toString(), filename).toFile();
+                marshaller.marshal(signature, new FileOutputStream(xml));
+//                ModelAndView mv = new RESTController().xmlContainerSignatureHandler(request);
+//                logger.debug("MODELANDVIEW: "+mv);
+//                final WebContext ctx = new WebContext(request,response, servletContext);
+//                String contents = this.templateEngine.process("xml_container_signatures", ctx);
+//                View view = this.viewResolver.resolveViewName("xml_container_signatures", Locale.UK);
+//                Map<String, Object> map = mv.getModel();
+//                logger.debug("GOT MODEL: "+map);
+//                MockHttpServletResponse mockResp = new MockHttpServletResponse();
+//                if (view == null) {
+//                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render container template");
+//                }
+//                view.render(map, request, mockResp);
+//                String contents = mockResp.getContentAsString();
+//                Path xml = Paths.get(SignatureStorageManager.getContainerDir().toString(), filename);
+//                Files.writeString(xml, contents);
             }
             return "redirect:/editorial/releases/download/" + type + "/" + filename;
         }

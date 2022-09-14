@@ -16,23 +16,23 @@ import static com.wallscope.pronombackend.utils.RDFUtil.trimOptionals;
 
 public class ContainerSignatureDAO {
     Logger logger = LoggerFactory.getLogger(ContainerSignatureDAO.class);
-    public static final String BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
-            .replaceAll("\\?byteSeq pr:byteSequence.InternalSignature \\?sig \\.", "")
+    public static final String CONTAINER_BYTE_SEQUENCE_SUB_QUERY = ByteSequenceDAO.BYTE_SEQUENCE_SUB_QUERY
+            .replaceAll("\\?byteSeq pr:byteSequence\\.InternalSignature \\?sig \\.", "")
             .replaceAll("\\?byteSeq", "?contByteSeq");
     public static final String CONTAINER_SIG_SUB_QUERY = """
             ?contSig a pr:ContainerSignature ;
               rdfs:label ?contSigName ;
-              pr:containerSignature.ContainerType ?contSigType ;
               pr:containerSignature.ContainerFile ?contSigFile ;
               pr:containerSignature.FileFormat ?f ;
             .
+            OPTIONAL{ ?contSig pr:containerSignature.ContainerType ?contSigType . }#END OPTIONAL
             # ContainerFile link
             ?contSigFile a pr:ContainerFile .
             OPTIONAL { ?contSigFile pr:containerFile.ContainerSignature ?contSig . }#END OPTIONAL
             OPTIONAL { ?contSigFile pr:containerFile.FilePath ?contSigFileFilePath . }#END OPTIONAL
             OPTIONAL { ?contSigFile pr:containerFile.ByteSequence ?contByteSeq . }#END OPTIONAL
             """;
-    public static final String FORM_CONTAINER_SIG_SUB_QUERY = CONTAINER_SIG_SUB_QUERY.replaceAll("\\?byteSeq", "?contByteSeq") + "\n\n" + BYTE_SEQUENCE_SUB_QUERY;
+    public static final String FORM_CONTAINER_SIG_SUB_QUERY = CONTAINER_SIG_SUB_QUERY.replaceAll("\\?byteSeq", "?contByteSeq") + "\n\n" + CONTAINER_BYTE_SEQUENCE_SUB_QUERY;
     public static final String CONTAINER_SIG_QUERY = PREFIXES + """
             CONSTRUCT {
             # File format representation
@@ -43,7 +43,7 @@ public class ContainerSignatureDAO {
             # Link File Format
             ?f pr:fileFormat.ContainerSignature ?contSig .
             # Byte Sequences
-            """ + trimOptionals(BYTE_SEQUENCE_SUB_QUERY) + """
+            """ + trimOptionals(CONTAINER_BYTE_SEQUENCE_SUB_QUERY) + """
             } WHERE {
             # File format representation
             """ + MINIMAL_FILE_FORMAT_SUB_QUERY + """
@@ -53,7 +53,7 @@ public class ContainerSignatureDAO {
             """ + CONTAINER_SIG_SUB_QUERY + """
             # Byte Sequences
               OPTIONAL {
-              """ + BYTE_SEQUENCE_SUB_QUERY + """
+              """ + CONTAINER_BYTE_SEQUENCE_SUB_QUERY + """
               }#END OPTIONAL
             }
             """;
@@ -70,7 +70,7 @@ public class ContainerSignatureDAO {
             }
             """;
 
-    public List<FileFormat> getAllFileFormats() {
+    public List<FileFormat> getAllForContainerSignature() {
         logger.debug("fetching all container signatures");
         Model m = TriplestoreUtil.constructQuery(CONTAINER_SIG_QUERY);
         ModelUtil mu = new ModelUtil(m);

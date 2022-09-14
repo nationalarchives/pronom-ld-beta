@@ -8,10 +8,10 @@ import com.wallscope.pronombackend.model.ContainerSignature;
 import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.InternalSignature;
 import com.wallscope.pronombackend.model.SearchResult;
+import com.wallscope.pronombackend.soap.BinarySignatureFileWrapper;
+import com.wallscope.pronombackend.soap.ContainerSignatureFileWrapper;
 import com.wallscope.pronombackend.soap.Converter;
-import com.wallscope.pronombackend.soap.SignatureFileWrapper;
 import com.wallscope.pronombackend.utils.ModelUtil;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
@@ -20,8 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +36,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.wallscope.pronombackend.dao.SubmissionDAO.statusList;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
 /*
@@ -108,21 +105,21 @@ public class RESTController {
 
     @PostMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
     @ResponseBody
-    public SignatureFileWrapper xmlBinarySignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
+    public BinarySignatureFileWrapper xmlBinarySignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
         @SuppressWarnings("unchecked")
         List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
-        logger.debug("FORMATS: " + fs);
+        logger.trace("FORMATS: " + fs);
 
         @SuppressWarnings("unchecked")
         List<InternalSignature> signatures = (List<InternalSignature>) request.getAttribute("signatures");
-        logger.debug("FORMATS: " + signatures);
+        logger.trace("SIGNATURES: " + signatures);
 
         if (fs == null || signatures == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
         }
-        SignatureFileWrapper wrapper = new SignatureFileWrapper();
+        BinarySignatureFileWrapper wrapper = new BinarySignatureFileWrapper();
         // Set Version: for now we hardcode at 100 which is what the data is based off of
-        wrapper.setVersion(BigInteger.valueOf(100));
+        wrapper.setVersion(BigInteger.valueOf(0));
         // DateCreated is set to 'now'
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date());
@@ -137,33 +134,93 @@ public class RESTController {
     }
 
     @PostMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
-    public ModelAndView xmlContainerSignatureHandler(Model model, RedirectAttributes redir) {
-        ModelAndView view = new ModelAndView();
-        view.setViewName("xml_container_signatures");
-        Map<String, ?> inputFlashMap = redir.getFlashAttributes();
-        logger.trace("CONTAINER SIG FLASH MAP: " + inputFlashMap);
-        if (!inputFlashMap.containsKey("formats") || !inputFlashMap.containsKey("signatures")) {
+    @ResponseBody
+    public ContainerSignatureFileWrapper xmlContainerSignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.trace("FORMATS: " + fs);
+
+        @SuppressWarnings("unchecked")
+        List<ContainerSignature> signatures = (List<ContainerSignature>) request.getAttribute("signatures");
+        logger.trace("SIGNATURES: " + signatures);
+
+        if (fs == null || signatures == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
         }
-        @SuppressWarnings("unchecked")
-        List<FileFormat> fs = (List<FileFormat>) inputFlashMap.getOrDefault("formats", null);
-        @SuppressWarnings("unchecked")
-        List<InternalSignature> signatures = (List<InternalSignature>) inputFlashMap.getOrDefault("signatures", null);
+        ContainerSignatureFileWrapper wrapper = new ContainerSignatureFileWrapper();
+        // Set Version: for now we hardcode at 100 which is what the data is based off of
+        wrapper.setVersion(BigInteger.valueOf(0));
+        // DateCreated is set to 'now'
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new Date());
+        XMLGregorianCalendar xCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal); // setDateCreated
+        wrapper.setDateCreated(xCal);
+        wrapper.setSchemaVersion("1.0");
+        // Convert the FileFormat collection using the helper class
+        ContainerSignatureFileWrapper.FileFormatMappingCollection ffMappings = new ContainerSignatureFileWrapper.FileFormatMappingCollection();
+        ffMappings.setFfMapping(fs.stream().flatMap(f -> f.getContainerSignatures().stream().map(fcs -> {
+            ContainerSignatureFileWrapper.FileFormatMappingCollection.FileFormatMapping m = new ContainerSignatureFileWrapper.FileFormatMappingCollection.FileFormatMapping();
+            m.setSignatureId(fcs.getID());
+            m.setPuid(f.getFormattedPuid());
+            return m;
+        })).collect(Collectors.toList()));
+        wrapper.setFileFormatMappingCollection(ffMappings);
+        // Convert the InternalSignature collection using the helper class
+        wrapper.setContainerSignatureCollection(Converter.convertContainerSignatureCollection(signatures));
 
         ContainerSignatureDAO dao = new ContainerSignatureDAO();
         List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
 
-        // Sort based on the ID of the container signature
-        fs.sort(Comparator.comparingInt(f -> {
-            if (f.getContainerSignatures() == null || f.getContainerSignatures().isEmpty()) return Integer.MAX_VALUE;
-            f.getContainerSignatures().sort(ContainerSignature::compareTo);
-            return NumberUtils.toInt(f.getContainerSignatures().get(0).getID(), -1);
-        }));
-        view.addObject("formats", fs);
-        view.addObject("containerSignatures", signatures);
-        view.addObject("containerTypes", cts);
-        return view;
+        ContainerSignatureFileWrapper.TriggerPuidsCollection triggerPuids = new ContainerSignatureFileWrapper.TriggerPuidsCollection();
+        triggerPuids.setTriggerPuids(cts.stream().flatMap(ct -> ct.getFileFormats().stream().map(ctf -> {
+            ContainerSignatureFileWrapper.TriggerPuidsCollection.TriggerPuid trig = new ContainerSignatureFileWrapper.TriggerPuidsCollection.TriggerPuid();
+            trig.setContainerType(ctf.getName());
+            trig.setPuid(ctf.getFormattedPuid());
+            return trig;
+        })).collect(Collectors.toList()));
+        wrapper.setTriggerPuids(triggerPuids);
+        return wrapper;
     }
+
+//    @PostMapping(value = {"/container-signature.xml"}, produces = "application/xml")
+//    public ModelAndView xmlContainerSignatureHandler(HttpServletRequest request) {
+//        // TODO: Getting nulls in byte sequence of container files. Check if form is creating them correctly
+//        // Actually, the display page shows them, so must be the query that gets them for sig gen.
+//        // TODO: Fix ModelAndView rendering. Right now view == null is true
+//        ModelAndView view = new ModelAndView();
+//        view.setViewName("xml_container_signatures");
+//        @SuppressWarnings("unchecked")
+//        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+//        logger.trace("FORMATS: " + fs);
+//
+//        @SuppressWarnings("unchecked")
+//        List<ContainerSignature> signatures = (List<ContainerSignature>) request.getAttribute("signatures");
+//        logger.trace("SIGNATURES: " + signatures);
+//
+//        if (fs == null || signatures == null) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
+//        }
+//
+//        Integer version = (Integer) request.getAttribute("version");
+//        if(version == null){
+//            version = 0;
+//        }
+//
+//        ContainerSignatureDAO dao = new ContainerSignatureDAO();
+//        List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
+//
+//        // Sort based on the ID of the container signature
+//        fs.sort(Comparator.comparingInt(f -> {
+//            if (f.getContainerSignatures() == null || f.getContainerSignatures().isEmpty()) return Integer.MAX_VALUE;
+//            f.getContainerSignatures().sort(ContainerSignature::compareTo);
+//            return NumberUtils.toInt(f.getContainerSignatures().get(0).getID(), -1);
+//        }));
+//        view.addObject("version", version);
+//        view.addObject("formats", fs);
+//        view.addObject("containerSignatures", signatures);
+//        view.addObject("containerTypes", cts);
+//        return view;
+//    }
 
     @GetMapping(value = {"/rdf/fmt/{puid}.{format}", "/rdf/x-fmt/{puid}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody

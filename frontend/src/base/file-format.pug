@@ -373,7 +373,112 @@ block modalBody
               div
                 p( th:text="${byteSeq.sequence}") Value
 
-
+      h3 Container signatures
+      //- TABLE =========================================================================
+      ul.table(th:if="${#lists.isEmpty(ff?.containerSignatures ?: {})}")
+        li.row
+          p No container signatures
+      ul.table(th:each="contSig : ${ff.containerSignatures}")
+        //- ROW
+        li.row
+          .tooltip-container
+            .label
+              p.label-text Name
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.3.1') tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          div
+            p(th:text="${contSig.name}") Name
+        //- ROW
+        //- li.row
+        //-   .tooltip-container
+        //-     .label
+        //-       p.label-text Description
+        //-       span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.2') tabindex='0')
+        //-         .i-wrapper
+        //-           i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+        //-   div
+        //-     p( th:text="${contSig.note ?: '---'}") Description
+        //- NESTED ROW
+        li.row-nested
+          .tooltip-container.row-nested-title
+            .label
+              p.label-text Container files
+              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1') tabindex='0')
+                .i-wrapper
+                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+          ul.table(th:each="contFile : ${contSig.files}")
+            //- ROW
+            li.row
+              .tooltip-container
+                .label
+                  p.label-text Path
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.4') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              div
+                p( th:text="${contFile.path} ?: '---'") Absolute from EOF
+            //- NESTED ROW
+            li.row-nested
+              .tooltip-container.row-nested-title
+                .label
+                  p.label-text Byte sequences
+                  span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '5.1') tabindex='0')
+                    .i-wrapper
+                      i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+              //- TABLE =========================================================================
+              ul.table(th:each="byteSeq : ${contFile.byteSequences}")
+                //- ROW
+                li.row
+                  .tooltip-container
+                    .label
+                      p.label-text Position type
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.4') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  div
+                    p( th:text="${byteSeq.positionName} ?: '---'") Absolute from EOF
+                //- ROW
+                li.row
+                  .tooltip-container
+                    .label
+                      p.label-text Min Offset
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.5') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  div
+                    p( th:text="${byteSeq.offset} ?: '---'") Min Offset
+                //- ROW
+                li.row
+                  .tooltip-container
+                    .label
+                      p.label-text Max offset
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '2.4.6') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  div
+                    p( th:text="${byteSeq.maxOffset} ?: '---'") Max offset
+                //- ROW
+                li.row
+                  .tooltip-container
+                    .label
+                      p.label-text Byte order
+                      //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  div
+                    p( th:text="${@templateUtils.getLabel(byteSeq.byteOrder)} ?: '---'") Byte order
+                //- ROW
+                //- TODO - tooltip not available
+                li.row
+                  .tooltip-container
+                    .label
+                      p.label-text Value
+                      //- span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('display', '') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  div
+                    p( th:text="${byteSeq.sequence}") Value
 
       h2#moreInformation More information
       //- TABLE =========================================================================

@@ -50,7 +50,18 @@ public class ContainerFile implements RDFWritable {
     @Override
     public Model toRDF() {
         Model m = ModelFactory.createDefaultModel();
-
+        m.add(uri, makeProp(RDF.type), makeResource(PRONOM.ContainerFile.type));
+        if (signature != null) m.add(uri, makeProp(PRONOM.ContainerFile.ContainerSignature), signature);
+        if (path != null) m.add(uri, makeProp(PRONOM.ContainerFile.FilePath), makeLiteral(path));
+        if (byteSequences != null) {
+            byteSequences.forEach(bs -> {
+                m.add(uri, makeProp(PRONOM.ContainerFile.ByteSequence), bs.getURI());
+                Model bsM = bs.toRDF();
+                bsM.removeAll(bs.getURI(), makeProp(PRONOM.ByteSequence.InternalSignature), null);
+                bsM.add(bs.getURI(), makeProp(PRONOM.ByteSequence.ContainerFile), uri);
+                m.add(bsM);
+            });
+        }
         return m;
     }
 

@@ -16,11 +16,11 @@ public class ByteSequenceDAO {
               ?byteSeqPosition rdfs:label ?byteSeqPositionName .
 
               # Byte Sequence non-required fields
-              OPTIONAL {?byteSeq pr:byteSequence.Offset ?byteSeqOffset . }#END OPTIONAL
-              OPTIONAL {?byteSeq pr:byteSequence.ByteOrder ?byteSeqByteOrder . }#END OPTIONAL
-              OPTIONAL {?byteSeq pr:byteSequence.MaxOffset ?byteSeqMaxOffset . }#END OPTIONAL
-              OPTIONAL {?byteSeq pr:byteSequence.IndirectOffsetLocation ?byteSeqIndirectOffsetLocation . }#END OPTIONAL
-              OPTIONAL {?byteSeq pr:byteSequence.IndirectOffsetLength ?byteSeqIndirectOffsetLength . }#END OPTIONAL
+              OPTIONAL { ?byteSeq pr:byteSequence.Offset ?byteSeqOffset . }#END OPTIONAL
+              OPTIONAL { ?byteSeq pr:byteSequence.ByteOrder ?byteSeqByteOrder . }#END OPTIONAL
+              OPTIONAL { ?byteSeq pr:byteSequence.MaxOffset ?byteSeqMaxOffset . }#END OPTIONAL
+              OPTIONAL { ?byteSeq pr:byteSequence.IndirectOffsetLocation ?byteSeqIndirectOffsetLocation . }#END OPTIONAL
+              OPTIONAL { ?byteSeq pr:byteSequence.IndirectOffsetLength ?byteSeqIndirectOffsetLength . }#END OPTIONAL
             """;
     public static final String BYTE_SEQUENCE_QUERY = PREFIXES + """
             CONSTRUCT {

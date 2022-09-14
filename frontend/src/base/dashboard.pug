@@ -230,8 +230,8 @@ block content
                       option(value="container") Container signature
                 .selected
                   input.check#currentPlan(type='radio' name='target' value='release' checked="true") 
-                  label(for='currentPlan') Publish current release plan. Filename:
-                  input(name="filename")
+                  label(for='currentPlan') Publish current release plan. Version number:
+                  input(name="version", type="number", min="0")
                 .selected
                   label.sr-only(for='otherPlan') Generate test siganture
                   input.check#otherPlan(type='radio' name='target' value='test')
@@ -241,6 +241,10 @@ block content
                     select#selectRelease(name="status")
                       each name, val in status
                         option(value=val)=name
+                  label(for='includePrevious') Full release: Include previously published formats
+                  fieldset
+                    legend.sr-only Include previously published formats
+                    input#includePrevious(type="checkbox", checked="checked")
             div
               button.blue.medium
                 i.fa-solid.fa-rocket

@@ -284,10 +284,12 @@ public class SubmissionController {
                 makeResource(PRONOM.FormatRelationshipType.type),
                 makeResource(PRONOM.FileFormatFamily.type),
                 makeResource(PRONOM.CompressionType.type),
-                makeResource(PRONOM.PuidType.type)
+                makeResource(PRONOM.PuidType.type),
+                makeResource(PRONOM.ContainerType.type)
         ));
         model.addAttribute("classificationOptions", sortOptions(options.get(PRONOM.Classification.type)));
         model.addAttribute("byteOrderOptions", sortOptions(options.get(PRONOM.ByteOrder.type)));
+        model.addAttribute("containerTypeOptions", sortOptions(options.get(PRONOM.ContainerType.type)));
         model.addAttribute("formatIdentifierOptions", sortOptions(options.get(PRONOM.FormatIdentifierType.type)));
         List<LabeledURI> sortedPosTypes = options.get(PRONOM.ByteSequence.BSPType).stream()
                 .sorted(Comparator.comparing(l -> safelyGetUriOrNull(l.getURI())))

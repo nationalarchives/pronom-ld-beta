@@ -75,7 +75,7 @@ public class EditorialController {
             }
         }
         Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
-        List<String> puidTypes = List.of("FileFormat", "Software", "Encoding", "CompressionType");
+        List<String> puidTypes = List.of("FileFormat", "TentativeFileFormat","Software", "Encoding", "CompressionType");
         if (puidTypes.contains(type)) {
             GenericEntityDAO dao = new GenericEntityDAO();
             PUID puid = dao.getPuidForURI(uri);
