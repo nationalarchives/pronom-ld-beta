@@ -66,7 +66,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
         m.add(uri, makeProp(RDFS.label), makeLiteral(name));
         m.add(uri, makeProp(PRONOM.ContainerSignature.FileFormat), fileFormat);
         for (ContainerFile cf : files) {
-            m.add(uri, makeProp(PRONOM.ContainerFile.ByteSequence), cf.getURI());
+            m.add(uri, makeProp(PRONOM.ContainerSignature.ContainerFile), cf.getURI());
             m.add(cf.toRDF());
         }
 
@@ -115,9 +115,9 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
         public ContainerSignature fromModel(Resource uri, Model model) {
             ModelUtil mu = new ModelUtil(model);
             // Required
-            String name = mu.getOneObjectOrNull(uri, makeProp(RDFS.label)).asLiteral().getString();
-            Resource containerType = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.ContainerType)).asResource();
-            Resource fileFormat = mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.FileFormat)).asResource();
+            String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
+            Resource containerType = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.ContainerType)));
+            Resource fileFormat = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.FileFormat)));
             // Optional
             List<Resource> fileSubjects = mu.getAllObjects(uri, makeProp(PRONOM.ContainerSignature.ContainerFile)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ContainerFile> files = mu.buildFromModel(new ContainerFile.Deserializer(), fileSubjects)

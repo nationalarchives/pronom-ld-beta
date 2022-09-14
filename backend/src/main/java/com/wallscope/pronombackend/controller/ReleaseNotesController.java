@@ -16,10 +16,11 @@ public class ReleaseNotesController {
     Logger logger = LoggerFactory.getLogger(ReleaseNotesController.class);
 
     @GetMapping("/release-notes/{version}")
-    public String relNotes(Model model, @PathVariable(required = false) String version) {
-        if (version == null) {
-            return "rel-notes-list";
-        }
+    public String relNotesVersion(Model model, @PathVariable(required = false) String version) {
         return "rel-notes-single";
+    }
+    @GetMapping("/release-notes")
+    public String relNotes(Model model) {
+        return "rel-notes-list";
     }
 }

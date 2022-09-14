@@ -11,7 +11,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
-import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
@@ -81,6 +80,29 @@ public class Converter {
 
             listRef.add(conv);
         });
+        return collection;
+    }
+
+    public static ContainerSignatureFileWrapper.ContainerSignatureCollection convertContainerSignatureCollection(List<ContainerSignature> css) throws JAXBException {
+        return convertContainerSignatureCollection(css, JAXBContext.newInstance(ByteSequenceType.class));
+    }
+
+    public static ContainerSignatureFileWrapper.ContainerSignatureCollection convertContainerSignatureCollection(List<ContainerSignature> css, JAXBContext jaxbContext) {
+        ContainerSignatureFileWrapper.ContainerSignatureCollection collection = new ContainerSignatureFileWrapper.ContainerSignatureCollection();
+        List<ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType> sigList = css.stream().map(cs -> {
+            ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType conv = new ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType();
+            conv.setID(cs.getID());
+            conv.setContainerType(cs.getContainerTypeName());
+            List<ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType> fileList = cs.getFiles().stream().map(f -> {
+                ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType fileType = new ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType();
+                fileType.setPath(f.getPath());
+                fileType.setByteSequence(convertByteSequenceList(f.getByteSequences(), jaxbContext, true));
+                return fileType;
+            }).collect(Collectors.toList());
+            conv.setFiles(fileList);
+            return conv;
+        }).collect(Collectors.toList());
+        collection.setContainerSignature(sigList);
         return collection;
     }
 

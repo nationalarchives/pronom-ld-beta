@@ -115,8 +115,11 @@ public class ByteSequence implements RDFWritable {
     // are based on the container signature ID and the byte sequence ID. Here we split it back into just the byte sequence
     // ID so it can be used in the XML template
     public String getContainerID() {
-        String[] parts = uri.getURI().split("\\.");
-        return parts[parts.length - 1];
+        if(uri == null) return null;
+        String lastPart = uri.getURI().replace(PRONOM.ByteSequence.id,"");
+        String[] parts = lastPart.split("\\.");
+        if(parts.length > 1) return parts[parts.length - 1];
+        return parts[0];
     }
 
     public String getByteOrderName() {

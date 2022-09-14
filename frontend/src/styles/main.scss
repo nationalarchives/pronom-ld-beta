@@ -1493,7 +1493,7 @@ h1.internal-title {
 #make-a-release {
   background: #CCDBEA;
   display: grid;
-  grid-template-columns: 1fr 350px 1fr;
+  grid-template-columns: 1fr 350px 0.3fr;
   grid-column-gap: 20px;
   padding: 5px 15px 15px 15px;
   h3 {
@@ -1501,7 +1501,7 @@ h1.internal-title {
   }
   .selected {
     border-bottom: 2px solid black;
-    width: 500px;
+    width: 100%;
     display: grid;
     grid-template-columns: auto 300px 1fr;
     align-items: center;

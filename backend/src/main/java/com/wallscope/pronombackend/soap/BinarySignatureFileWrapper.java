@@ -10,7 +10,7 @@ import java.math.BigInteger;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {})
 @XmlRootElement(name = "FFSignatureFile")
-public class SignatureFileWrapper {
+public class BinarySignatureFileWrapper {
 
     @XmlElement(name = "InternalSignatureCollection", required = true)
     protected InternalSignatureCollection internalSignatureCollection;

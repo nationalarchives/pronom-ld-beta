@@ -29,7 +29,7 @@ block content
             a(href="" aria-labelledby="EmailLink") Email
             p#EmailLink - Some text comes here
       .option
-        a.bordered-blue
+        a.bordered-blue(href="/search")
           i.fa-regular.fa-pen-to-square(aria-hidden="true")
           | Edit existing file format
         div(th:utext="${@templateUtils.md('form-choice_edit-format')}")
