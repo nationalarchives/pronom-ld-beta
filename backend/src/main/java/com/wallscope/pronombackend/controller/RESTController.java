@@ -149,7 +149,6 @@ public class RESTController {
         }
         ContainerSignatureFileWrapper wrapper = new ContainerSignatureFileWrapper();
         // Set Version: for now we hardcode at 100 which is what the data is based off of
-        wrapper.setVersion(BigInteger.valueOf(0));
         // DateCreated is set to 'now'
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date());
@@ -158,12 +157,12 @@ public class RESTController {
         wrapper.setSchemaVersion("1.0");
         // Convert the FileFormat collection using the helper class
         ContainerSignatureFileWrapper.FileFormatMappingCollection ffMappings = new ContainerSignatureFileWrapper.FileFormatMappingCollection();
-        ffMappings.setFfMapping(fs.stream().flatMap(f -> f.getContainerSignatures().stream().map(fcs -> {
+        ffMappings.setFfMapping(fs.stream().sorted(FileFormat::compareTo).flatMap(f -> f.getContainerSignatures().stream().map(fcs -> {
             ContainerSignatureFileWrapper.FileFormatMappingCollection.FileFormatMapping m = new ContainerSignatureFileWrapper.FileFormatMappingCollection.FileFormatMapping();
             m.setSignatureId(fcs.getID());
             m.setPuid(f.getFormattedPuid());
             return m;
-        })).collect(Collectors.toList()));
+        })).sorted(ContainerSignatureFileWrapper.FileFormatMappingCollection.FileFormatMapping::compareTo).collect(Collectors.toList()));
         wrapper.setFileFormatMappingCollection(ffMappings);
         // Convert the InternalSignature collection using the helper class
         wrapper.setContainerSignatureCollection(Converter.convertContainerSignatureCollection(signatures));
@@ -174,53 +173,13 @@ public class RESTController {
         ContainerSignatureFileWrapper.TriggerPuidsCollection triggerPuids = new ContainerSignatureFileWrapper.TriggerPuidsCollection();
         triggerPuids.setTriggerPuids(cts.stream().flatMap(ct -> ct.getFileFormats().stream().map(ctf -> {
             ContainerSignatureFileWrapper.TriggerPuidsCollection.TriggerPuid trig = new ContainerSignatureFileWrapper.TriggerPuidsCollection.TriggerPuid();
-            trig.setContainerType(ctf.getName());
+            trig.setContainerType(ct.getName());
             trig.setPuid(ctf.getFormattedPuid());
             return trig;
         })).collect(Collectors.toList()));
         wrapper.setTriggerPuids(triggerPuids);
         return wrapper;
     }
-
-//    @PostMapping(value = {"/container-signature.xml"}, produces = "application/xml")
-//    public ModelAndView xmlContainerSignatureHandler(HttpServletRequest request) {
-//        // TODO: Getting nulls in byte sequence of container files. Check if form is creating them correctly
-//        // Actually, the display page shows them, so must be the query that gets them for sig gen.
-//        // TODO: Fix ModelAndView rendering. Right now view == null is true
-//        ModelAndView view = new ModelAndView();
-//        view.setViewName("xml_container_signatures");
-//        @SuppressWarnings("unchecked")
-//        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
-//        logger.trace("FORMATS: " + fs);
-//
-//        @SuppressWarnings("unchecked")
-//        List<ContainerSignature> signatures = (List<ContainerSignature>) request.getAttribute("signatures");
-//        logger.trace("SIGNATURES: " + signatures);
-//
-//        if (fs == null || signatures == null) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
-//        }
-//
-//        Integer version = (Integer) request.getAttribute("version");
-//        if(version == null){
-//            version = 0;
-//        }
-//
-//        ContainerSignatureDAO dao = new ContainerSignatureDAO();
-//        List<ContainerSignature.ContainerType> cts = dao.getTriggerPuids();
-//
-//        // Sort based on the ID of the container signature
-//        fs.sort(Comparator.comparingInt(f -> {
-//            if (f.getContainerSignatures() == null || f.getContainerSignatures().isEmpty()) return Integer.MAX_VALUE;
-//            f.getContainerSignatures().sort(ContainerSignature::compareTo);
-//            return NumberUtils.toInt(f.getContainerSignatures().get(0).getID(), -1);
-//        }));
-//        view.addObject("version", version);
-//        view.addObject("formats", fs);
-//        view.addObject("containerSignatures", signatures);
-//        view.addObject("containerTypes", cts);
-//        return view;
-//    }
 
     @GetMapping(value = {"/rdf/fmt/{puid}.{format}", "/rdf/x-fmt/{puid}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
