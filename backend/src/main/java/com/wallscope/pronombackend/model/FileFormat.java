@@ -357,8 +357,8 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
             return 0;
         }
 
-        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), -1);
-        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), -1);
+        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), Integer.MAX_VALUE);
+        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), Integer.MAX_VALUE);
         return aInt - bInt;
     }
 

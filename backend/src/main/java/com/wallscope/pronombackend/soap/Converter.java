@@ -96,12 +96,12 @@ public class Converter {
             List<ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType> fileList = cs.getFiles().stream().map(f -> {
                 ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType fileType = new ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType.FileType();
                 fileType.setPath(f.getPath());
-                fileType.setByteSequence(convertByteSequenceList(f.getByteSequences(), jaxbContext, true));
+                fileType.setByteSequence(convertByteSequenceList(f.getByteSequences().stream().filter(Objects::nonNull).sorted(ByteSequence::compareTo).collect(Collectors.toList()), jaxbContext, true));
                 return fileType;
             }).collect(Collectors.toList());
             conv.setFiles(fileList);
             return conv;
-        }).collect(Collectors.toList());
+        }).sorted(ContainerSignatureFileWrapper.ContainerSignatureCollection.ContainerSignatureType::compareTo).collect(Collectors.toList());
         collection.setContainerSignature(sigList);
         return collection;
     }

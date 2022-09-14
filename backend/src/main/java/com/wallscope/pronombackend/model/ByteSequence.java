@@ -3,6 +3,7 @@ package com.wallscope.pronombackend.model;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import net.byteseek.compiler.CompileException;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
@@ -18,7 +19,7 @@ import javax.xml.bind.JAXBContext;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
-public class ByteSequence implements RDFWritable {
+public class ByteSequence implements RDFWritable, Comparable<ByteSequence> {
     Logger logger = LoggerFactory.getLogger(ByteSequence.class);
     private final Resource uri;
     private final Resource signature;
@@ -115,10 +116,10 @@ public class ByteSequence implements RDFWritable {
     // are based on the container signature ID and the byte sequence ID. Here we split it back into just the byte sequence
     // ID so it can be used in the XML template
     public String getContainerID() {
-        if(uri == null) return null;
-        String lastPart = uri.getURI().replace(PRONOM.ByteSequence.id,"");
+        if (uri == null) return null;
+        String lastPart = uri.getURI().replace(PRONOM.ByteSequence.id, "");
         String[] parts = lastPart.split("\\.");
-        if(parts.length > 1) return parts[parts.length - 1];
+        if (parts.length > 1) return parts[parts.length - 1];
         return parts[0];
     }
 
@@ -153,6 +154,23 @@ public class ByteSequence implements RDFWritable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int compareTo(ByteSequence b) {
+        boolean aNull = this.getURI() == null;
+        boolean bNull = b.getURI() == null;
+        if (aNull && !bNull) {
+            return -1;
+        } else if (bNull && !aNull) {
+            return 1;
+        } else if (aNull && bNull) {
+            return 0;
+        }
+
+        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), Integer.MAX_VALUE);
+        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), Integer.MAX_VALUE);
+        return aInt - bInt;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.soap;
 
+import org.apache.commons.lang.math.NumberUtils;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
 
 import javax.xml.bind.annotation.*;
@@ -96,7 +97,7 @@ public class ContainerSignatureFileWrapper {
 
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "ContainerSignatureType", propOrder = {"files"})
-        public static class ContainerSignatureType {
+        public static class ContainerSignatureType implements Comparable<ContainerSignatureType> {
 
             @XmlAttribute(name = "Id", required = true)
             protected String id;
@@ -130,6 +131,23 @@ public class ContainerSignatureFileWrapper {
 
             public void setContainerType(String value) {
                 this.containerType = value;
+            }
+
+            @Override
+            public int compareTo(ContainerSignatureType b) {
+                boolean aNull = this.getID() == null;
+                boolean bNull = b.getID() == null;
+                if (aNull && !bNull) {
+                    return -1;
+                } else if (bNull && !aNull) {
+                    return 1;
+                } else if (aNull && bNull) {
+                    return 0;
+                }
+
+                int aInt = NumberUtils.toInt(this.getID(), Integer.MAX_VALUE);
+                int bInt = NumberUtils.toInt(b.getID(), Integer.MAX_VALUE);
+                return aInt - bInt;
             }
 
             @XmlAccessorType(XmlAccessType.FIELD)
@@ -182,7 +200,7 @@ public class ContainerSignatureFileWrapper {
 
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "FileFormatMappingType")
-        public static class FileFormatMapping {
+        public static class FileFormatMapping implements Comparable<FileFormatMapping> {
             @XmlAttribute(name = "signatureId", required = true)
             protected String signatureId;
             @XmlAttribute(name = "Puid", required = true)
@@ -202,6 +220,23 @@ public class ContainerSignatureFileWrapper {
 
             public void setPuid(String puid) {
                 this.puid = puid;
+            }
+
+            @Override
+            public int compareTo(FileFormatMapping b) {
+                boolean aNull = this.getSignatureId() == null;
+                boolean bNull = b.getSignatureId() == null;
+                if (aNull && !bNull) {
+                    return -1;
+                } else if (bNull && !aNull) {
+                    return 1;
+                } else if (aNull && bNull) {
+                    return 0;
+                }
+
+                int aInt = NumberUtils.toInt(this.getSignatureId(), Integer.MAX_VALUE);
+                int bInt = NumberUtils.toInt(b.getSignatureId(), Integer.MAX_VALUE);
+                return aInt - bInt;
             }
         }
     }

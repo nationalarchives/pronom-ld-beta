@@ -185,7 +185,10 @@ public class ReleaseController {
         if (target.equals("release")) {
             FileFormatDAO ffDao = new FileFormatDAO();
             ffDao.publishRelease();
-            String filename = "";
+            String filename;
+            Object signature;
+            File xml;
+            JAXBContext ctx;
             if (type.equals("binary")) {
                 FileFormatDAO dao = new FileFormatDAO();
                 List<FileFormat> fs = dao.getAllForSignature();
@@ -196,15 +199,12 @@ public class ReleaseController {
                 fs.sort(FileFormat::compareTo);
                 request.setAttribute("formats", fs);
                 request.setAttribute("signatures", signatures);
-                BinarySignatureFileWrapper signature = new RESTController().xmlBinarySignatureHandler(request);
+                BinarySignatureFileWrapper binSig = new RESTController().xmlBinarySignatureHandler(request);
                 filename = "DROID_SignatureFile_V" + version + ".xml";
-                signature.setVersion(new BigInteger("" + version));
-                JAXBContext ctx = JAXBContext.newInstance(BinarySignatureFileWrapper.class);
-                Marshaller marshaller = ctx.createMarshaller();
-                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
-                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-                File xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
-                marshaller.marshal(signature, new FileOutputStream(xml));
+                binSig.setVersion(new BigInteger("" + version));
+                ctx = JAXBContext.newInstance(BinarySignatureFileWrapper.class);
+                xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
+                signature = binSig;
             } else {
                 ContainerSignatureDAO dao = new ContainerSignatureDAO();
                 List<FileFormat> fs = dao.getAllForContainerSignature();
@@ -218,32 +218,16 @@ public class ReleaseController {
                 String datePattern = "yyyyMMdd";
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
                 filename = "container-signature-" + dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))) + ".xml";
-                ContainerSignatureFileWrapper signature = new RESTController().xmlContainerSignatureHandler(request);
-                signature.setVersion(new BigInteger("" + version));
-                JAXBContext ctx = JAXBContext.newInstance(ContainerSignatureFileWrapper.class);
-                Marshaller marshaller = ctx.createMarshaller();
-                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
-                marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-                logger.debug("SIGNATURE OBJ: " + signature);
-                logger.debug("FILENAME: " + filename);
-                File xml = Paths.get(SignatureStorageManager.getContainerDir().toString(), filename).toFile();
-                marshaller.marshal(signature, new FileOutputStream(xml));
-//                ModelAndView mv = new RESTController().xmlContainerSignatureHandler(request);
-//                logger.debug("MODELANDVIEW: "+mv);
-//                final WebContext ctx = new WebContext(request,response, servletContext);
-//                String contents = this.templateEngine.process("xml_container_signatures", ctx);
-//                View view = this.viewResolver.resolveViewName("xml_container_signatures", Locale.UK);
-//                Map<String, Object> map = mv.getModel();
-//                logger.debug("GOT MODEL: "+map);
-//                MockHttpServletResponse mockResp = new MockHttpServletResponse();
-//                if (view == null) {
-//                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render container template");
-//                }
-//                view.render(map, request, mockResp);
-//                String contents = mockResp.getContentAsString();
-//                Path xml = Paths.get(SignatureStorageManager.getContainerDir().toString(), filename);
-//                Files.writeString(xml, contents);
+                ContainerSignatureFileWrapper contSig = new RESTController().xmlContainerSignatureHandler(request);
+                contSig.setVersion(new BigInteger("" + version));
+                ctx = JAXBContext.newInstance(ContainerSignatureFileWrapper.class);
+                xml = Paths.get(SignatureStorageManager.getContainerDir().toString(), filename).toFile();
+                signature = contSig;
             }
+            Marshaller marshaller = ctx.createMarshaller();
+            marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
+            marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(signature, new FileOutputStream(xml));
             return "redirect:/editorial/releases/download/" + type + "/" + filename;
         }
         Resource minStatus = makeResource(RDFUtil.PRONOM.Submission.statusId + status);
