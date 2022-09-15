@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.config.ApplicationConfig;
 import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
@@ -39,7 +40,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,13 +56,23 @@ public class ReleaseController {
 
     @GetMapping("/editorial/releases")
     public String index(Model model) {
-
-        List<String> binary = Stream.of(Objects.requireNonNull(SignatureStorageManager.getBinaryDir().toFile().listFiles()))
+        File[] binaryFiles = SignatureStorageManager.getBinaryDir().toFile().listFiles();
+        if (binaryFiles == null) {
+            binaryFiles = new File[]{};
+        }
+        List<String> binary = Stream.of(binaryFiles)
                 .filter(f -> f.isFile() && f.getName().endsWith(".xml"))
+                .sorted(Comparator.comparingLong(File::lastModified))
                 .map(f -> f.getName().replace(".xml", ""))
                 .collect(Collectors.toList());
-        List<String> container = Stream.of(Objects.requireNonNull(SignatureStorageManager.getContainerDir().toFile().listFiles()))
+
+        File[] containerFiles = SignatureStorageManager.getBinaryDir().toFile().listFiles();
+        if (containerFiles == null) {
+            containerFiles = new File[]{};
+        }
+        List<String> container = Stream.of(containerFiles)
                 .filter(f -> f.isFile() && f.getName().endsWith(".xml"))
+                .sorted(Comparator.comparingLong(File::lastModified))
                 .map(f -> f.getName().replace(".xml", ""))
                 .collect(Collectors.toList());
         model.addAttribute("binary", binary);
@@ -200,7 +210,7 @@ public class ReleaseController {
                 request.setAttribute("formats", fs);
                 request.setAttribute("signatures", signatures);
                 BinarySignatureFileWrapper binSig = new RESTController().xmlBinarySignatureHandler(request);
-                filename = "DROID_SignatureFile_V" + version + ".xml";
+                filename = ApplicationConfig.BINARY_SIG_NAME.formatted(version);
                 binSig.setVersion(new BigInteger("" + version));
                 ctx = JAXBContext.newInstance(BinarySignatureFileWrapper.class);
                 xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
@@ -217,7 +227,7 @@ public class ReleaseController {
                 request.setAttribute("signatures", signatures);
                 String datePattern = "yyyyMMdd";
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
-                filename = "container-signature-" + dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))) + ".xml";
+                filename = ApplicationConfig.CONTAINER_SIG_NAME.formatted(dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))));
                 ContainerSignatureFileWrapper contSig = new RESTController().xmlContainerSignatureHandler(request);
                 contSig.setVersion(new BigInteger("" + version));
                 ctx = JAXBContext.newInstance(ContainerSignatureFileWrapper.class);

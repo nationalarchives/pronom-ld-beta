@@ -121,7 +121,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
             // Optional
             List<Resource> fileSubjects = mu.getAllObjects(uri, makeProp(PRONOM.ContainerSignature.ContainerFile)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ContainerFile> files = mu.buildFromModel(new ContainerFile.Deserializer(), fileSubjects)
-                    .stream().sorted(Comparator.comparing(ContainerFile::getID)).collect(Collectors.toList());
+                    .stream().sorted(ContainerFile::compareTo).collect(Collectors.toList());
 
             return new ContainerSignature(uri, name, containerType, fileFormat, files);
         }
