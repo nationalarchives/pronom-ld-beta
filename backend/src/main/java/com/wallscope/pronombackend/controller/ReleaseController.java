@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.config.ApplicationConfig;
 import com.wallscope.pronombackend.dao.ContainerSignatureDAO;
 import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
@@ -14,7 +15,6 @@ import com.wallscope.pronombackend.utils.SignatureStorageManager;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
@@ -34,14 +33,14 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.wallscope.pronombackend.controller.RESTController.distinctByKey;
 import static com.wallscope.pronombackend.dao.SubmissionDAO.statusList;
@@ -51,20 +50,11 @@ import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 public class ReleaseController {
     Logger logger = LoggerFactory.getLogger(ReleaseController.class);
 
-    @Autowired
-    private TemplateEngine templateEngine;
-
+    // EDITORIAL
     @GetMapping("/editorial/releases")
-    public String index(Model model) {
-
-        List<String> binary = Stream.of(Objects.requireNonNull(SignatureStorageManager.getBinaryDir().toFile().listFiles()))
-                .filter(f -> f.isFile() && f.getName().endsWith(".xml"))
-                .map(f -> f.getName().replace(".xml", ""))
-                .collect(Collectors.toList());
-        List<String> container = Stream.of(Objects.requireNonNull(SignatureStorageManager.getContainerDir().toFile().listFiles()))
-                .filter(f -> f.isFile() && f.getName().endsWith(".xml"))
-                .map(f -> f.getName().replace(".xml", ""))
-                .collect(Collectors.toList());
+    public String editorialIndex(Model model) {
+        Map<String, Instant> binary = SignatureStorageManager.getBinarySignatureList();
+        Map<String, Instant> container = SignatureStorageManager.getContainerSignatureList();
         model.addAttribute("binary", binary);
         model.addAttribute("container", container);
         return "release-manager";
@@ -140,7 +130,7 @@ public class ReleaseController {
         return "redirect:/editorial/releases";
     }
 
-    @GetMapping(value = "/editorial/releases/download/{type}/{file}", produces = "application/xml")
+    @GetMapping(value = "/releases/download/{type}/{file}", produces = "application/xml")
     public @ResponseBody
     byte[] downloadRelease(@PathVariable String type, @PathVariable String file) throws IOException {
         try {
@@ -200,7 +190,7 @@ public class ReleaseController {
                 request.setAttribute("formats", fs);
                 request.setAttribute("signatures", signatures);
                 BinarySignatureFileWrapper binSig = new RESTController().xmlBinarySignatureHandler(request);
-                filename = "DROID_SignatureFile_V" + version + ".xml";
+                filename = ApplicationConfig.BINARY_SIG_NAME.formatted(version);
                 binSig.setVersion(new BigInteger("" + version));
                 ctx = JAXBContext.newInstance(BinarySignatureFileWrapper.class);
                 xml = Paths.get(SignatureStorageManager.getBinaryDir().toString(), filename).toFile();
@@ -217,7 +207,7 @@ public class ReleaseController {
                 request.setAttribute("signatures", signatures);
                 String datePattern = "yyyyMMdd";
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
-                filename = "container-signature-" + dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))) + ".xml";
+                filename = ApplicationConfig.CONTAINER_SIG_NAME.formatted(dateFormatter.format(LocalDate.now(ZoneId.of("Europe/London"))));
                 ContainerSignatureFileWrapper contSig = new RESTController().xmlContainerSignatureHandler(request);
                 contSig.setVersion(new BigInteger("" + version));
                 ctx = JAXBContext.newInstance(ContainerSignatureFileWrapper.class);
@@ -257,5 +247,20 @@ public class ReleaseController {
         request.setAttribute("formats", fs);
         request.setAttribute("signatures", signatures);
         return "forward:/container-signature.xml";
+    }
+
+    // PUBLIC
+    @GetMapping("/release-notes/{version}")
+    public String relNotesVersion(Model model, @PathVariable(required = false) String version) {
+        return "rel-notes-single";
+    }
+
+    @GetMapping("/release-notes")
+    public String publicIndex(Model model) {
+        Map<String, Instant> binary = SignatureStorageManager.getBinarySignatureList();
+        Map<String, Instant> container = SignatureStorageManager.getContainerSignatureList();
+        model.addAttribute("binary", binary);
+        model.addAttribute("container", container);
+        return "rel-notes-list";
     }
 }

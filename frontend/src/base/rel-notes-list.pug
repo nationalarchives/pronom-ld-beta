@@ -26,44 +26,17 @@ block content
         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
         laboris nisi ut aliquip ex ea commodo consequat.
     .release-notes-list
+      h3 Binary Signatures
       ul
-        li
-          a(href="")
-            h3 27th October 2021
-              span DROID_SignatureFile_V98.xml
+        li(th:each="file : ${binary}")
+          a(th:href="@{/releases/download/binary/} + ${file.key}")
+            h3(th:with="date=${#temporals.format(file.value, 'dd/MM/yyyy')}", th:utext="${ date == '01/01/1970'? 'Legacy' : date }") Date published
             div
-              p
-                span.nuber 45
-                | New Sigmatures
-              p
-                span.nuber 56
-                | New Records
-              p
-                span.nuber 45
-                | Updated Records
-          a(href="")
-            h3 20th Jun 2021
-              span DROID_SignatureFile_V98.xml
+              span(th:text="${file.key}")
+      h3 Container Signatures
+      ul
+        li(th:each="file : ${container}")
+          a(th:href="@{/releases/download/binary/} + ${file.key}")
+            h3(th:with="date=${#temporals.format(file.value, 'dd/MM/yyyy')}", th:utext="${ date == '01/01/1970'? 'Legacy' : date }") Date published
             div
-              p
-                span.nuber 32
-                | New Sigmatures
-              p
-                span.nuber 23
-                | New Records
-              p
-                span.nuber 67
-                | Updated Records
-          a(href="")
-            h3 15th February 2021
-              span DROID_SignatureFile_V98.xml
-            div
-              p
-                span.nuber 16
-                | New Sigmatures
-              p
-                span.nuber 43
-                | New Records
-              p
-                span.nuber 25
-                | Updated Records
+              span(th:text="${file.key}")

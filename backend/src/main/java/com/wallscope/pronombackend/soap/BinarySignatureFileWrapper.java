@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.soap;
 
+import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType;
 import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType.FileFormatCollection;
 import uk.gov.nationalarchives.pronom.signaturefile.SignatureFileType.InternalSignatureCollection;
 
@@ -53,6 +54,16 @@ public class BinarySignatureFileWrapper {
 
     public void setDateCreated(XMLGregorianCalendar value) {
         this.dateCreated = value;
+    }
+
+    // This method converts this manually created wrapper into the auto generated JAXB format.
+    public SignatureFileType toJAXBObject(){
+        SignatureFileType sig = new SignatureFileType();
+        sig.setVersion(version);
+        sig.setDateCreated(dateCreated);
+        sig.setInternalSignatureCollection(internalSignatureCollection);
+        sig.setFileFormatCollection(fileFormatCollection);
+        return sig;
     }
 }
 

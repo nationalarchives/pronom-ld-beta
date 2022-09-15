@@ -12,6 +12,7 @@ import com.wallscope.pronombackend.soap.BinarySignatureFileWrapper;
 import com.wallscope.pronombackend.soap.ContainerSignatureFileWrapper;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.utils.ModelUtil;
+import com.wallscope.pronombackend.utils.SignatureStorageManager;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -133,9 +136,9 @@ public class RESTController {
         return wrapper;
     }
 
-    @PostMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
+    @RequestMapping(value = {"/container-signature.xml"}, produces = {"application/xml", "text/xml"})
     @ResponseBody
-    public ContainerSignatureFileWrapper xmlContainerSignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
+    public ContainerSignatureFileWrapper xmlContainerSignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException, FileNotFoundException {
         @SuppressWarnings("unchecked")
         List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
         logger.trace("FORMATS: " + fs);
@@ -145,7 +148,8 @@ public class RESTController {
         logger.trace("SIGNATURES: " + signatures);
 
         if (fs == null || signatures == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endpoint should not be accessed directly, should be internally forwarded");
+            File latest = SignatureStorageManager.getLatestContainerSignature();
+            return SignatureStorageManager.readInXML(latest, ContainerSignatureFileWrapper.class);
         }
         ContainerSignatureFileWrapper wrapper = new ContainerSignatureFileWrapper();
         // Set Version: for now we hardcode at 100 which is what the data is based off of

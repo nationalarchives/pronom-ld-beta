@@ -176,7 +176,7 @@ public class EditorialController {
         if (id.equals("new")) {
             fa.setUri(PRONOM.Actor.id + UUID.randomUUID());
         }
-        if (fa.isEmpty()) {
+        if (!fa.isNotEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field is required");
         }
         if (!id.equals("new")) {
