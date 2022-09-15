@@ -1,18 +1,18 @@
 package com.wallscope.pronombackend.model;
 
 import com.wallscope.pronombackend.utils.ModelUtil;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
-public class ContainerFile implements RDFWritable {
+public class ContainerFile implements RDFWritable, Comparable<ContainerFile> {
     private final Resource uri;
     private final Resource signature;
     private final String path;
@@ -66,6 +66,23 @@ public class ContainerFile implements RDFWritable {
     }
 
     @Override
+    public int compareTo(ContainerFile b) {
+        boolean aNull = this.getURI() == null;
+        boolean bNull = b.getURI() == null;
+        if (aNull && !bNull) {
+            return -1;
+        } else if (bNull && !aNull) {
+            return 1;
+        } else if (aNull && bNull) {
+            return 0;
+        }
+
+        int aInt = NumberUtils.toInt(this.getURI().getLocalName(), Integer.MAX_VALUE);
+        int bInt = NumberUtils.toInt(b.getURI().getLocalName(), Integer.MAX_VALUE);
+        return aInt - bInt;
+    }
+
+    @Override
     public String toString() {
         return "ContainerFile{" +
                 "uri=" + uri +
@@ -90,7 +107,7 @@ public class ContainerFile implements RDFWritable {
             String path = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerFile.FilePath)));
             List<Resource> byteSeqSubjects = mu.getAllObjects(uri, makeProp(PRONOM.ContainerFile.ByteSequence)).stream().map(RDFNode::asResource).collect(Collectors.toList());
             List<ByteSequence> byteSequences = mu.buildFromModel(new ByteSequence.Deserializer(), byteSeqSubjects)
-                    .stream().sorted(Comparator.comparingInt(bs -> Integer.parseInt(bs.getContainerID()))).collect(Collectors.toList());
+                    .stream().sorted(ByteSequence::compareTo).collect(Collectors.toList());
 
             return new ContainerFile(uri, signature, path, byteSequences);
         }
