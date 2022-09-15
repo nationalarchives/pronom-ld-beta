@@ -13,22 +13,22 @@ block content
       h3 Binary Signatures
       .release.binary(th:each="file : ${binary}")
         .form-group
-          form(th:action="@{/editorial/releases/rename-release/binary/} + ${file}", method="post")
-            input(name="filename", th:id="${file}", th:value="${file}")
-            a(th:href="@{/editorial/releases/download/binary/} + ${file}")
+          form(th:action="@{/editorial/releases/rename-release/binary/} + ${file.key}", method="post")
+            input(name="filename", th:id="${file.key}", th:value="${file.key}")
+            a(th:href="@{/releases/download/binary/} + ${file.key}")
               button.small.bordered-blue(type="button") Download
             button.small.bordered-blue(type="submit") Rename
-          form(th:action="@{/editorial/releases/delete-release/binary/} + ${file}", method="post")
+          form(th:action="@{/editorial/releases/delete-release/binary/} + ${file.key}", method="post")
             button.small.bordered-red(type="submit") Delete
       h3 Container Signatures
       .release.container(th:each="file : ${container}")
         .form-group
-          form(th:action="@{/editorial/releases/rename-release/container/} + ${file}", method="post")
-            input(name="filename", th:id="${file}", th:value="${file}")
-            a(th:href="@{/editorial/releases/download/container/} + ${file}")
+          form(th:action="@{/editorial/releases/rename-release/container/} + ${file.key}", method="post")
+            input(name="filename", th:id="${file.key}", th:value="${file.key}")
+            a(th:href="@{/releases/download/container/} + ${file.key}")
               button.small.bordered-blue(type="button") Download
             button.small.bordered-blue(type="submit") Rename
-          form(th:action="@{/editorial/releases/delete-release/container/} + ${file}", method="post")
+          form(th:action="@{/editorial/releases/delete-release/container/} + ${file.key}", method="post")
             button.small.bordered-red(type="submit") Delete
     .new-release
       h3 Upload a legacy signature

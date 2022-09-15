@@ -1,5 +1,8 @@
 package com.wallscope.pronombackend.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormActor {
@@ -11,11 +14,13 @@ public class FormActor {
     private String website;
     private Boolean isContributor;
 
+    Logger logger = LoggerFactory.getLogger(FormActor.class);
+
     public FormActor() {
     }
 
     public String getID() {
-        if(uri == null) return null;
+        if (uri == null) return null;
         String[] parts = uri.split("/");
         return parts[parts.length - 1];
     }
@@ -80,8 +85,21 @@ public class FormActor {
         return website;
     }
 
-    public boolean isEmpty() {
+    public boolean isNotEmpty() {
         return uri != null && !uri.isBlank()
                 && name != null && !name.isBlank();
+    }
+
+    @Override
+    public String toString() {
+        return "FormActor{" +
+                "uri='" + uri + '\'' +
+                ", name='" + name + '\'' +
+                ", organisation='" + organisation + '\'' +
+                ", email='" + email + '\'' +
+                ", country='" + country + '\'' +
+                ", website='" + website + '\'' +
+                ", isContributor=" + isContributor +
+                '}';
     }
 }

@@ -13,9 +13,15 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SignatureStorageManager {
     static Logger logger = LoggerFactory.getLogger(SignatureStorageManager.class);
@@ -56,7 +62,11 @@ public class SignatureStorageManager {
         if (dir == null) return null;
         File[] files = dir.toFile().listFiles();
         if (files == null) return null;
-        return Arrays.stream(files).max(Comparator.comparingLong(File::lastModified)).orElse(null);
+        return Arrays.stream(files).max(Comparator.comparing(x -> {
+            Instant date = dateFromFile(x);
+            if (date == null) return Instant.EPOCH;
+            return date;
+        })).orElse(null);
     }
 
     public static File getLatestBinarySignature() {
@@ -89,5 +99,42 @@ public class SignatureStorageManager {
             }
         }
         return null;
+    }
+
+    public static Instant dateFromFile(File file) {
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                // The container file contains a schemaVersion attribute, so we have to account for that.
+                // Otherwise we could just check for Version
+                if (line.contains("DateCreated=\"")) {
+                    String date = line.replaceAll(".*DateCreated=\"([^\"]+)\".*", "$1");
+                    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.of("Europe/London"));
+                    return Instant.from(formatter.parse(date));
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+            return Instant.EPOCH;
+        }
+        return Instant.EPOCH;
+    }
+
+    public static Map<String, Instant> getSignatureList(File dir) {
+        File[] files = dir.listFiles();
+        if (files == null) {
+            files = new File[]{};
+        }
+        return Stream.of(files)
+                .filter(f -> f.isFile() && f.getName().endsWith(".xml"))
+                .collect(Collectors.toMap(f -> f.getName().replace(".xml", ""), SignatureStorageManager::dateFromFile));
+    }
+
+    public static Map<String, Instant> getBinarySignatureList() {
+        return getSignatureList(binary.toFile());
+    }
+
+    public static Map<String, Instant> getContainerSignatureList() {
+        return getSignatureList(container.toFile());
     }
 }
