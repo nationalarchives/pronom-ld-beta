@@ -259,7 +259,7 @@ public class TemplateUtils {
 
     > example
      */
-    private static final Pattern stepRegex = Pattern.compile("^---+", Pattern.MULTILINE);
+    private static final Pattern horizontalDividerRegex = Pattern.compile("^---+", Pattern.MULTILINE);
     private static final Pattern stepTitleRegex = Pattern.compile("^#(.*)", Pattern.MULTILINE);
     private static final Pattern exampleRegex = Pattern.compile("^> ", Pattern.MULTILINE);
 
@@ -267,7 +267,7 @@ public class TemplateUtils {
         String md = this.raw(region);
         List<MarkdownHelpers.NumberedStep> steps = new ArrayList<>();
         // break into category blocks
-        Arrays.stream(stepRegex.split(md)).forEach(s -> {
+        Arrays.stream(horizontalDividerRegex.split(md)).forEach(s -> {
             String[] parts = exampleRegex.split(s);
             String text = parts[0];
             String example = "";
@@ -283,5 +283,61 @@ public class TemplateUtils {
             steps.add(new MarkdownHelpers.NumberedStep(title.trim(), text, example));
         });
         return steps;
+    }
+
+    // About page team section:
+    // Requirement: Create a list of numbered steps that contain a title, an explanation and an example
+    // Example:
+    /*
+    [This is the image alt](https://placekitten.com/200/110)
+    Person Name
+    Person Title
+    person.email@nationalarchives.com
+
+    Text about the person. This can be infinitely long and use *all* __mardown__ allowed markers.
+
+    ---
+    [A photo of Jane Doe](https://placekitten.com/400/220)
+    Jane Doe
+    Executive Assistant of Business
+    jane.doe@nationalarchives.com
+
+    Jane Doe started as PRONOM's executive assistant of business in... blah blah blah...
+    */
+
+    // Matches a markdown URL in the format [text goes here](http://some.url/goes/here)
+    // The first part is taken as the alt of the image
+    // The second part is taken as the source of the image
+    private static final Pattern imgSrcAltRegex = Pattern.compile("\\[([^\\]]*)\\]\\(([^)]*)\\)");
+
+    public List<MarkdownHelpers.TeamMember> parseTeam(String region) {
+        String md = this.raw(region);
+        List<MarkdownHelpers.TeamMember> members = new ArrayList<>();
+        // break into different team members
+        Arrays.stream(horizontalDividerRegex.split(md)).forEach(m -> {
+            String[] lines = m.split("\n");
+            // remove any possible empty lines at the start of the team member markdown
+            // The loop breaks as soon as we find the first line that is not blank
+            // Leaving the rest of the lines in the noBlanks list.
+            List<String> noBlanks = Arrays.stream(lines).sequential().dropWhile(String::isBlank).collect(Collectors.toList());
+            // If there aren't at least 4 lines in the noBlanks list there aren't enough lines to fill the different fields
+            // In this case we return to ignore this section.
+            if (noBlanks.size() < 4) return;
+            String img = noBlanks.get(0);
+            Matcher imgMatcher = imgSrcAltRegex.matcher(img);
+            String imgSource = null;
+            String imgAlt = null;
+            if (imgMatcher.find()) {
+                imgAlt = imgMatcher.group(1);
+                imgSource = imgMatcher.group(2);
+            }
+            String name = noBlanks.get(1);
+            String title = noBlanks.get(2);
+            String email = noBlanks.get(3);
+            String description = String.join("\n", noBlanks.subList(4, noBlanks.size()));
+
+            members.add(new MarkdownHelpers.TeamMember(imgAlt, imgSource, name, title, email, description));
+        });
+        return members;
     }
 }

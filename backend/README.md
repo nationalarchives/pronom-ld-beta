@@ -88,6 +88,65 @@ Some text for cat 2 item 1
 
 The markers the parser look for are the header markers at the start of a line, followed by a space: "^## " for category titles, "^### " for category items. Whatever comes after the line containing "^### " is considered the category text 
 
+### Custom format for the steps in the contribute page
+
+The submission steps in the contribute page also follow a specific markdown structure:
+
+```md
+
+# This is the title
+This is the first step which explains how people can better help the PRONOM team with their submissions
+
+It can include all markdown modifiers such as **bold** and _italic_
+
+## headers can also be used
+### as long as they are level 2+ since the first level header ('#') is reserved for titles.
+
+> This goes in the example section of the numbered step
+
+---
+This is the second step and **all** modifiers can _be_ used, even [links](#)
+
+\```
+And fenced code blocks
+\```
+The marker for the example is a blockquote character at the start of a line (>)
+The separator of numbered steps is the horizontal divider at the start of a line, 3 or more hyphen characters (---)
+
+> This is an example, which can be
+multi-line
+
+---
+# Third step title
+
+some text
+
+> example
+```
+
+This will generate a list of numbered steps that contain a title, an explanation and an example.
+
+### Custom format for the team member cards in the about page
+
+The team cards follow a specific structure as well
+
+```md
+[This is the image alt](https://placekitten.com/200/110)
+Person Name
+Person Title
+person.email@nationalarchives.com
+
+Text about the person. This can be infinitely long and use *all* __mardown__ allowed markers.
+
+---
+[A photo of Jane Doe](https://placekitten.com/400/220)
+Jane Doe
+Executive Assistant of Business
+jane.doe@nationalarchives.com
+
+Jane Doe started as PRONOM's executive assistant of business in... blah blah blah...
+```
+
 ## Generating a runnable jar
 
 Spring boot comes pre-configured to output a "fat" jar which includes all resources required to run the project. To generate it run the following:

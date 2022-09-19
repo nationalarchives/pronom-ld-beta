@@ -98,4 +98,47 @@ public class MarkdownHelpers {
                     '}';
         }
     }
+
+    public static class TeamMember {
+        private final String imgAlt;
+        private final String imgSrc;
+        private final String name;
+        private final String title;
+        private final String email;
+        private final String description;
+
+        public TeamMember(String imgAlt, String imgURL, String name, String title, String email, String description) {
+            this.imgAlt = imgAlt;
+            this.imgSrc = imgURL;
+
+            this.name = name;
+            this.title = title;
+            this.email = email;
+            this.description = description;
+        }
+
+        public String getImgAlt() {
+            return imgAlt;
+        }
+
+        public String getImgSrc() {
+            return imgSrc;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
 }
