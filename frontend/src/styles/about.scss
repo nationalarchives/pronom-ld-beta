@@ -11,7 +11,7 @@
   padding: 12px;
   >div {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
      > div {
        p {
@@ -19,11 +19,16 @@
        }
      }
   }
+  img {
+    width: 100%;
+    height: auto;
+  }
   @media only screen and (max-width: 650px) {
     >div {
       grid-template-columns: 1fr;
     }
   }
+  
 }
   article {
     p {
