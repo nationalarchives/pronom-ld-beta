@@ -176,7 +176,6 @@ public class SubmissionController {
         if (sub == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Submission with id: " + submission);
         }
-        FileFormatDAO ffDao = new FileFormatDAO();
         Contributor reviewer = new Contributor(makeResource("mailto:test-user@pronom.com"),
                 "Pronom test user",
                 "PRONOM",
