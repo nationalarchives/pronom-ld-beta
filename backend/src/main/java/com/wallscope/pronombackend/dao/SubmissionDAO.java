@@ -61,7 +61,7 @@ public class SubmissionDAO {
                pr:submission.Contributor ?subContributor ;
                pr:submission.FileFormat ?f ;
                .
-               
+            OPTIONAL { ?sub pr:submission.Source ?subSource . }#END OPTIONAL
                """ + FILE_FORMAT_SUB_QUERY
             // A TentativeFileFormat has all of these fields as optionals
             .replaceAll("\\?f a pr:FileFormat", "?f a pr:TentativeFileFormat")
@@ -185,7 +185,6 @@ public class SubmissionDAO {
             WHERE  { ?sub pr:submission.SubmissionStatus ?subStatus }
             """;
     public static final String SUBMISSION_DELETE_SUB_QUERY = SUBMISSION_SUB_QUERY
-            .replaceAll("pr:submission\\.FileFormat \\?f ;", "pr:submission.FileFormat ?f ;  pr:submission.Source ?subSource ;")
             .replaceAll("\\?puidType rdfs:label \\?puidTypeName \\.", "")
             .replaceAll("\\?classification rdfs:label \\?classificationName \\.", "")
             .replaceAll("\\?fIdType rdfs:label \\?fIdTypeName \\.", "")
@@ -193,7 +192,9 @@ public class SubmissionDAO {
             .replaceAll("\\?contByteSeqPosition rdfs:label \\?contByteSeqPositionName \\.", "")
             .replaceAll("\\?fRelSource rdfs:label \\?fRelSourceName \\.", "")
             .replaceAll("\\?fRelTarget rdfs:label \\?fRelTargetName \\.", "")
-            .replaceAll("\\?fRelType pr:formatRelationshipType\\.TypeName \\?fRelTypeName ;\\n\\s\\spr:formatRelationshipType\\.InverseTypeName \\?fRelInverseTypeName \\.", "");
+            .replaceAll("\\?fRelType pr:formatRelationshipType\\.TypeName \\?fRelTypeName ;\\n\\s\\spr:formatRelationshipType\\.InverseTypeName \\?fRelInverseTypeName \\.", "")
+            .replaceAll("\\?fFamily rdfs:label \\?fFamilyName \\.", "")
+            .replaceAll("^(?:OPTIONAL\\{)?\\s?\\?f(?:Support|Dev)Actor.*","");
 
     public static final String DELETE_SUBMISSION_QUERY = PREFIXES + WITH_STATEMENT + """
             DELETE {

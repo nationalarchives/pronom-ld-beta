@@ -37,7 +37,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -158,7 +157,14 @@ public class ReleaseController {
     }
 
     @PostMapping(value = {"/editorial/releases/create-release"}, produces = "application/xml")
-    public String create(HttpServletRequest request, @RequestParam("target") String target, @RequestParam("type") String type, @RequestParam("status") String status, @RequestParam("version") String vStr) throws Exception {
+    public String create(
+            HttpServletRequest request,
+            @RequestParam("target") String target,
+            @RequestParam("type") String type,
+            @RequestParam("status") String status,
+            @RequestParam("version") String vStr,
+            @RequestParam(defaultValue = "false") Boolean fullRelease
+    ) throws Exception {
         if (!List.of("release", "test").contains(target)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid release type: " + target);
         }
@@ -172,6 +178,7 @@ public class ReleaseController {
             } catch (Exception ignored) {
             }
         }
+        // Publishes a release
         if (target.equals("release")) {
             FileFormatDAO ffDao = new FileFormatDAO();
             ffDao.publishRelease();
@@ -218,8 +225,10 @@ public class ReleaseController {
             marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
             marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(signature, new FileOutputStream(xml));
-            return "redirect:/editorial/releases/download/" + type + "/" + filename;
+            return "redirect:/releases/download/" + type + "/" + filename;
         }
+
+        // Generates a test release file
         Resource minStatus = makeResource(RDFUtil.PRONOM.Submission.statusId + status);
         if (!SubmissionDAO.statuses.contains(minStatus.getURI())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signature status: " + status);
@@ -227,23 +236,31 @@ public class ReleaseController {
         SubmissionDAO dao = new SubmissionDAO();
         if (type.equals("binary")) {
             List<FileFormat> fs = dao.getForBinarySignature(statusList(minStatus.getURI()));
-            List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream())
-                    .filter(distinctByKey(InternalSignature::getID))
+            List<InternalSignature> signatures = fs.stream().flatMap(f -> f.getInternalSignatures().stream()).collect(Collectors.toList());
+            if (fullRelease) {
+                FileFormatDAO ffDao = new FileFormatDAO();
+                fs.addAll(ffDao.getAllForSignature());
+                signatures.addAll(fs.stream().flatMap(f -> f.getInternalSignatures().stream()).collect(Collectors.toList()));
+            }
+            signatures = signatures.stream().filter(distinctByKey(InternalSignature::getID))
                     .sorted(InternalSignature::compareTo)
                     .collect(Collectors.toList());
-
-            fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+            fs.sort(FileFormat::compareTo);
             request.setAttribute("formats", fs);
             request.setAttribute("signatures", signatures);
             return "forward:/signature.xml";
         }
         List<FileFormat> fs = dao.getForContainerSignature(statusList(minStatus.getURI()));
-        List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream())
-                .filter(distinctByKey(ContainerSignature::getID))
+        List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream()).collect(Collectors.toList());
+        if (fullRelease) {
+            FileFormatDAO ffDao = new FileFormatDAO();
+            fs.addAll(ffDao.getAllForSignature());
+            signatures.addAll(fs.stream().flatMap(f -> f.getContainerSignatures().stream()).collect(Collectors.toList()));
+        }
+        signatures = signatures.stream().filter(distinctByKey(ContainerSignature::getID))
                 .sorted(ContainerSignature::compareTo)
                 .collect(Collectors.toList());
-
-        fs.sort(Comparator.comparingInt(f -> Integer.parseInt(f.getID())));
+        fs.sort(FileFormat::compareTo);
         request.setAttribute("formats", fs);
         request.setAttribute("signatures", signatures);
         return "forward:/container-signature.xml";
