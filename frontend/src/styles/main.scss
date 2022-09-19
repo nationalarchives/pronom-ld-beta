@@ -1503,6 +1503,7 @@ h1.internal-title {
     }
   }
 }
+
 #make-a-release {
   background: #CCDBEA;
   display: grid;
@@ -1565,6 +1566,11 @@ h1.internal-title {
       padding-right: 20px;
       font-size: 30px;
     }
+  }
+}
+#version, #releaseStage {
+  &.hide {
+    display: none !important;
   }
 }
 .search-button {
