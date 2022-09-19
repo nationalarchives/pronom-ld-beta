@@ -1490,23 +1490,64 @@ h1.internal-title {
     }
   }
 }
+#select2 {
+  > fieldset {
+    display: grid;
+    grid-template-columns: 0.6fr 1fr;
+    grid-gap: 20px;
+    >div {
+      &:nth-child(2){
+        border-left: 1px black solid;
+        padding-left: 15px;
+      }
+    }
+  }
+}
 #make-a-release {
   background: #CCDBEA;
   display: grid;
-  grid-template-columns: 1fr 350px 0.3fr;
+  grid-template-columns: 2fr 0.6fr;
   grid-column-gap: 20px;
   padding: 5px 15px 15px 15px;
   h3 {
     grid-column: 1/4;
   }
+  #submit {
+    border-left: 1px black solid;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+  }
   .selected {
     border-bottom: 2px solid black;
     width: 100%;
     display: grid;
-    grid-template-columns: auto 300px 1fr;
+    grid-template-columns: 280px 1fr;
     align-items: center;
     grid-gap: 5px;
     min-height: 50px;
+    padding-bottom: 10px;
+    #version {
+      display: flex;
+      flex-direction: column;
+      input{
+        max-width: 100px;
+      }
+    }
+    .option {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      grid-gap: 10px;
+      align-items: center;
+      align-self: flex-start;
+    }
+    .check {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 5px;
+      align-items: center;
+      margin-top: 10px;
+    }
     .stretch {
       grid-column: 2/4;
     }
