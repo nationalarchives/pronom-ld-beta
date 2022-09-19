@@ -223,20 +223,20 @@ block content
               fieldset
                 div
                   label(for='selectType') 
-                    h4 1) Signature type
+                    h4 1) Select signature type
                     fieldset
                       legend.sr-only Select signature type
                       select#selectType(name="type")
                         option(value="binary") Binary signature
                         option(value="container") Container signature
                 div
-                  h4 2) Please select between generating test and publishing
+                  h4 2) Select between generating test and publishing
 
                   .selected
                     .option
                       input.check#otherPlan(type='radio' name='target' value='test')
-                      label(for='selectRelease') Generate test signature.
-                    div
+                      label(for='otherPlan') Generate test signature.
+                    #releaseStage
                       label Release stage:
                       fieldset
                         legend.sr-only Select release stage
@@ -259,6 +259,7 @@ block content
                   
                   
             #submit
+              h4 3) Submit
               button.blue.medium
                 i.fa-solid.fa-rocket
                 | Release to PRONOM

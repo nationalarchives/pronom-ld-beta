@@ -1516,7 +1516,7 @@ h1.internal-title {
     border-left: 1px black solid;
     padding-left: 20px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
   }
   .selected {
     border-bottom: 2px solid black;
@@ -1546,7 +1546,6 @@ h1.internal-title {
       grid-template-columns: auto 1fr;
       grid-gap: 5px;
       align-items: center;
-      margin-top: 10px;
     }
     .stretch {
       grid-column: 2/4;
