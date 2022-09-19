@@ -219,33 +219,46 @@ block content
         div
           form(id="make-a-release", th:action="@{/editorial/releases/create-release}", method="POST", target="_blank")
             h3 Generate a signature file
-            div
+            #select2
               fieldset
-                legend.sr-only Select filter
-                label(for='selectType') Signature type
-                  fieldset
-                    legend.sr-only Select signature type
-                    select#selectType(name="type")
-                      option(value="binary") Binary signature
-                      option(value="container") Container signature
-                .selected
-                  input.check#currentPlan(type='radio' name='target' value='release' checked="true") 
-                  label(for='currentPlan') Publish current release plan. Version number:
-                  input(name="version", type="number", min="0")
-                .selected
-                  label.sr-only(for='otherPlan') Generate test siganture
-                  input.check#otherPlan(type='radio' name='target' value='test')
-                  label(for='selectRelease') Generate test signature. Release stage:
-                  fieldset
-                    legend.sr-only Select release stage
-                    select#selectRelease(name="status")
-                      each name, val in status
-                        option(value=val)=name
-                  label(for='includePrevious') Full release: Include previously published formats
-                  fieldset
-                    legend.sr-only Include previously published formats
-                    input#includePrevious(type="checkbox", checked="checked")
-            div
+                div
+                  label(for='selectType') 
+                    h4 1) Signature type
+                    fieldset
+                      legend.sr-only Select signature type
+                      select#selectType(name="type")
+                        option(value="binary") Binary signature
+                        option(value="container") Container signature
+                div
+                  h4 2) Please select between generating test and publishing
+
+                  .selected
+                    .option
+                      input.check#otherPlan(type='radio' name='target' value='test')
+                      label(for='selectRelease') Generate test signature.
+                    div
+                      label Release stage:
+                      fieldset
+                        legend.sr-only Select release stage
+                        select#selectRelease(name="status")
+                          each name, val in status
+                            option(value=val)=name
+                      .check
+                        fieldset
+                          legend.sr-only Include previously published formats
+                          input#includePrevious(type="checkbox", checked="checked")
+                        label(for='includePrevious') Full release: Include previously published formats
+                  .selected
+                    .option
+                      input.check#currentPlan(type='radio' name='target' value='release' checked="true")
+                      label(for='currentPlan') Publish current release plan.
+                    #version
+                      label Version number:
+                      input(name="version", type="number", min="0")
+                  
+                  
+                  
+            #submit
               button.blue.medium
                 i.fa-solid.fa-rocket
                 | Release to PRONOM

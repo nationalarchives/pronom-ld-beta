@@ -46,4 +46,12 @@ public class UtilTest {
         assertFalse(result.isEmpty());
         System.out.println(result);
     }
+
+    @Test
+    void parseTeamWorks(){
+        TemplateUtils t = new TemplateUtils();
+        List<MarkdownHelpers.TeamMember> result = t.parseTeam("about_pronom-team");
+        assertFalse(result.isEmpty());
+        System.out.println(result);
+    }
 }
