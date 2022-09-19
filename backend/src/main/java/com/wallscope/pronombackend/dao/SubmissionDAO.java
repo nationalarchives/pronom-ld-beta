@@ -192,7 +192,9 @@ public class SubmissionDAO {
             .replaceAll("\\?contByteSeqPosition rdfs:label \\?contByteSeqPositionName \\.", "")
             .replaceAll("\\?fRelSource rdfs:label \\?fRelSourceName \\.", "")
             .replaceAll("\\?fRelTarget rdfs:label \\?fRelTargetName \\.", "")
-            .replaceAll("\\?fRelType pr:formatRelationshipType\\.TypeName \\?fRelTypeName ;\\n\\s\\spr:formatRelationshipType\\.InverseTypeName \\?fRelInverseTypeName \\.", "");
+            .replaceAll("\\?fRelType pr:formatRelationshipType\\.TypeName \\?fRelTypeName ;\\n\\s\\spr:formatRelationshipType\\.InverseTypeName \\?fRelInverseTypeName \\.", "")
+            .replaceAll("\\?fFamily rdfs:label \\?fFamilyName \\.", "")
+            .replaceAll("^(?:OPTIONAL\\{)?\\s?\\?f(?:Support|Dev)Actor.*","");
 
     public static final String DELETE_SUBMISSION_QUERY = PREFIXES + WITH_STATEMENT + """
             DELETE {
