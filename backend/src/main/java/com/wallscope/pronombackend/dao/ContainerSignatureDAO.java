@@ -25,6 +25,7 @@ public class ContainerSignatureDAO {
               pr:containerSignature.ContainerFile ?contSigFile ;
               pr:containerSignature.FileFormat ?f ;
             .
+            OPTIONAL{ ?contSig rdfs:comment ?comment . }#END OPTIONAL
             OPTIONAL{ ?contSig pr:containerSignature.ContainerType ?contSigType . }#END OPTIONAL
             # ContainerFile link
             ?contSigFile a pr:ContainerFile .
