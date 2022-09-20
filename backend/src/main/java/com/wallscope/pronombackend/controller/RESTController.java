@@ -188,7 +188,7 @@ public class RESTController {
     @GetMapping(value = {"/rdf/fmt/{puid}.{format}", "/rdf/x-fmt/{puid}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
     public String rdfExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid, @PathVariable String format) {
-        logger.debug("REQUEST FOR RDF FORMAT: " + format);
+        logger.trace("REQUEST FOR RDF FORMAT: " + format);
         Lang rdfLang = langFromFormat(format);
         if (rdfLang == null) {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
@@ -209,7 +209,7 @@ public class RESTController {
     @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
     public String genericRDFHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String type, @PathVariable String id, @PathVariable String format) {
-        logger.debug("REQUEST FOR GENERIC RDF ENTITY: " + type + '/' + id);
+        logger.trace("REQUEST FOR GENERIC RDF ENTITY: " + type + '/' + id);
         Lang rdfLang = langFromFormat(format);
         if (rdfLang == null) {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);

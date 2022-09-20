@@ -71,7 +71,7 @@ public class TemplateUtils {
             label = extra.getOrDefault(uri, null);
         }
         if (label == null) {
-            logger.debug("LABEL MAP: No label for URI: " + uri);
+            logger.trace("LABEL MAP: No label for URI: " + uri);
             return "";
         }
         return label;
@@ -82,7 +82,7 @@ public class TemplateUtils {
             File f = new File(mdDir, region + ".md");
             return Processor.process(f);
         } catch (IOException e) {
-            logger.debug("MD LOADER: No template for region: " + region);
+            logger.debug("MD LOADER: No content for region: " + region);
             return "";
         }
     }

@@ -41,7 +41,7 @@ public class TriplestoreUtil {
         if (o != null) {
             query.setParam("o", o);
         }
-        logger.debug("sending ask: " + query);
+        logger.trace("sending ask: " + query);
         return conn.build().queryAsk(query.asQuery());
     }
 
@@ -53,7 +53,7 @@ public class TriplestoreUtil {
                 q.setParam(entry.getKey(), entry.getValue());
             }
         }
-        logger.debug("sending construct: " + q);
+        logger.trace("sending construct: " + q);
         return conn.build().queryConstruct(q.asQuery());
     }
 
@@ -68,7 +68,7 @@ public class TriplestoreUtil {
         // I know this looks weird, this explains it: https://stackoverflow.com/a/51057519/2614483
         String out = input.replaceAll("\"", "\\\\\\\"")
                 .replaceAll("/", "\\\\/");
-        logger.debug("SANITISING, in=[" + input + "], out=[" + out + "]");
+        logger.trace("SANITISING, in=[" + input + "], out=[" + out + "]");
 
         return out;
     }
@@ -81,7 +81,7 @@ public class TriplestoreUtil {
                 q.setParam(entry.getKey(), entry.getValue());
             }
         }
-        logger.debug("sending select: " + q);
+        logger.trace("sending select: " + q);
         conn.build().querySelect(q.asQuery(), f);
     }
 
@@ -97,7 +97,7 @@ public class TriplestoreUtil {
                 q.setParam(entry.getKey(), entry.getValue());
             }
         }
-        logger.debug("sending update: " + q);
+        logger.trace("sending update: " + q);
         conn.build().update(q.asUpdate());
     }
 
@@ -113,7 +113,7 @@ public class TriplestoreUtil {
                 q.setParam(entry.getKey(), entry.getValue());
             }
         }
-        logger.debug("sending ask: " + q);
+        logger.trace("sending ask: " + q);
         return conn.build().queryAsk(q.asQuery());
     }
 

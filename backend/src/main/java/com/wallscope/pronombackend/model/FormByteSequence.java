@@ -136,12 +136,7 @@ public class FormByteSequence {
     }
 
     public boolean isNotEmpty() {
-        boolean val = uri != null && !uri.isBlank()
+        return uri != null && !uri.isBlank()
                 && sequence != null && !sequence.isBlank();
-        logger.debug("EMPTY CHECK BYTE SEQUENCE ("+val+"): "+ uri);
-        if(!val){
-            logger.debug("EMPTY BYTESEQ: "+this);
-        }
-        return val;
     }
 }

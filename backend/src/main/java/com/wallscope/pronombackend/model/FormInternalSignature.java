@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
@@ -135,11 +134,9 @@ public class FormInternalSignature {
     }
 
     public boolean isNotEmpty() {
-        boolean val = uri != null && !uri.isBlank()
+        return uri != null && !uri.isBlank()
                 && name != null && !name.isBlank()
                 && byteSequences != null && byteSequences.stream().anyMatch(FormByteSequence::isNotEmpty);
-        logger.debug("EMPTY CHECK INTERNAL SIGNATURE (" + val + "): " + uri);
-        return val;
 
     }
 

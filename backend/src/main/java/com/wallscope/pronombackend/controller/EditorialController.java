@@ -140,8 +140,8 @@ public class EditorialController {
     @GetMapping("/editorial")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
-        logger.debug("PRINCIPAL: " + principal);
-        logger.debug("HYDRATED: " + hydrateUser(principal));
+        logger.trace("PRINCIPAL: " + principal);
+        logger.trace("HYDRATED: " + hydrateUser(principal));
         SubmissionDAO dao = new SubmissionDAO();
         List<Submission> subs = dao.getAllSubmissions();
         Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
@@ -164,7 +164,7 @@ public class EditorialController {
         if (actor == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Actor with id: " + id);
         }
-        logger.debug("Actor: " + actor);
+        logger.trace("Actor: " + actor);
         model.addAttribute("actor", actor.convert());
         return "actor";
     }

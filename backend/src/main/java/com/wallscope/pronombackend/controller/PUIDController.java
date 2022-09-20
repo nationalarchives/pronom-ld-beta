@@ -49,7 +49,7 @@ public class PUIDController {
         if (f == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
-        logger.debug("File format: " + f);
+        logger.trace("File format: " + f);
         model.addAttribute("ff", f);
         return "file-format";
     }

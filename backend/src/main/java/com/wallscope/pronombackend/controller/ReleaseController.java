@@ -150,9 +150,8 @@ public class ReleaseController {
             }
             return Files.readAllBytes(download);
         } catch (IOException e) {
-            logger.debug("FAILED TO RETURN FILE: " + file);
-            e.printStackTrace();
-            return null;
+            logger.trace("FAILED TO RETURN FILE: " + file);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
         }
     }
 

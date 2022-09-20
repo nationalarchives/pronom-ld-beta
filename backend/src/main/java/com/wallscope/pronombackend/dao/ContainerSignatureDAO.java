@@ -72,22 +72,22 @@ public class ContainerSignatureDAO {
             """;
 
     public List<FileFormat> getAllForContainerSignature() {
-        logger.debug("fetching all container signatures");
+        logger.trace("fetching all container signatures");
         Model m = TriplestoreUtil.constructQuery(CONTAINER_SIG_QUERY);
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building container signature objects");
+        logger.trace("building container signature objects");
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
-        logger.debug("container signatures built");
+        logger.trace("container signatures built");
         return fs;
     }
 
     public List<ContainerSignature.ContainerType> getTriggerPuids() {
-        logger.debug("fetching all container type definitions");
+        logger.trace("fetching all container type definitions");
         Model m = TriplestoreUtil.constructQuery(TRIGGER_FF_QUERY);
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building container type definitions");
+        logger.trace("building container type definitions");
         List<ContainerSignature.ContainerType> cts = mu.buildAllFromModel(new ContainerSignature.ContainerType.Deserializer());
-        logger.debug("container type definitions built");
+        logger.trace("container type definitions built");
         return cts;
     }
 }
