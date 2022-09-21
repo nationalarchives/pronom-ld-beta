@@ -1,6 +1,9 @@
 package com.wallscope.pronombackend.model;
 
+import com.opencsv.CSVWriter;
+import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.utils.ModelUtil;
+import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -9,6 +12,9 @@ import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -248,6 +254,85 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
 
     public List<FormatAlias> getAliases() {
         return aliases;
+    }
+
+    public File toCSV(String fileName) {
+        File file = new File(fileName);
+        TemplateUtils t = new TemplateUtils();
+        FileFormatDAO dao = new FileFormatDAO();
+
+        try {
+            // create FileWriter object with file as parameter
+            FileWriter outputFile = new FileWriter(file);
+
+            // create CSVWriter with ',' as separator
+            CSVWriter writer = new CSVWriter(outputFile, ',',
+                    CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            List<String[]> data = new ArrayList<String[]>();
+            data.add(new String[] { null });
+            data.add(new String[] {
+                    "File Format ID",
+                    "Format Name",
+                    "Format Version",
+                    "Other names",
+                    "Identifiers: Type, Identifier",
+                    "Format Families",
+                    "Classification",
+                    "Description",
+                    "Binary",
+                    "Byte Orders",
+                    "Related File Formats: Relationship Type, Related Format ID, Related Format Name, Related Format Version",
+                    "Release Date",
+                    "Withdrawn Date",
+                    "Developers: Developer ID, Developer Name",
+                    "Support: Support ID, Support Name",
+                    //"Provenance Source ID", "Provenance Source ID", "Provenance Source ID", "Provenance Source ID",
+                    "Last Updated Date",
+                    //"Format Note",
+                    "Documents: Document ID, Display Text, Document Type, Availability, Availability Note, 'Authors: Author ID, Author Name', Publication Date, Title, 'Publishers: Publisher ID, Publisher Name', 'Document Identifiers: Type, Identifier', Document Rights, Document Note",
+                    "External Signatures: Signature ID, Signature Type, Signature",
+                    "Internal Signatures: Signature ID, Signature Name, Signature Description, 'Byte Sequence: Position Type, Offset, Byte ordering, Value'",
+                    "Compression Types: Compression ID, Compression Name, Compression Version, Compression Other Names, 'Compression Identifiers: Type, Identifier', Family, Description, Lossiness, Release Date, Withdrawn Date, 'Developers: Developer ID, Developer Name', 'Support: Support ID, Support Name', Compression Documentation, Compression Rights, Compression Note"
+                    //"Character Encodings: Encoding ID, Encoding Name, Encoding Version, Encoding Aliases, 'Encoding Identifiers: Type, Identifier', Family, Description, Code Page, Code Unit Width, Encoding Form Width, Release Date, Withdrawn Date, 'Developers: Developer ID, Developer Name', 'Support: Support ID, Support Name', Encoding Documentation, Encoding IPR, Encoding Note",
+                    //"Rights: IPR ID, IPR Type, IPR Date, 'Owners: Owner ID, Owner Name', IPR Jurisdiction, Licence Details, 'IPR Identifiers: Type, Identifier', IPR Note",
+                    //"Properties: Name, Description, Type, Value, Minimum Value, Maximum Value, Risk, High Risk"
+            });
+            data.add(new String[] {
+                    t.getString(getID()),
+                    t.getString(getName()),
+                    t.getString(getVersion()),
+                    getAliases().stream().map(alias -> t.getString(alias.getName()) + " (" + t.getString(alias.getVersion()) + ")").collect(Collectors.joining(", ")),
+                    getFormatIdentifiers().stream().map(fi -> t.getString(fi.getTypeName()) + "," + t.getString(fi.getName()) + ";").collect(Collectors.joining()) + "PUID,fmt/" + t.getString(getPuid().toString()) + ";",
+                    t.getString(getFormatFamilies().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
+                    t.getString(getClassifications().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
+                    t.getString(getDescription()),
+                    isBinaryFlag() != null && !isBinaryFlag().toString().isBlank() ? isBinaryFlag().toString() : "",
+                    t.getString(getByteOrder().stream().map(t::getLabel).collect(Collectors.joining(", "))),
+                    getHasRelationships().stream().map(rf -> t.getString(rf.getRelationshipTypeName()) + "," + t.getString(rf.getTargetID()) + ", " + t.getString(rf.getTargetName()) + ", " + t.getString(dao.getFileFormatByURI(rf.getTarget()).getVersion() + ";")).collect(Collectors.joining()),
+                    t.getString(t.parseDate(getReleaseDate())),
+                    t.getString(t.parseDate(getWithdrawnDate())),
+                    getDevelopmentActors().stream().map(da -> t.getString(da.getID()) + "," + t.getString(da.getDisplayName()) + ";").collect(Collectors.joining()),
+                    getSupportActors().stream().map(sa -> t.getString(sa.getID()) + "," + t.getString(sa.getDisplayName()) + ";").collect(Collectors.joining()),
+                    t.getString(t.parseDate(getUpdated())),
+                    getReferences().stream().map(doc -> t.getString(doc.getId()) + "," + t.getString(doc.getName()) + "," + t.getString(doc.getType()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(t.parseDate(doc.getPublicationDate())) + "," + t.getString(doc.getName()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(doc.getNote()) + ";").collect(Collectors.joining()),
+                    getExternalSignatures().stream().map(es -> t.getString(es.getID()) + "," + t.getString(es.getSignatureType()) + "," + t.getString(es.getName()) + ";").collect(Collectors.joining()),
+                    getInternalSignatures().stream().map(is -> t.getString(is.getID()) + "," + t.getString(is.getName()) + "," + t.getString(is.getNote()) + ",'" + is.getByteSequences().stream().map(bs -> t.getString(bs.getPositionName()) + "," + t.getString(bs.getOffset().toString()) + "," + t.getString(bs.getByteOrderName()) + "," + t.getString(bs.getSequence()) + ";").collect(Collectors.joining()) + "';").collect(Collectors.joining()),
+                    getCompressionTypes().stream().map(ct -> t.getString(ct.getID()) + "," + t.getString(ct.getName()) + "," + t.getString(ct.getDescription()) + "," + t.getString(ct.getLossiness().getLocalName()) + "," + t.getString(t.parseDate(ct.getReleaseDate())) + ";").collect(Collectors.joining())
+            });
+
+            writer.writeAll(data);
+
+            // closing writer connection
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
     }
 
     public Model toRDF() {
@@ -491,5 +576,9 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
                     compressionTypes,
                     aliases);
         }
+
+
+
+
     }
 }

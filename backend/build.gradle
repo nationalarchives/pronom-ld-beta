@@ -107,7 +107,8 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
-
+    // OpenCSV
+    implementation 'com.opencsv:opencsv:5.7.0'
     // SOAP deps
     implementation 'wsdl4j:wsdl4j'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'

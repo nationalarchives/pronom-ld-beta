@@ -17,8 +17,10 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
@@ -30,8 +32,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -204,6 +205,33 @@ public class RESTController {
         ModelUtil mu = new ModelUtil(f.toRDF());
 
         return mu.toString(rdfLang);
+    }
+
+    @GetMapping(value = {"/csv/fmt/{puid}"}, produces = {"text/csv"})
+    @ResponseBody
+    public void csvExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid) throws IOException {
+        String[] parts = request.getRequestURI().split("/");
+        String puidType = parts[parts.length - 2];
+        FileFormatDAO dao = new FileFormatDAO();
+        FileFormat f = dao.getFileFormatByPuid(puid, puidType);
+        if (f == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
+        }
+
+        String version = f.getVersion() != null && !f.getVersion().isBlank() ? " (" + f.getVersion() + ")" : "";
+        String fileName = f.getName() != null && !f.getName().isBlank() ? f.getName() + version : "DetailedFileFormatReport";
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + ".csv");
+
+        File file = f.toCSV(fileName + ".csv");
+
+        // Download
+        response.setContentType("text/csv");
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        file.delete();
     }
 
     @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})

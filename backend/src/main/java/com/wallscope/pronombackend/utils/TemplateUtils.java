@@ -77,6 +77,10 @@ public class TemplateUtils {
         return label;
     }
 
+    public String getString(String string) {
+        return string != null && !string.isBlank() ? string : "";
+    }
+
     public String md(String region) {
         try {
             File f = new File(mdDir, region + ".md");
