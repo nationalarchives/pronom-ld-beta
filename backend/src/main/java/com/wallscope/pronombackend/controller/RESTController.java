@@ -109,27 +109,6 @@ public class RESTController {
         return "" + nextPuid;
     }
 
-    @RequestMapping(value = {"/xml/multiple"}, produces = {"application/xml"})
-    @ResponseBody
-    public String multiXMLExportHandler(Model model, HttpServletRequest request, HttpServletResponse response) {
-        @SuppressWarnings("unchecked")
-        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
-        logger.debug("FORMATS: " + fs);
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.csv");
-        response.setContentType("text/csv");
-        StringBuilder s = new StringBuilder();
-        s.append("\n");
-        for (int i = 0; i < fs.size(); i++) {
-            FileFormat f = fs.get(i);
-            try {
-                s.append(f.toCSV(i == 0));
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
-            }
-        }
-        return s.toString();
-    }
-
     @PostMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
     @ResponseBody
     public BinarySignatureFileWrapper xmlBinarySignatureHandler(HttpServletRequest request) throws DatatypeConfigurationException, JAXBException {
@@ -239,7 +218,7 @@ public class RESTController {
         }
         @SuppressWarnings("unchecked")
         List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
-        logger.debug("FORMATS: " + fs);
+        logger.trace("FORMATS: " + fs);
         ModelUtil mu = new ModelUtil(ModelFactory.createDefaultModel());
         mu.addAll(fs);
         return mu.toString(rdfLang);
@@ -260,9 +239,9 @@ public class RESTController {
         String fileName = f.getName() != null && !f.getName().isBlank() ? f.getName() + version : "DetailedFileFormatReport";
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + ".csv");
         response.setContentType("text/csv");
-
+        Map<Resource, FileFormat> relatedFormats = getRelatedFormats(List.of(f));
         try {
-            return f.toCSV();
+            return f.toCSV(relatedFormats);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
         }
@@ -273,7 +252,8 @@ public class RESTController {
     public String multiCSVExportHandler(Model model, HttpServletRequest request, HttpServletResponse response) {
         @SuppressWarnings("unchecked")
         List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
-        logger.debug("FORMATS: " + fs);
+        logger.trace("FORMATS: " + fs);
+        Map<Resource, FileFormat> relatedFormats = getRelatedFormats(fs);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.csv");
         response.setContentType("text/csv");
         StringBuilder s = new StringBuilder();
@@ -281,12 +261,21 @@ public class RESTController {
         for (int i = 0; i < fs.size(); i++) {
             FileFormat f = fs.get(i);
             try {
-                s.append(f.toCSV(i == 0));
+                s.append(f.toCSV(i == 0, relatedFormats));
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
             }
         }
         return s.toString();
+    }
+
+    private Map<Resource, FileFormat> getRelatedFormats(List<FileFormat> fs) {
+        FileFormatDAO dao = new FileFormatDAO();
+        Map<Resource, FileFormat> relatedFormats = new HashMap<>();
+        Set<Resource> uris = new HashSet<>();
+        fs.forEach(f -> f.getHasRelationships().forEach(fr -> uris.add(fr.getTarget())));
+        dao.getFileFormatsbyURI(uris).forEach(rel -> relatedFormats.put(rel.getURI(), rel));
+        return relatedFormats;
     }
 
     @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})

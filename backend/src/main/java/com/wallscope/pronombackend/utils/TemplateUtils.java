@@ -36,6 +36,14 @@ public class TemplateUtils {
     Logger logger = LoggerFactory.getLogger(TemplateUtils.class);
 
     private final String mdDir;
+    private static TemplateUtils staticInstance = null;
+
+    public static TemplateUtils getInstance() {
+        if (staticInstance == null) {
+            staticInstance = new TemplateUtils();
+        }
+        return staticInstance;
+    }
 
     public TemplateUtils() {
         this.mdDir = ApplicationConfig.MARKDOWN_DIR;

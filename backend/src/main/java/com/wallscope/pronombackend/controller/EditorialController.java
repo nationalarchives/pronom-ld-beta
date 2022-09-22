@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class EditorialController {
     @GetMapping("/editorial/search")
     public String searchHandler(
             HttpServletRequest request,
+            HttpServletResponse response,
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -59,7 +61,7 @@ public class EditorialController {
         model.addAttribute("user", hydrateUser(principal));
         // reuse the search controller code to populate the search results
         model.addAttribute("editorial", true);
-        new SearchController().searchHandler(request, model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize, format);
+        new SearchController().searchHandler(request, response, model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize, format);
         return "internal-search";
     }
 

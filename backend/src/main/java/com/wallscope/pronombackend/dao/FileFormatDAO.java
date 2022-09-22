@@ -10,6 +10,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,7 +167,7 @@ public class FileFormatDAO {
              }
             """;
 
-    public static String MULTIPLE_FILE_FORMAT_QUERY(List<Resource> uris) {
+    public static String MULTIPLE_FILE_FORMAT_QUERY(Collection<Resource> uris) {
         String formats = uris.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
         return PREFIXES + """
                 CONSTRUCT {
@@ -303,7 +304,7 @@ public class FileFormatDAO {
         return fs;
     }
 
-    public List<FileFormat> getFileFormatsbyURI(List<Resource> uris) {
+    public List<FileFormat> getFileFormatsbyURI(Collection<Resource> uris) {
         logger.trace("fetching file formats: " + uris);
         Model m = TriplestoreUtil.constructQuery(MULTIPLE_FILE_FORMAT_QUERY(uris));
         ModelUtil mu = new ModelUtil(m);

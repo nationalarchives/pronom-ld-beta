@@ -31,6 +31,7 @@ public class Actor implements RDFWritable {
     }
 
     public String getID() {
+        if(uri == null) return null;
         String[] parts = uri.getURI().split("/");
         return parts[parts.length - 1];
     }

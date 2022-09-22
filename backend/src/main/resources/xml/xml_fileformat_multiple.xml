@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PRONOM-Report xmlns="http://pronom.nationalarchives.gov.uk" xmlns:th="http://www.thymeleaf.org">
+    <report_format_detail>
+        <FileFormat th:each="f : ${formats}">
+            <FormatID th:text="${f.ID}">619</FormatID>
+            <FormatName th:text="${f.name}">Graphics Interchange Format</FormatName>
+            <FormatVersion th:text="${f.version}">87a</FormatVersion>
+            <FormatAliases><th:block th:each="alias,iterStat : ${f.aliases}"><th:block th:text="${alias.name} + ' (' + ${alias.version} + ')' + ${!iterStat.last ? ', ' : ''}">GIF (1987a)</th:block></th:block></FormatAliases>
+            <FormatFamilies><th:block th:each="family : ${f.formatFamilies}"><th:block th:text="${family.label}">GIF (1987a)</th:block></th:block></FormatFamilies>
+            <FormatTypes><th:block th:each="classification : ${f.classifications}"><th:block th:text="${classification.label}">GIF (1987a)</th:block></th:block></FormatTypes>
+            <FormatDescription th:text="${f.description}">his</FormatDescription>
+            <BinaryFileFormat th:text="${f.binaryFlag}">Binary</BinaryFileFormat>
+            <ByteOrders><th:block th:if="!${#lists.isEmpty(f.byteOrder)}"><th:block th:each="bo : ${f.byteOrder}"><th:block th:text="${@templateUtils.getLabel(bo)}">GIF (1987a)</th:block></th:block></th:block></ByteOrders>
+            <ReleaseDate th:text="${@templateUtils.parseDate(f.releaseDate)}"> </ReleaseDate>
+            <WithdrawnDate th:text="${@templateUtils.parseDate(f.withdrawnDate)}"> </WithdrawnDate>
+            <LastUpdatedDate th:text="${@templateUtils.parseDate(f.getUpdated())}">02 Aug 2005</LastUpdatedDate>
+             <th:block th:each="fi : ${f.formatIdentifiers}">
+                <FileFormatIdentifier>
+                    <Identifier th:text="${fi.getName()}">fmt/3</Identifier>
+                    <IdentifierType th:text="${fi.getTypeName()}">PUID</IdentifierType>
+                </FileFormatIdentifier>
+             </th:block>
+            <Developers>
+                <th:block th:each="da : ${f.developmentActors}">
+                    <DeveloperID th:text="${da.getID()}">108</DeveloperID>
+                    <DeveloperName th:text="${da.getDisplayName()}"> </DeveloperName>
+                    <OrganisationName th:text="${da.getOrganisation()} ?: ${da.getDisplayName()}">Compuserve Incorporated</OrganisationName>
+                    <DeveloperCompoundName th:text="${da.getDisplayName()}">Compuserve Incorporated</DeveloperCompoundName>
+                </th:block>
+            </Developers>
+            <Support>
+                <th:block th:each="sa : ${f.supportActors}">
+                    <DeveloperID th:text="${sa.getID()}">108</DeveloperID>
+                    <DeveloperName th:text="${sa.getDisplayName()}"> </DeveloperName>
+                    <OrganisationName th:text="${sa.getOrganisation()} ?: ${sa.getDisplayName()}">Compuserve Incorporated</OrganisationName>
+                    <DeveloperCompoundName th:text="${sa.getDisplayName()}">Compuserve Incorporated</DeveloperCompoundName>
+                </th:block>
+            </Support>
+            <Document>
+                <th:block th:each="doc : ${f.references}">
+                    <DocumentID th:text="${doc.getId()}">30</DocumentID>
+                    <DisplayText th:text="${doc.getName()}">Compuserve Incorporated, 1987, Graphics Interchange Format: A standard defining a mechanism for the storage and transmission of raster-based graphics information</DisplayText>
+                    <DocumentType th:text="${doc.getType()}">Authoritative</DocumentType>
+                    <PublicationDate th:text="${@templateUtils.parseDate(doc.getPublicationDate())}">15 Jun 1987</PublicationDate>
+                    <TitleText th:text="${doc.getName()}">Graphics Interchange Format: A standard defining a mechanism for the storage and transmission of raster-based graphics information</TitleText>
+                    <DocumentNote th:text="${doc.getNote()}"> </DocumentNote>
+                    <Author>
+                        <AuthorID th:text="${doc.getAuthor().getID()}">108</AuthorID>
+                        <AuthorName th:text="${doc.getAuthor().getDisplayName()}"> </AuthorName>
+                        <OrganisationName th:text="${doc.getAuthor().getOrganisation()} ?: ${doc.getAuthor().getDisplayName()}">Compuserve Incorporated</OrganisationName>
+                        <AuthorCompoundName th:text="${doc.getAuthor().getDisplayName()}">Compuserve Incorporated</AuthorCompoundName>
+                    </Author>
+                    <Publisher>
+                        <AuthorID th:text="${doc.getAuthor().getID()}">108</AuthorID>
+                        <AuthorName th:text="${doc.getAuthor().getDisplayName()}"> </AuthorName>
+                        <OrganisationName th:text="${doc.getAuthor().getOrganisation()} ?: ${doc.getAuthor().getDisplayName()}">Compuserve Incorporated</OrganisationName>
+                        <AuthorCompoundName th:text="${doc.getAuthor().getDisplayName()}">Compuserve Incorporated</AuthorCompoundName>
+                    </Publisher>
+                </th:block>
+            </Document>
+            <ExternalSignature>
+                <th:block th:each="es : ${f.externalSignatures}">
+                    <ExternalSignatureID th:text="${es.getID()}">576</ExternalSignatureID>
+                    <Signature th:text="${es.getName()}">gif</Signature>
+                    <SignatureType th:text="${es.getSignatureType()}">File extension</SignatureType>
+                </th:block>
+            </ExternalSignature>
+            <InternalSignature>
+            <th:block th:each="sig : ${f.internalSignatures}">
+                <InternalSignatureID th:text="${sig.getID()}">415</InternalSignatureID>
+                <SignatureName th:text="${sig.getName()}">GIF 1987a</SignatureName>
+                <SignatureNote th:text="${sig.getNote()}">415</SignatureNote>
+                <th:block th:each="bs : ${sig.byteSequences}">
+                    <ByteSequence>
+                    <ByteSequenceID th:text="${bs.getID()}">179</ByteSequenceID>
+                    <PositionType th:text="${bs.getPositionName()}">Absolute from BOF</PositionType>
+                    <Offset th:text="${bs.getOffset()}">0</Offset>
+                    <MaxOffset th:text="${bs.getMaxOffset()}">0</MaxOffset>
+                    <IndirectOffsetLocation th:text="${bs.getIndirectOffsetLocation()}"> </IndirectOffsetLocation>
+                    <IndirectOffsetLength th:text="${bs.getIndirectOffsetLength()}"> </IndirectOffsetLength>
+                    <Endianness th:text="${bs.getByteOrder()}"> </Endianness>
+                    <ByteSequenceValue th:text="${bs.getSequence()}">474946383761</ByteSequenceValue>
+                    </ByteSequence>
+                </th:block>
+            </th:block>
+        </InternalSignature>
+        <RelatedFormat>
+            <th:block th:each="rf : ${f.hasRelationships}">
+                <RelationshipType th:text="${rf.getRelationshipTypeName()}">Is previous version of</RelationshipType>
+                <RelatedFormatID th:text="${rf.getTargetID()}">620</RelatedFormatID>
+                <RelatedFormatName th:text="${rf.getTargetName()}">Graphics Interchange Format</RelatedFormatName>
+                <RelatedFormatVersion th:text="${@fileFormatDAO.getFileFormatByURI(rf.getTarget()).getVersion()}">89a</RelatedFormatVersion>
+            </th:block>
+        </RelatedFormat>
+        <th:block th:each="ct : ${f.compressionTypes}">
+            <CompressionType>
+                <CompressionID th:text="${ct.getID()}">3</CompressionID>
+                <CompressionName th:text="${ct.getName()}">Pulse Code Modulation</CompressionName>
+                <Description th:text="${ct.getDescription()}">Uncompressed audio encoding method, which uses linear sampling at a wide range of sampling frequencies and resolutions.</Description>
+                <Lossiness th:text="${ct.getLossiness().getLocalName()}">Lossless</Lossiness>
+                <ReleaseDate th:text="${@templateUtils.parseDate(ct.getReleaseDate())}">22 Apr 2005</ReleaseDate>
+            </CompressionType>
+        </th:block>
+        </FileFormat>
+        <SearchCriteria th:text="'Detailed report on Search for query: ' + ${search} ?: 'Unknown'">Detailed report on File Format ID 619</SearchCriteria>
+    </report_format_detail>
+</PRONOM-Report>

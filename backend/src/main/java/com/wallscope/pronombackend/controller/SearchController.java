@@ -9,6 +9,7 @@ import com.wallscope.pronombackend.utils.RDFUtil;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -35,6 +34,7 @@ public class SearchController {
     @GetMapping("/search")
     public String searchHandler(
             HttpServletRequest request,
+            HttpServletResponse response,
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -73,7 +73,7 @@ public class SearchController {
 
         logger.trace("SERVING SEARCH RESULTS: " + results);
 
-        List<String> allowedFormats = List.of("csv", "nt", "ntriples", "ttl", "turtle", "rdf", "n3", "jsonld");
+        List<String> allowedFormats = List.of("csv","xml", "nt", "ntriples", "ttl", "turtle", "rdf", "n3", "jsonld");
         if (format.isPresent()) {
             if (!allowedFormats.contains(format.get())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid format: " + format.get());
@@ -84,10 +84,17 @@ public class SearchController {
                     .filter(s -> s.getURI().startsWith(RDFUtil.PRONOM.FileFormat.id))
                     // At this point we're only getting file formats as other types would require reworking of the query
                     .collect(Collectors.toList());
-            List<FileFormat> fs = ffDao.getFileFormatsbyURI(uris);
+            List<FileFormat> fs = ffDao.getFileFormatsbyURI(uris).stream().filter(Objects::nonNull).sorted(FileFormat::compareTo).collect(Collectors.toList());
             logger.trace("FETCHING URIS: " + uris);
             logger.trace("GOT FORMATS: " + fs);
-            request.setAttribute("formats", fs.stream().sorted(FileFormat::compareTo).collect(Collectors.toList()));
+            if (format.get().equals("xml")) {
+                model.addAttribute("formats", fs);
+                model.addAttribute("search", q);
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.xml");
+                response.setContentType("application/xml");
+                return "xml_fileformat_multiple";
+            }
+            request.setAttribute("formats", fs);
             if (format.get().equals("csv")) {
                 return "forward:/csv/multiple";
             }

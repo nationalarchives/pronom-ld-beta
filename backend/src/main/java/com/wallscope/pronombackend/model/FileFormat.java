@@ -1,7 +1,6 @@
 package com.wallscope.pronombackend.model;
 
 import com.opencsv.CSVWriter;
-import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -17,6 +16,8 @@ import java.io.StringWriter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
@@ -257,13 +258,12 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
         return aliases;
     }
 
-    public String toCSV() throws IOException {
-        return toCSV(true);
+    public String toCSV(Map<Resource, FileFormat> relMap) throws IOException {
+        return toCSV(true, relMap);
     }
 
-    public String toCSV(boolean includeHeaders) throws IOException {
-        TemplateUtils t = new TemplateUtils();
-        FileFormatDAO dao = new FileFormatDAO();
+    public String toCSV(boolean includeHeaders, Map<Resource, FileFormat> relMap) throws IOException {
+        TemplateUtils t = TemplateUtils.getInstance();
 
         // create FileWriter object with file as parameter
         StringWriter sw = new StringWriter();
@@ -315,7 +315,7 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
                 t.getString(getDescription()),
                 t.getString(isBinaryFlag()),
                 t.getString(getByteOrder().stream().map(t::getLabel).collect(Collectors.joining(", "))),
-                getHasRelationships().stream().map(rf -> t.getString(rf.getRelationshipTypeName()) + "," + t.getString(rf.getTargetID()) + ", " + t.getString(rf.getTargetName()) + ", " + t.getString(dao.getFileFormatByURI(rf.getTarget()).getVersion() + ";")).collect(Collectors.joining()),
+                getHasRelationships().stream().map(rf -> t.getString(rf.getRelationshipTypeName()) + "," + t.getString(rf.getTargetID()) + ", " + t.getString(rf.getTargetName()) + ", " + t.getString(relMap.get(rf.getTarget()).getVersion() + ";")).collect(Collectors.joining()),
                 t.getString(t.parseDate(getReleaseDate())),
                 t.getString(t.parseDate(getWithdrawnDate())),
                 getDevelopmentActors().stream().map(da -> t.getString(da.getID()) + "," + t.getString(da.getDisplayName()) + ";").collect(Collectors.joining()),
@@ -323,7 +323,7 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
                 t.getString(t.parseDate(getUpdated())),
                 getReferences().stream().map(doc -> t.getString(doc.getId()) + "," + t.getString(doc.getName()) + "," + t.getString(doc.getType()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(t.parseDate(doc.getPublicationDate())) + "," + t.getString(doc.getName()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(doc.getNote()) + ";").collect(Collectors.joining()),
                 getExternalSignatures().stream().map(es -> t.getString(es.getID()) + "," + t.getString(es.getSignatureType()) + "," + t.getString(es.getName()) + ";").collect(Collectors.joining()),
-                getInternalSignatures().stream().map(is -> t.getString(is.getID()) + "," + t.getString(is.getName()) + "," + t.getString(is.getNote()) + ",'" + is.getByteSequences().stream().map(bs -> t.getString(bs.getPositionName()) + "," + t.getString(bs.getOffset()) + "," + t.getString(bs.getByteOrderName()) + "," + t.getString(bs.getSequence()) + ";").collect(Collectors.joining()) + "';").collect(Collectors.joining()),
+                getInternalSignatures().stream().map(is -> t.getString(is.getID()) + "," + t.getString(is.getName()) + "," + t.getString(is.getNote()) + ",'" + is.getByteSequences().stream().filter(Objects::nonNull).map(bs -> t.getString(bs.getPositionName()) + "," + t.getString(bs.getOffset()) + "," + t.getString(bs.getByteOrderName()) + "," + t.getString(bs.getSequence()) + ";").collect(Collectors.joining()) + "';").collect(Collectors.joining()),
                 getCompressionTypes().stream().map(ct -> t.getString(ct.getID()) + "," + t.getString(ct.getName()) + "," + t.getString(ct.getDescription()) + "," + t.getString(ct.getLossiness().getLocalName()) + "," + t.getString(t.parseDate(ct.getReleaseDate())) + ";").collect(Collectors.joining())
         });
 
