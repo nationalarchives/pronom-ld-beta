@@ -77,8 +77,8 @@ public class TemplateUtils {
         return label;
     }
 
-    public String getString(String string) {
-        return string != null && !string.isBlank() ? string : "";
+    public <T> String getString(T obj) {
+        return obj != null && !obj.toString().isBlank() ? obj.toString() : "";
     }
 
     public String md(String region) {

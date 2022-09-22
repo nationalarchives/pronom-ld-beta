@@ -12,9 +12,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,9 +139,11 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
     public Instant getUpdated() {
         return updated;
     }
+
     public Instant getReleaseDate() {
         return releaseDate;
     }
+
     public Instant getWithdrawnDate() {
         return withdrawnDate;
     }
@@ -256,24 +257,26 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
         return aliases;
     }
 
-    public File toCSV(String fileName) {
-        File file = new File(fileName);
+    public String toCSV() throws IOException {
+        return toCSV(true);
+    }
+
+    public String toCSV(boolean includeHeaders) throws IOException {
         TemplateUtils t = new TemplateUtils();
         FileFormatDAO dao = new FileFormatDAO();
 
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputFile = new FileWriter(file);
+        // create FileWriter object with file as parameter
+        StringWriter sw = new StringWriter();
 
-            // create CSVWriter with ',' as separator
-            CSVWriter writer = new CSVWriter(outputFile, ',',
-                    CSVWriter.DEFAULT_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
+        // create CSVWriter with ',' as separator
+        CSVWriter writer = new CSVWriter(sw, ',',
+                CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END);
 
-            List<String[]> data = new ArrayList<String[]>();
-            data.add(new String[] { null });
-            data.add(new String[] {
+        List<String[]> data = new ArrayList<String[]>();
+        if (includeHeaders) {
+            data.add(new String[]{
                     "File Format ID",
                     "Format Name",
                     "Format Version",
@@ -300,39 +303,34 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
                     //"Rights: IPR ID, IPR Type, IPR Date, 'Owners: Owner ID, Owner Name', IPR Jurisdiction, Licence Details, 'IPR Identifiers: Type, Identifier', IPR Note",
                     //"Properties: Name, Description, Type, Value, Minimum Value, Maximum Value, Risk, High Risk"
             });
-            data.add(new String[] {
-                    t.getString(getID()),
-                    t.getString(getName()),
-                    t.getString(getVersion()),
-                    getAliases().stream().map(alias -> t.getString(alias.getName()) + " (" + t.getString(alias.getVersion()) + ")").collect(Collectors.joining(", ")),
-                    getFormatIdentifiers().stream().map(fi -> t.getString(fi.getTypeName()) + "," + t.getString(fi.getName()) + ";").collect(Collectors.joining()) + "PUID,fmt/" + t.getString(getPuid().toString()) + ";",
-                    t.getString(getFormatFamilies().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
-                    t.getString(getClassifications().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
-                    t.getString(getDescription()),
-                    isBinaryFlag() != null && !isBinaryFlag().toString().isBlank() ? isBinaryFlag().toString() : "",
-                    t.getString(getByteOrder().stream().map(t::getLabel).collect(Collectors.joining(", "))),
-                    getHasRelationships().stream().map(rf -> t.getString(rf.getRelationshipTypeName()) + "," + t.getString(rf.getTargetID()) + ", " + t.getString(rf.getTargetName()) + ", " + t.getString(dao.getFileFormatByURI(rf.getTarget()).getVersion() + ";")).collect(Collectors.joining()),
-                    t.getString(t.parseDate(getReleaseDate())),
-                    t.getString(t.parseDate(getWithdrawnDate())),
-                    getDevelopmentActors().stream().map(da -> t.getString(da.getID()) + "," + t.getString(da.getDisplayName()) + ";").collect(Collectors.joining()),
-                    getSupportActors().stream().map(sa -> t.getString(sa.getID()) + "," + t.getString(sa.getDisplayName()) + ";").collect(Collectors.joining()),
-                    t.getString(t.parseDate(getUpdated())),
-                    getReferences().stream().map(doc -> t.getString(doc.getId()) + "," + t.getString(doc.getName()) + "," + t.getString(doc.getType()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(t.parseDate(doc.getPublicationDate())) + "," + t.getString(doc.getName()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(doc.getNote()) + ";").collect(Collectors.joining()),
-                    getExternalSignatures().stream().map(es -> t.getString(es.getID()) + "," + t.getString(es.getSignatureType()) + "," + t.getString(es.getName()) + ";").collect(Collectors.joining()),
-                    getInternalSignatures().stream().map(is -> t.getString(is.getID()) + "," + t.getString(is.getName()) + "," + t.getString(is.getNote()) + ",'" + is.getByteSequences().stream().map(bs -> t.getString(bs.getPositionName()) + "," + t.getString(bs.getOffset().toString()) + "," + t.getString(bs.getByteOrderName()) + "," + t.getString(bs.getSequence()) + ";").collect(Collectors.joining()) + "';").collect(Collectors.joining()),
-                    getCompressionTypes().stream().map(ct -> t.getString(ct.getID()) + "," + t.getString(ct.getName()) + "," + t.getString(ct.getDescription()) + "," + t.getString(ct.getLossiness().getLocalName()) + "," + t.getString(t.parseDate(ct.getReleaseDate())) + ";").collect(Collectors.joining())
-            });
-
-            writer.writeAll(data);
-
-            // closing writer connection
-            writer.close();
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        data.add(new String[]{
+                t.getString(getID()),
+                t.getString(getName()),
+                t.getString(getVersion()),
+                getAliases().stream().map(alias -> t.getString(alias.getName()) + " (" + t.getString(alias.getVersion()) + ")").collect(Collectors.joining(", ")),
+                getFormatIdentifiers().stream().map(fi -> t.getString(fi.getTypeName()) + "," + t.getString(fi.getName()) + ";").collect(Collectors.joining()) + "PUID," + t.getString(getFormattedPuid()) + ";",
+                t.getString(getFormatFamilies().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
+                t.getString(getClassifications().stream().map(LabeledURI::getLabel).collect(Collectors.joining(", "))),
+                t.getString(getDescription()),
+                t.getString(isBinaryFlag()),
+                t.getString(getByteOrder().stream().map(t::getLabel).collect(Collectors.joining(", "))),
+                getHasRelationships().stream().map(rf -> t.getString(rf.getRelationshipTypeName()) + "," + t.getString(rf.getTargetID()) + ", " + t.getString(rf.getTargetName()) + ", " + t.getString(dao.getFileFormatByURI(rf.getTarget()).getVersion() + ";")).collect(Collectors.joining()),
+                t.getString(t.parseDate(getReleaseDate())),
+                t.getString(t.parseDate(getWithdrawnDate())),
+                getDevelopmentActors().stream().map(da -> t.getString(da.getID()) + "," + t.getString(da.getDisplayName()) + ";").collect(Collectors.joining()),
+                getSupportActors().stream().map(sa -> t.getString(sa.getID()) + "," + t.getString(sa.getDisplayName()) + ";").collect(Collectors.joining()),
+                t.getString(t.parseDate(getUpdated())),
+                getReferences().stream().map(doc -> t.getString(doc.getId()) + "," + t.getString(doc.getName()) + "," + t.getString(doc.getType()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(t.parseDate(doc.getPublicationDate())) + "," + t.getString(doc.getName()) + ",'" + t.getString(doc.getAuthor().getID()) + "," + t.getString(doc.getAuthor().getDisplayName()) + "'," + t.getString(doc.getNote()) + ";").collect(Collectors.joining()),
+                getExternalSignatures().stream().map(es -> t.getString(es.getID()) + "," + t.getString(es.getSignatureType()) + "," + t.getString(es.getName()) + ";").collect(Collectors.joining()),
+                getInternalSignatures().stream().map(is -> t.getString(is.getID()) + "," + t.getString(is.getName()) + "," + t.getString(is.getNote()) + ",'" + is.getByteSequences().stream().map(bs -> t.getString(bs.getPositionName()) + "," + t.getString(bs.getOffset()) + "," + t.getString(bs.getByteOrderName()) + "," + t.getString(bs.getSequence()) + ";").collect(Collectors.joining()) + "';").collect(Collectors.joining()),
+                getCompressionTypes().stream().map(ct -> t.getString(ct.getID()) + "," + t.getString(ct.getName()) + "," + t.getString(ct.getDescription()) + "," + t.getString(ct.getLossiness().getLocalName()) + "," + t.getString(t.parseDate(ct.getReleaseDate())) + ";").collect(Collectors.joining())
+        });
 
-        return file;
+        writer.writeAll(data);
+
+        writer.close();
+        return sw.toString();
     }
 
     public Model toRDF() {
@@ -354,7 +352,8 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
         if (description != null) m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
         if (updated != null) m.add(uri, makeProp(PRONOM.FileFormat.LastUpdatedDate), makeXSDDateTime(updated));
         if (releaseDate != null) m.add(uri, makeProp(PRONOM.FileFormat.ReleaseDate), makeXSDDateTime(releaseDate));
-        if (withdrawnDate != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnDate), makeXSDDateTime(withdrawnDate));
+        if (withdrawnDate != null)
+            m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnDate), makeXSDDateTime(withdrawnDate));
         if (version != null) m.add(uri, makeProp(PRONOM.FileFormat.Version), makeLiteral(version));
         if (binaryFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.BinaryFlag), makeLiteral(binaryFlag));
         if (withdrawnFlag != null) m.add(uri, makeProp(PRONOM.FileFormat.WithdrawnFlag), makeLiteral(withdrawnFlag));
@@ -434,11 +433,11 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
     public int compareTo(FileFormat b) {
         boolean aNull = this.getURI() == null;
         boolean bNull = b.getURI() == null;
-        if(aNull && !bNull){
+        if (aNull && !bNull) {
             return -1;
-        }else if(bNull && !aNull){
+        } else if (bNull && !aNull) {
             return 1;
-        }else if(aNull && bNull){
+        } else if (aNull && bNull) {
             return 0;
         }
 
@@ -576,8 +575,6 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
                     compressionTypes,
                     aliases);
         }
-
-
 
 
     }

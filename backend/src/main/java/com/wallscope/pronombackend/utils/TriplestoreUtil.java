@@ -54,6 +54,7 @@ public class TriplestoreUtil {
             }
         }
         logger.trace("sending construct: " + q);
+        logger.debug("sending contruct");
         return conn.build().queryConstruct(q.asQuery());
     }
 

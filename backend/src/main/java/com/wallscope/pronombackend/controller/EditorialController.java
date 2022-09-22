@@ -40,6 +40,7 @@ public class EditorialController {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/editorial/search")
     public String searchHandler(
+            HttpServletRequest request,
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -52,12 +53,13 @@ public class EditorialController {
             Optional<Boolean> f_ext,
             Optional<Boolean> f_desc,
             Optional<Boolean> f_puid,
-            Optional<Integer> pageSize
-            , Principal principal) {
+            Optional<Integer> pageSize,
+            Optional<String> format,
+            Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
         // reuse the search controller code to populate the search results
         model.addAttribute("editorial", true);
-        new SearchController().searchHandler(model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize);
+        new SearchController().searchHandler(request, model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize, format);
         return "internal-search";
     }
 
@@ -75,7 +77,7 @@ public class EditorialController {
             }
         }
         Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
-        List<String> puidTypes = List.of("FileFormat", "TentativeFileFormat","Software", "Encoding", "CompressionType");
+        List<String> puidTypes = List.of("FileFormat", "TentativeFileFormat", "Software", "Encoding", "CompressionType");
         if (puidTypes.contains(type)) {
             GenericEntityDAO dao = new GenericEntityDAO();
             PUID puid = dao.getPuidForURI(uri);

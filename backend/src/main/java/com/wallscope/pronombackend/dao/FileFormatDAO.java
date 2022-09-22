@@ -166,6 +166,20 @@ public class FileFormatDAO {
              }
             """;
 
+    public static String MULTIPLE_FILE_FORMAT_QUERY(List<Resource> uris) {
+        String formats = uris.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
+        return PREFIXES + """
+                CONSTRUCT {
+                """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
+                } WHERE {
+                VALUES (?f) {
+                 """ + formats + """
+                 }
+                """ + FILE_FORMAT_SUB_QUERY + """
+                 }
+                """;
+    }
+
     public static final String SIG_GEN_QUERY = PREFIXES + """
             CONSTRUCT {
             # File format representation
@@ -289,6 +303,16 @@ public class FileFormatDAO {
         return fs;
     }
 
+    public List<FileFormat> getFileFormatsbyURI(List<Resource> uris) {
+        logger.trace("fetching file formats: " + uris);
+        Model m = TriplestoreUtil.constructQuery(MULTIPLE_FILE_FORMAT_QUERY(uris));
+        ModelUtil mu = new ModelUtil(m);
+        logger.trace("building file format objects");
+        List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
+        logger.trace("file formats built");
+        return fs;
+    }
+
     public List<FileFormat> getAllForSignature() {
         logger.trace("fetching all file formats for signature generation");
         Model m = TriplestoreUtil.constructQuery(SIG_GEN_QUERY);
@@ -305,9 +329,9 @@ public class FileFormatDAO {
     }
 
     public void saveAllFormats(List<FileFormat> ffs) {
-        if(ffs.isEmpty()) return;
+        if (ffs.isEmpty()) return;
         Model m = ModelFactory.createDefaultModel();
-        ffs.forEach(ff ->m.add(ff.toRDF()));
+        ffs.forEach(ff -> m.add(ff.toRDF()));
         TriplestoreUtil.load(m);
     }
 

@@ -13,6 +13,7 @@ import com.wallscope.pronombackend.soap.ContainerSignatureFileWrapper;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.SignatureStorageManager;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.nationalarchives.pronom.signaturefile.ByteSequenceType;
@@ -32,7 +32,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -105,6 +107,27 @@ public class RESTController {
         }
         boolean nextPuid = dao.puidExists(type, puidInt);
         return "" + nextPuid;
+    }
+
+    @RequestMapping(value = {"/xml/multiple"}, produces = {"application/xml"})
+    @ResponseBody
+    public String multiXMLExportHandler(Model model, HttpServletRequest request, HttpServletResponse response) {
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.debug("FORMATS: " + fs);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.csv");
+        response.setContentType("text/csv");
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
+        for (int i = 0; i < fs.size(); i++) {
+            FileFormat f = fs.get(i);
+            try {
+                s.append(f.toCSV(i == 0));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
+            }
+        }
+        return s.toString();
     }
 
     @PostMapping(value = {"/signature.xml"}, produces = {"application/xml", "text/xml"})
@@ -207,9 +230,24 @@ public class RESTController {
         return mu.toString(rdfLang);
     }
 
-    @GetMapping(value = {"/csv/fmt/{puid}"}, produces = {"text/csv"})
+    @RequestMapping(value = {"/rdf/multiple/{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
-    public void csvExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid) throws IOException {
+    public String multiRDFExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String format) {
+        Lang rdfLang = langFromFormat(format);
+        if (rdfLang == null) {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
+        }
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.debug("FORMATS: " + fs);
+        ModelUtil mu = new ModelUtil(ModelFactory.createDefaultModel());
+        mu.addAll(fs);
+        return mu.toString(rdfLang);
+    }
+
+    @GetMapping(value = {"/csv/fmt/{puid}.csv", "/csv/x-fmt/{puid}.csv"}, produces = {"text/csv"})
+    @ResponseBody
+    public String csvExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid) {
         String[] parts = request.getRequestURI().split("/");
         String puidType = parts[parts.length - 2];
         FileFormatDAO dao = new FileFormatDAO();
@@ -221,17 +259,34 @@ public class RESTController {
         String version = f.getVersion() != null && !f.getVersion().isBlank() ? " (" + f.getVersion() + ")" : "";
         String fileName = f.getName() != null && !f.getName().isBlank() ? f.getName() + version : "DetailedFileFormatReport";
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + ".csv");
-
-        File file = f.toCSV(fileName + ".csv");
-
-        // Download
         response.setContentType("text/csv");
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
 
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        response.flushBuffer();
-        file.delete();
+        try {
+            return f.toCSV();
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
+        }
+    }
+
+    @RequestMapping(value = {"/csv/multiple"}, produces = {"text/csv"})
+    @ResponseBody
+    public String multiCSVExportHandler(Model model, HttpServletRequest request, HttpServletResponse response) {
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.debug("FORMATS: " + fs);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.csv");
+        response.setContentType("text/csv");
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
+        for (int i = 0; i < fs.size(); i++) {
+            FileFormat f = fs.get(i);
+            try {
+                s.append(f.toCSV(i == 0));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
+            }
+        }
+        return s.toString();
     }
 
     @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
