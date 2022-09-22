@@ -7,7 +7,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +15,15 @@ import static com.wallscope.pronombackend.utils.RDFUtil.*;
 public class ContainerSignature implements RDFWritable, Comparable<ContainerSignature> {
     private final Resource uri;
     private final String name;
+    private final String description;
     private final Resource containerType;
     private final Resource fileFormat;
     private final List<ContainerFile> files;
 
-    public ContainerSignature(Resource uri, String name, Resource containerType, Resource fileFormat, List<ContainerFile> files) {
+    public ContainerSignature(Resource uri, String name, String description, Resource containerType, Resource fileFormat, List<ContainerFile> files) {
         this.uri = uri;
         this.name = name;
+        this.description = description;
         this.containerType = containerType;
         this.fileFormat = fileFormat;
         this.files = files;
@@ -54,6 +55,10 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
         return containerType;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public Resource getURI() {
         return this.uri;
@@ -64,6 +69,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
         Model m = ModelFactory.createDefaultModel();
         m.add(uri, makeProp(RDF.type), makeResource(PRONOM.ContainerSignature.type));
         m.add(uri, makeProp(RDFS.label), makeLiteral(name));
+        m.add(uri, makeProp(RDFS.comment), makeLiteral(description));
         m.add(uri, makeProp(PRONOM.ContainerSignature.FileFormat), fileFormat);
         for (ContainerFile cf : files) {
             m.add(uri, makeProp(PRONOM.ContainerSignature.ContainerFile), cf.getURI());
@@ -78,6 +84,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
         return "ContainerSignature{" +
                 "uri=" + uri +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", containerType=" + containerType +
                 ", fileFormat=" + fileFormat +
                 ", files=" + files +
@@ -102,7 +109,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
     }
 
     public ContainerSignature replaceFileFormat(Resource newUri) {
-        return new ContainerSignature(uri, name, containerType, newUri, files);
+        return new ContainerSignature(uri, name, description, containerType, newUri, files);
     }
 
     public static class Deserializer implements RDFDeserializer<ContainerSignature> {
@@ -116,6 +123,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
             ModelUtil mu = new ModelUtil(model);
             // Required
             String name = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.label)));
+            String description = safelyGetStringOrNull(mu.getOneObjectOrNull(uri, makeProp(RDFS.comment)));
             Resource containerType = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.ContainerType)));
             Resource fileFormat = safelyGetResourceOrNull(mu.getOneObjectOrNull(uri, makeProp(PRONOM.ContainerSignature.FileFormat)));
             // Optional
@@ -123,7 +131,7 @@ public class ContainerSignature implements RDFWritable, Comparable<ContainerSign
             List<ContainerFile> files = mu.buildFromModel(new ContainerFile.Deserializer(), fileSubjects)
                     .stream().sorted(ContainerFile::compareTo).collect(Collectors.toList());
 
-            return new ContainerSignature(uri, name, containerType, fileFormat, files);
+            return new ContainerSignature(uri, name, description, containerType, fileFormat, files);
         }
     }
 

@@ -597,3 +597,228 @@ section.form-part#signatures
                             input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
                     .button-container
                       button.black.small.add-byte-sequence.push-right Add byte sequence
+
+          //- container signature templated output
+          fieldset.container-signature.collapse-content-container(th:each="sig, stat : *{containerSignatures}", th:with="compareSize=${#lists.size(compare?.containerSignatures ?: {})}, compareSig=${compareSize > stat.index} ? ${compare.containerSignatures.get(__${stat.index}__)} : null")
+            input(type="hidden", th:field="*{containerSignatures[__${stat.index}__].uri}")
+            legend.sr-only Fill up information about signature
+            .row-group
+              .top
+                button.accordion
+                  .info
+                    p Type: Container Signature
+                    p(th:unless="${#strings.isEmpty(ff?.puid)}", th:text="${'PUID: '+ ff?.puid}")
+                  i.fa-solid.fa-chevron-up
+                button.bordered-red.small.delete-container-signature
+                  | Delete container signature
+              .collapse-content
+                //- Container signature name
+                .form-row(th:classappend="${compareSig?.name} ? 'before-review' : ''")
+                  p.inputType(th:text="${#strings.isEmpty(sig?.name) ? 'New content' : 'Edited content'}") Edited content
+                  .tooltip-container
+                    .label
+                      label.from-external-only(for="${'containerSignatureName' + stat.index}") Signature name
+                      label.from-internal-only(for="${'containerSignatureName' + stat.index}") Signature name (required)
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.3.1') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  input(th:field="*{containerSignatures[__${stat.index}__].name}", id="${'containerSignatureName' + stat.index}")
+                //- Select Container type
+                .form-row.container-type
+                  .tooltip-container
+                    .label
+                      label(for="${'containerSignatureType' + stat.index}") Select container type
+                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
+                        .i-wrapper
+                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  select(th:field="*{containerSignatures[__${stat.index}__].containerType}" id="${'containerSignatureType' + stat.index}")
+                    option(th:value="null") None
+                    option(th:each="cto : ${containerTypeOptions}", th:value="${cto.URI}", th:text="${cto.label}") option 1
+                h5.border Byte Sequences
+                .part
+                  //- fieldset
+                  //-   legend.sr-only Select endianess
+                  //-   div
+                  //-     .tooltip-container
+                  //-       .label
+                  //-         label.from-external-only(for="CSendianess") Select endianess
+                  //-         label.from-internal-only(for="CSendianess") Select endianess (required)
+                  //-         span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.1') tabindex='0')
+                  //-           .i-wrapper
+                  //-             i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                  //-     select(id="CSendianess")
+                  //-       option(value='0') option1
+                  //-       option(value='1') option2
+                  //- Description
+                  .form-row
+                    .tooltip-container
+                      .label
+                          label.from-external-only(for="signatureDescription") Description
+                          label.from-internal-only(for="signatureDescription") Description (required)
+                          span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.2') tabindex='0')
+                            .i-wrapper
+                              i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                    textarea(cols="30", rows="6", th:field="*{containerSignatures[__${stat.index}__].description}" id="signatureDescription")
+                  h5.border Container signature
+                  .paths-list-container
+                    .paths-list
+                      //- Paths templated output
+                      .row-group-inner1.path.template
+                        .button-container 
+                          button.bordered-red.small.push-right.delete-path
+                            | Delete path
+                        .form-row(th:each="file, statB : ${sig.files}", th:with="compareFileSize=${#lists.size(compareSig?.files ?: {})}, compareFile=${compareFileSize > statB.index} ? ${compareSig.files.get(__${statB.index}__)} : null")
+                          .tooltip-container
+                            .label
+                              label.from-external-only(for="${'Path'+stat.index+'-'+statB.index}") Path
+                              label.from-internal-only(for="${'Path'+stat.index+'-'+statB.index}") Path (required)
+                              span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.7') tabindex='0')
+                                .i-wrapper
+                                  i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                          input(th:id="${'Path'+stat.index+'-'+statB.index}", th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].path}")
+                        .byte-sequence-list
+                          .list
+                            .row-group-inner2.byte-sequence(th:each="byteSeq, statC : ${file?.byteSequences ?: {}}", th:with="compareBSSize=${#lists.size(compareFile?.byteSequences ?: {})}, compareByteSeq=${compareBSSize > statC.index} ? ${compareFile.byteSequences.get(__${statC.index}__)} : null")
+                              .info
+                                h4 Byte sequence
+                                button.bordered-red.small.delete-byte-sequence
+                                  | Delete byte sequence
+                              
+                              //- Binary value
+                              .form-row.binary-value(th:classappend="${compareByteSeq?.sequence} ? 'before-review' : ''")
+                                p.inputType(th:text="${#strings.isEmpty(byteSeq?.sequence) ? 'New content' : 'Edited content'}") Edited content
+                                .tooltipPlusAction
+                                  .tooltip-container
+                                    .label
+                                      label.from-external-only(th:for="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}") Binary value
+                                      label.from-internal-only(th:for="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}") Binary value (required)
+                                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.2.3') tabindex='0')
+                                        .i-wrapper
+                                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                                  .action-monitoring
+                                    .review-type
+                                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                      p Require reviewing
+                                    .review-type
+                                      i.fa-solid.fa-square-check
+                                      p Reviewed
+                                .input-group
+                                  button Accept current
+                                  input(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                .input-group(th:if="${compareByteSeq?.sequence}")
+                                  button.incoming Accept incoming
+                                  input(th:value="${compareByteSeq.sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
+                              
+                              //- Byte Order
+                              .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder} ? 'before-review' : ''")
+                                p.inputType(th:text="${#strings.isEmpty(byteSeq?.byteOrder)) ? 'New content' : 'Edited content'}") Edited content
+                                .tooltipPlusAction
+                                  .tooltip-container
+                                    .label
+                                      label.from-external-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}") Position type
+                                      label.from-internal-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}") Position type (required)
+                                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.4') tabindex='0')
+                                        .i-wrapper
+                                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                                  .action-monitoring
+                                    .review-type
+                                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                      p Require reviewing
+                                    .review-type
+                                      i.fa-solid.fa-square-check
+                                      p Reviewed
+                                .input-group
+                                  button Accept current
+                                  select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                    option(value='null') None
+                                    option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
+                                .input-group(th:if="${compareByteSeq?.byteOrder}")
+                                  button.incoming Accept incoming
+                                  select(th:value="${compareByteSeq.byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                    option(value='null') None
+                                    option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
+                              
+                              //- Position type
+                              .form-row.position-type(th:classappend="${compareByteSeq?.position} ? 'before-review' : ''")
+                                p.inputType(th:text="${#strings.isEmpty(byteSeq?.position) ? 'New content' : 'Edited content'}") Edited content
+                                .tooltipPlusAction
+                                  .tooltip-container
+                                    .label
+                                      label.from-external-only(th:for="${'ByteSequencePosition' + stat.index + '-' + statB.index}") Position type
+                                      label.from-internal-only(th:for="${'ByteSequencePosition' + stat.index + '-' + statB.index}") Position type (required)
+                                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.4') tabindex='0')
+                                        .i-wrapper
+                                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                                  .action-monitoring
+                                    .review-type
+                                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                      p Require reviewing
+                                    .review-type
+                                      i.fa-solid.fa-square-check
+                                      p Reviewed
+                                .input-group
+                                  button Accept current
+                                  select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                    option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
+                                .input-group(th:if="${compareByteSeq?.position}")
+                                  button.incoming Accept incoming
+                                  select(th:value="${compareByteSeq.position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                    option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
+                              
+                              //- Min offset
+                              .form-row.min-offset(th:classappend="${compareByteSeq?.offset} ? 'before-review' : ''")
+                                p.inputType(th:text="${#strings.isEmpty(byteSeq?.offset) ? 'New content' : 'Edited content'}") Edited content
+                                .tooltipPlusAction
+                                  .tooltip-container
+                                    .label
+                                      label.from-external-only(th:for="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}") Min offset
+                                      label.from-internal-only(th:for="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}") Min offset (required)
+                                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.5') tabindex='0')
+                                        .i-wrapper
+                                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                                  .action-monitoring
+                                    .review-type
+                                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                      p Require reviewing
+                                    .review-type
+                                      i.fa-solid.fa-square-check
+                                      p Reviewed
+                                .input-group
+                                  button Accept current
+                                  input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                .input-group(th:if="${compareByteSeq?.offset}")
+                                  button.incoming Accept incoming
+                                  input.short(th:value="${compareByteSeq.offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
+                              
+                              //- Max offset
+                              .form-row.max-offset(th:classappend="${compareByteSeq?.offset} ? 'before-review' : ''")
+                                p.inputType(th:text="${#strings.isEmpty(byteSeq?.maxOffset) ? 'New content' : 'Edited content'}") Edited content
+                                .tooltipPlusAction
+                                  .tooltip-container
+                                    .label
+                                      label.from-external-only(th:for="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}") Max offset
+                                      label.from-internal-only(th:for="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}") Max offset (required)
+                                      span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.6') tabindex='0')
+                                        .i-wrapper
+                                          i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
+                                  .action-monitoring
+                                    .review-type
+                                      i.fa-solid.fa-triangle-exclamation(aria-hidden="true")
+                                      p Require reviewing
+                                    .review-type
+                                      i.fa-solid.fa-square-check
+                                      p Reviewed
+                                .input-group
+                                  button Accept current
+                                  input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                .input-group(th:if="${compareByteSeq?.maxOffset}")
+                                  button.incoming Accept incoming
+                                  input.short(th:value="${compareByteSeq.maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
+
+                          .button-container
+                            button.black.small.add-byte-sequence.push-right
+                              | Add byte sequence
+
+                    .button-container
+                      button.black.small.push-right.add-path
+                        | Add path

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class EditorialController {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/editorial/search")
     public String searchHandler(
+            HttpServletRequest request,
+            HttpServletResponse response,
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -52,12 +55,13 @@ public class EditorialController {
             Optional<Boolean> f_ext,
             Optional<Boolean> f_desc,
             Optional<Boolean> f_puid,
-            Optional<Integer> pageSize
-            , Principal principal) {
+            Optional<Integer> pageSize,
+            Optional<String> format,
+            Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
         // reuse the search controller code to populate the search results
         model.addAttribute("editorial", true);
-        new SearchController().searchHandler(model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize);
+        new SearchController().searchHandler(request, response, model, q, offset, sort, f_name, f_ext, f_desc, f_puid, pageSize, format);
         return "internal-search";
     }
 
@@ -75,7 +79,7 @@ public class EditorialController {
             }
         }
         Resource uri = makeResource(PRONOM.uri + "id/" + type + '/' + id);
-        List<String> puidTypes = List.of("FileFormat", "TentativeFileFormat","Software", "Encoding", "CompressionType");
+        List<String> puidTypes = List.of("FileFormat", "TentativeFileFormat", "Software", "Encoding", "CompressionType");
         if (puidTypes.contains(type)) {
             GenericEntityDAO dao = new GenericEntityDAO();
             PUID puid = dao.getPuidForURI(uri);
@@ -140,8 +144,8 @@ public class EditorialController {
     @GetMapping("/editorial")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("user", hydrateUser(principal));
-        logger.debug("PRINCIPAL: " + principal);
-        logger.debug("HYDRATED: " + hydrateUser(principal));
+        logger.trace("PRINCIPAL: " + principal);
+        logger.trace("HYDRATED: " + hydrateUser(principal));
         SubmissionDAO dao = new SubmissionDAO();
         List<Submission> subs = dao.getAllSubmissions();
         Map<String, List<Submission>> subsMap = subs.stream().collect(Collectors.groupingBy(s -> s.getSubmissionStatus().getLocalName()));
@@ -164,7 +168,7 @@ public class EditorialController {
         if (actor == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Actor with id: " + id);
         }
-        logger.debug("Actor: " + actor);
+        logger.trace("Actor: " + actor);
         model.addAttribute("actor", actor.convert());
         return "actor";
     }

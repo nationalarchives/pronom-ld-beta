@@ -40,8 +40,12 @@ public class PUIDController {
         if (ext != null && !ext.isBlank()) {
             puid = puid + "." + ext;
         }
-        // Respond to RDF request
-        if (puid.contains(".")) {
+        // Respond to RDF or CSV request
+        if (puid.contains(".csv")) {
+            // Catch calls for CSV by checking that the end of the puid is .csv
+            return "forward:/csv/" + puidType + "/" + puid;
+        } else if (puid.contains(".")) {
+            // If it is not .csv but still contains a dot, it must be an RDF format
             return "forward:/rdf/" + puidType + "/" + puid;
         }
         FileFormatDAO dao = new FileFormatDAO();
@@ -49,7 +53,7 @@ public class PUIDController {
         if (f == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
         }
-        logger.debug("File format: " + f);
+        logger.trace("File format: " + f);
         model.addAttribute("ff", f);
         return "file-format";
     }

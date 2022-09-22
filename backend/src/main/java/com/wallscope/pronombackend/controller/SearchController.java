@@ -1,19 +1,26 @@
 package com.wallscope.pronombackend.controller;
 
+import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.SearchDAO;
+import com.wallscope.pronombackend.model.FileFormat;
 import com.wallscope.pronombackend.model.PaginationHelper;
 import com.wallscope.pronombackend.model.SearchResult;
+import com.wallscope.pronombackend.utils.RDFUtil;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /*
  * This controller handles all calls to pages where the content does not depend on fetching data from the database
@@ -26,6 +33,8 @@ public class SearchController {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping("/search")
     public String searchHandler(
+            HttpServletRequest request,
+            HttpServletResponse response,
             Model model,
             // The search query
             @RequestParam(required = false) String q,
@@ -38,7 +47,8 @@ public class SearchController {
             Optional<Boolean> f_ext,
             Optional<Boolean> f_desc,
             Optional<Boolean> f_puid,
-            Optional<Integer> pageSize
+            Optional<Integer> pageSize,
+            Optional<String> format
     ) {
         // if no query parameter is specified we early return the template with only the default variables set
         Integer limitVal = pageSize.orElse(10);
@@ -54,7 +64,43 @@ public class SearchController {
         SearchDAO dao = new SearchDAO();
         SearchDAO.Filters filters = new SearchDAO.Filters(f_name.orElse(false), f_ext.orElse(false), f_desc.orElse(false), f_puid.orElse(false));
         Integer totalResults = dao.count(q, limitVal, offsetVal, filters);
+        if (format.isPresent() && totalResults < 1000) {
+            limitVal = totalResults;
+        } else if (format.isPresent()) {
+            limitVal = 1000;
+        }
         List<SearchResult> results = dao.search(q, limitVal, offsetVal, filters, sort.orElse("score"));
+
+        logger.trace("SERVING SEARCH RESULTS: " + results);
+
+        List<String> allowedFormats = List.of("csv","xml", "nt", "ntriples", "ttl", "turtle", "rdf", "n3", "jsonld");
+        if (format.isPresent()) {
+            if (!allowedFormats.contains(format.get())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid format: " + format.get());
+            }
+            FileFormatDAO ffDao = new FileFormatDAO();
+            List<Resource> uris = results.stream()
+                    .map(SearchResult::getURI)
+                    .filter(s -> s.getURI().startsWith(RDFUtil.PRONOM.FileFormat.id))
+                    // At this point we're only getting file formats as other types would require reworking of the query
+                    .collect(Collectors.toList());
+            List<FileFormat> fs = ffDao.getFileFormatsbyURI(uris).stream().filter(Objects::nonNull).sorted(FileFormat::compareTo).collect(Collectors.toList());
+            logger.trace("FETCHING URIS: " + uris);
+            logger.trace("GOT FORMATS: " + fs);
+            if (format.get().equals("xml")) {
+                model.addAttribute("formats", fs);
+                model.addAttribute("search", q);
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.xml");
+                response.setContentType("application/xml");
+                return "xml_fileformat_multiple";
+            }
+            request.setAttribute("formats", fs);
+            if (format.get().equals("csv")) {
+                return "forward:/csv/multiple";
+            }
+            return "forward:/rdf/multiple/" + format.get();
+        }
+
         // default is "relevance" which sorts by the score property
         switch (sort.orElse("score")) {
             case "name":
@@ -91,8 +137,6 @@ public class SearchController {
         }
         if (totalResults > limitVal * current) pages.add(new PaginationHelper("Next", offsetVal + limitVal, false));
         model.addAttribute("pages", pages);
-
-        logger.trace("SERVING SEARCH RESULTS: " + results);
 
         // set the search and filter parameters as set by the user before rendering the template
         model.addAttribute("q", q);

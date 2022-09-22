@@ -10,6 +10,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +167,20 @@ public class FileFormatDAO {
              }
             """;
 
+    public static String MULTIPLE_FILE_FORMAT_QUERY(Collection<Resource> uris) {
+        String formats = uris.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
+        return PREFIXES + """
+                CONSTRUCT {
+                """ + trimOptionals(FILE_FORMAT_SUB_QUERY) + """ 
+                } WHERE {
+                VALUES (?f) {
+                 """ + formats + """
+                 }
+                """ + FILE_FORMAT_SUB_QUERY + """
+                 }
+                """;
+    }
+
     public static final String SIG_GEN_QUERY = PREFIXES + """
             CONSTRUCT {
             # File format representation
@@ -221,7 +236,7 @@ public class FileFormatDAO {
     }
 
     public Resource getURIFromLabel(String label, Resource type) {
-        logger.debug("fetching URI of type '" + type + "' for label: " + label);
+        logger.trace("fetching URI of type '" + type + "' for label: " + label);
         Map<String, RDFNode> params = new HashMap<>();
         params.put("label", makeLiteral(label));
         if (type != null) {
@@ -240,7 +255,7 @@ public class FileFormatDAO {
     public Map<Resource, String> getURIsFromLabels(List<String> ls, Resource type) {
         Map<Resource, String> map = new HashMap<>();
         if (ls == null || ls.isEmpty()) return map;
-        logger.debug("fetching URIs of type '" + type + "' for labels: " + Strings.join(ls, ','));
+        logger.trace("fetching URIs of type '" + type + "' for labels: " + Strings.join(ls, ','));
         Map<String, RDFNode> params = new HashMap<>();
         if (type != null) {
             params.put("type", type);
@@ -257,7 +272,7 @@ public class FileFormatDAO {
     }
 
     public FileFormat getFileFormatByPuid(String puid, String puidType) {
-        logger.debug("fetching file format by PUID: " + puidType + "/" + puid);
+        logger.trace("fetching file format by PUID: " + puidType + "/" + puid);
         FileFormat.Deserializer deserializer = new FileFormat.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("puid", makeLiteral(puid, XSDDatatype.XSDinteger));
@@ -269,7 +284,7 @@ public class FileFormatDAO {
     }
 
     public FileFormat getFileFormatByURI(Resource uri) {
-        logger.debug("fetching file format by URI: " + uri);
+        logger.trace("fetching file format by URI: " + uri);
         FileFormat.Deserializer deserializer = new FileFormat.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("f", uri);
@@ -280,34 +295,44 @@ public class FileFormatDAO {
     }
 
     public List<FileFormat> getAll() {
-        logger.debug("fetching all file formats");
+        logger.trace("fetching all file formats");
         Model m = TriplestoreUtil.constructQuery(FILE_FORMAT_QUERY);
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building file format objects");
+        logger.trace("building file format objects");
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
-        logger.debug("file formats built");
+        logger.trace("file formats built");
+        return fs;
+    }
+
+    public List<FileFormat> getFileFormatsbyURI(Collection<Resource> uris) {
+        logger.trace("fetching file formats: " + uris);
+        Model m = TriplestoreUtil.constructQuery(MULTIPLE_FILE_FORMAT_QUERY(uris));
+        ModelUtil mu = new ModelUtil(m);
+        logger.trace("building file format objects");
+        List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
+        logger.trace("file formats built");
         return fs;
     }
 
     public List<FileFormat> getAllForSignature() {
-        logger.debug("fetching all file formats for signature generation");
+        logger.trace("fetching all file formats for signature generation");
         Model m = TriplestoreUtil.constructQuery(SIG_GEN_QUERY);
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building file format objects for signature generation");
+        logger.trace("building file format objects for signature generation");
         List<FileFormat> fs = mu.buildAllFromModel(new FileFormat.Deserializer());
-        logger.debug("file formats built for signature generation");
+        logger.trace("file formats built for signature generation");
         return fs;
     }
 
     public void saveFormat(FileFormat ff) {
-        logger.debug("saving FileFormat: " + ff.getURI());
+        logger.trace("saving FileFormat: " + ff.getURI());
         TriplestoreUtil.load(ff.toRDF());
     }
 
     public void saveAllFormats(List<FileFormat> ffs) {
-        if(ffs.isEmpty()) return;
+        if (ffs.isEmpty()) return;
         Model m = ModelFactory.createDefaultModel();
-        ffs.forEach(ff ->m.add(ff.toRDF()));
+        ffs.forEach(ff -> m.add(ff.toRDF()));
         TriplestoreUtil.load(m);
     }
 

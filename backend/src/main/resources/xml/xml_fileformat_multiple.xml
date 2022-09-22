@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PRONOM-Report xmlns="http://pronom.nationalarchives.gov.uk" xmlns:th="http://www.thymeleaf.org">
     <report_format_detail>
-        <FileFormat th:object="${f}">
+        <FileFormat th:each="f : ${formats}">
             <FormatID th:text="${f.ID}">619</FormatID>
             <FormatName th:text="${f.name}">Graphics Interchange Format</FormatName>
             <FormatVersion th:text="${f.version}">87a</FormatVersion>
@@ -102,6 +102,6 @@
             </CompressionType>
         </th:block>
         </FileFormat>
-        <SearchCriteria th:text="'Detailed report on File Format ID ' + ${f.ID}">Detailed report on File Format ID 619</SearchCriteria>
+        <SearchCriteria th:text="'Detailed report on Search for query: ' + ${search} ?: 'Unknown'">Detailed report on File Format ID 619</SearchCriteria>
     </report_format_detail>
 </PRONOM-Report>

@@ -2,6 +2,19 @@ import '@styles/main.scss'
 import '@styles/dashboard.scss'
 
 const App = () => {
+    $('#version').addClass('hide');
+    $('#releaseStage').addClass('hide');
+    
+    $('input:radio[name="target"]').change(
+    function(){
+        if ($(this).is(':checked') && $(this).val() == 'test') {
+          $('#releaseStage').removeClass('hide');
+          $('#version').addClass('hide');
+        } else {
+          $('#releaseStage').addClass('hide');
+          $('#version').removeClass('hide');
+        }
+    });
     // Signal JS is active
     $('.page-container').removeClass('noJS');
     $('#header').removeClass('noJS');

@@ -70,13 +70,13 @@ public class SubmissionController {
         FormFileFormat ff = new FormFileFormat();
         model.addAttribute("ff", ff);
         setFormOptions(model);
-        logger.debug("Sending FormFileFormat:\n" + ff);
+        logger.trace("Sending FormFileFormat:\n" + ff);
         return "user-form";
     }
 
     @PostMapping("/contribute/form/new")
     public RedirectView newFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
-        logger.debug("FORM RECEIVED: " + ff);
+        logger.trace("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.fillURIs();
         ff.removeEmpties();
@@ -86,7 +86,6 @@ public class SubmissionController {
             redir.addFlashAttribute("ff", ff);
             return new RedirectView("/contribute/form/new");
         }
-        FileFormatDAO ffDao = new FileFormatDAO();
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
         FormSubmittedBy submitter = ff.getSubmittedBy();
@@ -217,7 +216,8 @@ public class SubmissionController {
 
     @PostMapping("/editorial/form/{puidType}/{puid}")
     public String editorialFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        logger.debug("Received FormFileFormat:\n" + ff);
+        // TODO: Implement puid submission for internal
+        logger.trace("Received FormFileFormat:\n" + ff);
         return "redirect:/editorial/form";
     }
 
@@ -233,14 +233,14 @@ public class SubmissionController {
         FormFileFormat ff = new FormFileFormat();
         model.addAttribute("ff", ff);
         setFormOptions(model);
-        logger.debug("Sending FormFileFormat:\n" + ff);
+        logger.trace("Sending FormFileFormat:\n" + ff);
         return "internal-form";
     }
 
     @PostMapping("/editorial/form/new")
     public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir, Principal principal) {
         EditorialController.User user = hydrateUser(principal);
-        logger.debug("FORM RECEIVED: " + ff);
+        logger.trace("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.fillURIs();
         ff.removeEmpties();

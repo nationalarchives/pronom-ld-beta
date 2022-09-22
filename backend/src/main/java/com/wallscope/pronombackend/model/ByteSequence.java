@@ -124,7 +124,7 @@ public class ByteSequence implements RDFWritable, Comparable<ByteSequence> {
     }
 
     public String getByteOrderName() {
-        if (byteOrder == null) return null;
+        if (byteOrder == null || byteOrder.getURI() == null) return null;
         return switch (byteOrder.getURI()) {
             case PRONOM.ByteOrder.littleEndian -> "Little-endian";
             case PRONOM.ByteOrder.bigEndian -> "Big-endian";

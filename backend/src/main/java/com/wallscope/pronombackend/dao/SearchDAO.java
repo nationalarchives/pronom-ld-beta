@@ -80,7 +80,7 @@ public class SearchDAO {
     }
 
     public List<SearchResult> search(String q, Integer limit, Integer offset, Filters filters, String sort, String types) {
-        logger.debug("fetching search results");
+        logger.trace("fetching search results");
         String sanitised = TriplestoreUtil.sanitiseLiteral(q);
         Map<String, RDFNode> params = new HashMap<>();
         params.put("query", makeLiteral(sanitised));
@@ -92,7 +92,7 @@ public class SearchDAO {
     }
 
     public Integer count(String q, Integer limit, Integer offset, Filters filters) {
-        logger.debug("counting search results");
+        logger.trace("counting search results");
         String sanitised = TriplestoreUtil.sanitiseLiteral(q);
         Map<String, RDFNode> params = new HashMap<>();
         params.put("query", makeLiteral(sanitised));

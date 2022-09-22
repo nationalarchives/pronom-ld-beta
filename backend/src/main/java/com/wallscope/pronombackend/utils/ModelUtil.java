@@ -125,4 +125,12 @@ public class ModelUtil {
         RDFDataMgr.write(b, m, l);
         return b.toString();
     }
+
+    public <T extends RDFWritable> void add(T x) {
+        m.add(x.toRDF());
+    }
+
+    public <T extends RDFWritable> void addAll(Collection<T> xs) {
+        xs.forEach(this::add);
+    }
 }

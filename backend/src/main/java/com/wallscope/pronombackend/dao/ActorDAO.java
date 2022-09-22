@@ -41,7 +41,7 @@ public class ActorDAO {
             """;
 
     public Actor getActorByURI(Resource uri) {
-        logger.debug("fetching actor by URI: " + uri);
+        logger.trace("fetching actor by URI: " + uri);
         Actor.Deserializer deserializer = new Actor.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("act", uri);
@@ -52,14 +52,14 @@ public class ActorDAO {
     }
 
     public void saveActor(Actor act) {
-        logger.debug("saving Actor: " + act.getURI());
+        logger.trace("saving Actor: " + act.getURI());
         TriplestoreUtil.load(act.toRDF());
     }
 
     public void deleteActor(Resource uri) {
         Map<String, RDFNode> params = new HashMap<>();
         params.put("act", uri);
-        logger.debug("deleting actor: " + uri);
+        logger.trace("deleting actor: " + uri);
         TriplestoreUtil.updateQuery(DELETE_ACTOR_QUERY, params);
     }
 }

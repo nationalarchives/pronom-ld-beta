@@ -13,10 +13,12 @@ import com.wallscope.pronombackend.soap.ContainerSignatureFileWrapper;
 import com.wallscope.pronombackend.soap.Converter;
 import com.wallscope.pronombackend.utils.ModelUtil;
 import com.wallscope.pronombackend.utils.SignatureStorageManager;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -188,7 +191,7 @@ public class RESTController {
     @GetMapping(value = {"/rdf/fmt/{puid}.{format}", "/rdf/x-fmt/{puid}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
     public String rdfExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid, @PathVariable String format) {
-        logger.debug("REQUEST FOR RDF FORMAT: " + format);
+        logger.trace("REQUEST FOR RDF FORMAT: " + format);
         Lang rdfLang = langFromFormat(format);
         if (rdfLang == null) {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
@@ -206,10 +209,79 @@ public class RESTController {
         return mu.toString(rdfLang);
     }
 
+    @RequestMapping(value = {"/rdf/multiple/{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
+    @ResponseBody
+    public String multiRDFExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String format) {
+        Lang rdfLang = langFromFormat(format);
+        if (rdfLang == null) {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);
+        }
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.trace("FORMATS: " + fs);
+        ModelUtil mu = new ModelUtil(ModelFactory.createDefaultModel());
+        mu.addAll(fs);
+        return mu.toString(rdfLang);
+    }
+
+    @GetMapping(value = {"/csv/fmt/{puid}.csv", "/csv/x-fmt/{puid}.csv"}, produces = {"text/csv"})
+    @ResponseBody
+    public String csvExportHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String puid) {
+        String[] parts = request.getRequestURI().split("/");
+        String puidType = parts[parts.length - 2];
+        FileFormatDAO dao = new FileFormatDAO();
+        FileFormat f = dao.getFileFormatByPuid(puid, puidType);
+        if (f == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + puid);
+        }
+
+        String version = f.getVersion() != null && !f.getVersion().isBlank() ? " (" + f.getVersion() + ")" : "";
+        String fileName = f.getName() != null && !f.getName().isBlank() ? f.getName() + version : "DetailedFileFormatReport";
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + ".csv");
+        response.setContentType("text/csv");
+        Map<Resource, FileFormat> relatedFormats = getRelatedFormats(List.of(f));
+        try {
+            return f.toCSV(relatedFormats);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
+        }
+    }
+
+    @RequestMapping(value = {"/csv/multiple"}, produces = {"text/csv"})
+    @ResponseBody
+    public String multiCSVExportHandler(Model model, HttpServletRequest request, HttpServletResponse response) {
+        @SuppressWarnings("unchecked")
+        List<FileFormat> fs = (List<FileFormat>) request.getAttribute("formats");
+        logger.trace("FORMATS: " + fs);
+        Map<Resource, FileFormat> relatedFormats = getRelatedFormats(fs);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=SearchResults.csv");
+        response.setContentType("text/csv");
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
+        for (int i = 0; i < fs.size(); i++) {
+            FileFormat f = fs.get(i);
+            try {
+                s.append(f.toCSV(i == 0, relatedFormats));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cannot render csv for file format: " + f.getURI());
+            }
+        }
+        return s.toString();
+    }
+
+    private Map<Resource, FileFormat> getRelatedFormats(List<FileFormat> fs) {
+        FileFormatDAO dao = new FileFormatDAO();
+        Map<Resource, FileFormat> relatedFormats = new HashMap<>();
+        Set<Resource> uris = new HashSet<>();
+        fs.forEach(f -> f.getHasRelationships().forEach(fr -> uris.add(fr.getTarget())));
+        dao.getFileFormatsbyURI(uris).forEach(rel -> relatedFormats.put(rel.getURI(), rel));
+        return relatedFormats;
+    }
+
     @GetMapping(value = {"/rdf/generic/{type}/{id}.{format}"}, produces = {"text/turtle", "application/n-triples", "application/rdf+xml"})
     @ResponseBody
     public String genericRDFHandler(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable String type, @PathVariable String id, @PathVariable String format) {
-        logger.debug("REQUEST FOR GENERIC RDF ENTITY: " + type + '/' + id);
+        logger.trace("REQUEST FOR GENERIC RDF ENTITY: " + type + '/' + id);
         Lang rdfLang = langFromFormat(format);
         if (rdfLang == null) {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "rdf format not supported: " + format);

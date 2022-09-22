@@ -250,7 +250,7 @@ block content
                         label(for='includePrevious') Full release: Include previously published formats
                   .selected
                     .option
-                      input.check#currentPlan(type='radio' name='target' value='release' checked="true")
+                      input.check#currentPlan(type='radio' name='target' value='release')
                       label(for='currentPlan') Publish current release plan.
                     #version
                       label Version number:
@@ -262,7 +262,7 @@ block content
               h4 3) Submit
               button.blue.medium
                 i.fa-solid.fa-rocket
-                | Release to PRONOM
+                | Generate signature file
   //- contributions maintenance history
   .collapse-container#maintenance-history-wrapper
     button.collapse-button

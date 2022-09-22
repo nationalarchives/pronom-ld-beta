@@ -8,9 +8,9 @@ public class ApplicationConfig {
 
     static String getEnvOr(String env, String or) {
         String v = System.getenv(env);
-        logger.debug("reading var: " + env + " value: " + v);
+        logger.trace("reading var: " + env + " value: " + v);
         if (v == null) {
-            logger.debug("returning 'or' value: " + or);
+            logger.trace("returning 'or' value: " + or);
             return or;
         }
         return v;

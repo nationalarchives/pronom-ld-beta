@@ -411,19 +411,19 @@ public class FormFileFormat {
         // Internal Signatures
         ff.setInternalSignatures(f.getInternalSignatures().stream().map(is -> {
             FormInternalSignature fis = FormInternalSignature.convert(is);
-            fis.setFileFormat(f.getFormattedPuid());
+            fis.setFileFormat(safelyGetUriOrNull(f.getURI()));
             return fis;
         }).sorted(Comparator.comparing(FormInternalSignature::getUri)).collect(Collectors.toCollection(ArrayList::new)));
         // External Signatures
         ff.setExternalSignatures(f.getExternalSignatures().stream().map(es -> {
             FormExternalSignature fes = FormExternalSignature.convert(es);
-            fes.setFileFormat(f.getFormattedPuid());
+            fes.setFileFormat(safelyGetUriOrNull(f.getURI()));
             return fes;
         }).sorted(Comparator.comparing(FormExternalSignature::getUri)).collect(Collectors.toCollection(ArrayList::new)));
         // Container Signatures
         ff.setContainerSignatures(f.getContainerSignatures().stream().map(cs -> {
             FormContainerSignature fcs = FormContainerSignature.convert(cs);
-            fcs.setFileFormat(f.getFormattedPuid());
+            fcs.setFileFormat(safelyGetUriOrNull(f.getURI()));
             return fcs;
         }).sorted(Comparator.comparing(FormContainerSignature::getUri)).collect(Collectors.toCollection(ArrayList::new)));
         ff.setHasRelationships(f.getHasRelationships().stream().map(FileFormatRelationship::convert).collect(Collectors.toCollection(ArrayList::new)));

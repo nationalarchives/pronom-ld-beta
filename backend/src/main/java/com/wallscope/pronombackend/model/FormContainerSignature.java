@@ -3,14 +3,15 @@ package com.wallscope.pronombackend.model;
 import org.apache.jena.rdf.model.Resource;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
+import static com.wallscope.pronombackend.utils.RDFUtil.safelyGetUriOrNull;
 
 public class FormContainerSignature {
     private String uri;
     private String name;
+    private String description;
     private String containerType;
     private String fileFormat;
     private ArrayList<FormContainerFile> files;
@@ -58,14 +59,23 @@ public class FormContainerSignature {
         this.fileFormat = fileFormat;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public static FormContainerSignature convert(ContainerSignature cs) {
         FormContainerSignature fcs = new FormContainerSignature();
         fcs.setName(cs.getName());
-
+        fcs.setDescription(cs.getDescription());
+        fcs.setUri(safelyGetUriOrNull(cs.getURI()));
         // fileFormat field is set at the parent
         fcs.setFiles(cs.getFiles().stream().map(f -> {
             FormContainerFile fcf = FormContainerFile.convert(f);
-            fcf.setSignature(cs.getURI().getURI());
+            fcf.setSignature(safelyGetUriOrNull(cs.getURI()));
             return fcf;
         }).collect(Collectors.toCollection(ArrayList::new)));
         return fcs;
@@ -75,9 +85,10 @@ public class FormContainerSignature {
         Resource res = makeResource(getUri());
         return new ContainerSignature(res,
                 getName(),
+                getDescription(),
                 makeResource(getContainerType()),
                 formatUri,
-                files.stream().map(f -> f.toObject(res)).collect(Collectors.toList())
+                getFiles().stream().map(f -> f.toObject(res)).collect(Collectors.toList())
         );
     }
 

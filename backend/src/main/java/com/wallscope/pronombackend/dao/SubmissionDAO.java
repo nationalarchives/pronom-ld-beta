@@ -206,50 +206,50 @@ public class SubmissionDAO {
 
 
     public List<Submission> getAllSubmissions() {
-        logger.debug("fetching all submissions");
+        logger.trace("fetching all submissions");
         Model m = TriplestoreUtil.constructQuery(MINIMAL_SUBMISSION_QUERY);
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building submission objects");
+        logger.trace("building submission objects");
         List<Submission> subs = mu.buildAllFromModel(new Submission.Deserializer());
-        logger.debug("submissions built");
+        logger.trace("submissions built");
         return subs;
     }
 
     public List<FileFormat> getForBinarySignature(List<String> statuses) {
-        logger.debug("fetching file formats for signature generation with statuses: " + statuses);
+        logger.trace("fetching file formats for signature generation with statuses: " + statuses);
         String statusStr = statuses.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
         Model m = TriplestoreUtil.constructQuery(SUBMISSION_SIG_GEN_QUERY.replace("#STATUS#", statusStr));
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building file format objects for signature generation");
+        logger.trace("building file format objects for signature generation");
         List<FileFormat> fs = mu.buildAllFromModel(new TentativeFileFormat.Deserializer());
-        logger.debug("MODEL: \n" + mu.toString(Lang.TTL));
-        logger.debug("file formats built for signature generation");
+        logger.trace("MODEL: \n" + mu.toString(Lang.TTL));
+        logger.trace("file formats built for signature generation");
         return fs;
     }
 
     public List<FileFormat> getForContainerSignature(List<String> statuses) {
-        logger.debug("fetching file formats for container signature generation with statuses: " + statuses);
+        logger.trace("fetching file formats for container signature generation with statuses: " + statuses);
         String statusStr = statuses.stream().map(ex -> "(<" + ex + ">)").collect(Collectors.joining(" "));
         Model m = TriplestoreUtil.constructQuery(SUBMISSION_CONTAINER_SIG_GEN_QUERY.replace("#STATUS#", statusStr));
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building file format objects for signature generation");
+        logger.trace("building file format objects for signature generation");
         List<FileFormat> fs = mu.buildAllFromModel(new TentativeFileFormat.Deserializer());
-        logger.debug("file formats built for signature generation");
+        logger.trace("file formats built for signature generation");
         return fs;
     }
 
     public List<Submission> getSubmissionsByStatus(Resource status) {
-        logger.debug("fetching submissions with status: " + status);
+        logger.trace("fetching submissions with status: " + status);
         Model m = TriplestoreUtil.constructQuery(SUBMISSION_QUERY, Map.of("subStatus", status));
         ModelUtil mu = new ModelUtil(m);
-        logger.debug("building submission objects");
+        logger.trace("building submission objects");
         List<Submission> subs = mu.buildAllFromModel(new Submission.Deserializer());
-        logger.debug("submissions built");
+        logger.trace("submissions built");
         return subs;
     }
 
     public void saveSubmission(Submission sub) {
-        logger.debug("saving Submission: " + sub.getURI());
+        logger.trace("saving Submission: " + sub.getURI());
         TriplestoreUtil.load(sub.toRDF());
     }
 
@@ -257,19 +257,19 @@ public class SubmissionDAO {
         Map<String, RDFNode> params = new HashMap<>();
         params.put("sub", uri);
         params.put("newSubStatus", to);
-        logger.debug("moving submission (" + uri + ") to: " + to);
+        logger.trace("moving submission (" + uri + ") to: " + to);
         TriplestoreUtil.updateQuery(MOVE_SUBMISSION_QUERY, params);
     }
 
     public void deleteSubmission(Resource uri) {
         Map<String, RDFNode> params = new HashMap<>();
         params.put("sub", uri);
-        logger.debug("deleting submission: " + uri);
+        logger.trace("deleting submission: " + uri);
         TriplestoreUtil.updateQuery(DELETE_SUBMISSION_QUERY, params);
     }
 
     public Submission getSubmissionByURI(Resource uri) {
-        logger.debug("fetching Submission by uri: " + uri);
+        logger.trace("fetching Submission by uri: " + uri);
         Submission.Deserializer deserializer = new Submission.Deserializer();
         Map<String, RDFNode> params = new HashMap<>();
         params.put("sub", uri);

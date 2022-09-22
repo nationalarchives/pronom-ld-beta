@@ -53,19 +53,20 @@ section.search-output(th:with="isEmpty=${#lists.isEmpty(results)}")
                   option(th:selected="${sort eq 'name'}", value='name') name
                   option(th:selected="${sort eq 'puid'}", value='puid') PUID
         .save-options
-          label(for="save_as") Save as
+          label(for="save_as") Export as
           .button-list
-            button.xsmall.bordered-blue
-              | XML
-            button.xsmall.bordered-blue
-              | CSV
             .dropdown-group
-              button.xsmall.bordered-blue
-                | RDF
-              select(id="save_as")
-                option(value='0') TTL
-                option(value='1') NT
-                option(value='2') RDF/XML
+              label.sr-only(for="format") Select export type
+              select(name="format" id="format")
+                option(value='csv') CSV
+                option(value='xml') XML
+                option(value='ttl') TTL
+                option(value='nt') NT
+                option(value='rdf') RDF/XML
+                option(value='n3') N3
+                option(value='jsonld') JSON-LD
+              button.small.bordered-blue(type="submit") Export
+              
       .all-results
         ul
           li.column-names
