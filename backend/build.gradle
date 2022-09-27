@@ -17,6 +17,9 @@ version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
 }
 
 sourceSets {
@@ -103,7 +106,8 @@ dependencies {
 
     // DROID: droid-core used for the ByteSequence parser
     // https://mvnrepository.com/artifact/uk.gov.nationalarchives/droid-core
-    implementation(group: 'uk.gov.nationalarchives', name: 'droid-core', version: '6.5.2'){
+    // SNAPSHOT: https://oss.sonatype.org/
+    implementation(group: 'uk.gov.nationalarchives', name: 'droid-core', version: '6.6.0-SNAPSHOT'){
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
