@@ -84,7 +84,7 @@ section.form-part#identifiers
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(th:id="${'identifier' + stat.index}", th:field="*{identifiers[__${stat.index}__].name}", th:data-undo="${i?.name}")
               .input-group(th:if="${compare?.identifiers?.get(__${stat.index}__)?.name}")
                 button.incoming Accept incoming
@@ -120,7 +120,7 @@ section.form-part#identifiers
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   input(th:id="${'aliasName' + stat.index}", th:field="*{aliases[__${stat.index}__].name}", th:data-undo="${a?.name}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.name}")
                   button.incoming Accept incoming
@@ -144,7 +144,7 @@ section.form-part#identifiers
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   input(th:id="${'aliasVersion' + stat.index}", th:field="*{aliases[__${stat.index}__].version}", th:data-undo="${a?.version}")
                 .input-group(th:if="${compare?.aliases?.get(__${stat.index}__)?.version}")
                   button.incoming Accept incoming

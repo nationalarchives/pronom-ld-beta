@@ -84,7 +84,7 @@ section.form-part#relationships
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(type="hidden", th:id="${'sourceUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].source}", th:value="${ff?.Uri}")
               input.value(type="hidden", th:id="${'targetUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
               input.label(th:id="${'hasRelationshipsName' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].targetName}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.targetName}")

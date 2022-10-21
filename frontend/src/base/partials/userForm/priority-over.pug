@@ -22,7 +22,7 @@ fieldset.priority-over
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].source}", th:value="${ff?.Uri}")
               input.value(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               input.label(th:id="${'hasPriorityOverName' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].targetName}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.targetName}")

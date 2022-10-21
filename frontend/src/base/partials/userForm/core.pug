@@ -74,7 +74,7 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(id="FileFormatPUID" th:field="*{puid}", th:data-undo="${ff?.puid}")
             .input-group(th:if="${compare?.puid}")
               button.incoming Accept incoming
@@ -104,7 +104,7 @@ section.form-part#core
                 i.fa-solid.fa-square-check
                 p Reviewed
           .input-group
-            button Accept current
+            button.current Accept current
             input(name="Name" id="FileFormatName" th:field="*{name}", th:data-undo="${ff?.name}")
           .input-group(th:if="${compare?.name}")
             button.incoming Accept incoming
@@ -213,7 +213,7 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(th:id="${'ReferenceName' + stat.index}" th:field="*{references[__${stat.index}__].name}", th:data-undo="${r?.name}")
             .input-group(th:if="${compareRef?.name}")
               button.incoming Accept incoming
@@ -237,7 +237,7 @@ section.form-part#core
                   i.fa-solid.fa-square-check
                   p Reviewed
             .input-group
-              button Accept current
+              button.current Accept current
               input(th:id="${'ReferenceLink' + stat.index}" th:field="*{references[__${stat.index}__].identifiers}", th:data-undo="${r?.identifiers}")
             .input-group(th:if="${compareRef?.identifiers}")
               button.incoming Accept incoming
@@ -274,7 +274,7 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input.value(type="hidden", th:id="${'ReferenceAuthor' + stat.index}", th:field="*{references[__${stat.index}__].author}", th:data-undo="${r?.author}")
                 input.label(th:id="${'ReferenceAuthorName' + stat.index}", th:field="*{references[__${stat.index}__].authorName}", th:data-undo="${r?.authorName}")
               .input-group(th:if="${compareRef?.author}")
@@ -303,7 +303,7 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input.date(type="date" th:id="${'ReferenceDate' + stat.index}", th:field="*{references[__${stat.index}__].publicationDate}", th:data-undo="${r?.publicationDate}")
               .input-group(th:if="${compareRef?.publicationDate}")
                 button.incoming Accept incoming
@@ -327,7 +327,7 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 input(th:id="${'ReferenceType' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.type}")
               .input-group(th:if="${compareRef?.type}")
                 button.incoming Accept incoming
@@ -351,7 +351,7 @@ section.form-part#core
                     i.fa-solid.fa-square-check
                     p Reviewed
               .input-group
-                button Accept current
+                button.current Accept current
                 textarea(th:id="${'ReferenceNote' + stat.index}", th:field="*{references[__${stat.index}__].type}", th:data-undo="${r?.note}")
               .input-group(th:if="${compareRef?.note}")
                 button.incoming Accept incoming

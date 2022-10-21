@@ -2,6 +2,7 @@ import "jquery-ui/ui/widgets/autocomplete"
 
 export function setupReviewFields() {
   $('.next, .prev, .nextSkip, .segment').on('click', function (evt) {
+    evt.preventDefault();
     if (formParts[formStep] === '#review') {
       reviewFieldsInner();
     }

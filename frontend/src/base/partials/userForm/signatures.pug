@@ -91,7 +91,7 @@ section.form-part#signatures
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   input(id="BinaryValue", disabled)
 
               //- Position type
@@ -113,7 +113,7 @@ section.form-part#signatures
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   select(id="PositionType", disabled)
                     option(value='0') option1
                     option(value='1') option2
@@ -137,7 +137,7 @@ section.form-part#signatures
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   input.short(name="MinOffset", id="MinOffset", disabled)
 
               //- Max offset
@@ -159,7 +159,7 @@ section.form-part#signatures
                       i.fa-solid.fa-square-check
                       p Reviewed
                 .input-group
-                  button Accept current
+                  button.current Accept current
                   input.short(name="MaxOffset", id="MaxOffset", disabled)
             //- template signature (hidden for copying) =============================================
             fieldset.signature.template.collapse-content-container
@@ -220,7 +220,7 @@ section.form-part#signatures
                             i.fa-solid.fa-square-check
                             p Reviewed
                       .input-group
-                        button Accept current
+                        button.current Accept current
                         textarea(cols="30", rows="6", name="internalSignatures[0].note", id="SignatureDescription", disabled)
                     //- byte sequence
                     .byte-sequence-list
@@ -250,7 +250,7 @@ section.form-part#signatures
                                   i.fa-solid.fa-square-check
                                   p Reviewed
                             .input-group
-                              button Accept current
+                              button.current Accept current
                               input(name="internalSignatures[0].byteSequences[0].sequence", id="binaryValue", disabled)
 
                           //- Position type
@@ -272,7 +272,7 @@ section.form-part#signatures
                                   i.fa-solid.fa-square-check
                                   p Reviewed
                             .input-group
-                              button Accept current
+                              button.current Accept current
                               select(name="internalSignatures[0].byteSequences[0].position", id="positionType", disabled)
                                 option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
 
@@ -295,7 +295,7 @@ section.form-part#signatures
                                   i.fa-solid.fa-square-check
                                   p Reviewed
                             .input-group
-                              button Accept current
+                              button.current Accept current
                               input.short(name="internalSignatures[0].byteSequences[0].offset", id="minOffset", disabled)
 
                           //- Max offset
@@ -317,7 +317,7 @@ section.form-part#signatures
                                   i.fa-solid.fa-square-check
                                   p Reviewed
                             .input-group
-                              button Accept current
+                              button.current Accept current
                               input.short(name="internalSignatures[0].byteSequences[0].maxOffset", id="maxOffset", disabled)
                       .button-container
                         button.black.small.add-byte-sequence.push-right Add byte sequence
@@ -424,7 +424,7 @@ section.form-part#signatures
                         i.fa-solid.fa-square-check
                         p Reviewed
                   .input-group
-                    button Accept current    
+                    button.current Accept current    
                     input(th:field="*{internalSignatures[__${stat.index}__].name}", th:id="${'SignatureName' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.name}")
                   .input-group(th:if="${compareSig?.name}")
                     button.incoming Accept incoming
@@ -451,7 +451,7 @@ section.form-part#signatures
                           i.fa-solid.fa-square-check
                           p Reviewed
                     .input-group
-                      button Accept current
+                      button.current Accept current
                       textarea(cols="30", rows="6" th:field="*{internalSignatures[__${stat.index}__].note}", th:id="${'SignatureNote' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.note}")
                     .input-group(th:if="${compareSig?.note}")
                       button.incoming Accept incoming
@@ -459,7 +459,7 @@ section.form-part#signatures
                   //- byte sequence
                   .byte-sequence-list
                     .list
-                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures.get(__${stat.index}__).byteSequences}", th:with="compareBSSize=${#lists.size(compareSig?.byteSequences ?: {})}, compareByteSeq=${compareBSSize > statB.index} ? ${compareSig.get(__${statB.index}__)} : null")
+                      .row-group-inner2.byte-sequence(th:each="byteSeq, statB : *{internalSignatures.get(__${stat.index}__).byteSequences}", th:with="compareBSSize=${#lists.size(compareSig?.byteSequences ?: {})}, compareByteSeq=${compareBSSize > statB.index} ? ${compareSig.byteSequences.get(__${statB.index}__)} : null")
                         .info
                           h4 Byte sequence
                           button.bordered-red.small.delete-byte-sequence
@@ -484,7 +484,7 @@ section.form-part#signatures
                                 i.fa-solid.fa-square-check
                                 p Reviewed
                           .input-group
-                            button Accept current
+                            button.current Accept current
                             input(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compareByteSeq?.sequence}")
                             button.incoming Accept incoming
@@ -509,7 +509,7 @@ section.form-part#signatures
                                 i.fa-solid.fa-square-check
                                 p Reviewed
                           .input-group
-                            button Accept current
+                            button.current Accept current
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
                               option(value='null') None
                               option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
@@ -538,7 +538,7 @@ section.form-part#signatures
                                 i.fa-solid.fa-square-check
                                 p Reviewed
                           .input-group
-                            button Accept current
+                            button.current Accept current
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
                           .input-group(th:if="${compareByteSeq?.position}")
@@ -565,7 +565,7 @@ section.form-part#signatures
                                 i.fa-solid.fa-square-check
                                 p Reviewed
                           .input-group
-                            button Accept current
+                            button.current Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compareByteSeq?.offset}")
                             button.incoming Accept incoming
@@ -590,7 +590,7 @@ section.form-part#signatures
                                 i.fa-solid.fa-square-check
                                 p Reviewed
                           .input-group
-                            button Accept current
+                            button.current Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
                           .input-group(th:if="${compareByteSeq?.maxOffset}")
                             button.incoming Accept incoming
@@ -703,7 +703,7 @@ section.form-part#signatures
                                       i.fa-solid.fa-square-check
                                       p Reviewed
                                 .input-group
-                                  button Accept current
+                                  button.current Accept current
                                   input(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
                                 .input-group(th:if="${compareByteSeq?.sequence}")
                                   button.incoming Accept incoming
@@ -728,7 +728,7 @@ section.form-part#signatures
                                       i.fa-solid.fa-square-check
                                       p Reviewed
                                 .input-group
-                                  button Accept current
+                                  button.current Accept current
                                   select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(value='null') None
                                     option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
@@ -757,7 +757,7 @@ section.form-part#signatures
                                       i.fa-solid.fa-square-check
                                       p Reviewed
                                 .input-group
-                                  button Accept current
+                                  button.current Accept current
                                   select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
                                 .input-group(th:if="${compareByteSeq?.position}")
@@ -784,7 +784,7 @@ section.form-part#signatures
                                       i.fa-solid.fa-square-check
                                       p Reviewed
                                 .input-group
-                                  button Accept current
+                                  button.current Accept current
                                   input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
                                 .input-group(th:if="${compareByteSeq?.offset}")
                                   button.incoming Accept incoming
@@ -809,7 +809,7 @@ section.form-part#signatures
                                       i.fa-solid.fa-square-check
                                       p Reviewed
                                 .input-group
-                                  button Accept current
+                                  button.current Accept current
                                   input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
                                 .input-group(th:if="${compareByteSeq?.maxOffset}")
                                   button.incoming Accept incoming
