@@ -115,7 +115,7 @@ block content
                     span Status
                     | Waiting
                 div
-                  p.data(th:utext="'<span>Subject</span>'+${s.format?.name ?: '-'}")
+                  p.data(th:utext="'<span>Subject</span>'+${s.format?.versionedName ?: '-'}")
                     span Subject
                     | File format name
                 div
@@ -186,7 +186,7 @@ block content
                         span Status
                         | Waiting
                     div
-                      p.data(th:utext="'<span>Subject</span>'+${s.format?.name}")
+                      p.data(th:utext="'<span>Subject</span>'+${s.format?.versionedName}")
                         span Subject
                         | File format name
                     div

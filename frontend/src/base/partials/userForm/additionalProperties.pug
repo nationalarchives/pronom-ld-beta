@@ -116,7 +116,7 @@ section.form-part#additionalProperties
                         i.fa-solid.fa-square-check
                         p Reviewed
                   .input-group
-                    button Accept current
+                    button.current Accept current
                     input(type="hidden", th:id="${'developmentActors' + stat.index}", th:field="*{developmentActors[__${stat.index}__].uri}")
                     input.label(th:id="${'developmentActorsName' + stat.index}", th:field="*{developmentActors[__${stat.index}__].name}", th:data-undo="${dev?.name}")
                   .input-group(th:if="${compareDev?.uri}")
@@ -149,7 +149,7 @@ section.form-part#additionalProperties
                           i.fa-solid.fa-square-check
                           p Reviewed
                     .input-group
-                      button Accept current
+                      button.current Accept current
                       input(type="hidden", th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}")
                       input.label(th:id="${'supportActorsName' + stat.index}", th:field="*{supportActors[__${stat.index}__].name}", th:data-undo="${sup?.name}")
                     .input-group(th:if="${compareSup?.uri}")
@@ -178,7 +178,7 @@ section.form-part#additionalProperties
         //-                 i.fa-solid.fa-square-check
         //-                 p Reviewed
         //-           .input-group
-        //-             button Accept current
+        //-             button.current Accept current
         //-             input(name="formatIPR" id="formatIPR" th:field="*{formatIPR}", th:data-undo="${ff?.formatIPR}")
         //-           .input-group(th:if="${compare?.formatIPR}")
         //-             button.incoming Accept incoming
@@ -202,7 +202,7 @@ section.form-part#additionalProperties
         //-                 i.fa-solid.fa-square-check
         //-                 p Reviewed
         //-           .input-group
-        //-             button Accept current
+        //-             button.current Accept current
         //-             input(name="document" id="document" th:field="*{document}", th:data-undo="${ff?.document}")
         //-           .input-group(th:if="${compare?.document}")
         //-             button.incoming Accept incoming
@@ -226,7 +226,7 @@ section.form-part#additionalProperties
         //-                 i.fa-solid.fa-square-check
         //-                 p Reviewed
         //-           .input-group
-        //-             button Accept current
+        //-             button.current Accept current
         //-             input.date(name="releaseDate" id="releaseDate" th:field="*{releaseDate}", th:data-undo="${ff?.releaseDate}" type="date")
         //-           .input-group(th:if="${compare?.releaseDate}")
         //-             button.incoming Accept incoming
@@ -253,7 +253,7 @@ section.form-part#additionalProperties
         //-             i.fa-solid.fa-square-check
         //-             p Reviewed
         //-       .input-group
-        //-         button Accept current
+        //-         button.current Accept current
         //-         input(name="technicalEnviroment" id="technicalEnviroment" th:field="*{technicalEnviroment}", th:data-undo="${ff?.technicalEnviroment}")
         //-       .input-group(th:if="${compare?.technicalEnviroment}")
         //-         button.incoming Accept incoming

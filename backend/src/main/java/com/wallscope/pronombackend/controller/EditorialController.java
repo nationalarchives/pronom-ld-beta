@@ -204,12 +204,19 @@ public class EditorialController {
 
     public static class User {
         private final String name;
+        private final String email;
 
-        protected User(String name) {
+        protected User(String name, String email) {
             this.name = name;
+            this.email = email;
         }
 
         protected User(AccessToken token) {
+            if (token.getEmail() != null && !token.getEmail().isBlank()) {
+                this.email = token.getEmail();
+            }else{
+                this.email = null;
+            }
             if (token.getGivenName() != null && !token.getGivenName().isBlank() && token.getFamilyName() != null && !token.getFamilyName().isBlank()) {
                 this.name = token.getGivenName() + " " + token.getFamilyName();
                 return;
@@ -222,8 +229,8 @@ public class EditorialController {
                 this.name = token.getPreferredUsername();
                 return;
             }
-            if (token.getEmail() != null && !token.getEmail().isBlank()) {
-                this.name = token.getEmail();
+            if(this.email != null){
+                this.name = this.email;
                 return;
             }
             this.name = "Unknown";
@@ -232,11 +239,15 @@ public class EditorialController {
         public String getName() {
             return name;
         }
+        public String getEmail() {
+            return email;
+        }
 
         @Override
         public String toString() {
             return "User{" +
                     "name='" + name + '\'' +
+                    ", email='" + email + '\'' +
                     '}';
         }
     }
@@ -248,4 +259,5 @@ public class EditorialController {
         AccessToken token = account.getKeycloakSecurityContext().getToken();
         return new User(token);
     }
+    public static User DefaultUser = new EditorialController.User("TNA default user", "default-user@tna.com");
 }

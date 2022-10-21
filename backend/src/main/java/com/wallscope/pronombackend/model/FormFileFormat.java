@@ -1,5 +1,6 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.apache.jena.rdf.model.Resource;
 
 import java.time.Instant;
@@ -57,6 +58,19 @@ public class FormFileFormat {
 
     public void setPuid(Integer puid) {
         this.puid = puid;
+    }
+
+    public String getPuidType() {
+        return puidType;
+    }
+
+    public void setPuidType(String puidType) {
+        this.puidType = puidType;
+    }
+
+    public String getFullPuid() {
+        if (getPuidType() == null || getPuid() == null) return null;
+        return TemplateUtils.getInstance().getLabel(getPuidType()) + "/" + getPuid();
     }
 
     public String getName() {
@@ -456,13 +470,5 @@ public class FormFileFormat {
             ff.setAliases(new ArrayList<>(List.of(new FormAlias())));
         }
         return ff;
-    }
-
-    public String getPuidType() {
-        return puidType;
-    }
-
-    public void setPuidType(String puidType) {
-        this.puidType = puidType;
     }
 }

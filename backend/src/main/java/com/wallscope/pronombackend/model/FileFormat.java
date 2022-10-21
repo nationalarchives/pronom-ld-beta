@@ -133,6 +133,14 @@ public class FileFormat implements RDFWritable, Comparable<FileFormat> {
         return name;
     }
 
+    public String getVersionedName() {
+        String version = "";
+        if (this.version != null) {
+            version = this.version;
+        }
+        return this.name + " " + version;
+    }
+
     public String getDescription() {
         return description;
     }

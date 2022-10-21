@@ -4,6 +4,7 @@ import com.wallscope.pronombackend.dao.FileFormatDAO;
 import com.wallscope.pronombackend.dao.FormOptionsDAO;
 import com.wallscope.pronombackend.dao.SubmissionDAO;
 import com.wallscope.pronombackend.model.*;
+import com.wallscope.pronombackend.utils.TemplateUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.wallscope.pronombackend.controller.EditorialController.DefaultUser;
 import static com.wallscope.pronombackend.controller.EditorialController.hydrateUser;
 import static com.wallscope.pronombackend.utils.RDFUtil.*;
 
@@ -111,11 +113,18 @@ public class SubmissionController {
         ff.setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
         ff.fillURIs();
         ff.removeEmpties();
+        List<FormValidationException> errors = ff.validate(false);
+        if (!errors.isEmpty()) {
+            redir.addFlashAttribute("errors", errors.stream().map(Exception::getMessage));
+            redir.addFlashAttribute("ff", ff);
+            return new RedirectView("/contribute/form/new");
+        }
         FileFormatDAO ffDao = new FileFormatDAO();
         // For existing file formats get the current object
         FileFormat existing = ffDao.getFileFormatByPuid(puid, puidType);
         String fullPuid = puidType + "/" + puid;
         if (existing == null) {
+            logger.trace("PUID not found: " + fullPuid);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
         }
         // Convert to a FileFormat object
@@ -124,7 +133,7 @@ public class SubmissionController {
         submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
         SubmissionDAO subDao = new SubmissionDAO();
         Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
-                makeResource(PRONOM.Submission.InternalSubmission),
+                makeResource(PRONOM.Submission.UserSubmission),
                 makeResource(PRONOM.Submission.StatusWaiting),
                 submitter.toObject(false),
                 null,
@@ -133,8 +142,10 @@ public class SubmissionController {
                 Instant.now(),
                 null);
         subDao.saveSubmission(sub);
-        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for file format " + fullPuid + " created successfully."));
-        return new RedirectView("/contribute/form");
+        String message = "Submission for file format " + fullPuid + " created successfully.";
+        logger.debug(message);
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, message));
+        return new RedirectView("/" + fullPuid);
     }
 
     // Editorial form submissions
@@ -166,9 +177,15 @@ public class SubmissionController {
     }
 
     @PostMapping("/editorial/form/{submission}")
-    public String submissionForm(Model model, @PathVariable String submission, @ModelAttribute FormFileFormat ff) {
+    public RedirectView submissionForm(Model model, @PathVariable String submission, @ModelAttribute FormFileFormat ff, RedirectAttributes redir) {
         ff.fillURIs();
         ff.removeEmpties();
+        List<FormValidationException> errors = ff.validate(false);
+        if (!errors.isEmpty()) {
+            redir.addFlashAttribute("errors", errors.stream().map(Exception::getMessage));
+            redir.addFlashAttribute("ff", ff);
+            return new RedirectView("/contribute/form/" + submission);
+        }
         SubmissionDAO subDao = new SubmissionDAO();
         Resource submissionUri = makeResource(PRONOM.Submission.id + submission);
         Submission sub = subDao.getSubmissionByURI(submissionUri);
@@ -195,7 +212,12 @@ public class SubmissionController {
                 Instant.now());
         subDao.deleteSubmission(sub.getURI());
         subDao.saveSubmission(newSub);
-        return "redirect:/editorial";
+        String ffId = submission;
+        if (ff.getPuid() != null && ff.getPuidType() != null) {
+            ffId = TemplateUtils.getInstance().getLabel(ff.getPuidType() + "/" + ff.getPuid());
+        }
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for file format " + ffId + " created successfully."));
+        return new RedirectView("/editorial");
     }
 
     @GetMapping("/editorial/form/{puidType}/{puid}")
@@ -215,10 +237,40 @@ public class SubmissionController {
     }
 
     @PostMapping("/editorial/form/{puidType}/{puid}")
-    public String editorialFormSubmission(Model model, @ModelAttribute FormFileFormat ff) {
-        // TODO: Implement puid submission for internal
-        logger.trace("Received FormFileFormat:\n" + ff);
-        return "redirect:/editorial/form";
+    public RedirectView editorialFormSubmission(Model model, @ModelAttribute FormFileFormat ff, @PathVariable String puidType, @PathVariable String puid, RedirectAttributes redir) {
+        ff.setUri(PRONOM.TentativeFileFormat.id + UUID.randomUUID());
+        ff.fillURIs();
+        ff.removeEmpties();
+        List<FormValidationException> errors = ff.validate(true);
+        if (!errors.isEmpty()) {
+            redir.addFlashAttribute("errors", errors.stream().map(Exception::getMessage));
+            redir.addFlashAttribute("ff", ff);
+            return new RedirectView("/contribute/form/new");
+        }
+        FileFormatDAO ffDao = new FileFormatDAO();
+        // For existing file formats get the current object
+        FileFormat existing = ffDao.getFileFormatByPuid(puid, puidType);
+        String fullPuid = puidType + "/" + puid;
+        if (existing == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no File Format with puid: " + fullPuid);
+        }
+        // Convert to a FileFormat object
+        FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
+        FormSubmittedBy submitter = ff.getSubmittedBy();
+        submitter.setUri(PRONOM.Contributor.id + UUID.randomUUID());
+        SubmissionDAO subDao = new SubmissionDAO();
+        Submission sub = new Submission(makeResource(PRONOM.Submission.id + UUID.randomUUID()),
+                makeResource(PRONOM.Submission.InternalSubmission),
+                makeResource(PRONOM.Submission.StatusWaiting),
+                submitter.toObject(false),
+                null,
+                existing,
+                new TentativeFileFormat(f.getURI(), f),
+                Instant.now(),
+                null);
+        subDao.saveSubmission(sub);
+        redir.addFlashAttribute("feedback", new Feedback(Feedback.Status.SUCCESS, "Submission for file format " + fullPuid + " created successfully."));
+        return new RedirectView("/editorial");
     }
 
     @GetMapping("/editorial/form/new")
@@ -240,6 +292,15 @@ public class SubmissionController {
     @PostMapping("/editorial/form/new")
     public RedirectView editorialNewFormSubmission(Model model, @ModelAttribute FormFileFormat ff, RedirectAttributes redir, Principal principal) {
         EditorialController.User user = hydrateUser(principal);
+        if (user == null) {
+            user = DefaultUser;
+        }
+        if (user.getEmail() == null) {
+            user = new EditorialController.User(user.getName(), DefaultUser.getEmail());
+        }
+        if (user.getName() == null) {
+            user = new EditorialController.User(DefaultUser.getName(), user.getEmail());
+        }
         logger.trace("FORM RECEIVED: " + ff);
         // For new file formats generate random UUID based URIs for all the top level entities
         ff.fillURIs();
@@ -248,10 +309,10 @@ public class SubmissionController {
         // Convert to a FileFormat object
         FileFormat f = ff.toObject(Instant.now(), Instant.now(), null, null);
         Contributor contrib = new Contributor(
-                makeResource("mailto:default-user@tna.com"),
-                "TNA default user",
+                makeResource(user.getEmail()),
+                user.getName(),
                 "TNA",
-                "mailto:default-user@tna.com",
+                user.getEmail(),
                 null,
                 null,
                 false,
