@@ -28,7 +28,7 @@ section.form-part#core
         //- PUID
         .puid-holder(th:if="${editorial}")
           //- File format PUID type
-          .form-row.puid-type-container(th:classappend="${compare?.formatTypes} ? 'before-review' : ''")
+          .form-row.puid-type-container(th:classappend="${compare?.puidType != ff?.puidType} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.puidType) ? 'New content' : 'Edited content'}") Edited content
             .tooltipPlusAction
               fieldset
@@ -51,7 +51,7 @@ section.form-part#core
               button.current Accept current
               select(id="puidType", th:field="*{puidType}")
                 option(th:each="co : ${puidTypeOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
-            .input-group(th:if="${compare?.puidType}")
+            .input-group(th:if="${compare?.puidType != ff?.puidType}")
               button.incoming Accept incoming
               select(th:if="${compare?.puidType}", id="puidType")
                 option(th:each="co : ${puidTypeOptions}", th:value="${co.URI}", th:text="${co.label}") option 1
