@@ -1,17 +1,23 @@
 package com.wallscope.pronombackend.model;
 
+import com.wallscope.pronombackend.controller.SubmissionController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.wallscope.pronombackend.utils.RDFUtil.makeResource;
 
 public class FormDocumentation {
+    Logger logger = LoggerFactory.getLogger(FormDocumentation.class);
     private String uri;
     private String name;
     private String author;
@@ -120,10 +126,10 @@ public class FormDocumentation {
     }
 
     private Instant parseDate(String str) {
+        logger.debug("PARSING DATE: "+str);
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.UK).withZone(ZoneId.systemDefault());
-            TemporalAccessor t = formatter.parse(str);
-            return Instant.from(t);
+            LocalDate d = LocalDate.parse(str);
+            return d.atStartOfDay(ZoneId.systemDefault()).toInstant();
         } catch (DateTimeParseException e) {
             return null;
         }

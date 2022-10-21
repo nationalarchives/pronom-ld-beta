@@ -316,6 +316,17 @@ public class RDFUtil {
         public static class PuidType {
             public static final String type = PRONOM.uri + "PuidType";
             public static final String uri = PRONOM.uri + "puidType.";
+            public static final String id = PRONOM.uri + "id/PuidType/";
+            public static final String fmt = id + "1";
+            public static final String xfmt = id + "2";
+            public static final String sfw = id + "3";
+            public static final String xsfw = id + "4";
+            public static final String hdw = id + "5";
+            public static final String xhdw = id + "6";
+            public static final String chr = id + "7";
+            public static final String xchr = id + "8";
+            public static final String cmp = id + "9";
+            public static final String xcmp = id + "10";
         }
 
         // InternalSignature sub
@@ -511,6 +522,17 @@ public class RDFUtil {
             Map.entry(PRONOM.CompressionType.type, "Compression"),
             Map.entry(PRONOM.Software.type, "Software"),
             Map.entry(PRONOM.CharacterEncoding.type, "Character Encoding"),
+            // PUID Types
+            Map.entry(PRONOM.PuidType.fmt, "fmt"),
+            Map.entry(PRONOM.PuidType.xfmt, "x-fmt"),
+            Map.entry(PRONOM.PuidType.sfw, "sfw"),
+            Map.entry(PRONOM.PuidType.xsfw, "x-sfw"),
+            Map.entry(PRONOM.PuidType.hdw, "hdw"),
+            Map.entry(PRONOM.PuidType.xhdw, "x-hdw"),
+            Map.entry(PRONOM.PuidType.chr, "chr"),
+            Map.entry(PRONOM.PuidType.xchr, "x-chr"),
+            Map.entry(PRONOM.PuidType.cmp, "cmp"),
+            Map.entry(PRONOM.PuidType.xcmp, "x-cmp"),
             // Generic entity Properties
             // non-specific
             Map.entry(RDF.type, "Type"),
