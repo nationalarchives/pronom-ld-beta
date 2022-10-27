@@ -38,7 +38,7 @@ section.form-part#additionalProperties
         .part
 
           //- Byte Order
-          .form-row(th:classappend="${compare?.byteOrder} ? 'before-review' : ''")
+          .form-row(th:classappend="${compare?.byteOrder != ff?.byteOrder} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.byteOrder) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -59,14 +59,14 @@ section.form-part#additionalProperties
               select(id="byteOrder", th:field="*{byteOrder}", multiple="multiple", size="5")
                 option(th:value="null") None/Unknown
                 option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
-            .input-group(th:if="${compare?.byteOrder}")
+            .input-group(th:if="${compare?.byteOrder != ff?.byteOrder}")
               button.incoming Accept incoming
               select(id="byteOrder" th:if="${compare?.byteOrder}", th:value="${compare?.byteOrder}", multiple="multiple", size="5")
                 option(th:value="null") None/Unknown
                 option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
 
           //- Compression Type
-          .form-row(th:classappend="${compare?.compressionTypes} ? 'before-review' : ''")
+          .form-row(th:classappend="${compare?.compressionTypes != ff?.compressionType} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.compressionTypes) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -87,7 +87,7 @@ section.form-part#additionalProperties
               select(id="compressionTypes", th:field="*{compressionTypes}", multiple="multiple", size="5")
                 option(th:value="null") None/Unknown
                 option(th:each="ct : ${compressionTypeOptions}", th:value="${ct.URI}", th:text="${ct.label}") option 1
-            .input-group(th:if="${compare?.compressionTypes}")
+            .input-group(th:if="${compare?.compressionTypes != ff?.compressionType}")
               button.incoming Accept incoming
               select(th:if="${compare?.compressionTypes}", multiple="multiple", size="5")
                 option(th:value="null") None/Unknown
@@ -99,7 +99,7 @@ section.form-part#additionalProperties
             .add-actor.development
               fieldset(th:each="dev, stat : *{developmentActors}", th:with="compareSize=${#lists.size(compare?.developmentActors ?: {})}, compareDev=${compareSize > stat.index} ? ${compare.developmentActors.get(__${stat.index}__)} : null")
                 //- Developer
-                .form-row(th:classappend="${compareDev?.uri} ? 'before-review' : ''")
+                .form-row(th:classappend="${compareDev?.uri != ff?.uri} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(dev?.uri) ? 'New content' : 'Edited content'}") New content
                   .tooltipPlusAction
                     .tooltip-container
@@ -119,7 +119,7 @@ section.form-part#additionalProperties
                     button.current Accept current
                     input(type="hidden", th:id="${'developmentActors' + stat.index}", th:field="*{developmentActors[__${stat.index}__].uri}")
                     input.label(th:id="${'developmentActorsName' + stat.index}", th:field="*{developmentActors[__${stat.index}__].name}", th:data-undo="${dev?.name}")
-                  .input-group(th:if="${compareDev?.uri}")
+                  .input-group(th:if="${compareDev?.uri != ff?.uri}")
                     button.incoming Accept incoming
                     input(type="hidden", th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.uri}")
                     input(th:id="${'developmentActors' + stat.index}", th:value="${compareDev?.name}")
@@ -132,7 +132,7 @@ section.form-part#additionalProperties
               .add-actor.support
                 fieldset(th:each="sup, stat : *{supportActors}", th:with="compareSize=${#lists.size(compare?.supportActors ?: {})}, compareSup=${compareSize > stat.index} ? ${compare.supportActors.get(__${stat.index}__)} : null")
                   //- Support
-                  .form-row(th:classappend="${compareSup?.uri} ? 'before-review' : ''")
+                  .form-row(th:classappend="${compareSup?.uri != ff?.uri} ? 'before-review' : ''")
                     p.inputType(th:text="${#strings.isEmpty(sup?.uri) ? 'New content' : 'Edited content'}") New content
                     .tooltipPlusAction
                       .tooltip-container
@@ -152,7 +152,7 @@ section.form-part#additionalProperties
                       button.current Accept current
                       input(type="hidden", th:id="${'supportActors' + stat.index}", th:field="*{supportActors[__${stat.index}__].uri}")
                       input.label(th:id="${'supportActorsName' + stat.index}", th:field="*{supportActors[__${stat.index}__].name}", th:data-undo="${sup?.name}")
-                    .input-group(th:if="${compareSup?.uri}")
+                    .input-group(th:if="${compareSup?.uri != ff?.uri}")
                       button.incoming Accept incoming
                       input(type="hidden", th:id="${'supportActors' + stat.index}", th:value="${compareSup?.uri}")
                       input(th:id="${'supportActors' + stat.index}", th:value="${compareSup?.name}")
@@ -161,7 +161,7 @@ section.form-part#additionalProperties
                     | Add institutional actor
 
         //-         //- Format IPR
-        //-         .form-row(th:classappend="${compare?.formatIPR} ? 'before-review' : ''")
+        //-         .form-row(th:classappend="${compare?.formatIPR != ff?.formatIPR} ? 'before-review' : ''")
         //-           p.inputType(th:text="${#strings.isEmpty(ff?.formatIPR) ? 'New content' : 'Edited content'}") New content
         //-           .tooltipPlusAction
         //-             .tooltip-container
@@ -180,12 +180,12 @@ section.form-part#additionalProperties
         //-           .input-group
         //-             button.current Accept current
         //-             input(name="formatIPR" id="formatIPR" th:field="*{formatIPR}", th:data-undo="${ff?.formatIPR}")
-        //-           .input-group(th:if="${compare?.formatIPR}")
+        //-           .input-group(th:if="${compare?.formatIPR != ff?.formatIPR}")
         //-             button.incoming Accept incoming
         //-             input(th:value="${compare.formatIPR}" name="formatIPR" id="formatIPR")
 
         //-         //- Document
-        //-         .form-row(th:classappend="${compare?.document} ? 'before-review' : ''")
+        //-         .form-row(th:classappend="${compare?.document != ff?.document} ? 'before-review' : ''")
         //-           p.inputType(th:text="${#strings.isEmpty(ff?.document) ? 'New content' : 'Edited content'}") New content
         //-           .tooltipPlusAction
         //-             .tooltip-container
@@ -206,10 +206,10 @@ section.form-part#additionalProperties
         //-             input(name="document" id="document" th:field="*{document}", th:data-undo="${ff?.document}")
         //-           .input-group(th:if="${compare?.document}")
         //-             button.incoming Accept incoming
-        //-             input(th:value="${compare.document}" name="document" id="document")
+        //-             input(th:value="${compare.document != ff?.document}" name="document" id="document")
 
         //-         //- Release date
-        //-         .form-row(th:classappend="${compare?.releaseDate} ? 'before-review' : ''")
+        //-         .form-row(th:classappend="${compare?.releaseDate != ff?.releaseDate} ? 'before-review' : ''")
         //-           p.inputType(th:text="${#strings.isEmpty(ff?.releaseDate) ? 'New content' : 'Edited content'}") New content
         //-           .tooltipPlusAction
         //-             .tooltip-container
@@ -228,7 +228,7 @@ section.form-part#additionalProperties
         //-           .input-group
         //-             button.current Accept current
         //-             input.date(name="releaseDate" id="releaseDate" th:field="*{releaseDate}", th:data-undo="${ff?.releaseDate}" type="date")
-        //-           .input-group(th:if="${compare?.releaseDate}")
+        //-           .input-group(th:if="${compare?.releaseDate != ff?.releaseDate}")
         //-             button.incoming Accept incoming
         //-             input.date(th:value="${compare.releaseDate}" type="date" name="releaseDate" id="releaseDate")
         //- .from-internal-only
@@ -236,7 +236,7 @@ section.form-part#additionalProperties
         //-   .part
 
         //-     //- Technical enviroment
-        //-     .form-row(th:classappend="${compare?.technicalEnviroment} ? 'before-review' : ''")
+        //-     .form-row(th:classappend="${compare?.technicalEnviroment != ff?.technicalEnviroment} ? 'before-review' : ''")
         //-       p.inputType(th:text="${#strings.isEmpty(ff?.technicalEnviroment) ? 'New content' : 'Edited content'}") New content
         //-       .tooltipPlusAction
         //-         .tooltip-container
@@ -255,6 +255,6 @@ section.form-part#additionalProperties
         //-       .input-group
         //-         button.current Accept current
         //-         input(name="technicalEnviroment" id="technicalEnviroment" th:field="*{technicalEnviroment}", th:data-undo="${ff?.technicalEnviroment}")
-        //-       .input-group(th:if="${compare?.technicalEnviroment}")
+        //-       .input-group(th:if="${compare?.technicalEnviroment != ff?.technicalEnviroment}")
         //-         button.incoming Accept incoming
         //-         input(th:value="${compare.technicalEnviroment}" name="technicalEnviroment" id="technicalEnviroment")

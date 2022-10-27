@@ -41,7 +41,7 @@ section.form-part#relationships
           input(type="hidden", th:field="*{hasRelationships[__${stat.index}__].uri}")
 
           //- Choose relationship type
-          .form-row.rel-type(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+          .form-row.rel-type(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target != ff?.target} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(rel?.relationshipType) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -61,13 +61,13 @@ section.form-part#relationships
               button.current Accept current
               select(th:id="${'relationshipType' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].relationshipType}")
                 option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${rto.URI}", th:text="${rto.label}") option 1
-            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}")
+            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType != ff?.relationshipType}")
               button.incoming Accept incoming
               select(th:id="${'relationshipType' + stat.index}")
                 option(th:each="rto : ${relationshipTypeNoPriorityOptions}", th:value="${compare?.hasRelationships?.get(__${stat.index}__)?.relationshipType}", th:text="${rto.label}") option 1
 
           //- Related file format
-          .form-row.rel-ff(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+          .form-row.rel-ff(th:classappend="${compare?.hasRelationships?.get(__${stat.index}__)?.target != ff?.target} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(ff?.hasRelationships?.get(__${stat.index}__)?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -88,9 +88,9 @@ section.form-part#relationships
               input(type="hidden", th:id="${'sourceUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].source}", th:value="${ff?.Uri}")
               input.value(type="hidden", th:id="${'targetUri' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].target}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.target}")
               input.label(th:id="${'hasRelationshipsName' + stat.index}", th:field="*{hasRelationships[__${stat.index}__].targetName}", th:data-undo="${ff?.hasRelationships?.get(__${stat.index}__)?.targetName}")
-            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target}")
+            .input-group(th:if="${compare?.hasRelationships?.get(__${stat.index}__)?.target != ff?.target}")
               button.incoming Accept incoming
-              input(type="hidden", th:id="${'targetUri' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target}")
+              input(type="hidden", th:id="${'targetUri' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.target != ff?.target}")
               input(th:id="${'hasRelationshipsName' + stat.index}", th:value="${compare.hasRelationships?.get(__${stat.index}__)?.targetName}")
           .button-container
             button.bordered-red.small.delete-relationship
@@ -102,7 +102,7 @@ section.form-part#relationships
     //- Format families
     fieldset.format-families
       input(type="hidden", th:field="*{formatFamilies}")
-      .form-row(th:classappend="${compare?.formatFamilies} ? 'before-review' : ''")
+      .form-row(th:classappend="${compare?.formatFamilies != ff?.formatFamilies} ? 'before-review' : ''")
         p.inputType(th:text="${#lists.isEmpty(ff?.formatFamilies) ? 'New content' : 'Edited content'}") New content
         .tooltipPlusAction
           .tooltip-container
@@ -123,7 +123,7 @@ section.form-part#relationships
           select(id="formatFamilies", th:field="*{formatFamilies}", multiple="multiple", size="5")
             option(th:value="null") None
             option(th:each="ffo : ${formatFamilyOptions}", th:value="${ffo.URI}", th:text="${ffo.label}") option 1
-        .input-group(th:if="${compare?.formatFamilies}")
+        .input-group(th:if="${compare?.formatFamilies != ff?.formatFamilies}")
           button.incoming Accept incoming
           select(id="formatFamilies", th:value="${compare.formatFamilies}", multiple="multiple", size="5")
             option(th:value="null") None

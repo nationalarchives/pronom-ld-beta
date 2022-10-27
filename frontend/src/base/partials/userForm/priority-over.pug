@@ -5,7 +5,7 @@ fieldset.priority-over
       p Priority over
       .priority-list
         .priority-group(th:each="p, stat : *{hasPriorityOver}")
-          .form-row.priority-file-format(th:classappend="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target} ? 'before-review' : ''")
+          .form-row.priority-file-format(th:classappend="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target != ff?.target} ? 'before-review' : ''")
             p.inputType(th:text="${#strings.isEmpty(p?.target) ? 'New content' : 'Edited content'}") New content
             .tooltipPlusAction
               .tooltip-container
@@ -26,9 +26,9 @@ fieldset.priority-over
               input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].source}", th:value="${ff?.Uri}")
               input.value(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].target}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.target}")
               input.label(th:id="${'hasPriorityOverName' + stat.index}", th:field="*{hasPriorityOver[__${stat.index}__].targetName}", th:data-undo="${ff?.hasPriorityOver?.get(__${stat.index}__)?.targetName}")
-            .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target}")
+            .input-group(th:if="${compare?.hasPriorityOver?.get(__${stat.index}__)?.target != ff?.target}")
               button.incoming Accept incoming
-              input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__)?.target}")
+              input(type="hidden", th:id="${'hasPriorityOver' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__)?.target != ff?.target}")
               input(th:id="${'hasPriorityOverName' + stat.index}", th:value="${compare.hasPriorityOver?.get(__${stat.index}__)?.targetName}")
           button.bordered-red.small.delete-priority-over
             | Delete field
