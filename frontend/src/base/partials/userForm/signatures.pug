@@ -406,7 +406,7 @@ section.form-part#signatures
               .collapse-content
 
                 //- Signature name
-                .form-row.signature-name(th:classappend="${compareSig?.name != ff?.name} ? 'before-review' : ''")
+                .form-row.signature-name(th:classappend="${compareSig?.name != null && compareSig?.name != sig?.name} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.name) ? 'New content' : 'Edited content'}") Edited content
                   .tooltipPlusAction
                     .tooltip-container
@@ -426,14 +426,14 @@ section.form-part#signatures
                   .input-group
                     button.current Accept current    
                     input(th:field="*{internalSignatures[__${stat.index}__].name}", th:id="${'SignatureName' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.name}")
-                  .input-group(th:if="${compareSig?.name != ff?.name}")
+                  .input-group(th:if="${compareSig?.name != null && compareSig?.name != sig?.name}")
                     button.incoming Accept incoming
                     input(th:value="${compareSig.name}", th:id="${'SignatureName' + stat.index}")
 
                 h3 Byte Sequences
                 .part
                   //- Description
-                  .form-row.signature-description(th:classappend="${compareSig?.note != ff?.note} ? 'before-review' : ''")
+                  .form-row.signature-description(th:classappend="${compareSig?.note != null && compareSig?.note != sig?.note} ? 'before-review' : ''")
                     p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.note) ? 'New content' : 'Edited content'}") Edited content
                     .tooltipPlusAction
                       .tooltip-container
@@ -453,7 +453,7 @@ section.form-part#signatures
                     .input-group
                       button.current Accept current
                       textarea(cols="30", rows="6" th:field="*{internalSignatures[__${stat.index}__].note}", th:id="${'SignatureNote' + stat.index}", th:data-undo="${ff?.internalSignatures?.get(__${stat.index}__)?.note}")
-                    .input-group(th:if="${compareSig?.note != ff?.note}")
+                    .input-group(th:if="${compareSig?.note != null && compareSig?.note != sig?.note}")
                       button.incoming Accept incoming
                       textarea(cols="30", rows="6", th:value="${compare.internalSignatures?.get(__${stat.index}__).note}", th:id="${'SignatureNote' + stat.index}")
                   //- byte sequence
@@ -466,8 +466,8 @@ section.form-part#signatures
                             | Delete byte sequence
                           
                         //- Binary value
-                        .form-row.binary-value(th:classappend="${compareByteSeq?.sequence != ff?.sequence} ? 'before-review' : ''")
-                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.sequence) ? 'New content' : 'Edited content'}") Edited content
+                        .form-row.binary-value(th:classappend="${compareByteSeq?.sequence != null && compareByteSeq?.sequence != byteSeq?.sequence} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(byteSeq?.sequence) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
                               .label
@@ -486,18 +486,18 @@ section.form-part#signatures
                           .input-group
                             button.current Accept current
                             input(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compareByteSeq?.sequence != ff?.sequence}")
+                          .input-group(th:if="${compareByteSeq?.sequence != null && compareByteSeq?.sequence != byteSeq?.sequence}")
                             button.incoming Accept incoming
-                            input(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
+                            input(th:value="${compareByteSeq?.sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index}")
 
                         //- Byte Order
-                        .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder != ff?.byteOrder} ? 'before-review' : ''")
-                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.byteOrder) ? 'New content' : 'Edited content'}") Edited content
+                        .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder != null && compareByteSeq?.byteOrder != compareByteSeq?.byteOrder} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(byteSeq?.byteOrder) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
                               .label
-                                label.from-external-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type
-                                label.from-internal-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Position type (required)
+                                label.from-external-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Byte Order
+                                label.from-internal-only(th:for="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}") Byte Order (required)
                                 span.tooltip-toggle(aria-label=htmlWebpackPlugin.options.getTooltip('form', '2.4.4') tabindex='0')
                                   .i-wrapper
                                     i.fa.fa-solid.fa-circle-info(role="img" aria-label="information icon")
@@ -513,15 +513,15 @@ section.form-part#signatures
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
                               option(value='null') None
                               option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
-                          .input-group(th:if="${compareByteSeq?.byteOrder != ff?.byteOrder}")
+                          .input-group(th:if="${compareByteSeq?.byteOrder != null && compareByteSeq?.byteOrder != byteSeq?.byteOrder}")
                             button.incoming Accept incoming
-                            select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
+                            select(th:value="${compareByteSeq?.byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index}")
                               option(value='null') None
                               option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
 
                         //- Position type
-                        .form-row.position-type(th:classappend="${compareByteSeq?.position != ff?.position} ? 'before-review' : ''")
-                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.position) ? 'New content' : 'Edited content'}") Edited content
+                        .form-row.position-type(th:classappend="${compareByteSeq?.position != null && compareByteSeq?.position != byteSeq?.position} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(byteSeq?.position) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
                               .label
@@ -541,14 +541,14 @@ section.form-part#signatures
                             button.current Accept current
                             select(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
-                          .input-group(th:if="${compareByteSeq?.position != ff?.position}")
+                          .input-group(th:if="${compareByteSeq?.position != null && compareByteSeq?.position != byteSeq?.position}")
                             button.incoming Accept incoming
-                            select(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
+                            select(th:value="${compareByteSeq?.position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index}")
                               option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
 
                         //- Min offset
-                        .form-row.min-offset(th:classappend="${compareByteSeq?.offset != ff?.offset} ? 'before-review' : ''")
-                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.offset) ? 'New content' : 'Edited content'}") Edited content
+                        .form-row.min-offset(th:classappend="${compareByteSeq?.offset != null && compareByteSeq?.offset != byteSeq?.offset} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(byteSeq?.offset) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
                               .label
@@ -567,13 +567,13 @@ section.form-part#signatures
                           .input-group
                             button.current Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compareByteSeq?.offset != ff?.offset}")
+                          .input-group(th:if="${compareByteSeq?.offset != null && compareByteSeq?.offset != byteSeq?.offset}")
                             button.incoming Accept incoming
-                            input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
+                            input.short(th:value="${compareByteSeq?.offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index}")
                         
                         //- Max offset
-                        .form-row.max-offset(th:classappend="${compareByteSeq?.offset != ff?.offset} ? 'before-review' : ''")
-                          p.inputType(th:text="${#strings.isEmpty(ff?.internalSignatures?.get(__${stat.index}__)?.byteSequences?.get(__${statB.index}__)?.maxOffset) ? 'New content' : 'Edited content'}") Edited content
+                        .form-row.max-offset(th:classappend="${compareByteSeq?.offset != null && compareByteSeq?.offset != byteSeq?.offset} ? 'before-review' : ''")
+                          p.inputType(th:text="${#strings.isEmpty(byteSeq?.maxOffset) ? 'New content' : 'Edited content'}") Edited content
                           .tooltipPlusAction
                             .tooltip-container
                               .label
@@ -592,9 +592,9 @@ section.form-part#signatures
                           .input-group
                             button.current Accept current
                             input.short(th:field="*{internalSignatures[__${stat.index}__].byteSequences[__${statB.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
-                          .input-group(th:if="${compareByteSeq?.maxOffset != ff?.maxOffset}")
+                          .input-group(th:if="${compareByteSeq?.maxOffset != null && compareByteSeq?.maxOffset != byteSeq?.maxOffset}")
                             button.incoming Accept incoming
-                            input.short(th:value="${compare.internalSignatures?.get(__${stat.index}__).byteSequences[__${statB.index}__].maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
+                            input.short(th:value="${compareByteSeq?.maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index}")
                     .button-container
                       button.black.small.add-byte-sequence.push-right Add byte sequence
 
@@ -613,7 +613,7 @@ section.form-part#signatures
                   | Delete container signature
               .collapse-content
                 //- Container signature name
-                .form-row(th:classappend="${compareSig?.name != ff?.name} ? 'before-review' : ''")
+                .form-row(th:classappend="${compareSig?.name != null && compareSig?.name != sig?.name} ? 'before-review' : ''")
                   p.inputType(th:text="${#strings.isEmpty(sig?.name) ? 'New content' : 'Edited content'}") Edited content
                   .tooltip-container
                     .label
@@ -685,7 +685,7 @@ section.form-part#signatures
                                   | Delete byte sequence
                               
                               //- Binary value
-                              .form-row.binary-value(th:classappend="${compareByteSeq?.sequence != ff?.sequence} ? 'before-review' : ''")
+                              .form-row.binary-value(th:classappend="${compareByteSeq?.sequence != null && compareByteSeq?.sequence != byteSeq?.sequence} ? 'before-review' : ''")
                                 p.inputType(th:text="${#strings.isEmpty(byteSeq?.sequence) ? 'New content' : 'Edited content'}") Edited content
                                 .tooltipPlusAction
                                   .tooltip-container
@@ -705,12 +705,12 @@ section.form-part#signatures
                                 .input-group
                                   button.current Accept current
                                   input(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
-                                .input-group(th:if="${compareByteSeq?.sequence != ff?.sequence}")
+                                .input-group(th:if="${compareByteSeq?.sequence != null && compareByteSeq?.sequence != byteSeq?.sequence}")
                                   button.incoming Accept incoming
-                                  input(th:value="${compareByteSeq.sequence != ff?.sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                  input(th:value="${compareByteSeq.sequence}", th:id="${'ByteSequenceSignature' + stat.index + '-' + statB.index + '-' + statC.index}")
                               
                               //- Byte Order
-                              .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder != ff?.byteOrder} ? 'before-review' : ''")
+                              .form-row.position-type(th:classappend="${compareByteSeq?.byteOrder != null && compareByteSeq?.byteOrder != byteSeq?.byteOrder} ? 'before-review' : ''")
                                 p.inputType(th:text="${#strings.isEmpty(byteSeq?.byteOrder)) ? 'New content' : 'Edited content'}") Edited content
                                 .tooltipPlusAction
                                   .tooltip-container
@@ -732,14 +732,14 @@ section.form-part#signatures
                                   select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(value='null') None
                                     option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
-                                .input-group(th:if="${compareByteSeq?.byteOrder != ff?.byteOrder}")
+                                .input-group(th:if="${compareByteSeq?.byteOrder != null && compareByteSeq?.byteOrder != byteSeq?.byteOrder}")
                                   button.incoming Accept incoming
-                                  select(th:value="${compareByteSeq.byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                  select(th:value="${compareByteSeq?.byteOrder}", th:id="${'ByteSequenceByteOrder' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(value='null') None
                                     option(th:each="bo : ${byteOrderOptions}", th:value="${bo.URI}", th:text="${bo.label}") option 1
                               
                               //- Position type
-                              .form-row.position-type(th:classappend="${compareByteSeq?.position != ff?.position} ? 'before-review' : ''")
+                              .form-row.position-type(th:classappend="${compareByteSeq?.position != null && compareByteSeq?.position != byteSeq?.position} ? 'before-review' : ''")
                                 p.inputType(th:text="${#strings.isEmpty(byteSeq?.position) ? 'New content' : 'Edited content'}") Edited content
                                 .tooltipPlusAction
                                   .tooltip-container
@@ -760,13 +760,13 @@ section.form-part#signatures
                                   button.current Accept current
                                   select(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
-                                .input-group(th:if="${compareByteSeq?.position != ff?.position}")
+                                .input-group(th:if="${compareByteSeq?.position != null && compareByteSeq?.position != compareByteSeq?.position}")
                                   button.incoming Accept incoming
-                                  select(th:value="${compareByteSeq.position != ff?.position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                  select(th:value="${compareByteSeq.position != null && compareByteSeq?.position != byteSeq?.position}", th:id="${'ByteSequencePosition' + stat.index + '-' + statB.index + '-' + statC.index}")
                                     option(th:each="po : ${positionTypeOptions}", th:value="${po.URI}", th:text="${po.label}") option 1
                               
                               //- Min offset
-                              .form-row.min-offset(th:classappend="${compareByteSeq?.offset != ff?.offset} ? 'before-review' : ''")
+                              .form-row.min-offset(th:classappend="${compareByteSeq?.offset != null && compareByteSeq?.offset != byteSeq?.offset} ? 'before-review' : ''")
                                 p.inputType(th:text="${#strings.isEmpty(byteSeq?.offset) ? 'New content' : 'Edited content'}") Edited content
                                 .tooltipPlusAction
                                   .tooltip-container
@@ -786,12 +786,12 @@ section.form-part#signatures
                                 .input-group
                                   button.current Accept current
                                   input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
-                                .input-group(th:if="${compareByteSeq?.offset != ff?.offset}")
+                                .input-group(th:if="${compareByteSeq?.offset != null && compareByteSeq?.offset != byteSeq?.offset}")
                                   button.incoming Accept incoming
-                                  input.short(th:value="${compareByteSeq.offset != ff?.offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
+                                  input.short(th:value="${compareByteSeq.offset != null && compareByteSeq?.offset != byteSeq?.offset}", th:id="${'ByteSequenceMinOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
                               
                               //- Max offset
-                              .form-row.max-offset(th:classappend="${compareByteSeq?.offset != ff?.offset} ? 'before-review' : ''")
+                              .form-row.max-offset(th:classappend="${compareByteSeq?.maxOffset != null && compareByteSeq?.maxOffset != byteSeq?.maxOffset} ? 'before-review' : ''")
                                 p.inputType(th:text="${#strings.isEmpty(byteSeq?.maxOffset) ? 'New content' : 'Edited content'}") Edited content
                                 .tooltipPlusAction
                                   .tooltip-container
@@ -811,7 +811,7 @@ section.form-part#signatures
                                 .input-group
                                   button.current Accept current
                                   input.short(th:field="*{containerSignatures[__${stat.index}__].files[__${statB.index}__].byteSequences[__${statC.index}__].maxOffset}", th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
-                                .input-group(th:if="${compareByteSeq?.maxOffset != ff?.maxOffset}")
+                                .input-group(th:if="${compareByteSeq?.maxOffset != null && compareByteSeq?.maxOffset != byteSeq?.maxOffset}")
                                   button.incoming Accept incoming
                                   input.short(th:value="${compareByteSeq.maxOffset}" , th:id="${'ByteSequenceMaxOffset' + stat.index + '-' + statB.index + '-' + statC.index}")
 
