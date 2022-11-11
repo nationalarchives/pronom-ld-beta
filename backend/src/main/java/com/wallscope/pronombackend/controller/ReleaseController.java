@@ -252,8 +252,8 @@ public class ReleaseController {
         List<FileFormat> fs = dao.getForContainerSignature(statusList(minStatus.getURI()));
         List<ContainerSignature> signatures = fs.stream().flatMap(f -> f.getContainerSignatures().stream()).collect(Collectors.toList());
         if (fullRelease) {
-            FileFormatDAO ffDao = new FileFormatDAO();
-            fs.addAll(ffDao.getAllForSignature());
+            ContainerSignatureDAO ffDao = new ContainerSignatureDAO();
+            fs.addAll(ffDao.getAllForContainerSignature());
             signatures.addAll(fs.stream().flatMap(f -> f.getContainerSignatures().stream()).collect(Collectors.toList()));
         }
         signatures = signatures.stream().filter(distinctByKey(ContainerSignature::getID))
