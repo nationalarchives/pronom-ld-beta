@@ -45,3 +45,7 @@ cd backend
 ```
 
 7. The app should now be running locally on `http://localhost:${PORT}`.
+
+## Automated Deployment
+
+Deployment is completed via GitHub Actions, when changes are pushed to the `main` branch of this repo the workflow is started. The workflow builds and pushes a new pronom-backend image to ECR and tags the commit with a unique version number. The workflow also tags the latest commit in the terraform repo with the same version number which begins the terraform apply workflow in that repo.
