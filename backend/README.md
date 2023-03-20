@@ -15,7 +15,7 @@ password - password
 Available endpoints:
 
 | Name                              | Endpoint                  | Template              | Description |
-|---|:--|:--|---|
+|---|---|---|---|
 | 1. Home                           | /                         | index.html            | Homepage |
 | 2. Search                         | /search?q={query:string}  | search.html           | Search results page |
 | 3. About                          | /about                    | about.html            | About PRONOM |
