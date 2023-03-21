@@ -15,16 +15,16 @@ jobs:
         if: failure()
         with:
           message: ":warning: Secrets found in repository."
-      - name: Git clone the Terraform repository
-        uses: actions/checkout@v3
-        with:
-          repository: nationalarchives/pronom-ld-beta-terraform
-          ssh-key: ${{ secrets.SSH_DEPLOY_KEY }} # `SSH_DEPLOY_KEY` is a secret that contains your SSH deploy key
-          path: pronom-terraform-repo
-      - uses: nationalarchives/tdr-github-actions/.github/actions/run-git-secrets@main
-        if: failure()
-        with:
-          message: ":warning: Secrets found in repository."
+#      - name: Git clone the Terraform repository
+#        uses: actions/checkout@v3
+#        with:
+#          repository: nationalarchives/pronom-ld-beta-terraform
+#          ssh-key: ${{ secrets.SSH_DEPLOY_KEY }} # `SSH_DEPLOY_KEY` is a secret that contains your SSH deploy key
+#          path: pronom-terraform-repo
+#      - uses: nationalarchives/tdr-github-actions/.github/actions/run-git-secrets@main
+#        if: failure()
+#        with:
+#          message: ":warning: Secrets found in repository."
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -46,6 +46,6 @@ jobs:
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f deployment/Dockerfile .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          cd pronom-terraform-repo
-          git tag $IMAGE_TAG
-          git push --tags
+#          cd pronom-terraform-repo
+#          git tag $IMAGE_TAG
+#          git push --tags
